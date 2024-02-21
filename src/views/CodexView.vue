@@ -564,7 +564,6 @@ import { store } from '@/store'
 
 <script>
 const star = '★';
-const power = '💪';
 const orna_url = 'https://playorna.com';
 const static_url = 'https://playorna.com/static';
 const orna_guide_url = 'https://orna.guide';
@@ -575,6 +574,7 @@ const codexToGuide = {
   'bosses': 'monster',
   'raids': 'monster',
   'followers': 'pet',
+  'spells': 'skill',
 }
 const codexToGuidePage = {
   'items': 'items',
@@ -582,6 +582,7 @@ const codexToGuidePage = {
   'bosses': 'monsters',
   'raids': 'monsters',
   'followers': 'pets',
+  'spells': 'skills',
 }
 const monsterSet = new Set(['monsters', 'bosses']);
 
