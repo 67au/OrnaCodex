@@ -759,7 +759,7 @@ export default {
 }
 
 .event {
-  padding-top: 2px;
+  padding-top: 4px;
   max-width: 160px;
   display: inline-block;
   white-space: nowrap;
