@@ -13,7 +13,9 @@ const suppoertedThemes = {
 	'md3-dark': Themes.md3Dark,
 };
 
-StyleProvider(suppoertedThemes[store.state.theme || 'md2-dark']);
+store.state.theme = store.state.theme || 'md2-dark';
+
+StyleProvider(suppoertedThemes[store.state.theme]);
 
 function getActiveStyles(theme) {
 	return {
