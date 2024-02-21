@@ -1,0 +1,107 @@
+<script setup>
+import { watch } from 'vue';
+import { RouterView } from 'vue-router';
+import { store } from '@/store'
+import AppHeader from './components/AppHeader.vue';
+import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
+import AppThemeSwitch from './components/AppThemeSwitch.vue';
+import AppGithub from './components/AppGithub.vue';
+</script>
+
+<template>
+  <div class="layout" id="main">
+    <AppHeader :title="$t('title')">
+    <template #right>
+      <AppLocaleSwitch />
+      <AppThemeSwitch />
+      <AppGithub link="https://github.com/67au/OrnaCodex"/>
+    </template>
+    </AppHeader>
+    <var-loading description="LOADING" :loading="loading">
+      <var-skeleton card :loading="loading" />
+      <template v-if="!loading">
+        <router-view v-slot="{ Component }">
+          <component :is="Component" v-if="!$route.meta.keepAlive"/>
+          <keep-alive>
+            <component :is="Component" v-if="$route.meta.keepAlive"/>
+          </keep-alive>
+          <var-back-top :duration="500" />
+        </router-view>
+      </template>
+    </var-loading>
+  </div>
+</template>
+
+<script>
+const baseLang = 'en';
+
+export default {
+  mounted() {
+    store.lang = this.$i18n.locale;
+    import(`@/assets/json/codex.json`).then((module) => {
+      store.codex = module.default;
+      for (const [lang, msg] of Object.entries(store.codex.translation)) {
+        this.$i18n.mergeLocaleMessage(lang, msg);
+      }
+      this.loadLangCodex(store.lang, true);
+      if (store.lang !== baseLang) {
+        this.loadLangCodex(baseLang);
+      }
+    });
+
+    watch(() => this.$i18n.locale, (newVal, oldVal) => {
+      store.lang = newVal;
+      if (this.codex === undefined) {
+        this.loadLangCodex(store.lang, true);
+      };
+    });
+
+  },
+  methods: {
+    loadLangCodex(lang, isLoad) {
+      if (isLoad) { this.loading = true; }
+      import(`@/assets/json/codex.${lang}.json`).then((module) => {
+        store.codex['codex'][lang] = module.default;
+        if (isLoad) { this.loading = false; }
+      });
+    }
+  },
+  data() {
+    return {
+      store,
+      loading: true,
+    }
+  },
+  computed: {
+    codex: {
+      get() {
+        return store.codex['codex'][store.lang];
+      },
+      set(newValue) {
+        store.codex['codex'][store.lang] = newValue;
+      }
+    }
+  }
+}
+
+</script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  transition: background-color 0.25s, color 0.25s;
+  color: var(--color-text);
+  background-color: var(--color-body);
+  overflow: hidden;
+  margin: 0;
+}
+
+.layout {
+  padding: 70px 16px;
+  overflow-y: auto;
+  height: 100vh;
+}
+</style>

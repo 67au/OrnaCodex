@@ -1,0 +1,22 @@
+.card {
+    width: 300px;
+}
+
+.card-title {
+    color: var(--card-title-color);
+    font-size: var(--card-title-font-size);
+    padding: var(--card-title-padding);
+    margin: var(--card-title-margin);
+}
+
+.card-description {
+    color: var(--card-description-color);
+    font-size: var(--card-description-font-size);
+    padding: var(--card-description-padding);
+    margin: var(--card-description-margin);
+}
+
+.append-icon {
+    margin-right: 6px;
+    image-rendering: pixelated;
+}
