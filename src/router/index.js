@@ -24,11 +24,19 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     const t = document.getElementById('main');
     if (to['name'] === 'home') {
-      t.scrollTo({
-        top: store.homeTop,
-        left: 0,
-        behavior: "auto",
-      });
+      if (from['name'] === 'home') {
+        t.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "auto",
+        });
+      } else {
+        t.scrollTo({
+          top: store.homeTop,
+          left: 0,
+          behavior: "auto",
+        });
+      }
     }
     if (to['name'] === 'codex') {
       t.scrollTo({
@@ -45,6 +53,9 @@ router.afterEach((to, from) => {
   if (from['name'] === 'home') {
     const t = document.getElementById('main');
     store.homeTop = t.scrollTop;
+  }
+  if (to['name'] === 'codex') {
+    store.guide.cache = undefined;
   }
 })
 

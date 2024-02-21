@@ -1,34 +1,36 @@
 <script setup>
-import '@/assets/main.css'
-import '@/assets/color.css'
 import { watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import { store } from '@/store'
+import { store, global } from '@/store'
 </script>
 
 <template>
   <main>
-    <var-space justify="space-around" size="mini">
+    <div class="container">
       <var-card class="card">
         <template #description>
           <div class="card-description" v-if="!loading">
-            <var-form ref="form">
-              <var-input variant="outlined" size="small" :placeholder="$t('search')"
-                v-model="search" clearable @change="applyFilter" @clear="applyFilter" @input="applyFilter" />
+            <var-form>
+              <var-input variant="outlined" size="small" :placeholder="$t('search')" v-model="search" clearable
+                @change="applyFilter" @clear="applyFilter" @input="applyFilter" />
               <template v-if="filters.length > 0">
                 <var-divider> {{ $t('filters') }} </var-divider>
               </template>
               <template v-for="filter in filters">
-                <var-cell class="cell">
+                <var-cell class="item-cell">
                   <var-select :placeholder="$t(filter['k'])" v-model="filter['v']" variant="outlined" size="small"
                     clearable :multiple="Array.isArray(filter['v'])" :chip="Array.isArray(filter['v'])"
                     @close="applyFilter" @change="applyFilter" @clear="applyFilter">
                     <template v-if="filter['k'] != undefined">
                       <template v-if="filter['k'] === 'category'">
-                        <var-option :label=" $t(`categories.${v}`)" :value="v" v-for="v in options[filter['k']]" />
+                        <var-option :label="$t(`categories.${v}`)" :value="v" v-for="v in options[filter['k']]" />
                       </template>
                       <template v-else-if="filter['k'] === 'exotic'">
                         <var-option :label="v ? $t('yes') : $t('no')" :value="v" v-for="v in options[filter['k']]" />
+                      </template>
+                      <template v-else-if="filter['k'] === 'tier'">
+                        <var-option :label="global.star + (v + 1)" :value="`${v + 1}`"
+                          v-for="(_, v) in Array.from({ length: 10 })" />
                       </template>
                       <template v-else>
                         <var-option :label="v" :value="v" v-for="v in options[filter['k']]" />
@@ -66,24 +68,37 @@ import { store } from '@/store'
         </template>
       </var-card>
       <var-card class="card">
+        <template #title>
+          <var-space justify="flex-end">
+            <var-chip size="small" :round="false">
+              <template #left>
+                <var-icon name="magnify" size="16" />
+              </template>
+              {{ codexFiltered.length }}
+            </var-chip>
+          </var-space>
+        </template>
         <template #description>
           <div class="card-description">
             <var-list :finished="list.finished" v-model:loading="list.loading" @load="loadList" :offset="200">
               <template v-for="[category, id] in list.content">
-                <var-cell class="item-cell" border @click="() => goToInfo(category, id)">
+                <var-cell class="item-cell" border @click="() => store.enterCodex(category, id)">
                   <template #icon>
-                    <var-icon class="append-icon" :size="48" :name="`${static_url}${codex[category][id]['icon']}`" />
+                    <var-icon class="append-icon" :size="48"
+                      :name="`${global.staticUrl}${codex[category][id]['icon']}`" />
                   </template>
                   <template #description>
                     {{ codex[category][id]['name'] }}
                     <br>
                     <var-space size="mini" style="line-height: 120%;">
-                      <var-chip type="warning" size="mini" :round="false" plain>{{ star + codex[category][id]['tier']
+                      <var-chip type="warning" size="mini" :round="false" plain>{{ global.star +
+                        codex[category][id]['tier']
                       }}</var-chip>
-                      <var-chip type="primary" size="mini" :round="false" plain>{{ $t(`categories.${codex[category][id]['category']}`) }}</var-chip>
+                      <var-chip type="primary" size="mini" :round="false" plain>{{
+                        $t(`categories.${codex[category][id]['category']}`) }}</var-chip>
                       <template v-if="codex[category][id]['event'] != undefined">
-                        <var-chip class="highlight" size="mini"
-                          :round="false" plain v-for="event in codex[category][id]['event']">
+                        <var-chip class="highlight" size="mini" :round="false" plain
+                          v-for="event in codex[category][id]['event']">
                           <span class="event">{{ event }}</span>
                         </var-chip>
                       </template>
@@ -97,13 +112,11 @@ import { store } from '@/store'
           </div>
         </template>
       </var-card>
-    </var-space>
+    </div>
   </main>
 </template>
 
 <script>
-const star = '★'
-const static_url = 'https://playorna.com/static'
 const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];
 const arrayOptions = ['event', 'tags'];
 const dropOptions = ['causes', 'cures', 'gives', 'immunities'];
@@ -128,13 +141,11 @@ export default {
     return {
       store,
       dropOptions,
-      form: null,
       search: '',
       options: undefined,
       filters: [],
-      codexIndex: [],
       codexFiltered: [],
-      codexSearched: [],
+      codexIndex: [],
       list: {
         loading: false,
         finished: false,
@@ -153,9 +164,6 @@ export default {
     }
   },
   methods: {
-    goToInfo(category, id) {
-      this.$router.push(`/codex/${category}/${id}/`);
-    },
     buildIndex() {
       for (const [category, items] of Object.entries(this.codex)) {
         for (const id of Object.keys(items)) {
@@ -280,13 +288,8 @@ export default {
     },
   },
   computed: {
-    codex: {
-      get() {
-        return store.codex['codex'][store.lang];
-      },
-      set(newValue) {
-        store.codex['codex'][store.lang] = newValue;
-      }
+    codex() {
+      return store.codex.data['codex'][store.lang];
     },
   },
   watch: {
@@ -300,27 +303,5 @@ export default {
 </script>
 
 <style scoped>
-.cell {
-  margin-bottom: 2px;
-  padding: 3px 0px;
-}
 
-.item-cell {
-  padding: 3px 0px;
-  min-height: 64px;
-}
-
-.event {
-  padding-top: 4px;
-  max-width: 180px;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.append-icon {
-  margin-right: 6px;
-  image-rendering: pixelated;
-}
 </style>

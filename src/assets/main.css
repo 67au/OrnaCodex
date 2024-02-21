@@ -1,22 +1,142 @@
+:root {
+  --card-max-width: 375px;
+  --card-min-width: 300px;
+  --highlight-color-dark: #ffd980;
+  --highlight-color-light: #fcb000;
+  --highlight-color: var(--highlight-color-dark);
+}
+
+/* card */
 .card {
-    width: 300px;
+  max-width: var(--card-max-width);
+  min-width: var(--card-min-width);
+  margin-bottom: 4px;
 }
 
 .card-title {
-    color: var(--card-title-color);
-    font-size: var(--card-title-font-size);
-    padding: var(--card-title-padding);
-    margin: var(--card-title-margin);
+  color: var(--card-title-color);
+  font-size: var(--card-title-font-size);
+  padding: var(--card-title-padding);
+  margin: var(--card-title-margin);
+}
+
+.card-subtitle {
+  color: var(--card-subtitle-color);
+  font-size: var(--card-subtitle-font-size);
+  padding: var(--card-subtitle-padding);
+  margin: var(--card-subtitle-margin);
 }
 
 .card-description {
-    color: var(--card-description-color);
-    font-size: var(--card-description-font-size);
-    padding: var(--card-description-padding);
-    margin: var(--card-description-margin);
+  color: var(--card-description-color);
+  font-size: var(--card-description-font-size);
+  padding: var(--card-description-padding);
+  /* margin: var(--card-description-margin); */
+  margin: 12px 0 0 0;
 }
 
+/* Append-icon*/
 .append-icon {
-    margin-right: 6px;
-    image-rendering: pixelated;
+  margin-right: 8px;
+  image-rendering: pixelated;
+}
+
+/* Card Layout */
+.container>.var-card {
+  break-inside: avoid;
+  margin: 0 auto;
+  margin-bottom: 4px;
+  min-width: var(--card-min-width);
+  width: 95vw;
+  max-width: var(--card-max-width);
+}
+
+@media screen and (max-width: 636px) {
+
+  /* 针对手机设备的样式 */
+  .container {
+    display: table;
+    margin: 0 auto;
+  }
+
+}
+
+@media screen and (min-width: 636px) {
+
+  /* 针对平板设备的样式 */
+  .container {
+    margin: 0 auto;
+    min-width: 80vw;
+    max-width: 90vw;
+    column-count: 2;
+    column-width: 45vw;
+    column-gap: 2px;
+    column-fill: balance-all;
+  }
+}
+
+@media screen and (min-width: 768px) {
+
+  /* 针对桌面设备的样式 */
+  .container {
+    margin: 0 auto;
+    min-width: 760px;
+    max-width: 820px;
+    column-count: 2;
+    column-width: 0vw;
+    column-gap: 2px;
+    column-fill: balance-all;
+  }
+  .container>.var-card {
+    break-inside: avoid;
+    margin: 0 auto;
+    margin-bottom: 4px;
+    min-width: var(--card-min-width);
+    width: 95vw;
+    max-width: var(--card-max-width);
+  }
+}
+
+.highlight {
+  color: var(--highlight-color);
+}
+
+.event {
+  padding-top: 4px;
+  max-width: 170px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.codex-cell {
+  min-height: 60px;
+  padding: 3px 0px;
+}
+
+.codex-small-cell {
+  min-height: 40px;
+  padding: 3px 0px;
+}
+
+.item-cell {
+  padding: 3px 0px;
+  min-height: 64px;
+}
+
+.assess {
+  width: 100%;
+}
+
+.cell-chip-space {
+  line-height: 120%;
+}
+
+.codex-icon {
+  width: 72px;
+  height: 72px;
+  margin: 16px 12px;
+  flex-shrink: 0;
+  image-rendering: pixelated;
 }

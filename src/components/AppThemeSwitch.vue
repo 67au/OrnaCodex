@@ -7,7 +7,7 @@ import { store } from '@/store'
 const show = ref(false);
 
 const suppoertedThemes = {
-	'md2-light': null,
+	'md2-light': {},
 	'md2-dark': Themes.dark,
 	'md3-light': Themes.md3Light,
 	'md3-dark': Themes.md3Dark,
@@ -15,6 +15,15 @@ const suppoertedThemes = {
 
 store.state.theme = store.state.theme || 'md2-dark';
 
+function addCustomTheme() {
+  if (store.state.theme.endsWith('dark')) {
+    suppoertedThemes[store.state.theme]['--highlight-color'] = 'var(--highlight-color-dark)'
+  } else {
+    suppoertedThemes[store.state.theme]['--highlight-color'] = 'var(--highlight-color-light)'
+  }
+}
+
+addCustomTheme()
 StyleProvider(suppoertedThemes[store.state.theme]);
 
 function getActiveStyles(theme) {
@@ -26,6 +35,7 @@ function getActiveStyles(theme) {
 
 function handleCellClick(theme) {
 	store.state.theme = theme;
+  addCustomTheme()
 	StyleProvider(suppoertedThemes[theme]);
 	show.value = false;
 }

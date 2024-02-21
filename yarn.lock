@@ -228,39 +228,39 @@
   resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz#f066abfcd1cbe66267cdbbf0de010d8a41b41597"
   integrity sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==
 
-"@varlet/icons@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.0.1.tgz#4e38137fb2cf8236339e1b5747922405ebc61a79"
-  integrity sha512-8HBUuX6HTnwqPL+vFZLbP6VvpP2PRaWVxtb6fvABFTDu3evQ8mWCZIe5sDJuXr/F75yzjJ7/jS5I/aoPyaL+Nw==
+"@varlet/icons@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.0.3.tgz#06d6e98a184a9a297ff313f7f139884da70643d1"
+  integrity sha512-cZOIMDf7WMt83gUoKbkKWONr587dEmTJA4ObIxy6nS7SdwqdYY3HjOKEiUCmnbRPjjVfk5/YP/4r4iQZ5JA9qA==
 
-"@varlet/shared@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.0.1.tgz#14c7dbe1c8296b8582ca373f49d06da4b7555394"
-  integrity sha512-YVjH5OWvylaxq2sZ6vtbCXoI/oltt4/PpmTfmE5ngMF5yUTeu012LCsds1QSRg8yE+uCsiIaCsS/h8Q26u6N2Q==
+"@varlet/shared@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.0.3.tgz#8c7c9a8a126407307f44a552146e205c5736079f"
+  integrity sha512-MZTB8q+v+z5abRct2AfH79F5w745BRn21Q1LF8GB3cnvU+BjIIjeuybrgoyZpxAETB9YCf5kmpGsOprd6oTE1g==
 
 "@varlet/touch-emulator@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.0.1.tgz#52c9badbea598202254440c3a364ac6827a24964"
-  integrity sha512-RoQXksBJZFo9/LY1uRzBeEPdU9Ixrr/xKv7CmOmK0JHHio5xn3w1bcIOMVQXguRp1qLdhro2HBPJpC/nScHBZw==
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.0.3.tgz#5c2b14c7bc7ef0fbfcc25a2ed321f76f753e860f"
+  integrity sha512-egVFgA0829qYO0ykaz4PlwpLEUuXEuQmb3rd6C2QtWbSwSM9xoxOjCCwlcxZbTySOGs3llXEPN6O3IwwHLOQRA==
 
 "@varlet/ui@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.0.1.tgz#a3ad9524c8e33027f8ed85474722c7fd5b7a86c4"
-  integrity sha512-SnuIWBi+vYSm3aad1OhaHBdaGnYUiuly486nop8pvAMfG16aBr1vp1/hAmoELRH6NqX7bDP5BUIkLcWjdW2c5Q==
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.0.3.tgz#56a329e0ab34794cca90b7fa11b0f7563d8ae5dc"
+  integrity sha512-bO/IHPo14kDaIi+8w3QJiwX4JFaE3YYBvQVDkOnLgCIfRo7dfpFAqABqDwmABgveTJlg8qv7rdKk82Af1KYHKg==
   dependencies:
     "@popperjs/core" "^2.11.6"
-    "@varlet/icons" "3.0.1"
-    "@varlet/shared" "3.0.1"
-    "@varlet/use" "3.0.1"
+    "@varlet/icons" "3.0.3"
+    "@varlet/shared" "3.0.3"
+    "@varlet/use" "3.0.3"
     dayjs "^1.10.4"
     decimal.js "^10.2.1"
 
-"@varlet/use@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.0.1.tgz#b385b05af723708aa66ce1cdc1825ecbcbccac93"
-  integrity sha512-c26WjPzph+YxoSwwp16YYtWE1mb+bkA6ANNxVJAib4dBxZB5nu5AXw9yd7z7c64weRPMpdWOj4dNvswkyWtYtw==
+"@varlet/use@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.0.3.tgz#0ef14875f407e95ed6bf194cbbd4078affac3c0e"
+  integrity sha512-7QUzj/lpR4D2hTyghrocm6m8EFkbOLsN7Xj3QKA6rOz1A4XqYv2OTCuebMjnH74WYPOS6RRtftwvrtacieVNFg==
   dependencies:
-    "@varlet/shared" "3.0.1"
+    "@varlet/shared" "3.0.3"
 
 "@vitejs/plugin-vue@^5.0.3":
   version "5.0.4"
@@ -352,26 +352,26 @@
   integrity sha512-/KliRRHMF6LoiThEy+4c1Z4KB/gbPrGjWwJR+crg2otgrf/egKzRaCPvJ51S5oetgsgXLfc4Rm5ZgrKHZrtMSw==
 
 "@vueuse/core@^10.7.2":
-  version "10.7.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.7.2.tgz#78917803a29a0bca1803a6521fdf7ff873f6e72c"
-  integrity sha512-AOyAL2rK0By62Hm+iqQn6Rbu8bfmbgaIMXcE3TSr7BdQ42wnSFlwIdPjInO62onYsEMK/yDMU8C6oGfDAtZ2qQ==
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.8.0.tgz#680f88cf2f92abfc7a3d69cdf5b030f6ff9e07ee"
+  integrity sha512-G9Ok9fjx10TkNIPn8V1dJmK1NcdJCtYmDRyYiTMUyJ1p0Tywc1zmOoCQ2xhHYyz8ULBU4KjIJQ9n+Lrty74iVw==
   dependencies:
     "@types/web-bluetooth" "^0.0.20"
-    "@vueuse/metadata" "10.7.2"
-    "@vueuse/shared" "10.7.2"
-    vue-demi ">=0.14.6"
+    "@vueuse/metadata" "10.8.0"
+    "@vueuse/shared" "10.8.0"
+    vue-demi ">=0.14.7"
 
-"@vueuse/metadata@10.7.2":
-  version "10.7.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.7.2.tgz#ba0187ce138c287fd80301afc5b0d6a97e563633"
-  integrity sha512-kCWPb4J2KGrwLtn1eJwaJD742u1k5h6v/St5wFe8Quih90+k2a0JP8BS4Zp34XUuJqS2AxFYMb1wjUL8HfhWsQ==
+"@vueuse/metadata@10.8.0":
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.8.0.tgz#a0d828ae90feed8084870578c56f459897f7cbb3"
+  integrity sha512-Nim/Vle5OgXcXhAvGOgkJQXB1Yb+Kq/fMbLuv3YYDYbiQrwr39ljuD4k9fPeq4yUyokYRo2RaNQmbbIMWB/9+w==
 
-"@vueuse/shared@10.7.2":
-  version "10.7.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.7.2.tgz#746441fbc08072371dd600a55883422c83fd0cab"
-  integrity sha512-qFbXoxS44pi2FkgFjPvF4h7c9oMDutpyBdcJdMYIMg9XyXli2meFMuaKn+UMgsClo//Th6+beeCgqweT/79BVA==
+"@vueuse/shared@10.8.0":
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.8.0.tgz#56e778919a3de9f2552bcbf3c09163e6d1035f1a"
+  integrity sha512-dUdy6zwHhULGxmr9YUg8e+EnB39gcM4Fe2oKBSrh3cOsV30JcMPtsyuspgFCUo5xxFNaeMf/W2yyKfST7Bg8oQ==
   dependencies:
-    vue-demi ">=0.14.6"
+    vue-demi ">=0.14.7"
 
 csstype@^3.1.3:
   version "3.1.3"
@@ -486,9 +486,9 @@ source-map-js@^1.0.2:
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
 vite@^5.0.11:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.1.3.tgz#dd072653a80225702265550a4700561740dfde55"
-  integrity sha512-UfmUD36DKkqhi/F75RrxvPpry+9+tTkrXfMNZD+SboZqBCMsxKtO52XeGzzuh7ioz+Eo/SYDBbdb0Z7vgcDJew==
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.1.4.tgz#14e9d3e7a6e488f36284ef13cebe149f060bcfb6"
+  integrity sha512-n+MPqzq+d9nMVTKyewqw6kSt+R3CkvF9QAKY8obiQn8g1fwTscKxyfaYnC632HtBXAQGc1Yjomphwn1dtwGAHg==
   dependencies:
     esbuild "^0.19.3"
     postcss "^8.4.35"
@@ -496,7 +496,7 @@ vite@^5.0.11:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vue-demi@>=0.14.6:
+vue-demi@>=0.14.7:
   version "0.14.7"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.7.tgz#8317536b3ef74c5b09f268f7782e70194567d8f2"
   integrity sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==

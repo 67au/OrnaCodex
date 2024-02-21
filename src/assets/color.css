@@ -35,3 +35,36 @@
 .highlight {
     color: #ffb300;
 }
+
+/* element */
+.water {
+  color: #5facff;
+}
+
+.earthen {
+  color: #0fab0f;
+}
+
+.lightning {
+  color: #a59e46;
+}
+
+.fire {
+  color: #ff8135;
+}
+
+.dark {
+  color: #d900ff;
+}
+
+.holy {
+  color: #ddd;
+}
+
+.arcane {
+  color: #8e78ff;
+}
+
+.dragon {
+  color: #FF9800;
+}

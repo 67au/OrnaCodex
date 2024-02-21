@@ -1,4 +1,5 @@
 <script setup>
+import './assets/main.css';
 import { watch } from 'vue';
 import { RouterView } from 'vue-router';
 import { store } from '@/store'
@@ -39,8 +40,8 @@ export default {
   mounted() {
     store.lang = this.$i18n.locale;
     import(`@/assets/json/codex.json`).then((module) => {
-      store.codex = module.default;
-      for (const [lang, msg] of Object.entries(store.codex.translation)) {
+      store.codex.data = module.default;
+      for (const [lang, msg] of Object.entries(store.codex.data.translation)) {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
       this.loadLangCodex(store.lang, true);
@@ -61,7 +62,7 @@ export default {
     loadLangCodex(lang, isLoad) {
       if (isLoad) { this.loading = true; }
       import(`@/assets/json/codex.${lang}.json`).then((module) => {
-        store.codex['codex'][lang] = module.default;
+        store.codex.data['codex'][lang] = module.default;
         if (isLoad) { this.loading = false; }
       });
     }
@@ -75,10 +76,10 @@ export default {
   computed: {
     codex: {
       get() {
-        return store.codex['codex'][store.lang];
+        return store.codex.data['codex'][store.lang];
       },
       set(newValue) {
-        store.codex['codex'][store.lang] = newValue;
+        store.codex.data['codex'][store.lang] = newValue;
       }
     }
   }
@@ -100,7 +101,7 @@ body {
 }
 
 .layout {
-  padding: 70px 16px;
+  padding: 70px 3px;
   overflow-y: auto;
   height: 100vh;
 }

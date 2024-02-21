@@ -31,8 +31,9 @@
         "add": "添加",
         "clear": "清除",
         "orns": "欧币",
-        "found": "找到!",
-        "notfound": "没找到!",
+        "found": "发现了!",
+        "notfound": "未发现",
+        "description": "描述",
         "query": {
             "query": "查询",
             "level": "等级",
@@ -80,8 +81,9 @@
         "add": "添加",
         "clear": "清除",
         "orns": "歐幣",
-        "found": "發現！",
-        "notfound": "未發現！",
+        "found": "發現了！",
+        "notfound": "未發現",
+        "description": "描述",
         "query": {
             "query": "查詢",   
             "level": "等級",
@@ -131,7 +133,8 @@
         "clear": "Clear",
         "orns": "orns",
         "found": "Found!",
-        "notfound": "Not Found!",
+        "notfound": "Not Found",
+        "description": "Description",
         "query": {
             "query": "Query",
             "level": "Level",
