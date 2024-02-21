@@ -55,6 +55,9 @@ import { store } from '@/store'
                   </template>
                 </var-chip>
               </template>
+              <template v-if="item['spell_type'] !== undefined">
+                <var-chip size="small" :round="true" plain>{{ `${item['spell_type']}` }}</var-chip>
+              </template>
               <template v-if="item['costs'] !== undefined">
                 <var-chip size="small" :round="true" plain>{{ `${item['costs']}` }}</var-chip>
               </template>
