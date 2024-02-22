@@ -272,7 +272,7 @@ export default {
     },
     loadList() {
       const codexLength = this.codexFiltered.length;
-      const chunkSize = 30;
+      const chunkSize = 40;
       const minChunk = Math.min(chunkSize, codexLength - this.list.index);
       for (let i = 0; i < minChunk; i++) {
         this.list.content.push(this.codexFiltered[this.list.index + i]);
