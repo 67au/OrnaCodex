@@ -24,10 +24,8 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
               </template>
               <template v-else>
                 <var-cell class="codex-cell" border>
-                  {{ $t('notfound') }}
-                  <br>
                   <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
-                    {{ `${global.ornaUrl}/codex/${category}/${id}/` }}
+                    {{ $t('notfound') }}
                   </var-link>
                 </var-cell>
               </template>
