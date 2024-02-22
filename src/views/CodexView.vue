@@ -73,42 +73,21 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
   </var-dialog>
 
   <!-- Result -->
-  <var-dialog v-model:show="show.guide" :cancel-button="false">
-    <template #title>
-      <span>
-        <var-icon name="bookmark" /> OrnaGuide
-      </span>
-    </template>
-    <var-space size="normal" align="center" justify="center">
-      <template v-if="store.guide.cache !== undefined">
-        <var-link :href="`${global.guideUrl}/${guidePage}?show=${guideId}`" target="_blank" underline="none">
-          <var-button type="primary"> {{ $t('found') }} </var-button>
-        </var-link>
-      </template>
-      <template v-else>
-        <var-button type="primary" disabled> {{ $t('notfound') }} </var-button>
-      </template>
-    </var-space>
-  </var-dialog>
+  <var-popup :default-style="false" v-model:show="show.guide">
+    <GuideResult 
+    :click="() => show.guide=false"
+    :href="guidePageUrl"
+    />
+  </var-popup>
 
   <!-- Assess -->
-  <var-dialog v-model:show="show.assess" :cancel-button="false">
-    <template #title>
-      <span>
-        <var-icon name="magnify" /> Assess
-      </span>
-    </template>
-    <var-space size="normal" align="center" justify="center">
-      <template v-if="store.guide.cache !== undefined">
-        <var-link :href="`${global.guideUrl}/assess?item=${guideId}`" target="_blank" underline="none">
-          <var-button type="primary"> {{ $t('found') }} </var-button>
-        </var-link>
-      </template>
-      <template v-else>
-        <var-button type="primary" disabled> {{ $t('notfound') }} </var-button>
-      </template>
-    </var-space>
-  </var-dialog>
+  <var-popup :default-style="false" v-model:show="show.assess">
+    <GuideResult 
+    :click="() => show.assess=false"
+    :href="assessQueryUrl"
+    />
+  </var-popup>
+
 
   <!-- AssessApi -->
   <var-dialog v-model:show="show.api" :cancel-button="false">
@@ -213,6 +192,9 @@ const guidePageMap = {
 const monsterSet = new Set(['monsters', 'bosses']);
 
 export default {
+  components: {
+    'GuideResult': ()=>import("@/components/GuideResult.vue"),
+  },
   mounted() {
     store.codexPage.category = this.$route.params.category
     store.codexPage.id = this.$route.params.id
@@ -243,6 +225,20 @@ export default {
     }
   },
   computed: {
+    guidePageUrl() {
+      if (store.guide.cache !== undefined) {
+        return `${global.guideUrl}/${this.guidePage}?show=${this.guideId}`
+      } else {
+        return `${global.guideUrl}/${this.guidePage}`
+      }
+    },
+    assessQueryUrl() {
+      if (store.guide.cache !== undefined) {
+        return `${this.assessUrl}?item=${this.guideId}`;
+      } else {
+        return assessUrl;
+      }
+    },
     assessUrl() {
       return `${global.guideApiUrl}/assess`
     },
