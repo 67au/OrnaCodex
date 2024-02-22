@@ -1,6 +1,7 @@
 <script setup>
 import { watch } from 'vue';
 import { store, global } from '@/store';
+import { defineAsyncComponent } from 'vue';
 import MainCard from '@/components/Card/MainCard.vue';
 import StatsCard from '@/components/Card/StatsCard.vue';
 import AbilityCard from '@/components/Card/AbilityCard.vue';
@@ -74,18 +75,12 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
 
   <!-- Result -->
   <var-popup :default-style="false" v-model:show="show.guide">
-    <GuideResult 
-    :click="() => show.guide=false"
-    :href="guidePageUrl"
-    />
+    <component is="GuideResult" :click="() => show.guide = false" :href="guidePageUrl" />
   </var-popup>
 
   <!-- Assess -->
   <var-popup :default-style="false" v-model:show="show.assess">
-    <GuideResult 
-    :click="() => show.assess=false"
-    :href="assessQueryUrl"
-    />
+    <component is="GuideResult" :click="() => show.assess = false" :href="assessQueryUrl" />
   </var-popup>
 
 
@@ -132,42 +127,42 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
   <var-popup :default-style="false" v-model:show="show.result">
     <var-paper class="popup-content">
       <var-space align="center" justify="space-between" style="margin-bottom: 2px">
-      <span>{{ store.codex.usedItem['name'] }}</span>
-      <var-chip size="small" :type="guide.result['quality']>0?'primary':'danger'">
-        <template #left>
-          <var-icon v-if="guide.result['quality']>0" name="checkbox-marked-circle" size="small" />
-          <var-icon v-else name="close-circle" size="small" />
-        </template>
-        {{ `${guide.result['quality'] * 100}%` }}
-      </var-chip>
-    </var-space>
-    <var-table class="assess-table">
-      <thead>
-        <tr>
-          <th> {{ $t('query.level') }} </th>
-          <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> {{ $t('query.base') }} </td>
-          <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['base'] }}</td>
-        </tr>
-        <tr v-for="(_, i) in Array.from({ length: 13 })">
-          <td>{{ i + 1 }}</td>
-          <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['values'][i] }}</td>
-        </tr>
-        <tr>
-          <th> {{ $t('query.level') }} </th>
-          <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
-        </tr>
-      </tbody>
-    </var-table>
-    <var-space justify="space-around" style="margin-top: 4px;">
-      <var-button size="small" type="primary" icon-container @click="show.result=false">
-        <var-icon name="window-close" size="16"/>
-      </var-button>
-    </var-space>
+        <span>{{ store.codex.usedItem['name'] }}</span>
+        <var-chip size="small" :type="guide.result['quality'] > 0 ? 'primary' : 'danger'">
+          <template #left>
+            <var-icon v-if="guide.result['quality'] > 0" name="checkbox-marked-circle" size="small" />
+            <var-icon v-else name="close-circle" size="small" />
+          </template>
+          {{ `${guide.result['quality'] * 100}%` }}
+        </var-chip>
+      </var-space>
+      <var-table class="assess-table">
+        <thead>
+          <tr>
+            <th> {{ $t('query.level') }} </th>
+            <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td> {{ $t('query.base') }} </td>
+            <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['base'] }}</td>
+          </tr>
+          <tr v-for="(_, i) in Array.from({ length: 13 })">
+            <td>{{ i + 1 }}</td>
+            <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['values'][i] }}</td>
+          </tr>
+          <tr>
+            <th> {{ $t('query.level') }} </th>
+            <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
+          </tr>
+        </tbody>
+      </var-table>
+      <var-space justify="space-around" style="margin-top: 4px;">
+        <var-button size="small" type="primary" icon-container @click="show.result = false">
+          <var-icon name="window-close" size="16" />
+        </var-button>
+      </var-space>
     </var-paper>
   </var-popup>
 </template>
@@ -193,7 +188,7 @@ const monsterSet = new Set(['monsters', 'bosses']);
 
 export default {
   components: {
-    'GuideResult': ()=>import("@/components/GuideResult.vue"),
+    'GuideResult': defineAsyncComponent(() => import("@/components/GuideResult.vue")),
   },
   mounted() {
     store.codexPage.category = this.$route.params.category
