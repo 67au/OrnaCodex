@@ -160,8 +160,8 @@ import GuideResult from '@/components/GuideResult.vue'
         </tbody>
       </var-table>
       <var-space justify="space-around" style="margin-top: 4px;">
-        <var-button size="small" type="primary" icon-container @click="show.result = false">
-          <var-icon name="window-close" size="16" />
+        <var-button type="primary" icon-container @click="show.result = false">
+          {{ $t('close') }}
         </var-button>
       </var-space>
     </var-paper>
