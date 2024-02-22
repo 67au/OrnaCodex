@@ -130,7 +130,7 @@ export default {
     this.applyFilter();
     this.loading = false;
 
-    watch(() => this.$i18n.locale, (newVal, oldVal) => {
+    watch(() => store.lang, (newVal, oldVal) => {
       this.loading = true;
       this.buildOptions();
       this.applyFilter();
@@ -191,6 +191,7 @@ export default {
         immunities: new Set(),
       };
       this.filters = [];
+      this.search = '';
       this.menus = Object.keys(this.options).map((key) => [key, true]);
       for (const items of Object.values(this.codex)) {
         for (const item of Object.values(items)) {
