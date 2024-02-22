@@ -34,6 +34,8 @@
         "found": "发现了!",
         "notfound": "未发现",
         "description": "描述",
+        "clickHere": "点击查看",
+        "close": "关闭",
         "query": {
             "query": "查询",
             "level": "等级",
@@ -52,7 +54,7 @@
     "zh-hant": {
         "title": "圖鑑 YACO",
         "search": "搜尋",
-        "filter": "過濾",
+        "filters": "過濾",
         "category": "分類",
         "tier": "階級",
         "rarity": "稀有度",
@@ -84,6 +86,8 @@
         "found": "發現了！",
         "notfound": "未發現",
         "description": "描述",
+        "clickHere": "點擊查看",
+        "close": "關閉",
         "query": {
             "query": "查詢",   
             "level": "等級",
@@ -103,7 +107,7 @@
         "language": "English",
         "title": "Codex YACO",
         "search": "Search",
-        "filter": "Rarity",
+        "filters": "Filters",
         "category": "Category",
         "tier": "Tier",
         "rarity": "Rarity",
@@ -115,6 +119,8 @@
         "ability": "Ability",
         "event": "Event",
         "tags": "Tags",
+        "clickHere": "Click Here",
+        "close": "Close",
         "categories": {
             "bosses": "Bosses",
             "classes": "Classes",
