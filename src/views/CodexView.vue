@@ -150,13 +150,9 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
   </var-dialog>
 
   <!-- AssessQuery -->
-  <var-dialog v-model:show="show.result" :cancel-button="false">
-    <template #title>
-      <span>
-        <var-icon name="magnify" /> {{ $t('query.query') }}
-      </span>
-    </template>
-    <var-space align="center" justify="space-between" style="margin-bottom: 2px">
+  <var-popup :default-style="false" v-model:show="show.result">
+    <var-paper class="popup-content">
+      <var-space align="center" justify="space-between" style="margin-bottom: 2px">
       <span>{{ store.codex.usedItem['name'] }}</span>
       <var-chip size="small" :type="guide.result['quality']>0?'primary':'danger'">
         <template #left>
@@ -188,7 +184,13 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
         </tr>
       </tbody>
     </var-table>
-  </var-dialog>
+    <var-space justify="space-around" style="margin-top: 4px;">
+      <var-button size="small" type="primary" icon-container @click="show.result=false">
+        <var-icon name="window-close" size="16"/>
+      </var-button>
+    </var-space>
+    </var-paper>
+  </var-popup>
 </template>
 
 <script>
@@ -366,5 +368,12 @@ export default {
   overflow: scroll;
   max-height: 65vh;
   white-space: nowrap;
+}
+
+.popup-content {
+  padding: 24px;
+  width: 85vw;
+  max-width: 375px;
+  border-radius: 28px;
 }
 </style>
