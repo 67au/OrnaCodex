@@ -38,7 +38,6 @@ export const global = {
 }
 
 export const store = reactive({
-  lang: null,
   homeTop: 0,
   state: useStorage('vueuse', {
     language: null,
@@ -56,7 +55,7 @@ export const store = reactive({
     isSkill: () => store.codex.spells.has(store.codexPage.id),
     based: computed(() => store.codex.data['codex'][languageBased]),
     basedItem: computed(() => store.codex.based[store.codexPage.category][store.codexPage.id]),
-    used: computed(() => store.codex.data['codex'][store.lang]),
+    used: computed(() => store.codex.data['codex'][store.state.language]),
     usedItem: computed(() => store.codex.used[store.codexPage.category][store.codexPage.id]),
     url: computed(() => `/codex/${store.codexPage.category}/${store.codexPage.id}/`),
     filtered: computed(() => store.codex.index.filter(([category, id]) => {

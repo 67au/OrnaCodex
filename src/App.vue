@@ -2,7 +2,8 @@
 import './assets/main.css';
 import { watch } from 'vue';
 import { RouterView } from 'vue-router';
-import { store } from '@/store'
+import { store } from '@/store';
+import { i18n } from '@/i18n';
 import AppHeader from './components/AppHeader.vue';
 import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
 import AppThemeSwitch from './components/AppThemeSwitch.vue';
@@ -38,14 +39,13 @@ const baseLang = 'en';
 
 export default {
   created() {
-    this.store.lang = this.$i18n.locale;
     import(`@/assets/json/codex.json`).then((module) => {
       store.codex.data = module.default;
       for (const [lang, msg] of Object.entries(store.codex.data.translation)) {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
-      this.loadLangCodex(store.lang, true, () => {
-        if (store.lang !== baseLang) {
+      this.loadLangCodex(store.state.language, true, () => {
+        if (store.state.lang !== baseLang) {
           this.loadLangCodex(baseLang);
         }
       });
@@ -53,9 +53,8 @@ export default {
   },
   mounted() {
     watch(() => this.$i18n.locale, (newVal, oldVal) => {
-      store.lang = newVal;
-      if (this.codex === undefined) {
-        this.loadLangCodex(store.lang, true);
+      if (store.codex.data['codex'][store.state.language] === undefined) {
+        this.loadLangCodex(store.state.language, true);
       };
     });
   },
@@ -77,16 +76,6 @@ export default {
       loading: true,
     }
   },
-  computed: {
-    codex: {
-      get() {
-        return store.codex.data['codex'][store.lang];
-      },
-      set(newValue) {
-        store.codex.data['codex'][store.lang] = newValue;
-      }
-    }
-  }
 }
 
 </script>

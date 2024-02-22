@@ -24,7 +24,7 @@ export default {
     store.buildOptions();
     store.renderList();
     this.loading = false;
-    watch(() => store.lang, (newVal, oldVal) => {
+    watch(() => this.$i18n.locale, (newVal, oldVal) => {
       store.buildOptions();
       store.renderList();
     });
