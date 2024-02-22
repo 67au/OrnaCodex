@@ -12,19 +12,19 @@ import AppGithub from './components/AppGithub.vue';
 <template>
   <div class="layout" id="main">
     <AppHeader :title="$t('title')">
-    <template #right>
-      <AppLocaleSwitch />
-      <AppThemeSwitch />
-      <AppGithub link="https://github.com/67au/OrnaCodex"/>
-    </template>
+      <template #right>
+        <AppLocaleSwitch />
+        <AppThemeSwitch />
+        <AppGithub link="https://github.com/67au/OrnaCodex" />
+      </template>
     </AppHeader>
     <var-loading description="LOADING" :loading="loading">
       <var-skeleton card :loading="loading" />
       <template v-if="!loading">
         <router-view v-slot="{ Component }">
-          <component :is="Component" v-if="!$route.meta.keepAlive"/>
+          <component :is="Component" v-if="!$route.meta.keepAlive" />
           <keep-alive>
-            <component :is="Component" v-if="$route.meta.keepAlive"/>
+            <component :is="Component" v-if="$route.meta.keepAlive" />
           </keep-alive>
           <var-back-top :duration="500" />
         </router-view>
@@ -44,10 +44,11 @@ export default {
       for (const [lang, msg] of Object.entries(store.codex.data.translation)) {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
-      this.loadLangCodex(store.lang, true);
-      if (store.lang !== baseLang) {
-        this.loadLangCodex(baseLang);
-      }
+      this.loadLangCodex(store.lang, true, () => {
+        if (store.lang !== baseLang) {
+          this.loadLangCodex(baseLang);
+        }
+      });
     });
   },
   mounted() {
@@ -59,11 +60,14 @@ export default {
     });
   },
   methods: {
-    loadLangCodex(lang, isLoad) {
+    loadLangCodex(lang, isLoad, callback) {
       if (isLoad) { this.loading = true; }
       import(`@/assets/json/codex.${lang}.json`).then((module) => {
         store.codex.data['codex'][lang] = module.default;
         if (isLoad) { this.loading = false; }
+        if (callback != undefined) {
+          callback();
+        }
       });
     }
   },
