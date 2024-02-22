@@ -158,9 +158,10 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
     </template>
     <var-space align="center" justify="space-between" style="margin-bottom: 2px">
       <span>{{ store.codex.usedItem['name'] }}</span>
-      <var-chip size="small" type="primary">
+      <var-chip size="small" :type="guide.result['quality']>0?'primary':'danger'">
         <template #left>
-          <var-icon name="checkbox-marked-circle" size="small" />
+          <var-icon v-if="guide.result['quality']>0" name="checkbox-marked-circle" size="small" />
+          <var-icon v-else name="close-circle" size="small" />
         </template>
         {{ `${guide.result['quality'] * 100}%` }}
       </var-chip>
