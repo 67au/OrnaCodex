@@ -101,7 +101,7 @@ body {
 }
 
 .layout {
-  padding: 70px 3px;
+  padding: 60px 3px;
   overflow-y: auto;
   height: 100vh;
 }
