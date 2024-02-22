@@ -37,8 +37,8 @@ import AppGithub from './components/AppGithub.vue';
 const baseLang = 'en';
 
 export default {
-  mounted() {
-    store.lang = this.$i18n.locale;
+  created() {
+    this.store.lang = this.$i18n.locale;
     import(`@/assets/json/codex.json`).then((module) => {
       store.codex.data = module.default;
       for (const [lang, msg] of Object.entries(store.codex.data.translation)) {
@@ -49,14 +49,14 @@ export default {
         this.loadLangCodex(baseLang);
       }
     });
-
+  },
+  mounted() {
     watch(() => this.$i18n.locale, (newVal, oldVal) => {
       store.lang = newVal;
       if (this.codex === undefined) {
         this.loadLangCodex(store.lang, true);
       };
     });
-
   },
   methods: {
     loadLangCodex(lang, isLoad) {
