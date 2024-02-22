@@ -9,6 +9,7 @@ import DropsCard from '@/components/Card/DropsCard.vue';
 import MaterialCard from '@/components/Card/MaterialCard.vue';
 import SpellCard from '@/components/Card/SpellCard.vue';
 import DescriptionCard from '@/components/Card/DescriptionCard.vue';
+import GuideResult from '@/components/GuideResult.vue'
 </script>
 
 <template>
@@ -75,12 +76,12 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
 
   <!-- Result -->
   <var-popup :default-style="false" v-model:show="show.guide">
-    <component is="GuideResult" :click="() => show.guide = false" :href="guidePageUrl" />
+    <GuideResult :click="() => show.guide = false" :href="guidePageUrl" />
   </var-popup>
 
   <!-- Assess -->
   <var-popup :default-style="false" v-model:show="show.assess">
-    <component is="GuideResult" :click="() => show.assess = false" :href="assessQueryUrl" />
+    <GuideResult :click="() => show.assess = false" :href="assessQueryUrl" />
   </var-popup>
 
 
@@ -187,9 +188,6 @@ const guidePageMap = {
 const monsterSet = new Set(['monsters', 'bosses']);
 
 export default {
-  components: {
-    'GuideResult': defineAsyncComponent(() => import("@/components/GuideResult.vue")),
-  },
   mounted() {
     store.codexPage.category = this.$route.params.category
     store.codexPage.id = this.$route.params.id
