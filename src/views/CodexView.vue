@@ -227,9 +227,9 @@ export default {
     },
     assessQueryUrl() {
       if (store.guide.cache !== undefined) {
-        return `${this.assessUrl}?item=${this.guideId}`;
+        return `${global.guideUrl}/assess?item=${this.guideId}`;
       } else {
-        return assessUrl;
+        return `${global.guideUrl}/assess`;
       }
     },
     assessUrl() {
