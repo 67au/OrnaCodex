@@ -69,10 +69,4 @@ function handleCellClick(theme) {
 		font-size: var(--font-size-lg);
 	}
 }
-
-.app-switch {
-	:is(-icon) {
-		font-size: var(--font-size-lg);
-	}
-}
 </style>
