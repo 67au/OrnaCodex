@@ -14,13 +14,15 @@ const langs = {
     'en-US': 'en',
 }
 
-const lang = store.state.language || langs[browserLocale]===undefined || 'en';
-
-store.state.language = lang
-
 Locale.add('zh-hans', Locale.zhCN)
 Locale.add('zh-hant', Locale.zhTW)
 Locale.add('en', Locale.enUS)
+
+const lang = Object.values(langs).includes(store.state.language)?store.state.language:undefined || langs[browserLocale] || 'en';
+
+store.state.language = lang
+
+Locale.use(lang);
 
 export const i18n = createI18n({
     locale: lang,
@@ -29,6 +31,7 @@ export const i18n = createI18n({
 })
 
 export function setLocale(locale) {
-    store.state.language = locale
-    i18n.global.locale = locale
+    store.state.language = locale;
+    i18n.global.locale = locale;
+    Locale.use(locale);
 }
