@@ -132,6 +132,7 @@ export default {
 
     watch(() => store.lang, (newVal, oldVal) => {
       this.loading = true;
+      this.buildIndex();
       this.buildOptions();
       this.applyFilter();
       this.loading = false;
@@ -165,6 +166,7 @@ export default {
   },
   methods: {
     buildIndex() {
+      this.codexIndex = [];
       for (const [category, items] of Object.entries(this.codex)) {
         for (const id of Object.keys(items)) {
           this.codexIndex.push([category, id]);
@@ -201,6 +203,7 @@ export default {
     },
     applyFilter() {
       this.codexFiltered = this.codexIndex.filter(([category, id]) => {
+        if (this.codex[category][id])
         return this.codex[category][id]['name'].includes(this.search) || (this.codex[category][id]['description'] != undefined && this.codex[category][id]['description'].includes(this.search))
       }).filter(([category, id]) => {
         return this.filters.every((filter) => {
