@@ -46,7 +46,7 @@ import { store, global } from '@/store';
           </template>
           <template v-if="store.codex.usedItem['hp'] !== undefined">
             <var-chip type="danger" size="small" :round="true" plain>
-              {{ store.codex.usedItem['hp'] }}
+              {{ Number(store.codex.usedItem['hp']).toLocaleString() }}
               <template #left>
                 <var-icon name="heart" size="14" />
               </template>
