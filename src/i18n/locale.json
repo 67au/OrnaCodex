@@ -11,7 +11,7 @@
         "family": "种类",
         "spell_type": "技能 / 法术",
         "place": "部位",
-        "ability": "能力",
+        "ability": "副手技能",
         "event": "活动",
         "tags": "标签",
         "categories": {
@@ -36,6 +36,7 @@
         "description": "描述",
         "clickHere": "点击查看",
         "close": "关闭",
+        "offhands": "副手装备",
         "query": {
             "query": "查询",
             "level": "等级",
@@ -63,7 +64,7 @@
         "family": "種類",
         "spell_type": "技能/法術",
         "place": "部位",
-        "ability": "能力",
+        "ability": "副手技能",
         "event": "活動",
         "tags": "標簽",
         "categories": {
@@ -88,6 +89,7 @@
         "description": "描述",
         "clickHere": "點擊查看",
         "close": "關閉",
+        "offhands": "副手裝備",
         "query": {
             "query": "查詢",   
             "level": "等級",
@@ -141,6 +143,7 @@
         "found": "Found!",
         "notfound": "Not Found",
         "description": "Description",
+        "offhands": "Off-Hands",
         "query": {
             "query": "Query",
             "level": "Level",
