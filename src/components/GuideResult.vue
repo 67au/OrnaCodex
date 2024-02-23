@@ -30,14 +30,19 @@ export default {
   props: {
     href: {
       type: String,
+      default: '',
     },
     click: {
       type: Function,
+    },
+    failed: {
+      type: Boolean,
+      default: false,
     }
   },
   computed: {
     isSuccess() {
-      return store.guide.cache !== undefined;
+      return (store.guide.cache !== undefined) && !this.failed;
     },
     title() {
       return this.isSuccess ? 'found' : 'notfound';

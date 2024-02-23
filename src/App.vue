@@ -45,9 +45,9 @@ export default {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
       this.loadLangCodex(store.state.language, true, () => {
-        if (store.state.lang !== baseLang) {
-          this.loadLangCodex(baseLang);
-        }
+          this.loadLangCodex(baseLang, false, () => {
+            store.codexViewLoading = false;
+          });
       });
     });
   },
@@ -61,6 +61,9 @@ export default {
   methods: {
     loadLangCodex(lang, isLoad, callback) {
       if (isLoad) { this.loading = true; }
+      if (store.codex.data['codex'][lang] !== undefined) {
+        callback();
+      }
       import(`@/assets/json/codex.${lang}.json`).then((module) => {
         store.codex.data['codex'][lang] = module.default;
         if (isLoad) { this.loading = false; }

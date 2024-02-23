@@ -14,7 +14,7 @@ import GuideResult from '@/components/GuideResult.vue'
 
 <template>
   <main>
-    <template v-if="loading">
+    <template v-if="!store.codexViewLoading && !loading">
       <!-- main -->
       <div class="container">
         <MainCard />
@@ -86,13 +86,13 @@ import GuideResult from '@/components/GuideResult.vue'
 
 
   <!-- AssessApi -->
-  <var-dialog v-model:show="show.api" :cancel-button="false">
-    <template #title>
-      <span>
-        <var-icon name="magnify" /> Assess
-      </span>
-    </template>
-    <template v-if="store.guide.cache !== undefined && guideStats !== undefined">
+  <template v-if="store.guide.cache !== undefined && guideStats !== undefined">
+    <var-dialog v-model:show="show.api" :cancel-button="false">
+      <template #title>
+        <span>
+          <var-icon name="magnify" /> Assess
+        </span>
+      </template>
       <div>
         <span> {{ store.codex.usedItem['name'] }} </span>
         <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
@@ -116,13 +116,13 @@ import GuideResult from '@/components/GuideResult.vue'
           </var-col>
         </var-row>
       </div>
-    </template>
-    <template v-else>
-      <var-space size="normal" align="center" justify="center">
-        <var-button type="primary" disabled> {{ $t('notfound') }} </var-button>
-      </var-space>
-    </template>
-  </var-dialog>
+    </var-dialog>
+  </template>
+  <template v-else>
+    <var-popup :default-style="false" v-model:show="show.api">
+      <GuideResult class="popup-content" :click="() => show.api = false" failed/>
+    </var-popup>
+  </template>
 
   <!-- AssessQuery -->
   <var-popup :default-style="false" v-model:show="show.result">
@@ -191,7 +191,7 @@ export default {
   mounted() {
     store.codexPage.category = this.$route.params.category
     store.codexPage.id = this.$route.params.id
-    this.loading = true
+    this.loading = false;
     watch(() => this.$route.params, (newVal, oldVal) => {
       store.codexPage.category = this.$route.params.category
       store.codexPage.id = this.$route.params.id
@@ -214,7 +214,7 @@ export default {
         result: false,
         loading: false,
       },
-      loading: false,
+      loading: true,
     }
   },
   computed: {
@@ -330,7 +330,7 @@ export default {
     async getItemAssessAPI() {
       this.show.loading = true;
       await this.updateGuideCache()
-      if (this.guideStats !== undefined) {
+      if (store.guide.cache !== undefined && this.guideStats !== undefined) {
         this.guide.query['id'] = store.guide.cache['id']
         this.guide.query['level'] = 1;
         for (const [key, value] of Object.entries(this.guideStats)) {
