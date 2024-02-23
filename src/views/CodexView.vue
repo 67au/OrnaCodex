@@ -137,7 +137,7 @@ import GuideResult from '@/components/GuideResult.vue'
           {{ `${guide.result['quality'] * 100}%` }}
         </var-chip>
       </var-space>
-      <var-table class="assess-table">
+      <var-table :elevation="2" class="assess-table">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
