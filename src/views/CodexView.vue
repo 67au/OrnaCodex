@@ -1,7 +1,6 @@
 <script setup>
 import { watch } from 'vue';
 import { store, global } from '@/store';
-import { defineAsyncComponent } from 'vue';
 import MainCard from '@/components/Card/MainCard.vue';
 import StatsCard from '@/components/Card/StatsCard.vue';
 import AbilityCard from '@/components/Card/AbilityCard.vue';
@@ -9,7 +8,8 @@ import DropsCard from '@/components/Card/DropsCard.vue';
 import MaterialCard from '@/components/Card/MaterialCard.vue';
 import SpellCard from '@/components/Card/SpellCard.vue';
 import DescriptionCard from '@/components/Card/DescriptionCard.vue';
-import GuideResult from '@/components/GuideResult.vue'
+import GuideResult from '@/components/GuideResult.vue';
+import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
 </script>
 
 <template>
@@ -60,6 +60,7 @@ import GuideResult from '@/components/GuideResult.vue'
         <DropsCard name="celestial_classes" />
         <MaterialCard />
         <SpellCard />
+        <OffHandItemsCard />
       </div>
     </template>
   </main>
