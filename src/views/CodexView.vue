@@ -76,12 +76,12 @@ import GuideResult from '@/components/GuideResult.vue'
 
   <!-- Result -->
   <var-popup :default-style="false" v-model:show="show.guide">
-    <GuideResult :click="() => show.guide = false" :href="guidePageUrl" />
+    <GuideResult class="popup-content" :click="() => show.guide = false" :href="guidePageUrl" />
   </var-popup>
 
   <!-- Assess -->
   <var-popup :default-style="false" v-model:show="show.assess">
-    <GuideResult :click="() => show.assess = false" :href="assessQueryUrl" />
+    <GuideResult class="popup-content" :click="() => show.assess = false" :href="assessQueryUrl" />
   </var-popup>
 
 
