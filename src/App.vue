@@ -3,7 +3,6 @@ import './assets/main.css';
 import { watch } from 'vue';
 import { RouterView } from 'vue-router';
 import { store } from '@/store';
-import { i18n } from '@/i18n';
 import AppHeader from './components/AppHeader.vue';
 import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
 import AppThemeSwitch from './components/AppThemeSwitch.vue';

@@ -18,7 +18,7 @@ import { store, global } from '@/store';
     <template #description>
       <div class="card-description">
         <var-list :finished="store.list.finished" v-model:loading="store.list.loading" @load="store.loadList"
-          :offset="350">
+          :offset="500">
           <template v-for="[category, id] in store.list.content">
             <var-cell class="item-cell" border @click="() => store.enterCodex(category, id)">
               <template #icon>
