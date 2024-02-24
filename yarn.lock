@@ -263,46 +263,46 @@
   resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz#f066abfcd1cbe66267cdbbf0de010d8a41b41597"
   integrity sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==
 
-"@varlet/icons@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.0.3.tgz#06d6e98a184a9a297ff313f7f139884da70643d1"
-  integrity sha512-cZOIMDf7WMt83gUoKbkKWONr587dEmTJA4ObIxy6nS7SdwqdYY3HjOKEiUCmnbRPjjVfk5/YP/4r4iQZ5JA9qA==
+"@varlet/icons@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.0.4.tgz#00791d1c37f9f2c8a2f70fe07d3a722cfaa30b50"
+  integrity sha512-6eDXIk7OLOShUEdtI24PppM8faqP9uq5k+E3k1kxxLVpYMoJd2+Dbu+oDyXQypWfBEuqTEWGy84KHPaLEq5waw==
 
 "@varlet/import-resolver@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/import-resolver/-/import-resolver-3.0.3.tgz#bdc1e092038ba17a05d1dd69bbed38d5d09739b2"
-  integrity sha512-Kk07sgM4cpQ60D0rwbOqrfe6eI3DVc129Kz3Zn6Lyz3DwbRpdaXYatkML261mkL6aQdnqSC4baEnyVoYmajXZg==
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/import-resolver/-/import-resolver-3.0.4.tgz#d6cdfbbfa0ac27214e4a5c3f4fbaac7c2bc1a8c0"
+  integrity sha512-+1x2O14qP4RhkLtNalIijHnIu0r5lBvgztt8MAGga38qHTXfkGQO1gfdcoyjHMZ5vThKYH40LR1JuEgCla0JwQ==
   dependencies:
-    "@varlet/shared" "3.0.3"
+    "@varlet/shared" "3.0.4"
 
-"@varlet/shared@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.0.3.tgz#8c7c9a8a126407307f44a552146e205c5736079f"
-  integrity sha512-MZTB8q+v+z5abRct2AfH79F5w745BRn21Q1LF8GB3cnvU+BjIIjeuybrgoyZpxAETB9YCf5kmpGsOprd6oTE1g==
+"@varlet/shared@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.0.4.tgz#f50f76b49f8c16a3b4eac8547ffee2730b884dd5"
+  integrity sha512-kmSfz27J3kv+/pHv2WWXc+LinA4C1+f2qHmcjvPmJqCYRVfpgl3akEFLUMbT/Tj5DFysWXwJz0MxsOaczcwHVQ==
 
 "@varlet/touch-emulator@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.0.3.tgz#5c2b14c7bc7ef0fbfcc25a2ed321f76f753e860f"
-  integrity sha512-egVFgA0829qYO0ykaz4PlwpLEUuXEuQmb3rd6C2QtWbSwSM9xoxOjCCwlcxZbTySOGs3llXEPN6O3IwwHLOQRA==
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.0.4.tgz#8960fe7bc59d17beac859fff92aa6ad25c1093fb"
+  integrity sha512-l627k5lt7gZO2+ZtlnLzsUuH0/+jDvIqauxw0NqmNQWoRd9CbXD8WfIl6z9g6c8IVw8BklR9xdfBJtiZ49ipNQ==
 
 "@varlet/ui@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.0.3.tgz#56a329e0ab34794cca90b7fa11b0f7563d8ae5dc"
-  integrity sha512-bO/IHPo14kDaIi+8w3QJiwX4JFaE3YYBvQVDkOnLgCIfRo7dfpFAqABqDwmABgveTJlg8qv7rdKk82Af1KYHKg==
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.0.4.tgz#977fb3fa3ce124e0081c32f5f83fee4a172d9462"
+  integrity sha512-r04d9FYz7AfFe//eCIPQrxUgqMH/mg+sarJr9+V5ZGn/27TCAnHMDHLsieZjrEjiM8c4NKahQNWO0+pHgF3dEQ==
   dependencies:
     "@popperjs/core" "^2.11.6"
-    "@varlet/icons" "3.0.3"
-    "@varlet/shared" "3.0.3"
-    "@varlet/use" "3.0.3"
+    "@varlet/icons" "3.0.4"
+    "@varlet/shared" "3.0.4"
+    "@varlet/use" "3.0.4"
     dayjs "^1.10.4"
     decimal.js "^10.2.1"
 
-"@varlet/use@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.0.3.tgz#0ef14875f407e95ed6bf194cbbd4078affac3c0e"
-  integrity sha512-7QUzj/lpR4D2hTyghrocm6m8EFkbOLsN7Xj3QKA6rOz1A4XqYv2OTCuebMjnH74WYPOS6RRtftwvrtacieVNFg==
+"@varlet/use@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.0.4.tgz#0639c298a2531cc17c817ba8fcb3a8e6dfc66f2b"
+  integrity sha512-CzVLLv3MQxhhQ6hpDj28HueAQFJ8dAqSX0JYa1Nrlep8mAsJUQgvLGOgimQHyoIs7H3VeF/v1sVYlE2YPZRuTg==
   dependencies:
-    "@varlet/shared" "3.0.3"
+    "@varlet/shared" "3.0.4"
 
 "@vitejs/plugin-vue@^5.0.3":
   version "5.0.4"
@@ -666,9 +666,9 @@ minimatch@^9.0.3:
     brace-expansion "^2.0.1"
 
 mlly@^1.2.0, mlly@^1.4.2:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/mlly/-/mlly-1.6.0.tgz#0ecfbddc706857f5e170ccd28c6b0b9c81d3f548"
-  integrity sha512-YOvg9hfYQmnaB56Yb+KrJE2u0Yzz5zR+sLejEvF4fzwzV1Al6hkf2vyHTwqCRyv0hCi9rVCqVoXpyYevQIRwLQ==
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/mlly/-/mlly-1.6.1.tgz#0983067dc3366d6314fc5e12712884e6978d028f"
+  integrity sha512-vLgaHvaeunuOXHSmEbZ9izxPx3USsk8KCQ8iC+aTlp5sKRSoZvwhHh5L9VbKSaVC6sJDqbyohIS76E2VmHIPAA==
   dependencies:
     acorn "^8.11.3"
     pathe "^1.1.2"
