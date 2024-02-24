@@ -30,7 +30,7 @@ export default {
       return store.codex.used[category][this.offhandSkillId];
     },
     offhandSkillId() {
-      return store.codex.data['offhand_items'][store.codexPage.id];
+      return store.codex.meta['offhand_items'][store.codexPage.id];
     }
   }
 }
