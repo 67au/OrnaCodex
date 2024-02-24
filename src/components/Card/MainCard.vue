@@ -25,9 +25,8 @@ import { store, global } from '@/store';
           </template>
           </var-chip>
           <template v-if="store.codex.usedItem['exotic'] !== undefined">
-            <var-chip class="exotic" size="small" :round="true" plain v-if="store.codex.usedItem['exotic']">{{
-              $t('exotic')
-            }}</var-chip>
+            <var-chip class="exotic" size="small" :round="true" plain v-if="store.codex.usedItem['exotic']">
+            {{ $t('exotic') }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['rarity'] !== undefined">
             <var-chip :class="`${store.codex.usedItem['aura']}-text`" size="small" :round="true" plain>{{ store.codex.usedItem['rarity'] }}</var-chip>
@@ -44,7 +43,12 @@ import { store, global } from '@/store';
             <var-chip size="small" :round="true" plain>{{ store.codex.usedItem['useable_by'] }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['family'] !== undefined">
-            <var-chip size="small" :round="true" plain>{{ store.codex.usedItem['family'] }}</var-chip>
+            <var-chip size="small" :round="true" plain>
+              <template #left>
+                <var-icon name="card-account-details-outline" size="14" />
+              </template>
+              {{ store.codex.usedItem['family'] }}
+            </var-chip>
           </template>
           <template v-if="store.codex.usedItem['hp'] !== undefined">
             <var-chip type="danger" size="small" :round="true" plain>
@@ -74,7 +78,7 @@ import { store, global } from '@/store';
           <template v-if="store.codex.usedItem['power'] !== undefined">
             <var-chip size="small" :round="true" plain>
               <template #left>
-                <var-icon name="fire" />
+                <var-icon name="fire" size="14" />
               </template>
               {{ `${store.codex.usedItem['power']}` }}
             </var-chip>
