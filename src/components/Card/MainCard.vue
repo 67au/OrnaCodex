@@ -16,9 +16,8 @@ import { store, global } from '@/store';
     </template>
     <template #description>
       <div class="card-description">
-        <var-space size="mini" class="cspace">
-          <var-chip type="warning" size="small" :round="true" plain>{{ global.star + store.codex.usedItem['tier']
-          }}</var-chip>
+        <var-space size="mini" class="space">
+          <var-chip type="warning" size="small" :round="true" plain>{{ global.star + store.codex.usedItem['tier'] }}</var-chip>
           <var-chip type="primary" size="small" :round="true" plain>
           {{ $t(`categories.${store.codex.usedItem['category']}`) }}
           <template #left>
