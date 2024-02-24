@@ -1,4 +1,4 @@
-name: Deploy Form Cache
+name: Deploy From Cache
 
 on:
   # push:
