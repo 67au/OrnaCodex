@@ -39,20 +39,20 @@ const baseLang = 'en';
 export default {
   created() {
     import(`@/assets/json/codex.json`).then((module) => {
-      store.codex.data = module.default;
-      for (const [lang, msg] of Object.entries(store.codex.data.translation)) {
+      store.codex.meta = module.default;
+      for (const [lang, msg] of Object.entries(store.codex.meta.translation)) {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
       this.loadLangCodex(store.state.language, true, () => {
-          this.loadLangCodex(baseLang, false, () => {
-            store.codexViewLoading = false;
-          });
+        this.loadLangCodex(baseLang, false, () => {
+          store.codexViewLoading = false;
+        });
       });
     });
   },
   mounted() {
     watch(() => this.$i18n.locale, (newVal, oldVal) => {
-      if (store.codex.data['codex'][store.state.language] === undefined) {
+      if (store.codex.data[store.state.language] === undefined) {
         this.loadLangCodex(store.state.language, true);
       };
     });
@@ -60,13 +60,13 @@ export default {
   methods: {
     loadLangCodex(lang, isLoad, callback) {
       if (isLoad) { this.loading = true; }
-      if (store.codex.data['codex'][lang] !== undefined) {
+      if (store.codex.data[lang] !== undefined) {
         callback();
       }
       import(`@/assets/json/codex.${lang}.json`).then((module) => {
-        store.codex.data['codex'][lang] = module.default;
+        store.codex.data[lang] = module.default;
         if (isLoad) { this.loading = false; }
-        if (callback != undefined) {
+        if (callback !== undefined) {
           callback();
         }
       });

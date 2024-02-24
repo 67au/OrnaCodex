@@ -7,7 +7,7 @@ import { global, store } from '@/store';
     <var-card class="card" :title="$t('speller')">
       <template #description>
         <div class="card-description">
-          <template v-for="[category, spellers] in Object.entries(store.codex.data['skills'][store.codexPage.id])">
+          <template v-for="[category, spellers] in Object.entries(store.codex.meta['skills'][store.codexPage.id])">
             <var-cell class="codex-cell" border v-for="sid in spellers" @click="() => store.enterCodex(category, sid)">
               <template #icon>
                 <var-icon class="append-icon" :size="36"
