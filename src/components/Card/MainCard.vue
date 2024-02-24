@@ -19,16 +19,19 @@ import { store, global } from '@/store';
         <var-space size="mini" class="cspace">
           <var-chip type="warning" size="small" :round="true" plain>{{ global.star + store.codex.usedItem['tier']
           }}</var-chip>
-          <var-chip type="primary" size="small" :round="true" plain>{{
-            $t(`categories.${store.codex.usedItem['category']}`)
-          }}</var-chip>
+          <var-chip type="primary" size="small" :round="true" plain>
+          {{ $t(`categories.${store.codex.usedItem['category']}`) }}
+          <template #left>
+            <var-icon name="tag" size="14"/>
+          </template>
+          </var-chip>
           <template v-if="store.codex.usedItem['exotic'] !== undefined">
             <var-chip class="exotic" size="small" :round="true" plain v-if="store.codex.usedItem['exotic']">{{
               $t('exotic')
             }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['rarity'] !== undefined">
-            <var-chip size="small" :round="true" plain>{{ store.codex.usedItem['rarity'] }}</var-chip>
+            <var-chip :class="`${store.codex.usedItem['aura']}-text`" size="small" :round="true" plain>{{ store.codex.usedItem['rarity'] }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['event'] !== undefined">
             <var-chip class="highlight" size="small" :round="true" plain v-for="event in store.codex.usedItem['event']">

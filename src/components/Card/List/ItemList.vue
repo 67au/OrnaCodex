@@ -28,7 +28,7 @@ import { global } from '@/store';
         </var-chip>
       </template>
       <template v-if="codex['rarity'] !== undefined">
-        <var-chip size="mini" :round="false" plain>{{ codex['rarity'] }}</var-chip>
+        <var-chip :class="`${codex['aura']}-text`" size="mini" :round="false" plain>{{ codex['rarity'] }}</var-chip>
       </template>
       <template v-if="codex['place'] !== undefined">
         <var-chip size="mini" :round="false" plain>{{ codex['place'] }}</var-chip>
