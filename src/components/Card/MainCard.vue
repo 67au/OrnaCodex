@@ -59,7 +59,7 @@ import { store, global } from '@/store';
             <var-chip size="small" :round="true" plain>{{ `${store.codex.usedItem['costs']}` }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['price'] !== undefined">
-            <var-chip size="small" :round="true" plain>{{ `${store.codex.usedItem['price']} ${$t('orns')}` }}</var-chip>
+            <var-chip size="small" :round="true" plain>{{ `${Number(store.codex.usedItem['price']).toLocaleString()} ${$t('orns')}` }}</var-chip>
           </template>
           <template v-if="store.codex.usedItem['target'] !== undefined">
             <var-chip size="small" :round="true" plain>
