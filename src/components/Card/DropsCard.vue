@@ -30,6 +30,13 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
                   <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
                     {{ store.codex.getMissEntry(`${category}/${id}`)['name'] }}
                   </var-link>
+                  <br>
+                  <var-chip type="danger" size="mini" :round="false" plain>
+                    <template #left>
+                      <var-icon name="alert-circle-outline" size="12" />
+                    </template>
+                    {{ $t('notfound') }}
+                  </var-chip>
                 </var-cell>
               </template>
               <template v-else>
