@@ -22,6 +22,16 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
               <template v-if="store.codex.used[category][id] !== undefined">
                 <ItemList :codex="store.codex.used[category][id]" :click="() => store.enterCodex(category, id)" />
               </template>
+              <template v-else-if="store.codex.isMissEntry(`${category}/${id}`)">
+                <var-cell class="codex-cell" border>
+                  <template #icon>
+                    <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${store.codex.getMissEntry(`${category}/${id}`)['icon']}`" />
+                  </template>
+                  <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
+                    {{ store.codex.getMissEntry(`${category}/${id}`)['name'] }}
+                  </var-link>
+                </var-cell>
+              </template>
               <template v-else>
                 <var-cell class="codex-cell" border>
                   <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
@@ -57,6 +67,8 @@ export default {
   data() {
     return {
     }
+  },
+  methods: {
   }
 }
 </script>
