@@ -68,3 +68,18 @@
 .dragon {
   color: #FF9800;
 }
+
+.rare-text {
+  color: #49e840;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
+
+.famed-text {
+  color: #4ca3ff;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
+
+.legendary-text {
+  color: #aa4eef;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
