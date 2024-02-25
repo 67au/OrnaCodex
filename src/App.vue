@@ -20,16 +20,16 @@ import AppGithub from './components/AppGithub.vue';
     </AppHeader>
     <var-loading description="LOADING" :loading="loading">
       <var-skeleton card :loading="loading" />
-      <template v-if="!loading">
-        <router-view v-slot="{ Component }">
-          <component :is="Component" v-if="!$route.meta.keepAlive" />
-          <keep-alive>
-            <component :is="Component" v-if="$route.meta.keepAlive" />
-          </keep-alive>
-          <var-back-top :duration="500" />
-        </router-view>
-      </template>
     </var-loading>
+    <template v-if="!loading">
+      <router-view v-slot="{ Component }">
+        <component :is="Component" v-if="!$route.meta.keepAlive" />
+        <keep-alive>
+          <component :is="Component" v-if="$route.meta.keepAlive" />
+        </keep-alive>
+        <var-back-top :duration="500" />
+      </router-view>
+    </template>
   </div>
 </template>
 
