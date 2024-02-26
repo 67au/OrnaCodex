@@ -68,9 +68,10 @@ export const store = reactive({
     usedItem: computed(() => store.codex.used[store.codexPage.category][store.codexPage.id]),
     url: computed(() => `/codex/${store.codexPage.category}/${store.codexPage.id}/`),
     filtered: computed(() => store.codex.index.filter(([category, id]) => {
-      if (store.codex.used[category][id])
-        return store.codex.used[category][id]['name'].includes(store.search) || (store.codex.used[category][id]['description'] != undefined && store.codex.used[category][id]['description'].includes(store.search))
-    }).filter(([category, id]) => {
+      if (store.codex.used[category][id]) {
+        const search = new RegExp(store.search, 'i')
+        return search.test(store.codex.used[category][id]['name']) || (store.codex.used[category][id]['description'] != undefined && search.test(store.codex.used[category][id]['description']))
+    }}).filter(([category, id]) => {
       return store.filters.every((filter) => {
         if (singleOptions.includes(filter['k'])) {
           if (filter['v'] === undefined) { return true }
