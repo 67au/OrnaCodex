@@ -39,6 +39,7 @@ export const global = {
 
 export const store = reactive({
   homeTop: 0,
+  codexTop: {},
   state: useStorage('fqegg.top', {
     language: null,
     theme: null,
