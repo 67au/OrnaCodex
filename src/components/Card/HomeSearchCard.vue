@@ -51,7 +51,7 @@ import { store, global } from '@/store';
       <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show" v-if="store.options != undefined">
         <var-button type="primary" text> {{ $t('add') }} </var-button>
         <template #menu>
-          <div style="overflow-y: scroll; max-height: 55vh;">
+          <div style="overflow-y: scroll; max-height: 48vh;">
             <template v-for="[key, display], index in store.menus">
               <var-cell ripple @click="() => { addFilter(key); store.menus[index][1] = false; }" v-if="display">
                 {{ $t(key) }}
