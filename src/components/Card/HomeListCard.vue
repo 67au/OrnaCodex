@@ -55,3 +55,15 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.event {
+  padding-top: 5px;
+  max-width: 190px;
+  width: max-content;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
