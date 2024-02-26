@@ -102,8 +102,9 @@
 }
 
 .event {
-  padding-top: 4px;
-  max-width: 170px;
+  padding-top: 5px;
+  max-width: 53vw;
+  width: max-content;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
