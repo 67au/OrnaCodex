@@ -43,6 +43,9 @@ export default {
       for (const [lang, msg] of Object.entries(store.codex.meta.translation)) {
         this.$i18n.mergeLocaleMessage(lang, msg);
       }
+      for (const [lang, msg] of Object.entries(store.codex.meta.stats_translation)) {
+        this.$i18n.mergeLocaleMessage(lang, msg);
+      }
       this.loadLangCodex(store.state.language, true, () => {
         this.loadLangCodex(baseLang, false, () => {
           store.codexViewLoading = false;

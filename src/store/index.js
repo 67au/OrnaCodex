@@ -9,14 +9,14 @@ const guideUrl = 'https://orna.guide';
 const languageBased = 'en';
 
 const elementColor = {
-  Water: '#5facff',
-  Earthen: '#0fab0f',
-  Lightning: '#a59e46',
-  Fire: "#ff8135",
-  Dark: "#d900ff",
-  Holy: "#ddd",
-  Arcane: "#8e78ff",
-  Dragon: "#FF9800",
+  water: '#5facff',
+  earthen: '#0fab0f',
+  lightning: '#a59e46',
+  fire: "#ff8135",
+  dark: "#d900ff",
+  holy: "#ddd",
+  arcane: "#8e78ff",
+  dragon: "#FF9800",
 }
 
 const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];

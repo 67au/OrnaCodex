@@ -8,14 +8,29 @@ import { store, global } from '@/store';
       <template #description>
         <div class="card-description">
           <var-space class="space">
-            <template v-for="stat, index in store.codex.usedItem['stats']">
-              <template v-if="stat.length > 1">
+            <template v-if="store.codexPage.categoty == 'items'">
+            <template v-for="[stat_key, value] in Object.entries(store.codex.usedItem['stats'])">
+              <template v-if="!singleSet.has(stat_key)">
                 <var-chip size="small" :round="false" plain>
-                  {{ `${stat.join(': ')}` }}
+                  {{ `${$t('stat_key.'+stat_key)}: ${value}` }}
                 </var-chip>
               </template>
-              <template v-else-if="global.elementColor[store.codex.basedItem['stats'][index]] !== undefined">
-                <var-chip size="small" :round="false" plain :color="global.elementColor[store.codex.basedItem['stats'][index]]">
+              <template v-else-if="stat_key === 'element' && global.elementColor[value] !== undefined">
+                <var-chip size="small" :round="false" plain :color="global.elementColor[value]">
+                  {{ `${$t('stat_key.'+value)}` }}
+                </var-chip>
+              </template>
+              <template v-else>
+                <var-chip size="small" :round="false" plain>
+                  {{ `${$t('stat_key.'+stat_key)}` }}
+                </var-chip>
+              </template>
+            </template>
+          </template>
+          <template v-else>
+            <template v-for="stat in store.codex.usedItem['stats']">
+              <template v-if="stat.length > 1">
+                <var-chip size="small" :round="false" plain>
                   {{ `${stat.join(': ')}` }}
                 </var-chip>
               </template>
@@ -24,7 +39,8 @@ import { store, global } from '@/store';
                   {{ `${stat.join(': ')}` }}
                 </var-chip>
               </template>
-            </template>
+              </template>
+          </template>
           </var-space>
         </div>
       </template>
@@ -33,6 +49,8 @@ import { store, global } from '@/store';
 </template>
 
 <script>
+const singleSet = new Set(['two_handed', 'element']);
+
 export default {
 }
 </script>
