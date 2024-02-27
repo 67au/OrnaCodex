@@ -126,6 +126,11 @@
   min-height: 64px;
 }
 
+.filter-cell {
+  padding: 3px 0px;
+  min-height: 48px;
+}
+
 .assess {
   width: 100%;
 }

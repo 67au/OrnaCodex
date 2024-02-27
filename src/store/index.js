@@ -24,6 +24,10 @@ const arrayOptions = ['event', 'tags'];
 const dropOptions = ['causes', 'cures', 'gives', 'immunities'];
 // const tagsOptions = ['items', 'raids', 'spells'];
 
+const stat_precent_keys = new Set(['ward', 'crit', 'gold_bonus',
+  'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
+  'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction']);
+
 export const global = {
   ornaUrl: ornaUrl,
   staticUrl: `${ornaUrl}/static`,
@@ -71,7 +75,8 @@ export const store = reactive({
       if (store.codex.used[category][id]) {
         const search = new RegExp(store.search, 'i')
         return search.test(store.codex.used[category][id]['name']) || (store.codex.used[category][id]['description'] != undefined && search.test(store.codex.used[category][id]['description']))
-    }}).filter(([category, id]) => {
+      }
+    }).filter(([category, id]) => {
       return store.filters.every((filter) => {
         if (singleOptions.includes(filter['k'])) {
           if (filter['v'] === undefined) { return true }
@@ -96,6 +101,38 @@ export const store = reactive({
         }
       })
     })),
+    sorted: computed(() => {
+      return (store.sort === undefined) ? store.codex.filtered : store.codex.filtered.toSorted((a, b) => {
+        const itemA = store.codex.used[a[0]][a[1]];
+        const itemB = store.codex.used[b[0]][b[1]];
+        if (store.sort === 'name') {
+          if (store.order) {
+            return itemA['name'].localeCompare(itemB['name']);
+          } else {
+            return itemB['name'].localeCompare(itemA['name']);
+          }
+        }
+        if (store.sort === 'tier') {
+          if (store.order) {
+            return itemA['tier'] - itemB['tier'];
+          } else {
+            return itemB['tier'] - itemA['tier'];;
+          }
+        }
+        if (itemA['stats'] === undefined || itemA['stats'][store.sort] === undefined) {
+          return 1;
+        }
+        if (itemB['stats'] === undefined || itemB['stats'][store.sort] === undefined) {
+          return -1;
+        }
+        return (() => {
+          if (stat_precent_keys.has(store.sort)) {
+            return itemA['stats'][store.sort].slice(0, -1) - itemB['stats'][store.sort].slice(0, -1);
+          }
+          return itemA['stats'][store.sort] - itemB['stats'][store.sort];
+        })() * (store.order?1:-1)
+      })
+    }),
     index: computed(() => {
       let index = [];
       for (const [category, items] of Object.entries(store.codex.used)) {
@@ -109,6 +146,8 @@ export const store = reactive({
   options: undefined,
   search: '',
   filters: [],
+  sort: undefined,
+  order: false,
   list: {
     loading: false,
     finished: false,
@@ -121,11 +160,11 @@ export const store = reactive({
   }, 500, { maxWait: 1000 }),
   loadList() {
     store.list.loading = true;
-    const codexLength = store.codex.filtered.length;
+    const codexLength = store.codex.sorted.length;
     const chunkSize = 40;
     const minChunk = Math.min(chunkSize, codexLength - store.list.index);
     for (let i = 0; i < minChunk; i++) {
-      store.list.content.push(store.codex.filtered[store.list.index + i]);
+      store.list.content.push(store.codex.sorted[store.list.index + i]);
     };
     store.list.index += minChunk;
     store.list.loading = false;
@@ -158,7 +197,7 @@ export const store = reactive({
       gives: new Set(),
       immunities: new Set(),
     };
-    
+
     store.filters = [];
     store.search = '';
     store.menus = Object.keys(store.options).map((key) => [key, true]);
