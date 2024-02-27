@@ -3,7 +3,7 @@
   --card-min-width: 300px;
   --highlight-color-dark: #ffd980;
   --highlight-color-light: #fcb000;
-  --highlight-color: var(--highlight-color-dark);
+  --highlight-color: var(--highlight-color-light);
 }
 
 /* card */
