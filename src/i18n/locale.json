@@ -37,6 +37,10 @@
         "clickHere": "点击查看",
         "close": "关闭",
         "offhands": "副手装备",
+        "sort": "排序",
+        "asc": "升序",
+        "desc": "降序",
+        "name": "名称",
         "query": {
             "query": "查询",
             "level": "等级",
@@ -67,6 +71,10 @@
         "ability": "副手技能",
         "event": "活動",
         "tags": "標簽",
+        "sort": "排序",
+        "asc": "升序",
+        "desc": "降序",
+        "name": "名稱",
         "categories": {
             "bosses": "頭目",
             "classes": "職業",
@@ -123,6 +131,10 @@
         "tags": "Tags",
         "clickHere": "Click Here",
         "close": "Close",
+        "sort": "Sort",
+        "asc": "ASC",
+        "desc": "DESC",
+        "name": "Name",
         "categories": {
             "bosses": "Bosses",
             "classes": "Classes",

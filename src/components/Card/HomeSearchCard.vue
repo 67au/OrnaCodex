@@ -8,12 +8,27 @@ import { store, global } from '@/store';
       <div class="card-description">
         <var-form>
           <var-input variant="outlined" size="small" :placeholder="$t('search')" v-model="store.search" clearable
-            @change="store.renderList" @clear="store.renderList" @input="store.renderList" />
+            @change="store.renderList" @clear="store.renderList" @input="store.renderList" style="padding-bottom: 4px;" />
+          <var-cell class="filter-cell">
+            <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="store.sort" clearable
+              @close="store.renderList" @change="store.renderList" @clear="store.renderList">
+              <var-option value="name" :label="$t('name')" />
+              <var-option value="tier" :label="$t('tier')" />
+              <template v-for="key in sort_keys">
+                <var-option :value="key" :label="$t('stat_key.' + key)" />
+              </template>
+            </var-select>
+            <template #extra>
+              <var-button type="primary" @click="() => {store.order = !store.order; store.renderList()}">
+                {{ store.order?$t('asc'):$t('desc') }}
+              </var-button>
+            </template>
+          </var-cell>
           <template v-if="store.filters.length > 0">
             <var-divider> {{ $t('filters') }} </var-divider>
           </template>
           <template v-for="filter in store.filters">
-            <var-cell class="item-cell">
+            <var-cell class="filter-cell">
               <var-select :placeholder="$t(filter['k'])" v-model="filter['v']" variant="outlined" size="small" clearable
                 :multiple="Array.isArray(filter['v'])" :chip="Array.isArray(filter['v'])" @close="store.renderList"
                 @change="store.renderList" @clear="store.renderList">
@@ -48,7 +63,8 @@ import { store, global } from '@/store';
     </template>
     <template #extra>
       <var-button type="primary" text @click="resetFilters"> {{ $t('clear') }} </var-button>
-      <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show" v-if="store.options != undefined">
+      <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show"
+        v-if="store.options != undefined">
         <var-button type="primary" text> {{ $t('add') }} </var-button>
         <template #menu>
           <div style="overflow-y: scroll; max-height: 48vh;">
@@ -66,6 +82,11 @@ import { store, global } from '@/store';
 
 <script>
 
+const sort_keys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+  'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus', 
+  'follower_stats', 'follower_act',  'summon_stats',
+  'view_distance', 'adornment_slots', 'monster_attraction', ];
+
 export default {
   data() {
     return {
@@ -76,6 +97,7 @@ export default {
     resetFilters() {
       store.filters = [];
       store.search = '';
+      store.sort = undefined;
       store.menus = Object.keys(store.options).map((key) => [key, true]);
       store.renderList();
     },
