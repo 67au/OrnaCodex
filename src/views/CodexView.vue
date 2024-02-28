@@ -471,6 +471,9 @@ export default {
     getItemAssessBeta() {
       this.beta.show = true;
       this.beta.level = 1;
+      this.beta.isBoss = true;
+      this.beta.query = {};
+      this.beta.base = {};
       for (const [key, value] of Object.entries(this.ornaStats)) {
         if (allowedKeys.has(key)) {
           this.beta.query[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
