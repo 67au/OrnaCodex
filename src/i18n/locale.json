@@ -53,7 +53,8 @@
             "mana": "魔力",
             "resistance": "魔防",
             "ward": "护盾",
-            "base": "基础"
+            "base": "基础",
+            "isBoss": "头目装备"
         }
     },
     "zh-hant": {
@@ -110,7 +111,8 @@
             "mana": "魔力",
             "resistance": "魔防",
             "ward": "護盾",
-            "base": "基礎"
+            "base": "基礎",
+            "isBoss": "頭目裝備"
         }
     },
     "en": {
@@ -168,7 +170,8 @@
             "mana": "Mana",
             "resistance": "Resistance",
             "ward": "Ward",
-            "base": "Base"
+            "base": "Base",
+            "isBoss": "BossScale"
         }
     }
 }

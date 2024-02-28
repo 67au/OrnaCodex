@@ -1,6 +1,7 @@
 <script setup>
 import { watch } from 'vue';
 import { store, global } from '@/store';
+import { getItemQuailty, getUpgradedStats } from '@/plugins/assess.js';
 import MainCard from '@/components/Card/MainCard.vue';
 import StatsCard from '@/components/Card/StatsCard.vue';
 import AbilityCard from '@/components/Card/AbilityCard.vue';
@@ -36,6 +37,8 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
                   <var-button type="danger" size="small" @click="getItemAssessAPI" :loading="show.loading"
                     loading-type="wave">
                     Assess(API) </var-button>
+                  <var-button type="default" size="small" @click="getItemAssessBeta">
+                    Assess(Beta) </var-button>
                 </template>
               </var-space>
             </div>
@@ -121,7 +124,7 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
   </template>
   <template v-else>
     <var-popup :default-style="false" v-model:show="show.api">
-      <GuideResult class="popup-content" :click="() => show.api = false" failed/>
+      <GuideResult class="popup-content" :click="() => show.api = false" failed />
     </var-popup>
   </template>
 
@@ -167,6 +170,96 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
       </var-space>
     </var-paper>
   </var-popup>
+
+  <!-- AssessBeta -->
+  <template v-if="!loading && isAssessItem">
+    <var-dialog v-model:show="beta.show" :cancel-button="false">
+      <template #title>
+        <span>
+          <var-icon name="magnify" /> Assess(Beta)
+        </span>
+      </template>
+      <div>
+        <span> {{ store.codex.usedItem['name'] }} </span>
+        <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
+          <var-col :span="8">
+            <div class="assess">
+              <var-select variant="outlined" :placeholder="$t('query.level')" v-model="beta.level" size="small">
+                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (x, i) => i + 1)" />
+              </var-select>
+            </div>
+          </var-col>
+          <var-col :span="8">
+            <div class="assess">
+              <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="beta.isBoss" size="small">
+               <var-option :label="$t('yes')" :value="true"/>
+               <var-option :label="$t('no')" :value="false"/>
+              </var-select>
+            </div>
+          </var-col>
+          <var-col :span="8" v-for="key in Object.keys(beta.query)">
+            <div class="assess">
+              <var-input variant="outlined" size="small" type="number" :placeholder="$t(`stat_key.${key}`)"
+                v-model="beta.query[key]" />
+            </div>
+          </var-col>
+          <var-col :span="8">
+            <var-button style="width: 100%;" type="primary" @click="queryItemAssessBeta">
+              {{ $t('query.query') }}
+            </var-button>
+          </var-col>
+        </var-row>
+      </div>
+    </var-dialog>
+  </template>
+  <template v-else>
+    <var-popup :default-style="false" v-model:show="beta.show">
+      <GuideResult class="popup-content" :click="() => beta.show = false" failed />
+    </var-popup>
+  </template>
+
+  <!-- AssessQueryBeta -->
+  <var-popup :default-style="false" v-model:show="beta.showResult">
+    <var-paper class="popup-content">
+      <var-space align="center" justify="space-between" style="margin-bottom: 2px">
+        <span>{{ store.codex.usedItem['name'] }}</span>
+        <var-chip size="small" :type="beta.quality > 0 ? 'primary' : 'danger'">
+          <template #left>
+            <var-icon v-if="beta.quality > 0" name="checkbox-marked-circle" size="small" />
+            <var-icon v-else name="close-circle" size="small" />
+          </template>
+          {{ `${ beta.quality * 100}%` }}
+        </var-chip>
+      </var-space>
+      <var-table :elevation="2" class="assess-table">
+        <thead>
+          <tr>
+            <th> {{ $t('query.level') }} </th>
+            <th v-for="key in Object.keys(beta.result)">{{ $t(`stat_key.${key}`) }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td> {{ $t('query.base') }} </td>
+            <td v-for="stat in Object.values(beta.base)">{{ stat }}</td>
+          </tr>
+          <tr v-for="(_, i) in Array.from({ length: 13 })">
+            <td>{{ i + 1 }}</td>
+            <td v-for="stat in Object.values(beta.result)">{{ stat[i] }}</td>
+          </tr>
+          <tr>
+            <th> {{ $t('query.level') }} </th>
+            <th v-for="key in Object.keys(beta.result)">{{ $t(`stat_key.${key}`) }}</th>
+          </tr>
+        </tbody>
+      </var-table>
+      <var-space justify="space-around" style="margin-top: 4px;">
+        <var-button type="primary" icon-container @click="beta.showResult = false">
+          {{ $t('close') }}
+        </var-button>
+      </var-space>
+    </var-paper>
+  </var-popup>
 </template>
 
 <script>
@@ -188,6 +281,9 @@ const guidePageMap = {
 }
 const monsterSet = new Set(['monsters', 'bosses']);
 
+const allowedKeys = new Set(['hp', 'mana', 'attack', 'magic', 'defense', 'resistance', 'dexterity', 'ward', 'crit']);
+const passKeySet = new Set(['crit', 'dexterity', ]);
+
 export default {
   mounted() {
     store.codexPage.category = this.$route.params.category
@@ -206,6 +302,16 @@ export default {
           level: "1",
         },
         result: undefined,
+      },
+      beta: {
+        level: 1,
+        query: {},
+        base: {},
+        quality: 1,
+        isBoss: true,
+        result: undefined,
+        show: false,
+        showResult: false,
       },
       show: {
         guide: false,
@@ -253,7 +359,21 @@ export default {
     },
     itemJson() {
       return JSON.stringify(store.codex.usedItem);
-    }
+    },
+    ornaStats() {
+      return store.codex.usedItem['stats'];
+    },
+    isAssessItem() {
+      if (store.codex.usedItem['stats'] === undefined) {
+        return false;
+      }
+      for (const key of Object.keys(store.codex.usedItem['stats'])) {
+        if (allowedKeys.has(key)) {
+          return true;
+        }
+      }
+      return false;
+    },
   },
   methods: {
     isMonster() {
@@ -349,6 +469,28 @@ export default {
         this.show.result = true;
       }
     },
+    getItemAssessBeta() {
+      this.beta.show = true;
+      this.beta.level = 1;
+      for (const [key, value] of Object.entries(this.ornaStats)) {
+        if (allowedKeys.has(key)) {
+          this.beta.query[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+          this.beta.base[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+        }
+      }
+    },
+    queryItemAssessBeta() {
+      const query = Object.entries(this.beta.query).filter((m) => !passKeySet.has(m[0])).toSorted((a, b) => b[1] - a[1]);
+      this.beta.quality = 2;
+      if (query.length>0) {
+        const key = query[0][0];
+        this.beta.quality = getItemQuailty(this.beta.query[key], this.beta.base[key], this.beta.level, this.beta.isBoss);
+      }
+      this.beta.result = Object.fromEntries(Object.entries(this.beta.base).map(([key, base]) => {
+        return [key, getUpgradedStats(base, this.beta.quality, this.beta.isBoss, key)]
+      }))
+      this.beta.showResult = true;
+    }
   },
 }
 </script>
