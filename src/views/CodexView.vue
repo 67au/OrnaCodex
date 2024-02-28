@@ -282,7 +282,6 @@ const guidePageMap = {
 const monsterSet = new Set(['monsters', 'bosses']);
 
 const allowedKeys = new Set(['hp', 'mana', 'attack', 'magic', 'defense', 'resistance', 'dexterity', 'ward', 'crit', 'foresight']);
-const passKeySet = new Set(['crit', 'dexterity', ]);
 
 export default {
   mounted() {
@@ -481,9 +480,11 @@ export default {
     },
     queryItemAssessBeta() {
       const isWeapon = store.codex.basedItem['place'] === 'Weapon';
-      const pass = passKeySet;
+      let pass = undefined;
       if (isWeapon) {
-        pass.add('mana');
+        pass = new Set(['crit', 'dexterity', 'mana', 'hp']);
+      } else {
+        pass = new Set(['crit', 'dexterity']);
       }
       const query = Object.entries(this.beta.query).filter((m) => !pass.has(m[0])).toSorted((a, b) => b[1] - a[1]);
       this.beta.quality = 2;
