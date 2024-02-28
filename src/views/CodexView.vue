@@ -281,7 +281,7 @@ const guidePageMap = {
 }
 const monsterSet = new Set(['monsters', 'bosses']);
 
-const allowedKeys = new Set(['hp', 'mana', 'attack', 'magic', 'defense', 'resistance', 'dexterity', 'ward', 'crit']);
+const allowedKeys = new Set(['hp', 'mana', 'attack', 'magic', 'defense', 'resistance', 'dexterity', 'ward', 'crit', 'foresight']);
 const passKeySet = new Set(['crit', 'dexterity', ]);
 
 export default {
