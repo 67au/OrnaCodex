@@ -6,13 +6,14 @@ function getDelta(base, isBoss) {
   }
 }
 
+
 export function getUpgradedStats(base, quality, isBoss, key = undefined, isWeapon = false) {
   const delta = getDelta(base, isBoss);
   const quality_plus = (level) => quality + (level - 10) / 100;
   if (key === 'crit' ) {
     return Array(13).fill(base);
   }
-  if (key === 'dexterity' || (key === 'mana' && isWeapon)) {
+  if (key === 'dexterity' || (isWeapon && (key === 'hp' || key === 'mana'))) {
     return [...Array(13).keys()].map((level) => {
       if (level == 0) {
         return Math.ceil(base);
