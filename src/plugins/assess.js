@@ -1,6 +1,6 @@
 function getDelta(base, isBoss) {
   if (isBoss) {
-    return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -50);
+    return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -300);
   } else {
     return base > 0 ? Math.ceil(base / 10) : Math.ceil(base / -75);
   }
