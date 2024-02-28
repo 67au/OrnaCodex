@@ -480,14 +480,19 @@ export default {
       }
     },
     queryItemAssessBeta() {
-      const query = Object.entries(this.beta.query).filter((m) => !passKeySet.has(m[0])).toSorted((a, b) => b[1] - a[1]);
+      const isWeapon = store.codex.basedItem['place'] === 'Weapon';
+      const pass = passKeySet;
+      if (isWeapon) {
+        pass.add('mana');
+      }
+      const query = Object.entries(this.beta.query).filter((m) => !pass.has(m[0])).toSorted((a, b) => b[1] - a[1]);
       this.beta.quality = 2;
       if (query.length>0) {
         const key = query[0][0];
         this.beta.quality = getItemQuailty(this.beta.query[key], this.beta.base[key], this.beta.level, this.beta.isBoss);
       }
       this.beta.result = Object.fromEntries(Object.entries(this.beta.base).map(([key, base]) => {
-        return [key, getUpgradedStats(base, this.beta.quality, this.beta.isBoss, key)]
+        return [key, getUpgradedStats(base, this.beta.quality, this.beta.isBoss, key, isWeapon)]
       }))
       this.beta.showResult = true;
     }
