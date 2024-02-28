@@ -37,7 +37,7 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
                   <var-button type="danger" size="small" @click="getItemAssessAPI" :loading="show.loading"
                     loading-type="wave">
                     Assess(API) </var-button>
-                  <var-button type="default" size="small" @click="getItemAssessBeta">
+                  <var-button type="warning" size="small" @click="getItemAssessBeta">
                     Assess(Beta) </var-button>
                 </template>
               </var-space>
