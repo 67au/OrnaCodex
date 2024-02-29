@@ -15,7 +15,7 @@ import { store, global } from '@/store';
                     {{ `${$t('stat_key.' + stat_key)}: ${value}` }}
                   </var-chip>
                 </template>
-                <template v-else-if="stat_key === 'element' && global.elementColor[value] !== undefined">
+                <template v-else-if="stat_key === 'element'">
                   <var-chip size="small" :round="false" plain :color="global.elementColor[value]">
                     {{ `${$t('stat_key.' + value)}` }}
                   </var-chip>
