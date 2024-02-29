@@ -28,6 +28,11 @@ const stat_precent_keys = new Set(['ward', 'crit', 'gold_bonus',
   'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
   'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction']);
 
+const sortKeys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+  'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
+  'follower_stats', 'follower_act', 'summon_stats',
+  'view_distance', 'adornment_slots', 'monster_attraction',];
+
 export const global = {
   ornaUrl: ornaUrl,
   staticUrl: `${ornaUrl}/static`,
@@ -39,6 +44,8 @@ export const global = {
   singleOptions: singleOptions,
   arrayOptions: arrayOptions,
   dropOptions: dropOptions,
+  sortKeys: sortKeys,
+  sortKeysSet: new Set(sortKeys),
 }
 
 export const store = reactive({
@@ -130,7 +137,7 @@ export const store = reactive({
             return itemA['stats'][store.sort].slice(0, -1) - itemB['stats'][store.sort].slice(0, -1);
           }
           return itemA['stats'][store.sort] - itemB['stats'][store.sort];
-        })() * (store.order?1:-1)
+        })() * (store.order ? 1 : -1)
       })
     }),
     index: computed(() => {

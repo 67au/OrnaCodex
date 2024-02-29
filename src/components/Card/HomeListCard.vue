@@ -40,6 +40,11 @@ import { store, global } from '@/store';
                       <span class="event">{{ event }}</span>
                     </var-chip>
                   </template>
+                  <template v-if="global.sortKeysSet.has(store.sort) && store.codex.used[category][id]['stats'] !== undefined && store.codex.used[category][id]['stats'][store.sort] !== undefined">
+                    <var-chip type="info" size="mini" :round="false" plain>
+                      {{ `${$t('stat_key.' + store.sort)}: ${store.codex.used[category][id]['stats'][store.sort]}` }}
+                    </var-chip>
+                  </template>
                 </var-space>
               </template>
             </var-cell>

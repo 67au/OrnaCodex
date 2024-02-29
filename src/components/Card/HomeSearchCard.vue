@@ -14,7 +14,7 @@ import { store, global } from '@/store';
               @close="store.renderList" @change="store.renderList" @clear="store.renderList">
               <var-option value="name" :label="$t('name')" />
               <var-option value="tier" :label="$t('tier')" />
-              <template v-for="key in sort_keys">
+              <template v-for="key in global.sortKeys">
                 <var-option :value="key" :label="$t('stat_key.' + key)" />
               </template>
             </var-select>
@@ -81,12 +81,6 @@ import { store, global } from '@/store';
 </template>
 
 <script>
-
-const sort_keys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
-  'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus', 
-  'follower_stats', 'follower_act',  'summon_stats',
-  'view_distance', 'adornment_slots', 'monster_attraction', ];
-
 export default {
   data() {
     return {
