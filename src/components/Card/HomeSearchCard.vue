@@ -44,7 +44,7 @@ import { store, global } from '@/store';
                       v-for="(_, v) in Array.from({ length: 10 })" />
                   </template>
                   <template v-else>
-                    <var-option :label="v" :value="v" v-for="v in store.options[filter['k']]" />
+                    <var-option :label="v" :value="v" v-for="v in sortOptions(filter['k'])" />
                   </template>
                 </template>
                 <template #selected>
@@ -99,6 +99,13 @@ export default {
       store.filters.push({ 'k': key, 'v': global.dropOptions.includes(key) ? [] : undefined, })
       this.show = false;
     },
+    sortOptions(key) {
+      const options = Array.from(store.options[key]);
+      options.sort((a, b) => {
+        return a.localeCompare(b);
+      });
+      return options;
+    }
   }
 }
 </script>
