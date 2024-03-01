@@ -54,7 +54,7 @@ export function getItemQuailty(input, base, level, isBoss) {
   const base_stat = getUpgradedStat(base, level, 1, isBoss);
   const quality = Math.round(((input / base_stat) * (1+delta) - delta) * 100) / 100;
   const test_stat = getUpgradedStat(base, level, quality, isBoss);
-  const stat_delta = test_stat - base_stat;
+  const stat_delta = test_stat - input;
   if (stat_delta === 0){
     return quality;
   }
