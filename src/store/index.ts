@@ -8,15 +8,15 @@ const ornaUrl = 'https://playorna.com';
 const guideUrl = 'https://orna.guide';
 const languageBased = 'en';
 
-const elementColor = {
+const elementColor: any = {
   water: '#5facff',
   earthen: '#0fab0f',
   lightning: '#a59e46',
-  fire: "#ff8135",
-  dark: "#d900ff",
-  holy: "#ddd",
-  arcane: "#8e78ff",
-  dragon: "#FF9800",
+  fire: '#ff8135',
+  dark: '#d900ff',
+  holy: '#ddd',
+  arcane: '#8e78ff',
+  dragon: '#FF9800',
 }
 
 const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];
@@ -48,7 +48,7 @@ export const global = {
   sortKeysSet: new Set(sortKeys),
 }
 
-export const store = reactive({
+export const store: any = reactive({
   homeTop: 0,
   codexTop: {},
   state: useStorage('fqegg.top', {
@@ -71,45 +71,47 @@ export const store = reactive({
     isSkill: () => store.codex.spells.has(store.codexPage.id),
     isOffhandSkill: () => store.codex.offhand_skills.has(store.codexPage.id),
     isOffhandItem: () => store.codex.offhand_items.has(store.codexPage.id),
-    isMissEntry: (entry) => store.codex.miss_entries.has(`${store.state.language}/${entry}`),
-    getMissEntry: (entry) => store.codex.meta['miss_entries'][`${store.state.language}/${entry}`],
+    isMissEntry: (entry: string) => store.codex.miss_entries.has(`${store.state.language}/${entry}`),
+    getMissEntry: (entry: string) => store.codex.meta['miss_entries'][`${store.state.language}/${entry}`],
     based: computed(() => store.codex.data[languageBased]),
     basedItem: computed(() => store.codex.based[store.codexPage.category][store.codexPage.id]),
     used: computed(() => store.codex.data[store.state.language]),
     usedItem: computed(() => store.codex.used[store.codexPage.category][store.codexPage.id]),
     url: computed(() => `/codex/${store.codexPage.category}/${store.codexPage.id}/`),
-    filtered: computed(() => store.codex.index.filter(([category, id]) => {
-      if (store.codex.used[category][id]) {
-        const search = new RegExp(store.search, 'i')
-        return search.test(store.codex.used[category][id]['name']) || (store.codex.used[category][id]['description'] != undefined && search.test(store.codex.used[category][id]['description']))
-      }
-    }).filter(([category, id]) => {
-      return store.filters.every((filter) => {
-        if (singleOptions.includes(filter['k'])) {
-          if (filter['v'] === undefined) { return true }
-          if (filter['k'] === 'exotic') { return store.codex.used[category][id][filter['k']] === filter['v']; }
-          return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']] === filter['v']
+    filtered: computed(function (): Array<[string, string]> {
+      return store.codex.index.filter(([category, id]: [string, string]) => {
+        if (store.codex.used[category][id]) {
+          const search = new RegExp(store.search, 'i')
+          return search.test(store.codex.used[category][id]['name']) || (store.codex.used[category][id]['description'] != undefined && search.test(store.codex.used[category][id]['description']))
         }
-        if (arrayOptions.includes(filter['k'])) {
-          if (filter['v'] === undefined) { return true }
-          return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']].includes(filter['v'])
-        }
-        if (dropOptions.includes(filter['k'])) {
-          if (filter['v'] === undefined) { return true }
-          if (filter['v'].length === 0) { return true }
-          if (store.codex.used[category][id][filter['k']] !== undefined) {
-            return filter['v'].every((v) => {
-              return store.codex.used[category][id][filter['k']].some((f) => f['name'] === v);
-            })
+      }).filter(([category, id]: [string, string]) => {
+        return store.filters.every((filter: any) => {
+          if (singleOptions.includes(filter['k'])) {
+            if (filter['v'] === undefined) { return true }
+            if (filter['k'] === 'exotic') { return store.codex.used[category][id][filter['k']] === filter['v']; }
+            return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']] === filter['v']
           }
-          else {
-            return false;
+          if (arrayOptions.includes(filter['k'])) {
+            if (filter['v'] === undefined) { return true }
+            return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']].includes(filter['v'])
           }
-        }
+          if (dropOptions.includes(filter['k'])) {
+            if (filter['v'] === undefined) { return true }
+            if (filter['v'].length === 0) { return true }
+            if (store.codex.used[category][id][filter['k']] !== undefined) {
+              return filter['v'].every((v: string) => {
+                return store.codex.used[category][id][filter['k']].some((f: any) => f['name'] === v);
+              })
+            }
+            else {
+              return false;
+            }
+          }
+        })
       })
-    })),
+    }),
     sorted: computed(() => {
-      return (store.sort === undefined) ? store.codex.filtered : store.codex.filtered.toSorted((a, b) => {
+      return (store.sort === undefined) ? store.codex.filtered : store.codex.filtered.toSorted((a: string, b: string) => {
         const itemA = store.codex.used[a[0]][a[1]];
         const itemB = store.codex.used[b[0]][b[1]];
         if (store.sort === 'name') {
@@ -140,9 +142,9 @@ export const store = reactive({
         })() * (store.order ? 1 : -1)
       })
     }),
-    index: computed(() => {
-      let index = [];
-      for (const [category, items] of Object.entries(store.codex.used)) {
+    index: computed(function (): Array<[string, string]> {
+      const index: any[] = [];
+      for (const [category, items] of (Object.entries(store.codex.used) as Array<[string, any]>)) {
         for (const id of Object.keys(items)) {
           index.push([category, id]);
         }
@@ -152,7 +154,7 @@ export const store = reactive({
   },
   options: undefined,
   search: '',
-  filters: [],
+  filters: [] as Array<any>,
   sort: undefined,
   order: false,
   list: {
@@ -208,13 +210,13 @@ export const store = reactive({
     store.filters = [];
     store.search = '';
     store.menus = Object.keys(store.options).map((key) => [key, true]);
-    for (const items of Object.values(store.codex.used)) {
+    for (const items of (Object.values(store.codex.used) as Array<[string, any]>)) {
       for (const item of Object.values(items)) {
         store.updateOptions(item);
       }
     }
   },
-  updateOptions(item) {
+  updateOptions(item: any) {
     // single      
     for (const option of singleOptions) {
       store.addOption(item, option);
@@ -233,7 +235,7 @@ export const store = reactive({
       }
     }
   },
-  addOption(item, key) {
+  addOption(item: any, key: string) {
     if (item[key] != undefined) {
       if (typeof item[key] == 'object') {
         for (const t of item[key]) {
@@ -248,7 +250,7 @@ export const store = reactive({
   guide: {
     cache: undefined,
   },
-  enterCodex(category, id) {
+  enterCodex(category: string, id: string) {
     router.push({
       path: `/codex/${category}/${id}/`
     });

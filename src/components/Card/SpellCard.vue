@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { global, store } from '@/store';
 </script>
 
@@ -8,7 +8,7 @@ import { global, store } from '@/store';
       <template #description>
         <div class="card-description">
           <template v-for="[category, spellers] in Object.entries(store.codex.meta['skills'][store.codexPage.id])">
-            <var-cell class="codex-cell" border v-for="sid in spellers" @click="() => store.enterCodex(category, sid)">
+            <var-cell class="codex-cell" border v-for="sid in spellers" @click="() => store.enterCodex(category, sid)" :key="sid">
               <template #icon>
                 <var-icon class="append-icon" :size="36"
                   :name="`${global.staticUrl}${store.codex.used[category][sid]['icon']}`" />
@@ -27,13 +27,3 @@ import { global, store } from '@/store';
     </var-card>
   </template>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-
-    }
-  }
-}
-</script>

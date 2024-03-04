@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { store, global } from '@/store'
 import ItemList from '@/components/Card/List/ItemList.vue'
 import TextLists from '@/components/Card/List/TextLists.vue';
 import ChanceLists from '@/components/Card/List/ChanceLists.vue';
+import { defineComponent } from 'vue';
 </script>
 
 <template>
@@ -20,10 +21,10 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
             <template v-for="[category, id] in store.codex.usedItem[name]">
               <!-- check exist -->
               <template v-if="store.codex.used[category][id] !== undefined">
-                <ItemList :codex="store.codex.used[category][id]" :click="() => store.enterCodex(category, id)" />
+                <ItemList :codex="store.codex.used[category][id]" :click="() => store.enterCodex(category, id)" :key="id"/>
               </template>
               <template v-else-if="store.codex.isMissEntry(`${category}/${id}`)">
-                <var-cell class="codex-cell" border>
+                <var-cell class="codex-cell" border :key="id">
                   <template #icon>
                     <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${store.codex.getMissEntry(`${category}/${id}`)['icon']}`" />
                   </template>
@@ -40,7 +41,7 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
                 </var-cell>
               </template>
               <template v-else>
-                <var-cell class="codex-cell" border>
+                <var-cell class="codex-cell" border :key="id">
                   <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
                     {{ $t('notfound') }}
                   </var-link>
@@ -54,13 +55,12 @@ import ChanceLists from '@/components/Card/List/ChanceLists.vue';
   </template>
 </template>
 
-<script>
-export default {
-  mounted() {
-  },
+<script lang="ts">
+export default defineComponent({
   props: {
     name: {
       type: String,
+      required: true,
     },
     text: {
       type: Boolean,
@@ -71,11 +71,5 @@ export default {
       default: false
     },
   },
-  data() {
-    return {
-    }
-  },
-  methods: {
-  }
-}
+})
 </script>

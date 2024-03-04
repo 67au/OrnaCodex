@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { store } from '@/store';
 import ItemList from '@/components/Card/List/ItemList.vue';
 </script>
@@ -22,8 +22,8 @@ import ItemList from '@/components/Card/List/ItemList.vue';
   </template>
 </template>
 
-<script>
-const category = 'spells';
+<script lang="ts">
+const category: string = 'spells';
 export default {
   computed: {
     offhandSkill() {

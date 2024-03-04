@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { global } from '@/store';
 </script>
 
 <template>
-  <var-cell class="codex-small-cell" v-for="item in codex" border :title="item['name']"
+  <var-cell class="codex-small-cell" v-for="item, index in codex" border :title="item['name']" :key="index"
     :description="item['description']">
     <template #icon>
       <template v-if="item['icon'] !== undefined">
@@ -13,8 +13,12 @@ import { global } from '@/store';
   </var-cell>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  props: ['codex'],
+  props: {
+    codex: {
+      type: Object,
+    },
+  }
 }
 </script>

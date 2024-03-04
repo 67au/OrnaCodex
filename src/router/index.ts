@@ -21,8 +21,11 @@ const router = createRouter({
       },
     }
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, from) {
     const t = document.getElementById('main');
+    if (t === null) {
+      return
+    }
     if (to.name === 'home') {
       if (from.name === 'home') {
         t.scrollTo({
@@ -62,12 +65,18 @@ const router = createRouter({
 router.afterEach((to, from) => {
   if (from.name === 'home') {
     const t = document.getElementById('main');
+    if (t === null) {
+      return
+    }
     store.homeTop = t.scrollTop;
   }
   if (to.name === 'codex') {
     store.guide.cache = undefined;
     if (from.name === 'codex') {
       const t = document.getElementById('main');
+      if (t === null) {
+        return
+      }
       store.codexTop[`${from.params.category}/${from.params.id}`] = t.scrollTop;
     }
   }

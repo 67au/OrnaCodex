@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { store, global } from '@/store'
 </script>
 
@@ -8,7 +8,7 @@ import { store, global } from '@/store'
       <template #description>
         <div class="card-description">
           <var-cell class="codex-small-cell" v-for="aid in store.codex.meta['offhand_skills'][store.codexPage.id]" border
-            @click="() => store.enterCodex(category, aid)">
+            @click="() => store.enterCodex(category, aid)" :key="aid">
             <template #icon>
               <var-icon class="append-icon" :size="36"
                 :name="`${global.staticUrl}${store.codex.used[category][aid]['icon']}`" />
@@ -24,9 +24,6 @@ import { store, global } from '@/store'
   </template>
 </template>
 
-<script>
+<script lang="ts">
 const category = 'items';
-
-export default {
-}
 </script>

@@ -1,21 +1,20 @@
-<script setup>
-import { watch } from 'vue';
+<script setup lang="ts">
+import { watch, defineAsyncComponent, defineComponent } from 'vue';
 import { store } from '@/store';
-import { defineAsyncComponent } from 'vue';
 </script>
 
 <template>
   <main>
     <div class="container" v-if="!loading">
-      <component is="HomeSearchCard"></component>
-      <component is="HomeListCard"></component>
+      <component :is="'HomeSearchCard'"></component>
+      <component :is="'HomeListCard'"></component>
     </div>
   </main>
 </template>
 
-<script>
+<script lang="ts">
 
-export default {
+export default defineComponent({
   components: {
     HomeSearchCard: defineAsyncComponent(() => import("@/components/Card/HomeSearchCard.vue")),
     HomeListCard: defineAsyncComponent(() => import('@/components/Card/HomeListCard.vue')),
@@ -24,7 +23,7 @@ export default {
     store.buildOptions();
     store.renderList();
     this.loading = false;
-    watch(() => this.$i18n.locale, (newVal, oldVal) => {
+    watch(() => this.$i18n.locale, () => {
       store.buildOptions();
       store.renderList();
     });
@@ -35,7 +34,5 @@ export default {
       loading: false,
     }
   }
-}
+})
 </script>
-
-<style scoped></style>

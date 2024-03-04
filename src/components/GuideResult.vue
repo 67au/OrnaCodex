@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { store } from '@/store';
+import { defineComponent } from 'vue';
 </script>
 
 <template>
@@ -13,15 +14,15 @@ import { store } from '@/store';
       </template>
     </template>
     <template #footer>
-      <var-button :color="resultButtonColor" text-color="#fff" @click="click">
+      <var-button :color="resultButtonColor" text-color="#fff" @click="click()">
         {{ $t('close') }}
       </var-button>
     </template>
   </var-result>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   data() {
     return {
       store,
@@ -34,6 +35,7 @@ export default {
     },
     click: {
       type: Function,
+      default: () => {},
     },
     failed: {
       type: Boolean,
@@ -54,7 +56,7 @@ export default {
       return this.isSuccess ? 'var(--result-success-color)' : 'var(--result-question-color)';
     }
   }
-}
+})
 </script>
 
 <style>
