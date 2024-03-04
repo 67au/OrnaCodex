@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 </script>
 
 <template>
@@ -16,9 +16,13 @@
 	</header>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-	props: ['title']
+	props: {
+    title: {
+      type: String,
+    },
+  }
 }
 </script>
 

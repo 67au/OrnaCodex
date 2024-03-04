@@ -1,5 +1,5 @@
-<script setup>
-import { watch } from 'vue';
+<script setup lang="ts">
+import { watch, defineComponent } from 'vue';
 import { store, global } from '@/store';
 import { getItemQuailty, getUpgradedStats } from '@/plugins/assess.js';
 import MainCard from '@/components/Card/MainCard.vue';
@@ -103,11 +103,11 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
           <var-col :span="8">
             <div class="assess">
               <var-select variant="outlined" :placeholder="$t('query.level')" v-model="guide.query['level']" size="small">
-                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (x, i) => i + 1)" />
+                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
               </var-select>
             </div>
           </var-col>
-          <var-col :span="8" v-for="key in Object.keys(guideStats)">
+          <var-col :span="8" v-for="key in Object.keys(guideStats)" :key="key">
             <div class="assess">
               <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.${key}`)"
                 v-model="guide.query[key]" />
@@ -145,21 +145,21 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
+            <th v-for="key in Object.keys(guide.result['stats'])" :key="key">{{ $t(`query.${key}`) }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td> {{ $t('query.base') }} </td>
-            <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['base'] }}</td>
+            <td v-for="stat, index in (Object.values(guide.result['stats']) as StatValue)" :key="index">{{ stat['base'] }}</td>
           </tr>
-          <tr v-for="(_, i) in Array.from({ length: 13 })">
+          <tr v-for="(_, i) in Array.from({ length: 13 })" :key="i">
             <td>{{ i + 1 }}</td>
-            <td v-for="stat in Object.values(guide.result['stats'])">{{ stat['values'][i] }}</td>
+            <td v-for="stat, index in (Object.values(guide.result['stats']) as StatValue)" :key="index">{{ stat['values'][i] }}</td>
           </tr>
           <tr>
             <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(guide.result['stats'])">{{ $t(`query.${key}`) }}</th>
+            <th v-for="key in Object.keys(guide.result['stats'])" :key="key">{{ $t(`query.${key}`) }}</th>
           </tr>
         </tbody>
       </var-table>
@@ -185,7 +185,7 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
           <var-col :span="8">
             <div class="assess">
               <var-select variant="outlined" :placeholder="$t('query.level')" v-model="beta.level" size="small">
-                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (x, i) => i + 1)" />
+                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
               </var-select>
             </div>
           </var-col>
@@ -197,7 +197,7 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
               </var-select>
             </div>
           </var-col>
-          <var-col :span="8" v-for="key in Object.keys(beta.query)">
+          <var-col :span="8" v-for="key in Object.keys(beta.query)" :key="key">
             <div class="assess">
               <var-input variant="outlined" size="small" type="number" :placeholder="$t(`stat_key.${key}`)"
                 v-model="beta.query[key]" />
@@ -235,21 +235,21 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(beta.result)">{{ $t(`stat_key.${key}`) }}</th>
+            <th v-for="key in Object.keys(beta.result)" :key="key">{{ $t(`stat_key.${key}`) }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td> {{ $t('query.base') }} </td>
-            <td v-for="stat in Object.values(beta.base)">{{ stat }}</td>
+            <td v-for="stat, index in Object.values(beta.base)" :key="index">{{ stat }}</td>
           </tr>
-          <tr v-for="(_, i) in Array.from({ length: 13 })">
+          <tr v-for="(_, i) in Array.from({ length: 13 })" :key="i">
             <td>{{ i + 1 }}</td>
-            <td v-for="stat in Object.values(beta.result)">{{ stat[i] }}</td>
+            <td v-for="stat, index in (Object.values(beta.result) as StatValue)" :key="index">{{ stat[i] }}</td>
           </tr>
           <tr>
             <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(beta.result)">{{ $t(`stat_key.${key}`) }}</th>
+            <th v-for="key in Object.keys(beta.result)" :key="key">{{ $t(`stat_key.${key}`) }}</th>
           </tr>
         </tbody>
       </var-table>
@@ -262,8 +262,10 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
   </var-popup>
 </template>
 
-<script>
-const guideApiMap = {
+<script lang="ts">
+type StatValue = Array<any>;
+
+const guideApiMap: any = {
   'items': 'item',
   'monsters': 'monster',
   'bosses': 'monster',
@@ -271,7 +273,7 @@ const guideApiMap = {
   'followers': 'pet',
   'spells': 'skill',
 }
-const guidePageMap = {
+const guidePageMap: any = {
   'items': 'items',
   'monsters': 'monsters',
   'bosses': 'monsters',
@@ -283,12 +285,12 @@ const monsterSet = new Set(['monsters', 'bosses']);
 
 const allowedKeys = new Set(['hp', 'mana', 'attack', 'magic', 'defense', 'resistance', 'dexterity', 'ward', 'crit', 'foresight']);
 
-export default {
+export default defineComponent({
   mounted() {
     store.codexPage.category = this.$route.params.category
     store.codexPage.id = this.$route.params.id
     this.loading = false;
-    watch(() => this.$route.params, (newVal, oldVal) => {
+    watch(() => this.$route.params, () => {
       store.codexPage.category = this.$route.params.category
       store.codexPage.id = this.$route.params.id
     });
@@ -301,7 +303,7 @@ export default {
           level: "1",
         },
         result: undefined,
-      },
+      } as any,
       beta: {
         level: 1,
         query: {},
@@ -311,7 +313,7 @@ export default {
         result: undefined,
         show: false,
         showResult: false,
-      },
+      } as any,
       show: {
         guide: false,
         json: false,
@@ -453,7 +455,7 @@ export default {
       if (store.guide.cache !== undefined && this.guideStats !== undefined) {
         this.guide.query['id'] = store.guide.cache['id']
         this.guide.query['level'] = 1;
-        for (const [key, value] of Object.entries(this.guideStats)) {
+        for (const [key, value] of (Object.entries(this.guideStats) as Array<[string, any]>)) {
           this.guide.query[key] = value['base'];
         }
       }
@@ -474,7 +476,7 @@ export default {
       this.beta.isBoss = true;
       this.beta.query = {};
       this.beta.base = {};
-      for (const [key, value] of Object.entries(this.ornaStats)) {
+      for (const [key, value] of (Object.entries(this.ornaStats) as Array<[string, string]>)) {
         if (allowedKeys.has(key)) {
           this.beta.query[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
           this.beta.base[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
@@ -483,25 +485,25 @@ export default {
     },
     queryItemAssessBeta() {
       const isWeapon = store.codex.basedItem['place'] === 'Weapon';
-      let pass = undefined;
+      let pass: any = undefined;
       if (isWeapon) {
         pass = new Set(['crit', 'dexterity', 'mana', 'hp']);
       } else {
         pass = new Set(['crit', 'dexterity']);
       }
-      const query = Object.entries(this.beta.query).filter((m) => !pass.has(m[0])).toSorted((a, b) => b[1] - a[1]);
+      const query = (Object.entries(this.beta.query).filter((m) => !pass.has(m[0])) as Array<[string, number]>).toSorted((a: [string, number], b: [string, number]) => b[1] - a[1]);
       this.beta.quality = 2;
       if (query.length>0) {
         const key = query[0][0];
         this.beta.quality = getItemQuailty(this.beta.query[key], this.beta.base[key], this.beta.level, this.beta.isBoss);
       }
-      this.beta.result = Object.fromEntries(Object.entries(this.beta.base).map(([key, base]) => {
+      this.beta.result = Object.fromEntries((Object.entries(this.beta.base) as Array<[string, number]>).map(([key, base]) => {
         return [key, getUpgradedStats(base, this.beta.quality, this.beta.isBoss, key, isWeapon)]
       }))
       this.beta.showResult = true;
     }
   },
-}
+})
 </script>
 
 <style scoped>

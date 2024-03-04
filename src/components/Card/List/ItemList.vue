@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { global } from '@/store';
+import { defineComponent } from 'vue';
 </script>
 
 <template>
-  <var-cell class="codex-cell" border @click="click">
+  <var-cell class="codex-cell" border @click="click()">
     <template #icon>
       <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${codex['icon']}`" />
     </template>
@@ -23,7 +24,7 @@ import { global } from '@/store';
       </var-chip>
     </template>
       <template v-if="codex['event'] !== undefined">
-        <var-chip class="highlight" size="mini" :round="false" plain v-for="event in codex['event']">
+        <var-chip class="highlight" size="mini" :round="false" plain v-for="event in codex['event']" :key="event">
           {{ event }}
         </var-chip>
       </template>
@@ -50,7 +51,7 @@ import { global } from '@/store';
 
       <!-- Drops -->
       <template v-if="codex['causes'] !== undefined">
-        <var-chip type="danger" size="mini" :round="false" plain v-for="cause in codex['causes']">
+        <var-chip type="danger" size="mini" :round="false" plain v-for="cause, index in codex['causes']" :key="index">
           <span v-if="cause['chance']">
             {{ `${cause['name']} (${cause['chance']})` }}
           </span>
@@ -60,17 +61,17 @@ import { global } from '@/store';
         </var-chip>
       </template>
       <template v-if="codex['gives'] !== undefined">
-        <var-chip type="info" size="mini" :round="false" plain v-for="give in codex['gives']">
+        <var-chip type="info" size="mini" :round="false" plain v-for="give, index in codex['gives']" :key="index">
           {{ `${give['name']} (${give['chance']})` }}
         </var-chip>
       </template>
       <template v-if="codex['cures'] !== undefined">
-        <var-chip type="success" size="mini" :round="false" plain v-for="cure in codex['cures']">
+        <var-chip type="success" size="mini" :round="false" plain v-for="cure, index in codex['cures']" :key="index">
           {{ `${cure['name']}` }}
         </var-chip>
       </template>
       <template v-if="codex['immunities'] !== undefined">
-        <var-chip type="primary" size="mini" :round="false" plain v-for="immunity in codex['immunities']">
+        <var-chip type="primary" size="mini" :round="false" plain v-for="immunity, index in codex['immunities']" :key="index">
           {{ `${immunity['name']}` }}
         </var-chip>
       </template>
@@ -78,17 +79,17 @@ import { global } from '@/store';
   </var-cell>
 </template>
 
-<script>
-export default {
-  mounted() {
-  },
+<script lang="ts">
+export default defineComponent({
   props: {
     codex: {
       type: Object,
+      default: () => {},
     },
     click: {
       type: Function,
+      default: () => {},
     }
   }
-}
+})
 </script>

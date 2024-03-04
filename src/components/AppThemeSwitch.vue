@@ -1,19 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { store } from '@/store'
 import { setTheme } from '@/theme'
 
 const show = ref(false);
 
-
-function getActiveStyles(theme) {
+function getActiveStyles(theme: string) {
 	return {
 		color: store.state.theme === theme ? 'var(--color-primary)' : undefined,
 		backgroundColor: store.state.theme === theme ? 'var(--app-cell-active-background)' : undefined
 	}
 }
 
-function handleCellClick(theme) {
+function handleCellClick(theme: string) {
 	setTheme(theme);
 	show.value = false;
 }

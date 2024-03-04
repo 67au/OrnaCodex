@@ -6,9 +6,13 @@
 	</var-link>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-	props: ['link']
+	props: {
+    link: {
+      type: String,
+    }
+  }
 }
 </script>
 

@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import './assets/main.css';
 import { watch } from 'vue';
 import { RouterView } from 'vue-router';
 import { store } from '@/store';
+import { i18n } from '@/i18n';
 import AppHeader from './components/AppHeader.vue';
 import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
 import AppThemeSwitch from './components/AppThemeSwitch.vue';
@@ -33,18 +34,18 @@ import AppGithub from './components/AppGithub.vue';
   </div>
 </template>
 
-<script>
-const baseLang = 'en';
+<script lang="ts">
+const baseLang: string = 'en';
 
 export default {
   created() {
     import(`@/assets/json/codex.json`).then((module) => {
       store.codex.meta = module.default;
       for (const [lang, msg] of Object.entries(store.codex.meta.translation)) {
-        this.$i18n.mergeLocaleMessage(lang, msg);
+        i18n.global.mergeLocaleMessage(lang, msg);
       }
       for (const [lang, msg] of Object.entries(store.codex.meta.stats_translation)) {
-        this.$i18n.mergeLocaleMessage(lang, msg);
+        i18n.global.mergeLocaleMessage(lang, msg);
       }
       this.loadLangCodex(store.state.language, true, () => {
         this.loadLangCodex(baseLang, false, () => {
@@ -54,14 +55,14 @@ export default {
     });
   },
   mounted() {
-    watch(() => this.$i18n.locale, (newVal, oldVal) => {
+    watch(() => i18n.global.locale, () => {
       if (store.codex.data[store.state.language] === undefined) {
-        this.loadLangCodex(store.state.language, true);
+        this.loadLangCodex(store.state.language, true, () => {});
       };
     });
   },
   methods: {
-    loadLangCodex(lang, isLoad, callback) {
+    loadLangCodex(lang: string, isLoad: boolean, callback: Function) {
       if (isLoad) { this.loading = true; }
       if (store.codex.data[lang] !== undefined) {
         callback();

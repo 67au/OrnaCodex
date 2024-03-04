@@ -1,4 +1,4 @@
-function getDelta(base, isBoss) {
+function getDelta(base: number, isBoss: boolean) {
   if (isBoss) {
     return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -300);
   } else {
@@ -7,9 +7,9 @@ function getDelta(base, isBoss) {
 }
 
 
-export function getUpgradedStats(base, quality, isBoss, key = undefined, isWeapon = false) {
+export function getUpgradedStats(base: number, quality: number, isBoss: boolean, key: string | undefined = undefined, isWeapon: boolean = false) {
   const delta = getDelta(base, isBoss);
-  const quality_plus = (level) => quality + (level - 10) / 100;
+  const quality_plus = (level: number) => quality + (level - 10) / 100;
   if (key === 'crit' ) {
     return Array(13).fill(base);
   }
@@ -35,9 +35,9 @@ export function getUpgradedStats(base, quality, isBoss, key = undefined, isWeapo
   })
 }
 
-export function getUpgradedStat(base, level, quality, isBoss) {
+export function getUpgradedStat(base: number, level: number, quality: number, isBoss: boolean) {
   const delta = getDelta(base, isBoss);
-  const quality_plus = (level) => quality + (level - 10) / 100;
+  const quality_plus = (level: number) => quality + (level - 10) / 100;
   if (level == 1) {
     return Math.ceil(base * quality);
   } else {
@@ -49,7 +49,7 @@ export function getUpgradedStat(base, level, quality, isBoss) {
   }
 }
 
-export function getItemQuailty(input, base, level, isBoss) {
+export function getItemQuailty(input: number, base: number, level: number, isBoss: boolean) {
   const delta = level>10?(level-10)/100:0;
   const base_stat = getUpgradedStat(base, level, 1, isBoss);
   const quality = Math.round(((input / base_stat) * (1+delta) - delta) * 100) / 100;
