@@ -57,7 +57,7 @@ export default {
     });
   },
   mounted() {
-    watch(() => i18n.global.locale, () => {
+    watch(() => i18n.global.locale.value, () => {
       if (store.codex.data[store.state.language] === undefined) {
         this.loadLangCodex(store.state.language, true, () => {});
       };
