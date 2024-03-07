@@ -9,45 +9,44 @@ import { defineComponent } from 'vue';
       <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${codex['icon']}`" />
     </template>
     {{ codex['name'] }}
-    <var-chip type="warning" size="mini" :round="true" plain>{{ global.star + codex['tier']
-    }}</var-chip>
+    <var-chip type="warning" size="mini" :round="true" plain>
+      {{ global.star + codex['tier'] }}
+    </var-chip>
     <br>
     <var-space size="mini" class="cell-chip-space">
-      <template v-if="codex['exotic'] !== undefined">
-        <var-chip class="exotic" size="mini" :round="false" plain v-if="codex['exotic']">
-          {{ $t('exotic') }}
-        </var-chip>
-      </template>
-      <template v-if="!['spells', 'items', 'classes'].includes(codex['category'])">
-      <var-chip type="primary" size="mini" :round="false" plain>
+
+      <var-chip v-if="codex['exotic'] === true" class="exotic" size="mini" :round="false" plain>
+        {{ $t('exotic') }}
+      </var-chip>
+
+      <var-chip v-if="!['spells', 'items', 'classes'].includes(codex['category'])" type="primary" size="mini"
+        :round="false" plain>
         {{ $t(`categories.${codex['category']}`) }}
       </var-chip>
-    </template>
       <template v-if="codex['event'] !== undefined">
         <var-chip class="highlight" size="mini" :round="false" plain v-for="event in codex['event']" :key="event">
           {{ event }}
         </var-chip>
       </template>
-      <template v-if="codex['rarity'] !== undefined">
-        <var-chip :class="`${codex['aura']}-text`" size="mini" :round="false" plain>{{ codex['rarity'] }}</var-chip>
-      </template>
-      <template v-if="codex['place'] !== undefined">
-        <var-chip size="mini" :round="false" plain>{{ codex['place'] }}</var-chip>
-      </template>
-      <template v-if="codex['useable_by'] !== undefined && !['items'].includes(codex['category'])">
-        <var-chip size="mini" :round="false" plain>{{ codex['useable_by'] }}</var-chip>
-      </template>
-      <template v-if="codex['spell_type'] !== undefined">
-        <var-chip size="mini" :round="false" plain>{{ codex['spell_type'] }}</var-chip>
-      </template>
-      <template v-if="codex['power'] !== undefined">
-        <var-chip size="mini" :round="false" plain>
-          <template #left>
-            <var-icon name="fire" size="12" />
-          </template>
-          {{ codex['power'] }}
-        </var-chip>
-      </template>
+      <var-chip v-if="codex['rarity'] !== undefined" :class="`${codex['aura']}-text`" size="mini" :round="false" plain>
+        {{ codex['rarity'] }}
+      </var-chip>
+      <var-chip v-if="codex['place'] !== undefined" size="mini" :round="false" plain>
+        {{ codex['place'] }}
+      </var-chip>
+      <var-chip v-if="codex['useable_by'] !== undefined && !['items'].includes(codex['category'])" size="mini"
+        :round="false" plain>
+        {{ codex['useable_by'] }}
+      </var-chip>
+      <var-chip v-if="codex['spell_type'] !== undefined" size="mini" :round="false" plain>
+        {{ codex['spell_type'] }}
+      </var-chip>
+      <var-chip v-if="codex['power'] !== undefined" size="mini" :round="false" plain>
+        <template #left>
+          <var-icon name="fire" size="12" />
+        </template>
+        {{ codex['power'] }}
+      </var-chip>
 
       <!-- Drops -->
       <template v-if="codex['causes'] !== undefined">
@@ -60,21 +59,26 @@ import { defineComponent } from 'vue';
           </span>
         </var-chip>
       </template>
+
       <template v-if="codex['gives'] !== undefined">
         <var-chip type="info" size="mini" :round="false" plain v-for="give, index in codex['gives']" :key="index">
           {{ `${give['name']} (${give['chance']})` }}
         </var-chip>
       </template>
+
       <template v-if="codex['cures'] !== undefined">
         <var-chip type="success" size="mini" :round="false" plain v-for="cure, index in codex['cures']" :key="index">
           {{ `${cure['name']}` }}
         </var-chip>
       </template>
+
       <template v-if="codex['immunities'] !== undefined">
-        <var-chip type="primary" size="mini" :round="false" plain v-for="immunity, index in codex['immunities']" :key="index">
+        <var-chip type="primary" size="mini" :round="false" plain v-for="immunity, index in codex['immunities']"
+          :key="index">
           {{ `${immunity['name']}` }}
         </var-chip>
       </template>
+      
     </var-space>
   </var-cell>
 </template>
@@ -84,11 +88,11 @@ export default defineComponent({
   props: {
     codex: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
     click: {
       type: Function,
-      default: () => {},
+      default: () => { },
     }
   }
 })
