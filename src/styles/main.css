@@ -138,11 +138,3 @@
 .cell-chip-space {
   line-height: 120%;
 }
-
-.codex-icon {
-  width: 72px;
-  height: 72px;
-  margin: 16px 12px;
-  flex-shrink: 0;
-  image-rendering: pixelated;
-}
