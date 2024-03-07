@@ -93,3 +93,5 @@ export default defineComponent({
   }
 })
 </script>
+
+<style src="@/styles/color.css" scoped></style>

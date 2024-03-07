@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { store } from '@/store';
-import ItemList from '@/components/Card/List/ItemList.vue';
+import ItemList from '@/components/List/ItemList.vue';
 </script>
 
 <template>

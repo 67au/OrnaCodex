@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { store } from '@/store'
-import { setTheme } from '@/theme'
+import { setTheme } from '@/styles'
 
 const show = ref(false);
 

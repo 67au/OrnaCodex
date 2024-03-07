@@ -1,0 +1,91 @@
+.exotic {
+  color: #fff079;
+  font-weight: 700;
+  background: linear-gradient(to bottom, #aa4eef, #49e840);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rare {
+  background: transparent url("https://playorna.com/static/img/fx/rare.png") no-repeat 50% 50%;
+  background-size: 130%;
+}
+
+.famed {
+  background: transparent url("https://playorna.com/static/img/fx/famed.png") no-repeat 50% 50%;
+  background-size: 130%;
+}
+
+.legendary {
+  background: transparent url("https://playorna.com/static/img/fx/legendary.png") no-repeat 50% 50%;
+  background-size: 130%;
+}
+
+.superboss {
+  background: transparent url("https://playorna.com/static/img/fx/superboss.png") 50% 50% no-repeat;
+  background-size: 140%;
+}
+
+.celestial {
+  background: transparent url("https://playorna.com/static/img/fx/celestial.png") no-repeat 50% 50%;
+  background-size: 100%;
+}
+
+.highlight {
+  color: #ffb300;
+}
+
+/* element */
+.water {
+  color: #5facff;
+}
+
+.earthen {
+  color: #0fab0f;
+}
+
+.lightning {
+  color: #a59e46;
+}
+
+.fire {
+  color: #ff8135;
+}
+
+.dark {
+  color: #d900ff;
+}
+
+.holy {
+  color: #ddd;
+}
+
+.arcane {
+  color: #8e78ff;
+}
+
+.dragon {
+  color: #FF9800;
+}
+
+.rare-text {
+  color: #49e840;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
+
+.famed-text {
+  color: #4ca3ff;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
+
+.legendary-text {
+  color: #aa4eef;
+  /* text-shadow: 1px 1px 1px rgba(0,0,0,0.3); */
+}
+
+/* placeholder
+.celestial-text {
+
+}
+ */
