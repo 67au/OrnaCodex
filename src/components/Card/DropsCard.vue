@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { store, global } from '@/store'
-import ItemList from '@/components/Card/List/ItemList.vue'
-import TextLists from '@/components/Card/List/TextLists.vue';
-import ChanceLists from '@/components/Card/List/ChanceLists.vue';
+import ItemList from '@/components/List/ItemList.vue'
+import TextLists from '@/components/List/TextLists.vue';
+import ChanceLists from '@/components/List/ChanceLists.vue';
 import { defineComponent } from 'vue';
 </script>
 

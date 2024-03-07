@@ -506,7 +506,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .assess-table {
   overflow: scroll;
   max-height: 65vh;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { store, global } from '@/store';
+import '@/styles/color.css';
 </script>
 
 <template>
@@ -57,7 +58,7 @@ import { store, global } from '@/store';
   </var-card>
 </template>
 
-<style scoped>
+<style src="@/styles/color.css" scoped>
 .event {
   padding-top: 5px;
   max-width: 190px;

@@ -12,11 +12,12 @@ const suppoertedThemes: Themes = {
 	'md3-dark': ComponentsThemes.md3Dark,
 };
 
-store.state.theme = store.state.theme || 'md2-dark';
-
-StyleProvider(suppoertedThemes[store.state.theme]);
-
 export function setTheme(theme: string) {
   store.state.theme = theme
   StyleProvider(suppoertedThemes[store.state.theme]);
+}
+
+export function useDark() {
+	store.state.theme = store.state.theme || 'md2-dark';
+	StyleProvider(suppoertedThemes[store.state.theme]);
 }

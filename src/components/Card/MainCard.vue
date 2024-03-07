@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@/assets/color.css';
 import { store, global } from '@/store';
 </script>
 
@@ -122,3 +121,5 @@ export default {
   }
 }
 </script>
+
+<style src="@/styles/color.css" scoped></style>
