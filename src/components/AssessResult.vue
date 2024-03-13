@@ -12,7 +12,7 @@ import { store } from '@/store';
           <var-icon v-if="result['quality'] > 0" name="checkbox-marked-circle" size="small" />
           <var-icon v-else name="close-circle" size="small" />
         </template>
-        {{ `${result['quality'] * 100}%` }}
+        {{ `${(result['quality'] * 100).toFixed()}%` }}
       </var-chip>
     </var-space>
     <var-table :elevation="2" class="assess-table">
