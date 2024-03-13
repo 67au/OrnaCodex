@@ -41,18 +41,11 @@
         "asc": "升序",
         "desc": "降序",
         "name": "名称",
+        "assess": "品质查询",
         "query": {
             "query": "查询",
             "level": "等级",
-            "attack": "物攻",
-            "crit": "暴击",
-            "defense": "物防",
-            "dexterity": "敏捷",
-            "hp": "血量",
-            "magic": "魔攻",
-            "mana": "魔力",
-            "resistance": "魔防",
-            "ward": "护盾",
+            "quality": "品质",
             "base": "基础",
             "isBoss": "头目装备"
         }
@@ -99,18 +92,11 @@
         "clickHere": "點擊查看",
         "close": "關閉",
         "offhands": "副手裝備",
+        "assess": "品質查詢",
         "query": {
             "query": "查詢",   
             "level": "等級",
-            "attack": "物攻",
-            "crit": "暴擊",
-            "defense": "物防",
-            "dexterity": "敏捷",
-            "hp": "血量",
-            "magic": "魔攻",
-            "mana": "魔力",
-            "resistance": "魔防",
-            "ward": "護盾",
+            "quality": "品質",
             "base": "基礎",
             "isBoss": "頭目裝備"
         }
@@ -158,18 +144,11 @@
         "notfound": "Not Found",
         "description": "Description",
         "offhands": "Off-Hands",
+        "assess": "Assess",
         "query": {
             "query": "Query",
             "level": "Level",
-            "attack": "Attack",
-            "crit": "Crit",
-            "defense": "Defense",
-            "dexterity": "Dexterity",
-            "hp": "HP",
-            "magic": "Magic",
-            "mana": "Mana",
-            "resistance": "Resistance",
-            "ward": "Ward",
+            "quality": "Quality",
             "base": "Base",
             "isBoss": "BossScale"
         }

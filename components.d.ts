@@ -12,6 +12,8 @@ declare module 'vue' {
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     AppLocaleSwitch: typeof import('./src/components/AppLocaleSwitch.vue')['default']
     AppThemeSwitch: typeof import('./src/components/AppThemeSwitch.vue')['default']
+    AssessQuery: typeof import('./src/components/AssessQuery.vue')['default']
+    AssessResult: typeof import('./src/components/AssessResult.vue')['default']
     ChanceLists: typeof import('./src/components/List/ChanceLists.vue')['default']
     DescriptionCard: typeof import('./src/components/Card/DescriptionCard.vue')['default']
     DropsCard: typeof import('./src/components/Card/DropsCard.vue')['default']

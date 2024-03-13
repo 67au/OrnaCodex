@@ -11,6 +11,7 @@ import SpellCard from '@/components/Card/SpellCard.vue';
 import DescriptionCard from '@/components/Card/DescriptionCard.vue';
 import GuideResult from '@/components/GuideResult.vue';
 import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
+import AssessResult from '@/components/AssessResult.vue';
 </script>
 
 <template>
@@ -24,22 +25,38 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
         <var-card class="card">
           <template #description>
             <div class="card-description">
-              <var-space justify="flex-start" align="center">
+              <var-space justify="flex-start" align="center" size="small">
                 <var-link :href="`${global.ornaUrl}${store.codex.url}`" target="_blank" underline="none">
-                  <var-button type="primary" size="small"> Playorna.com </var-button>
+                  <var-button type="primary" size="small"> playorna.com </var-button>
                 </var-link>
-                <var-button type="success" size="small" @click="getOrnaGuide" :loading="show.loading" loading-type="wave">
-                  Orna.guide </var-button>
+                <var-button type="success" size="small" @click="getOrnaGuide" :loading="show.loading"
+                  loading-type="wave">
+                  orna.guide </var-button>
                 <var-button type="warning" size="small" @click="show.json = true"> JSON </var-button>
-                <template v-if="store.codexPage.category === 'items' && store.codex.usedItem['stats'] !== undefined">
-                  <var-button type="info" size="small" @click="getItemAssess" :loading="show.loading" loading-type="wave">
-                    Assess </var-button>
-                  <var-button type="danger" size="small" @click="getItemAssessAPI" :loading="show.loading"
-                    loading-type="wave">
-                    Assess(API) </var-button>
-                  <var-button type="warning" size="small" @click="getItemAssessBeta">
-                    Assess(Beta) </var-button>
-                </template>
+              </var-space>
+            </div>
+          </template>
+        </var-card>
+
+        <var-card class="card" :title="$t('assess')"
+          v-if="store.codexPage.category === 'items' && store.codex.usedItem['stats'] !== undefined">
+          <template #description>
+            <div class="card-description">
+              <var-space justify="flex-start" align="center" size="small">
+                <var-button type="info" size="small" @click="getItemAssess()" :loading="show.loading"
+                  loading-type="wave">
+                  Guide
+                </var-button>
+                <var-button type="primary" size="small" @click="getItemAssessAPI()" :loading="show.loading"
+                  loading-type="wave">
+                  Guide API
+                </var-button>
+                <var-button type="success" size="small" @click="getItemAssessYACO()">
+                  YACO
+                </var-button>
+                <var-button type="warning" size="small" @click="getItemAssessYACO(true)">
+                  Quality
+                </var-button>
               </var-space>
             </div>
           </template>
@@ -90,180 +107,39 @@ import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
 
 
   <!-- AssessApi -->
-  <template v-if="store.guide.cache !== undefined && guideStats !== undefined">
-    <var-dialog v-model:show="show.api" :cancel-button="false">
-      <template #title>
-        <span>
-          <var-icon name="magnify" /> Assess
-        </span>
-      </template>
-      <div>
-        <span> {{ store.codex.usedItem['name'] }} </span>
-        <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
-          <var-col :span="8">
-            <div class="assess">
-              <var-select variant="outlined" :placeholder="$t('query.level')" v-model="guide.query['level']" size="small">
-                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
-              </var-select>
-            </div>
-          </var-col>
-          <var-col :span="8" v-for="key in Object.keys(guideStats)" :key="key">
-            <div class="assess">
-              <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.${key}`)"
-                v-model="guide.query[key]" />
-            </div>
-          </var-col>
-          <var-col :span="8">
-            <var-button style="width: 100%;" type="primary" @click="queryItemAssess">
-              {{ $t('query.query') }}
-            </var-button>
-          </var-col>
-        </var-row>
-      </div>
-    </var-dialog>
-  </template>
-  <template v-else>
-    <var-popup :default-style="false" v-model:show="show.api">
-      <GuideResult class="popup-content" :click="() => show.api = false" failed />
-    </var-popup>
-  </template>
+  <AssessQuery v-if="store.guide.cache !== undefined && guideStats !== undefined" title="Assess" :query="query"
+    :base-stats="guideStats" v-model:show="show.api" :query-func="queryItemAssess" />
+  <var-popup v-else :default-style="false" v-model:show="show.api">
+    <GuideResult class="popup-content" @click="show.api = false" failed />
+  </var-popup>
 
   <!-- AssessQuery -->
-  <var-popup :default-style="false" v-model:show="show.result">
-    <var-paper class="popup-content">
-      <var-space align="center" justify="space-between" style="margin-bottom: 2px">
-        <span>{{ store.codex.usedItem['name'] }}</span>
-        <var-chip size="small" :type="guide.result['quality'] > 0 ? 'primary' : 'danger'">
-          <template #left>
-            <var-icon v-if="guide.result['quality'] > 0" name="checkbox-marked-circle" size="small" />
-            <var-icon v-else name="close-circle" size="small" />
-          </template>
-          {{ `${guide.result['quality'] * 100}%` }}
-        </var-chip>
-      </var-space>
-      <var-table :elevation="2" class="assess-table">
-        <thead>
-          <tr>
-            <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(guide.result['stats'])" :key="key">{{ $t(`query.${key}`) }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td> {{ $t('query.base') }} </td>
-            <td v-for="stat, index in (Object.values(guide.result['stats']) as StatValue)" :key="index">{{ stat['base'] }}</td>
-          </tr>
-          <tr v-for="(_, i) in Array.from({ length: 13 })" :key="i">
-            <td>{{ i + 1 }}</td>
-            <td v-for="stat, index in (Object.values(guide.result['stats']) as StatValue)" :key="index">{{ stat['values'][i] }}</td>
-          </tr>
-          <tr>
-            <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(guide.result['stats'])" :key="key">{{ $t(`query.${key}`) }}</th>
-          </tr>
-        </tbody>
-      </var-table>
-      <var-space justify="space-around" style="margin-top: 4px;">
-        <var-button type="primary" icon-container @click="show.result = false">
-          {{ $t('close') }}
-        </var-button>
-      </var-space>
-    </var-paper>
-  </var-popup>
+  <AssessResult :result="guide.result" v-model:show="show.result" />
 
-  <!-- AssessBeta -->
-  <template v-if="!loading && isAssessItem">
-    <var-dialog v-model:show="beta.show" :cancel-button="false">
-      <template #title>
-        <span>
-          <var-icon name="magnify" /> Assess(Beta)
-        </span>
-      </template>
-      <div>
-        <span> {{ store.codex.usedItem['name'] }} </span>
-        <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
-          <var-col :span="8">
-            <div class="assess">
-              <var-select variant="outlined" :placeholder="$t('query.level')" v-model="beta.level" size="small">
-                <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
-              </var-select>
-            </div>
-          </var-col>
-          <var-col :span="8">
-            <div class="assess">
-              <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="beta.isBoss" size="small">
-               <var-option :label="$t('yes')" :value="true"/>
-               <var-option :label="$t('no')" :value="false"/>
-              </var-select>
-            </div>
-          </var-col>
-          <var-col :span="8" v-for="key in Object.keys(beta.query)" :key="key">
-            <div class="assess">
-              <var-input variant="outlined" size="small" type="number" :placeholder="$t(`stat_key.${key}`)"
-                v-model="beta.query[key]" />
-            </div>
-          </var-col>
-          <var-col :span="8">
-            <var-button style="width: 100%;" type="primary" @click="queryItemAssessBeta">
-              {{ $t('query.query') }}
-            </var-button>
-          </var-col>
-        </var-row>
-      </div>
-    </var-dialog>
-  </template>
+  <!-- AssessYACO -->
+  <AssessQuery v-if="yaco.result !== undefined && yaco.result.stats !== undefined" title="Assess" :query="query"
+    :base-stats="yaco.result.stats" v-model:show="show.yaco" :query-func="queryItemAssessYACOAPI" />
   <template v-else>
-    <var-popup :default-style="false" v-model:show="beta.show">
-      <GuideResult class="popup-content" :click="() => beta.show = false" failed />
+    <var-popup :default-style="false" v-model:show="show.yaco">
+      <GuideResult class="popup-content" :click="() => show.yacoResult = false" failed />
     </var-popup>
   </template>
 
-  <!-- AssessQueryBeta -->
-  <var-popup :default-style="false" v-model:show="beta.showResult">
-    <var-paper class="popup-content">
-      <var-space align="center" justify="space-between" style="margin-bottom: 2px">
-        <span>{{ store.codex.usedItem['name'] }}</span>
-        <var-chip size="small" :type="beta.quality > 0 ? 'primary' : 'danger'">
-          <template #left>
-            <var-icon v-if="beta.quality > 0" name="checkbox-marked-circle" size="small" />
-            <var-icon v-else name="close-circle" size="small" />
-          </template>
-          {{ `${ beta.quality * 100}%` }}
-        </var-chip>
-      </var-space>
-      <var-table :elevation="2" class="assess-table">
-        <thead>
-          <tr>
-            <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(beta.result)" :key="key">{{ $t(`stat_key.${key}`) }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td> {{ $t('query.base') }} </td>
-            <td v-for="stat, index in Object.values(beta.base)" :key="index">{{ stat }}</td>
-          </tr>
-          <tr v-for="(_, i) in Array.from({ length: 13 })" :key="i">
-            <td>{{ i + 1 }}</td>
-            <td v-for="stat, index in (Object.values(beta.result) as StatValue)" :key="index">{{ stat[i] }}</td>
-          </tr>
-          <tr>
-            <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(beta.result)" :key="key">{{ $t(`stat_key.${key}`) }}</th>
-          </tr>
-        </tbody>
-      </var-table>
-      <var-space justify="space-around" style="margin-top: 4px;">
-        <var-button type="primary" icon-container @click="beta.showResult = false">
-          {{ $t('close') }}
-        </var-button>
-      </var-space>
-    </var-paper>
-  </var-popup>
+  <!-- AssessQueryQuailty -->
+  <AssessResult :result="yaco.result" v-model:show="show.yacoResult" />
+  <AssessQuery v-if="yaco.result !== undefined && yaco.result.stats !== undefined" title="Assess" :query="query"
+    :base-stats="yaco.result.stats" v-model:show="show.yaco" :query-func="queryItemAssessYACOAPI" />
+  <template v-else>
+    <var-popup :default-style="false" v-model:show="show.yaco">
+      <GuideResult class="popup-content" :click="() => show.yacoResult = false" failed />
+    </var-popup>
+  </template>
+
+  <!-- AssessQueryQuailty -->
+  <AssessResult :result="yaco.result" v-model:show="show.yacoResult" />
 </template>
 
 <script lang="ts">
-type StatValue = Array<any>;
 
 const guideApiMap: any = {
   'items': 'item',
@@ -298,21 +174,15 @@ export default defineComponent({
   data() {
     return {
       store,
+      query: {
+        data: {},
+        extra: {},
+      } as any,
       guide: {
-        query: {
-          level: "1",
-        },
         result: undefined,
       } as any,
-      beta: {
-        level: 1,
-        query: {},
-        base: {},
-        quality: 1,
-        isBoss: true,
+      yaco: {
         result: undefined,
-        show: false,
-        showResult: false,
       } as any,
       show: {
         guide: false,
@@ -321,6 +191,8 @@ export default defineComponent({
         api: false,
         result: false,
         loading: false,
+        yaco: false,
+        yacoResult: false,
       },
       loading: true,
     }
@@ -389,7 +261,7 @@ export default defineComponent({
         itemName = itemName.slice(0, -9);
       }
       const controller = new AbortController();
-      setTimeout(() => controller.abort(), 5000);
+      setTimeout(() => controller.abort(), 10000);
       try {
         const resp = await fetch(this.searchUrl, {
           method: 'POST',
@@ -441,7 +313,7 @@ export default defineComponent({
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(Object.fromEntries(Object.entries(this.guide.query).map(([k, v]) => [k, Number(v)])))
+          body: JSON.stringify(Object.fromEntries(Object.entries(this.query.data).map(([k, v]) => [k, Number(v)])))
         })
         const result = await resp.json();
         return result;
@@ -453,16 +325,23 @@ export default defineComponent({
       this.show.loading = true;
       await this.updateGuideCache()
       if (store.guide.cache !== undefined && this.guideStats !== undefined) {
-        this.guide.query['id'] = store.guide.cache['id']
-        this.guide.query['level'] = 1;
+        this.query.data = {
+          id: store.guide.cache['id'],
+          level: 1,
+        }
+        this.query.extra = {
+          isQuality: false,
+          isBoss: store.guide.cache['boss'],
+          fromGuide: true,
+        }
         for (const [key, value] of (Object.entries(this.guideStats) as Array<[string, any]>)) {
-          this.guide.query[key] = value['base'];
+          this.query.data[key] = value['base'];
         }
       }
       this.show.loading = false;
       setTimeout(() => {
         this.show.api = true;
-      }, 350);
+      }, 150);
     },
     async queryItemAssess() {
       this.guide.result = await this.requestItemAssess();
@@ -470,20 +349,39 @@ export default defineComponent({
         this.show.result = true;
       }
     },
-    getItemAssessBeta() {
-      this.beta.show = true;
-      this.beta.level = 1;
-      this.beta.isBoss = true;
-      this.beta.query = {};
-      this.beta.base = {};
+    getItemAssessYACO(quality: boolean = false) {
+      // reset
+      this.query.data = {
+        level: 1,
+        quality: 100,
+      };
+      this.query.extra = {
+        isQuality: quality,
+        isBoss: true,
+        fromGuide: false,
+      };
+      if (quality && store.guide.cache !== undefined) {
+        this.query.extra.fromGuide = true;
+        this.query.extra.isBoss = store.guide.cache['boss'];
+      }
+      this.yaco.result = {
+        quality: 1,
+        stats: {},
+      }
       for (const [key, value] of (Object.entries(this.ornaStats) as Array<[string, string]>)) {
         if (allowedKeys.has(key)) {
-          this.beta.query[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
-          this.beta.base[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+          this.query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+          this.yaco.result.stats[key] = {
+            base: Number(value.endsWith('%') ? value.slice(0, -1) : value),
+            values: Array({ length: 13 }),
+          }
         }
       }
+      setTimeout(() => {
+        this.show.yaco = true;
+      }, 150);
     },
-    queryItemAssessBeta() {
+    queryItemAssessYACOAPI() {
       const isWeapon = store.codex.basedItem['place'] === 'Weapon';
       let pass: any = undefined;
       if (isWeapon) {
@@ -491,32 +389,22 @@ export default defineComponent({
       } else {
         pass = new Set(['crit', 'dexterity']);
       }
-      const query = (Object.entries(this.beta.query).filter((m) => !pass.has(m[0])) as Array<[string, number]>).toSorted((a: [string, number], b: [string, number]) => b[1] - a[1]);
-      this.beta.quality = 2;
-      if (query.length>0) {
-        const key = query[0][0];
-        this.beta.quality = getItemQuailty(this.beta.query[key], this.beta.base[key], this.beta.level, this.beta.isBoss);
+      const query = (Object.entries(this.query.data).filter((m) => !pass.has(m[0])) as Array<[string, number]>).toSorted((a: [string, number], b: [string, number]) => b[1] - a[1]);
+      if (this.query.extra.isQuality) {
+        this.yaco.result.quality = this.query.data.quality / 100;
       }
-      this.beta.result = Object.fromEntries((Object.entries(this.beta.base) as Array<[string, number]>).map(([key, base]) => {
-        return [key, getUpgradedStats(base, this.beta.quality, this.beta.isBoss, key, isWeapon)]
-      }))
-      this.beta.showResult = true;
+      else {
+        this.yaco.result.quality = 2;
+        if (query.length > 0) {
+          const key = query[0][0];
+          this.yaco.result.quality = getItemQuailty(this.query.data[key], this.yaco.result.stats[key].base, this.query.data.level, this.query.data.isBoss);
+        }
+      }
+      (Object.entries(this.yaco.result.stats) as Array<[string, any]>).forEach(([key, stat]) => {
+        this.yaco.result.stats[key].values = getUpgradedStats(stat.base, this.yaco.result.quality, this.query.data.isBoss, key, isWeapon)
+      })
+      this.show.yacoResult = true;
     }
   },
 })
 </script>
-
-<style>
-.assess-table {
-  overflow: scroll;
-  max-height: 65vh;
-  white-space: nowrap;
-}
-
-.popup-content {
-  padding: 24px;
-  width: 85vw;
-  max-width: 375px;
-  border-radius: 28px;
-}
-</style>
