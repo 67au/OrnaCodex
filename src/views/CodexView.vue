@@ -401,7 +401,7 @@ export default defineComponent({
         }
       }
       (Object.entries(this.yaco.result.stats) as Array<[string, any]>).forEach(([key, stat]) => {
-        this.yaco.result.stats[key].values = getUpgradedStats(stat.base, this.yaco.result.quality, this.query.data.isBoss, key, isWeapon)
+        this.yaco.result.stats[key].values = getUpgradedStats(stat.base, this.yaco.result.quality, this.query.extra.isBoss, key, isWeapon)
       })
       this.show.yacoResult = true;
     }
