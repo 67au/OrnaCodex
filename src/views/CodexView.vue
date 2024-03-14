@@ -394,6 +394,7 @@ export default defineComponent({
         this.yaco.result.quality = this.query.data.quality / 100;
       }
       else {
+        delete this.query.data.quality;
         this.yaco.result.quality = 2;
         if (query.length > 0) {
           const key = query[0][0];
