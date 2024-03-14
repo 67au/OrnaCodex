@@ -12,6 +12,7 @@ import DescriptionCard from '@/components/Card/DescriptionCard.vue';
 import GuideResult from '@/components/GuideResult.vue';
 import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
 import AssessResult from '@/components/AssessResult.vue';
+import AssessQuery from '@/components/AssessQuery.vue';
 </script>
 
 <template>
