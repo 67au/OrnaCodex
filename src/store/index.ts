@@ -21,7 +21,7 @@ const elementColor: any = {
 
 const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];
 const arrayOptions = ['event', 'tags'];
-const dropOptions = ['causes', 'cures', 'gives', 'immunities'];
+const statusOptions = ['causes', 'cures', 'gives', 'immunities'];
 // const tagsOptions = ['items', 'raids', 'spells'];
 
 const stat_precent_keys = new Set(['ward', 'crit', 'gold_bonus',
@@ -33,6 +33,10 @@ const sortKeys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit
   'follower_stats', 'follower_act', 'summon_stats',
   'view_distance', 'adornment_slots', 'monster_attraction',];
 
+// const notTransKeys = ['name', 'description', 'bestial_bond', 'abilities'];
+
+type Index = Array<[string, string]>;
+
 export const global = {
   ornaUrl: ornaUrl,
   staticUrl: `${ornaUrl}/static`,
@@ -43,7 +47,7 @@ export const global = {
   elementColor: elementColor,
   singleOptions: singleOptions,
   arrayOptions: arrayOptions,
-  dropOptions: dropOptions,
+  statusOptions: statusOptions,
   sortKeys: sortKeys,
   sortKeysSet: new Set(sortKeys),
 }
@@ -60,29 +64,32 @@ export const store: any = reactive({
     id: undefined,
   },
   codex: {
-    meta: undefined,
-    data: {},
-    materials: computed(() => new Set(Object.keys(store.codex.meta['upgrade_materials']))),
-    spells: computed(() => new Set(Object.keys(store.codex.meta['skills']))),
-    offhand_skills: computed(() => new Set(Object.keys(store.codex.meta['offhand_skills']))),
-    offhand_items: computed(() => new Set(Object.keys(store.codex.meta['offhand_items']))),
-    miss_entries: computed(() => new Set(Object.keys(store.codex.meta['miss_entries']))),
+    extra: undefined,  // 'not_trans_keys', 'icons', 'miss_entries', 
+                      // 'upgrade_materials', 'skills', 'offhand_skills', 'offhand_items'
+    base: {},  // {lang: notTransKeys}
+    data: {},  // {category: {id: item}}
+    materials: computed(() => new Set(Object.keys(store.codex.extra['upgrade_materials']))),
+    spells: computed(() => new Set(Object.keys(store.codex.extra['skills']))),
+    offhand_skills: computed(() => new Set(Object.keys(store.codex.extra['offhand_skills']))),
+    offhand_items: computed(() => new Set(Object.keys(store.codex.extra['offhand_items']))),
+    miss_entries: computed(() => new Set(Object.keys(store.codex.extra['miss_entries']))),
+    icons: computed(() => store.codex.extra.icons),
     isMaterial: () => store.codex.materials.has(store.codexPage.id),
     isSkill: () => store.codex.spells.has(store.codexPage.id),
     isOffhandSkill: () => store.codex.offhand_skills.has(store.codexPage.id),
     isOffhandItem: () => store.codex.offhand_items.has(store.codexPage.id),
     isMissEntry: (entry: string) => store.codex.miss_entries.has(`${store.state.language}/${entry}`),
-    getMissEntry: (entry: string) => store.codex.meta['miss_entries'][`${store.state.language}/${entry}`],
-    based: computed(() => store.codex.data[languageBased]),
+    getMissEntry: (entry: string) => store.codex.extra['miss_entries'][`${store.state.language}/${entry}`],
+    based: computed(() => store.codex.base[store.state.language]),
     basedItem: computed(() => store.codex.based[store.codexPage.category][store.codexPage.id]),
-    used: computed(() => store.codex.data[store.state.language]),
+    used: computed(() => store.codex.data),
     usedItem: computed(() => store.codex.used[store.codexPage.category][store.codexPage.id]),
     url: computed(() => `/codex/${store.codexPage.category}/${store.codexPage.id}/`),
     filtered: computed(function (): Array<[string, string]> {
       return store.codex.index.filter(([category, id]: [string, string]) => {
         if (store.codex.used[category][id]) {
           const search = new RegExp(store.search, 'i')
-          return search.test(store.codex.used[category][id]['name']) || (store.codex.used[category][id]['description'] != undefined && search.test(store.codex.used[category][id]['description']))
+          return search.test(store.codex.based[category][id]['name']) || (store.codex.based[category][id]['description'] != undefined && search.test(store.codex.based[category][id]['description']))
         }
       }).filter(([category, id]: [string, string]) => {
         return store.filters.every((filter: any) => {
@@ -95,7 +102,7 @@ export const store: any = reactive({
             if (filter['v'] === undefined) { return true }
             return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']].includes(filter['v'])
           }
-          if (dropOptions.includes(filter['k'])) {
+          if (statusOptions.includes(filter['k'])) {
             if (filter['v'] === undefined) { return true }
             if (filter['v'].length === 0) { return true }
             if (store.codex.used[category][id][filter['k']] !== undefined) {
@@ -112,15 +119,17 @@ export const store: any = reactive({
     }),
     sorted: computed(() => {
       return (store.sort === undefined) ? store.codex.filtered : store.codex.filtered.toSorted((a: string, b: string) => {
-        const itemA = store.codex.used[a[0]][a[1]];
-        const itemB = store.codex.used[b[0]][b[1]];
         if (store.sort === 'name') {
+          const itemA = store.codex.based[a[0]][a[1]];
+          const itemB = store.codex.based[b[0]][b[1]];
           if (store.order) {
             return itemA['name'].localeCompare(itemB['name']);
           } else {
             return itemB['name'].localeCompare(itemA['name']);
           }
         }
+        const itemA = store.codex.used[a[0]][a[1]];
+        const itemB = store.codex.used[b[0]][b[1]];
         if (store.sort === 'tier') {
           if (store.order) {
             return itemA['tier'] - itemB['tier'];
@@ -142,7 +151,7 @@ export const store: any = reactive({
         })() * (store.order ? 1 : -1)
       })
     }),
-    index: computed(function (): Array<[string, string]> {
+    index: computed(function (): Index {
       const index: any[] = [];
       for (const [category, items] of (Object.entries(store.codex.used) as Array<[string, any]>)) {
         for (const id of Object.keys(items)) {
@@ -207,7 +216,7 @@ export const store: any = reactive({
       immunities: new Set(),
     };
 
-    store.filters = [];
+    // store.filters = [];
     store.search = '';
     store.menus = Object.keys(store.options).map((key) => [key, true]);
     for (const items of (Object.values(store.codex.used) as Array<[string, any]>)) {
@@ -227,7 +236,7 @@ export const store: any = reactive({
     }
 
     // drop
-    for (const option of dropOptions) {
+    for (const option of statusOptions) {
       if (item[option] != undefined) {
         for (const t of item[option]) {
           store.options[option].add(t['name']);

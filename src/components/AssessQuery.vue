@@ -5,17 +5,17 @@ import { store } from '@/store';
 <template>
   <var-dialog :show="show" @update:show="$emit('update:show', $event)" :cancel-button="false">
     <template #title>
+    <var-space align="center" justify="space-between">
       <span>
         <var-icon name="magnify" /> {{ title }}
       </span>
-    </template>
-    <div>
-      <var-space align="center" justify="space-between">
-      <span> {{ name }} </span>
       <var-chip size="small" :type="query.extra.fromGuide?'success':'warning'">
         {{ query.extra.fromGuide?'Guide':'YACO' }}
       </var-chip>
-      </var-space>
+    </var-space>
+    </template>
+    <div> 
+      <span> {{ name }} </span>
       <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
         <var-col :span="8">
           <div class="assess">
@@ -42,7 +42,7 @@ import { store } from '@/store';
         </var-col>
         <var-col :span="8" v-for="key in Object.keys(baseStats)" :key="key">
           <div class="assess">
-            <var-input variant="outlined" size="small" type="number" :placeholder="$t(`stat_key.${key}`)"
+            <var-input variant="outlined" size="small" type="number" :placeholder="$t(`meta.stats.${key}`)"
               v-model="query.data[key]" :disabled="query.extra.isQuality" />
           </div>
         </var-col>
@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     name() {
-      return store.codex.usedItem['name'];
+      return store.codex.basedItem['name'];
     }
   },
 }

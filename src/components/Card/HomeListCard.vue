@@ -28,25 +28,26 @@ import '@/styles/color.css';
             </template>
 
             <template #description>
-              {{ store.codex.used[category][id]['name'] }}
+              {{ store.codex.based[category][id]['name'] }}
               <br>
               <var-space size="mini" style="line-height: 120%;">
-                <var-chip type="warning" size="mini" :round="false" plain>{{ global.star +
-          store.codex.used[category][id]['tier']
-                  }}</var-chip>
-                <var-chip type="primary" size="mini" :round="false" plain>{{
-          $t(`categories.${store.codex.used[category][id]['category']}`) }}</var-chip>
+                <var-chip type="warning" size="mini" :round="false" plain>
+                  {{ global.star + store.codex.used[category][id]['tier'] }}
+                </var-chip>
+                <var-chip type="primary" size="mini" :round="false" plain>
+                  {{ $t(`categories.${category}`) }}
+                </var-chip>
                 <template v-if="store.codex.used[category][id]['event'] != undefined">
                   <var-chip class="highlight" size="mini" :round="false" plain
                     v-for="event in store.codex.used[category][id]['event']" :key="event">
-                    <span class="event">{{ event }}</span>
+                    <span class="event">{{ $t(`meta.event.${event}`) }}</span>
                   </var-chip>
                 </template>
 
                 <template
                   v-if="global.sortKeysSet.has(store.sort) && store.codex.used[category][id]['stats'] !== undefined && store.codex.used[category][id]['stats'][store.sort] !== undefined">
                   <var-chip type="info" size="mini" :round="false" plain>
-                    {{ `${$t('stat_key.' + store.sort)}: ${store.codex.used[category][id]['stats'][store.sort]}` }}
+                    {{ `${$t(`meta.stats.${store.sort}`)}: ${store.codex.used[category][id]['stats'][store.sort]}` }}
                   </var-chip>
                 </template>
               </var-space>

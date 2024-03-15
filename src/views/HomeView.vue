@@ -24,7 +24,7 @@ export default defineComponent({
     store.renderList();
     this.loading = false;
     watch(() => this.$i18n.locale, () => {
-      store.buildOptions();
+      store.search = '';
       store.renderList();
     });
   },
