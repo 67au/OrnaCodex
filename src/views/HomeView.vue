@@ -31,7 +31,7 @@ export default defineComponent({
   data() {
     return {
       store,
-      loading: false,
+      loading: true,
     }
   }
 })
