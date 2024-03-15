@@ -199,26 +199,26 @@
     source-map-js "^1.0.1"
     yaml-eslint-parser "^1.2.2"
 
-"@intlify/core-base@9.10.1":
-  version "9.10.1"
-  resolved "https://registry.yarnpkg.com/@intlify/core-base/-/core-base-9.10.1.tgz#e61d507d35beb0c69f9c94566313f9520c25a84a"
-  integrity sha512-0+Wtjj04GIyglh5KKiNjRwgjpHrhqqGZhaKY/QVjjogWKZq5WHROrTi84pNVsRN18QynyPmjtsVUWqFKPQ45xQ==
+"@intlify/core-base@9.10.2":
+  version "9.10.2"
+  resolved "https://registry.yarnpkg.com/@intlify/core-base/-/core-base-9.10.2.tgz#e7f8857f8011184e4afbdcfae7dbd85c50ba5271"
+  integrity sha512-HGStVnKobsJL0DoYIyRCGXBH63DMQqEZxDUGrkNI05FuTcruYUtOAxyL3zoAZu/uDGO6mcUvm3VXBaHG2GdZCg==
   dependencies:
-    "@intlify/message-compiler" "9.10.1"
-    "@intlify/shared" "9.10.1"
+    "@intlify/message-compiler" "9.10.2"
+    "@intlify/shared" "9.10.2"
 
-"@intlify/message-compiler@9.10.1", "@intlify/message-compiler@^9.4.0":
-  version "9.10.1"
-  resolved "https://registry.yarnpkg.com/@intlify/message-compiler/-/message-compiler-9.10.1.tgz#d70c9ec211dab67d50a42ad1fb782c0e02f89c42"
-  integrity sha512-b68UTmRhgZfswJZI7VAgW6BXZK5JOpoi5swMLGr4j6ss2XbFY13kiw+Hu+xYAfulMPSapcHzdWHnq21VGnMCnA==
+"@intlify/message-compiler@9.10.2", "@intlify/message-compiler@^9.4.0":
+  version "9.10.2"
+  resolved "https://registry.yarnpkg.com/@intlify/message-compiler/-/message-compiler-9.10.2.tgz#c44cbb915bdd0d62780a38595a84006c781f717a"
+  integrity sha512-ntY/kfBwQRtX5Zh6wL8cSATujPzWW2ZQd1QwKyWwAy5fMqJyyixHMeovN4fmEyCqSu+hFfYOE63nU94evsy4YA==
   dependencies:
-    "@intlify/shared" "9.10.1"
+    "@intlify/shared" "9.10.2"
     source-map-js "^1.0.2"
 
-"@intlify/shared@9.10.1", "@intlify/shared@^9.4.0":
-  version "9.10.1"
-  resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-9.10.1.tgz#024ad6dd4ee9581962437570b3dc25516c82f4e9"
-  integrity sha512-liyH3UMoglHBUn70iCYcy9CQlInx/lp50W2aeSxqqrvmG+LDj/Jj7tBJhBoQL4fECkldGhbmW0g2ommHfL6Wmw==
+"@intlify/shared@9.10.2", "@intlify/shared@^9.4.0":
+  version "9.10.2"
+  resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-9.10.2.tgz#693300ea033868cbe4086b832170612f002e24a9"
+  integrity sha512-ttHCAJkRy7R5W2S9RVnN9KYQYPIpV2+GiS79T4EE37nrPyH6/1SrOh3bmdCRC1T3ocL8qCDx7x2lBJ0xaITU7Q==
 
 "@intlify/unplugin-vue-i18n@^3.0.1":
   version "3.0.1"
@@ -368,10 +368,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
-"@types/node@^20.11.10":
-  version "20.11.26"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.26.tgz#3fbda536e51d5c79281e1d9657dcb0131baabd2d"
-  integrity sha512-YwOMmyhNnAWijOBQweOJnQPl068Oqd4K3OFbTc6AHJwzweUwwWG3GIFY74OKks2PJUDkQPeddOQES9mLn1CTEQ==
+"@types/node@^20.11.28":
+  version "20.11.28"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.28.tgz#4fd5b2daff2e580c12316e457473d68f15ee6f66"
+  integrity sha512-M/GPWVS2wLkSkNHVeLkrF2fD5Lx5UC4PxA0uZcKc6QqbIQUJyW1jVjueJYi1z8n0I5PxYrtpnPnWglE+y9A0KA==
   dependencies:
     undici-types "~5.26.4"
 
@@ -486,46 +486,46 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@varlet/icons@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.1.2.tgz#eaa7d243b1dbc10c607c3181d9febfbf775e9b7b"
-  integrity sha512-s7NLcF7Zw0e5Ba7RfTeGeZvqH2+J/C9SlBu6q5XQqlf9S3TUJKbhokITDrIQXIJcbxRHJTn1y9mUte2GO5DKJA==
+"@varlet/icons@3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/icons/-/icons-3.1.3.tgz#ac15560251f2233bf48331c6e09872ef9bec5d22"
+  integrity sha512-KcGErcYaG+AYkGmWDhnhO0BHDOWnICDoDTHk4IYiYPTbYk4a14PuCAyPNPiGwJKgsz0i0gJ0OJZgM12DlhaIKQ==
 
-"@varlet/import-resolver@^3.0.7":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/import-resolver/-/import-resolver-3.1.2.tgz#c58facaaefd15ca4bc5c0815bb9f89790db23e92"
-  integrity sha512-1/lndwcurgv2YXwMy8ilDRr5w7xYAHEkGAoflN/TEWGdSVvOF7N6dfT1tLiOP52h8jdF8kEtT4u1b4NuPtKc7A==
+"@varlet/import-resolver@^3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/import-resolver/-/import-resolver-3.1.3.tgz#06f38c16c3422ad41b5d3c48ca3eecfecc44b34d"
+  integrity sha512-t6PTsIUcH8LZV54L5wKAdmud+M0LrUza3GhOPCBOjmgS8xdlADjaFQ3VVjLiLN2YcHVkxU6Wu1yzFdmkhjYfTQ==
   dependencies:
-    "@varlet/shared" "3.1.2"
+    "@varlet/shared" "3.1.3"
 
-"@varlet/shared@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.1.2.tgz#4012f8276a12567e9be1f350132fda11dee2fa63"
-  integrity sha512-yYlMboUrG4dBzJcEK5rOs9knTUfYi1CIqCRehLRhegoAqVW0mcQcvAwHpXCMUxHb2MJUDjt0i5gsMoiT4+6CuA==
+"@varlet/shared@3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/shared/-/shared-3.1.3.tgz#c735c34a9fd6496fc3886b0116384b6572490729"
+  integrity sha512-wrcifKAQNHPdKkqYzh40RIKSkKaVwPfq8BnwsygljBGtV3EYHQXCxsVzI6UMi9FeqbnP3wg+wo37R55ssVMF4g==
 
-"@varlet/touch-emulator@^3.0.7":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.1.2.tgz#97ca93257c38013e49c0c94af29c2e2e05c195da"
-  integrity sha512-ZlAYJZ3UDeSSgN2dJ/hgYOvMGUHtzDoPn0U6xqfJahqnu+CzRFIxxtHSAehoUlz+08ll0cHJBQIHM5BCDzQhZA==
+"@varlet/touch-emulator@^3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/touch-emulator/-/touch-emulator-3.1.3.tgz#4f3cfb2836c7f335089984a1a8fe230fe300cd36"
+  integrity sha512-iduMaS9iaJhiem7tI2C2P1pzJNL0dKw8FexZId+qkD/GQEXMSse9hzQ6D27zhGDWqWKp5VGI0jr3jE4iRVtuIg==
 
-"@varlet/ui@^3.0.7":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.1.2.tgz#6a06e9bab78808c334ebeeb8bd46a83cfcfdb2b9"
-  integrity sha512-vVY5QOc/cGeZNQ13vguqFJgufZv6QnG1hWxFHNXQv6AjKGJUv7y84QMpdVOFz5ntiMdiAzmhUBD9Qjm0kFpdjw==
+"@varlet/ui@^3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/ui/-/ui-3.1.3.tgz#5901a087b6edc58e4a58cc567e5965c18a7a7426"
+  integrity sha512-YTEO6wNlc6pzfCPLqGFmd0pAYPijEjAjjwCRTvC1qSJRLIzbUWZp92F7XuX8N7BhkxKRJjiyRdNqKSDyZLulhA==
   dependencies:
     "@popperjs/core" "^2.11.6"
-    "@varlet/icons" "3.1.2"
-    "@varlet/shared" "3.1.2"
-    "@varlet/use" "3.1.2"
+    "@varlet/icons" "3.1.3"
+    "@varlet/shared" "3.1.3"
+    "@varlet/use" "3.1.3"
     dayjs "^1.10.4"
     decimal.js "^10.2.1"
 
-"@varlet/use@3.1.2":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.1.2.tgz#66982f350d4280bb1c88d77ba16b86205317c83b"
-  integrity sha512-ErHlD+YWKJw3iQXgsu4O77Owx7j/+IDdoHV5udmyBOq1UE4qiZ3HYba1Ie0go8NMPnh6E9CfzlEDaOdrU01h/w==
+"@varlet/use@3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@varlet/use/-/use-3.1.3.tgz#bbece4af96455420efbf7f28a7fd7e9b51c57102"
+  integrity sha512-DgDDXzpdijsmDRehGJHKERp+Zd/Au72Ch8FTRZQ5TNqJKjTY4CD/7Sod3J9gfR7I/GZJ4QcduQqTKKDJOeH1Hw==
   dependencies:
-    "@varlet/shared" "3.1.2"
+    "@varlet/shared" "3.1.3"
 
 "@vitejs/plugin-vue@^5.0.3":
   version "5.0.4"
@@ -756,9 +756,9 @@ balanced-match@^1.0.0:
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
 binary-extensions@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
-  integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
+  integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
 boolbase@^1.0.0:
   version "1.0.0"
@@ -1611,9 +1611,9 @@ pkg-types@^1.0.3:
     pathe "^1.1.0"
 
 postcss-selector-parser@^6.0.15:
-  version "6.0.15"
-  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.15.tgz#11cc2b21eebc0b99ea374ffb9887174855a01535"
-  integrity sha512-rEYkQOMUCEMhsKbK66tbEU9QVIxbhN18YiniAwA7XQYTVBqrBy+P2p5JcdqsHgKM2zWylp8d7J6eszocfds5Sw==
+  version "6.0.16"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.16.tgz#3b88b9f5c5abd989ef4e2fc9ec8eedd34b20fb04"
+  integrity sha512-A0RVJrX+IUkVZbW3ClroRWurercFhieevHB38sr2+l9eUClMqome3LmEmnhlNy+5Mr2EYN6B2Kaw9wYdd+VHiw==
   dependencies:
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
@@ -1867,9 +1867,9 @@ typescript@~5.4.2:
   integrity sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==
 
 ufo@^1.3.2:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/ufo/-/ufo-1.4.0.tgz#39845b31be81b4f319ab1d99fd20c56cac528d32"
-  integrity sha512-Hhy+BhRBleFjpJ2vchUNN40qgkh0366FWJGqVLYBHev0vpHTrXSA0ryT+74UiW6KWsldNurQMKGqCm1M2zBciQ==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/ufo/-/ufo-1.5.0.tgz#a6f358bf16d4f847d830f23395768638bc21c632"
+  integrity sha512-c7SxU8XB0LTO7hALl6CcE1Q92ZrLzr1iE0IVIsUa9SlFfkn2B2p6YLO6dLxOj7qCWY98PB3Q3EZbN6bEu8p7jA==
 
 undici-types@~5.26.4:
   version "5.26.5"
@@ -1976,13 +1976,13 @@ vue-eslint-parser@^9.3.1, vue-eslint-parser@^9.4.2:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-i18n@9:
-  version "9.10.1"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-9.10.1.tgz#b3244233da31a55a07a2ae72cdddab7296bca814"
-  integrity sha512-37HVJQZ/pZaRXGzFmmMomM1u1k7kndv3xCBPYHKEVfv5W3UVK67U/TpBug71ILYLNmjHLHdvTUPRF81pFT5fFg==
+vue-i18n@9.10.2:
+  version "9.10.2"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-9.10.2.tgz#6f4b5d76bce649f1e18bb9b7767b72962b3e30a3"
+  integrity sha512-ECJ8RIFd+3c1d3m1pctQ6ywG5Yj8Efy1oYoAKQ9neRdkLbuKLVeW4gaY5HPkD/9ssf1pOnUrmIFjx2/gkGxmEw==
   dependencies:
-    "@intlify/core-base" "9.10.1"
-    "@intlify/shared" "9.10.1"
+    "@intlify/core-base" "9.10.2"
+    "@intlify/shared" "9.10.2"
     "@vue/devtools-api" "^6.5.0"
 
 vue-router@^4.3.0:
