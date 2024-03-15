@@ -50,14 +50,18 @@ interface LangCodex {
 
 export default {
   created() {
+    const loadingOne = ref(true);
+    const loadingTwo = ref(true);
     import(`@/assets/json/codex.json`).then((module: any) => {
       const codex: MetaCodex = module.default;
       store.codex.data = codex.base;
       store.codex.extra = codex.extra;
-      this.loadLangCodex(store.state.language, true, () => {
-        store.codexViewLoading = false;
-      });
+      loadingOne.value = false;
     });
+    this.loadLangCodex(store.state.language, true, () => {
+      loadingTwo.value = false;
+    });
+    store.codexViewLoading = loadingOne || loadingTwo;
   },
   mounted() {
     watch(() => i18n.global.locale.value, () => {
