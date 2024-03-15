@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { global } from '@/store';
+import { store, global } from '@/store';
 import { defineComponent } from 'vue';
 </script>
 
@@ -8,7 +8,7 @@ import { defineComponent } from 'vue';
     <template #icon>
       <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${codex['icon']}`" />
     </template>
-    {{ codex['name'] }}
+    {{ store.codex.based[codex['category']][codex['id']]['name'] }}
     <var-chip type="warning" size="mini" :round="true" plain>
       {{ global.star + codex['tier'] }}
     </var-chip>
@@ -25,21 +25,21 @@ import { defineComponent } from 'vue';
       </var-chip>
       <template v-if="codex['event'] !== undefined">
         <var-chip class="highlight" size="mini" :round="false" plain v-for="event in codex['event']" :key="event">
-          {{ event }}
+          {{ $t(`meta.event.${event}`) }}
         </var-chip>
       </template>
       <var-chip v-if="codex['rarity'] !== undefined" :class="`${codex['aura']}-text`" size="mini" :round="false" plain>
-        {{ codex['rarity'] }}
+        {{ $t(`meta.rarity.${codex['rarity']}`) }}
       </var-chip>
       <var-chip v-if="codex['place'] !== undefined" size="mini" :round="false" plain>
-        {{ codex['place'] }}
+        {{ $t(`meta.place.${codex['place']}`) }}
       </var-chip>
       <var-chip v-if="codex['useable_by'] !== undefined && !['items'].includes(codex['category'])" size="mini"
         :round="false" plain>
-        {{ codex['useable_by'] }}
+        {{ $t(`meta.useable_by.${codex['useable_by']}`) }}
       </var-chip>
       <var-chip v-if="codex['spell_type'] !== undefined" size="mini" :round="false" plain>
-        {{ codex['spell_type'] }}
+        {{ $t(`meta.spell_type.${codex['spell_type']}`) }}
       </var-chip>
       <var-chip v-if="codex['power'] !== undefined" size="mini" :round="false" plain>
         <template #left>
@@ -52,30 +52,30 @@ import { defineComponent } from 'vue';
       <template v-if="codex['causes'] !== undefined">
         <var-chip type="danger" size="mini" :round="false" plain v-for="cause, index in codex['causes']" :key="index">
           <span v-if="cause['chance']">
-            {{ `${cause['name']} (${cause['chance']})` }}
+            {{ `${$t(`meta.status.${cause['name']}`)} (${cause['chance']})` }}
           </span>
           <span v-else>
-            {{ `${cause['name']}` }}
+            {{ `${$t(`meta.status.${cause['name']}`)}` }}
           </span>
         </var-chip>
       </template>
 
       <template v-if="codex['gives'] !== undefined">
         <var-chip type="info" size="mini" :round="false" plain v-for="give, index in codex['gives']" :key="index">
-          {{ `${give['name']} (${give['chance']})` }}
+          {{ `${$t(`meta.status.${give['name']}`)} (${give['chance']})` }}
         </var-chip>
       </template>
 
       <template v-if="codex['cures'] !== undefined">
         <var-chip type="success" size="mini" :round="false" plain v-for="cure, index in codex['cures']" :key="index">
-          {{ `${cure['name']}` }}
+          {{ `${$t(`meta.status.${cure['name']}`)}` }}
         </var-chip>
       </template>
 
       <template v-if="codex['immunities'] !== undefined">
         <var-chip type="primary" size="mini" :round="false" plain v-for="immunity, index in codex['immunities']"
           :key="index">
-          {{ `${immunity['name']}` }}
+          {{ `${$t(`meta.status.${immunity['name']}`)}` }}
         </var-chip>
       </template>
       

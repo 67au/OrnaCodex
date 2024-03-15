@@ -37,40 +37,43 @@ useDark();
 </template>
 
 <script lang="ts">
-const baseLang: string = 'en';
+interface MetaCodex {
+  base: any,
+  extra: any,
+}
+
+interface LangCodex {
+  base: any,
+  meta: any,
+  key: any,
+}
 
 export default {
   created() {
-    import(`@/assets/json/codex.json`).then((module) => {
-      store.codex.meta = module.default;
-      for (const [lang, msg] of Object.entries(store.codex.meta.translation)) {
-        i18n.global.mergeLocaleMessage(lang, msg);
-      }
-      for (const [lang, msg] of Object.entries(store.codex.meta.stats_translation)) {
-        i18n.global.mergeLocaleMessage(lang, msg);
-      }
+    import(`@/assets/json/codex.json`).then((module: any) => {
+      const codex: MetaCodex = module.default;
+      store.codex.data = codex.base;
+      store.codex.extra = codex.extra;
       this.loadLangCodex(store.state.language, true, () => {
-        this.loadLangCodex(baseLang, false, () => {
-          store.codexViewLoading = false;
-        });
+        store.codexViewLoading = false;
       });
     });
   },
   mounted() {
     watch(() => i18n.global.locale.value, () => {
-      if (store.codex.data[store.state.language] === undefined) {
-        this.loadLangCodex(store.state.language, true, () => {});
+      if (store.codex.base[store.state.language] === undefined) {
+        this.loadLangCodex(store.state.language, true);
       };
     });
   },
   methods: {
-    loadLangCodex(lang: string, isLoad: boolean, callback: Function) {
+    loadLangCodex(lang: string, isLoad: boolean, callback?: Function) {
       if (isLoad) { this.loading = true; }
-      if (store.codex.data[lang] !== undefined) {
-        callback();
-      }
-      import(`@/assets/json/codex.${lang}.json`).then((module) => {
-        store.codex.data[lang] = module.default;
+      import(`@/assets/json/codex.${lang}.json`).then((module: any) => {
+        const codex: LangCodex = module.default;
+        store.codex.base[lang] = codex.base;
+        i18n.global.mergeLocaleMessage(lang, codex.key);
+        i18n.global.mergeLocaleMessage(lang, {'meta': codex.meta});
         if (isLoad) { this.loading = false; }
         if (callback !== undefined) {
           callback();

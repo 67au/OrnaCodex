@@ -19,7 +19,7 @@ import { store } from '@/store';
       <thead>
         <tr>
           <th> {{ $t('query.level') }} </th>
-          <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`stat_key.${key}`) }}</th>
+          <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
         </tr>
       </thead>
       <tbody>
@@ -36,7 +36,7 @@ import { store } from '@/store';
         </tr>
         <tr>
           <th> {{ $t('query.level') }} </th>
-          <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`stat_key.${key}`) }}</th>
+          <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
         </tr>
       </tbody>
     </var-table>
@@ -55,7 +55,7 @@ type StatValue = Array<any>;
 export default {
   props: {
     result: {
-      type: [Object],
+      type: Object,
       required: true,
     },
     show: {
@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     name() {
-      return store.codex.usedItem['name'];
+      return store.codex.basedItem['name'];
     }
   },
 }

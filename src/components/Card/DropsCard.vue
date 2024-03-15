@@ -7,12 +7,12 @@ import { defineComponent } from 'vue';
 </script>
 
 <template>
-  <template v-if="store.codex.usedItem[name] !== undefined">
+  <template v-if="store.codex.usedItem[name] !== undefined || store.codex.basedItem[name] !== undefined">
     <var-card class="card" :title="$t(name)">
       <template #description>
         <div class="card-description">
           <template v-if="text">
-            <TextLists :codex="store.codex.usedItem[name]" />
+            <TextLists :codex="store.codex.basedItem[name]" />
           </template>
           <template v-else-if="chance">
             <ChanceLists :codex="store.codex.usedItem[name]" />

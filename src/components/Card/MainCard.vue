@@ -6,7 +6,7 @@ import { store, global } from '@/store';
   <var-card class="card" layout="row">
     <template #title>
       <div class="card-title">
-        {{ store.codex.usedItem['name'] }}
+        {{ store.codex.basedItem['name'] }}
       </div>
     </template>
 
@@ -34,27 +34,29 @@ import { store, global } from '@/store';
 
           <var-chip v-if="store.codex.usedItem['rarity'] !== undefined" :class="`${store.codex.usedItem['aura']}-text`"
             size="small" :round="true" plain>
-            {{ store.codex.usedItem['rarity'] }}
+            {{ $t(`meta.rarity.${store.codex.usedItem['rarity']}`) }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['event'] !== undefined" class="highlight" size="small" :round="true"
             plain v-for="event in store.codex.usedItem['event']" :key="event">
-            <span class="event">{{ event }}</span>
+            <span class="event">
+              {{ $t(`meta.event.${event}`) }}
+            </span>
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['place'] !== undefined" size="small" :round="true" plain>
-            {{ store.codex.usedItem['place'] }}
+            {{ $t(`meta.place.${store.codex.usedItem['place']}`) }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['useable_by'] !== undefined" size="small" :round="true" plain>
-            {{ store.codex.usedItem['useable_by'] }}
+            {{ $t(`meta.useable_by.${store.codex.usedItem['useable_by']}`) }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['family'] !== undefined" size="small" :round="true" plain>
             <template #left>
               <var-icon name="card-account-details-outline" size="14" />
             </template>
-            {{ store.codex.usedItem['family'] }}
+            {{ $t(`meta.family.${store.codex.usedItem['family']}`) }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['hp'] !== undefined" type="danger" size="small" :round="true" plain>
@@ -65,11 +67,11 @@ import { store, global } from '@/store';
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['spell_type'] !== undefined" size="small" :round="true" plain>
-            {{ `${store.codex.usedItem['spell_type']}` }}
+            {{ $t(`meta.spell_type.${store.codex.usedItem['spell_type']}`) }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['costs'] !== undefined" size="small" :round="true" plain>
-            {{ `${store.codex.usedItem['costs']}` }}
+            {{ `${store.codex.usedItem['costs']} ${$t('mana')}` }}
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['price'] !== undefined" size="small" :round="true" plain>
@@ -77,7 +79,7 @@ import { store, global } from '@/store';
           </var-chip>
 
           <var-chip v-if="store.codex.usedItem['target'] !== undefined" size="small" :round="true" plain>
-            {{ `${store.codex.usedItem['target']}` }}
+            {{ $t(`meta.target.${store.codex.usedItem['target']}`) }}
             <template #left>
               <var-icon name="alert-circle-outline" size="14" />
             </template>
@@ -92,7 +94,7 @@ import { store, global } from '@/store';
 
           <template v-if="store.codex.usedItem['tags'] !== undefined">
             <var-chip size="small" :round="true" plain v-for="tag in store.codex.usedItem['tags']" :key="tag">
-              {{ `${tag}` }}
+              {{ $t(`meta.tags.${tag}`) }}
               <template #left>
                 <var-icon name="tag" size="14" />
               </template>

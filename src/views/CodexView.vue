@@ -32,7 +32,8 @@ import AssessQuery from '@/components/AssessQuery.vue';
                 </var-link>
                 <var-button type="success" size="small" @click="getOrnaGuide" :loading="show.loading"
                   loading-type="wave">
-                  orna.guide </var-button>
+                  orna.guide
+                </var-button>
                 <var-button type="warning" size="small" @click="show.json = true"> JSON </var-button>
               </var-space>
             </div>
@@ -180,10 +181,10 @@ export default defineComponent({
         extra: {},
       } as any,
       guide: {
-        result: undefined,
+        result: {},
       } as any,
       yaco: {
-        result: undefined,
+        result: {},
       } as any,
       show: {
         guide: false,
@@ -254,7 +255,7 @@ export default defineComponent({
       return monsterSet.has(store.codexPage.category);
     },
     async requestOrnaGuide() {
-      let itemName = store.codex.basedItem['name'];
+      let itemName = store.codex.usedItem['name'];
       if (this.guideApi === undefined) {
         return [];
       }
@@ -354,16 +355,18 @@ export default defineComponent({
       // reset
       this.query.data = {
         level: 1,
-        quality: 100,
       };
       this.query.extra = {
         isQuality: quality,
         isBoss: true,
         fromGuide: false,
       };
-      if (quality && store.guide.cache !== undefined) {
-        this.query.extra.fromGuide = true;
-        this.query.extra.isBoss = store.guide.cache['boss'];
+      if (quality) {
+        this.query.data.quality = 100;
+        if (store.guide.cache !== undefined) {
+          this.query.extra.fromGuide = true;
+          this.query.extra.isBoss = store.guide.cache['boss'];
+        }
       }
       this.yaco.result = {
         quality: 1,
@@ -395,7 +398,6 @@ export default defineComponent({
         this.yaco.result.quality = this.query.data.quality / 100;
       }
       else {
-        delete this.query.data.quality;
         this.yaco.result.quality = 2;
         if (query.length > 0) {
           const key = query[0][0];

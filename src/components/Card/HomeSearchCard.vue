@@ -14,9 +14,9 @@ import { defineComponent } from 'vue';
           <var-cell class="filter-cell">
             <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="store.sort" clearable
               @close="store.renderList" @change="store.renderList" @clear="store.renderList">
-              <var-option value="name" :label="$t('name')" />
-              <var-option value="tier" :label="$t('tier')" />
-              <var-option v-for="key in global.sortKeys" :value="key" :label="$t('stat_key.' + key)" :key="key" />
+              <var-option value="name" :label="$t('name')" key="name"/>
+              <var-option value="tier" :label="$t('tier')" key="tier"/>
+              <var-option v-for="key in global.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)" :key="key" />
             </var-select>
             <template #extra>
               <var-button type="primary" @click="() => { store.order = !store.order; store.renderList() }">
@@ -49,8 +49,12 @@ import { defineComponent } from 'vue';
                     v-for="(_, v) in Array.from({ length: 10 })" :key="v" />
                 </template>
 
+                <template v-else-if="statusOptionsSet.has(filter['k'])">
+                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])" :key="v" />
+                </template>
+
                 <template v-else>
-                  <var-option :label="v" :value="v" v-for="v in sortOptions(filter['k'])" :key="v" />
+                  <var-option :label="$t(`meta.${filter['k']}.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])" :key="v" />
                 </template>
               </template>
 
@@ -105,7 +109,7 @@ export default defineComponent({
       store.renderList();
     },
     addFilter(key: string) {
-      store.filters.push({ 'k': key, 'v': global.dropOptions.includes(key) ? [] : undefined, })
+      store.filters.push({ 'k': key, 'v': global.statusOptions.includes(key) ? [] : undefined, })
       this.show = false;
     },
     sortOptions(key: string) {
@@ -114,6 +118,11 @@ export default defineComponent({
         return a.localeCompare(b);
       });
       return options;
+    }
+  },
+  computed: {
+    statusOptionsSet() {
+      return new Set(global.statusOptions);
     }
   }
 })

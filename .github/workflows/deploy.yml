@@ -40,7 +40,7 @@ jobs:
       - name: Crawl Codex
         run: |
           cd crawler
-          python cli.py codex -o ../src/assets/json/codex.json
+          python script.py codex -o ../src/assets/json/codex.json
           cd ..
       - name: Setup Node.js environment
         uses: actions/setup-node@v3

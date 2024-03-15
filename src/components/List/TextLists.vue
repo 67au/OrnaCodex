@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { global } from '@/store';
+import { global, store } from '@/store';
 </script>
 
 <template>
