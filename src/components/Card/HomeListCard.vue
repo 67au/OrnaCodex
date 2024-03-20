@@ -40,7 +40,7 @@ import '@/styles/color.css';
                 <template v-if="store.codex.used[category][id]['event'] != undefined">
                   <var-chip class="highlight" size="mini" :round="false" plain
                     v-for="event in store.codex.used[category][id]['event']" :key="event">
-                    <span class="event">{{ $t(`meta.event.${event}`) }}</span>
+                    <span>{{ $t(`meta.event.${event}`) }}</span>
                   </var-chip>
                 </template>
 
