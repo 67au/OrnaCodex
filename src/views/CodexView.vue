@@ -393,7 +393,9 @@ export default defineComponent({
       } else {
         pass = new Set(['crit', 'dexterity']);
       }
-      const query = (Object.entries(this.query.data).filter((m) => !pass.has(m[0])) as Array<[string, number]>).toSorted((a: [string, number], b: [string, number]) => b[1] - a[1]);
+      const query = (Object.entries(this.query.data).filter((m) => !pass.has(m[0])) as Array<[string, number]>).toSorted(
+        (a: [string, number], b: [string, number]) => Math.abs(b[1]) - Math.abs(a[1])
+      );
       if (this.query.extra.isQuality) {
         this.yaco.result.quality = this.query.data.quality / 100;
       }
