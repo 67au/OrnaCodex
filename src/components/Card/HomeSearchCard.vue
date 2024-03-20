@@ -14,8 +14,8 @@ import { defineComponent } from 'vue';
           <var-cell class="filter-cell">
             <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="store.sort" clearable
               @close="store.renderList" @change="store.renderList" @clear="store.renderList">
-              <var-option value="name" :label="$t('name')" key="name"/>
-              <var-option value="tier" :label="$t('tier')" key="tier"/>
+              <var-option value="name" :label="$t('name')" key="name" />
+              <var-option value="tier" :label="$t('tier')" key="tier" />
               <var-option v-for="key in global.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)" :key="key" />
             </var-select>
             <template #extra>
@@ -50,11 +50,13 @@ import { defineComponent } from 'vue';
                 </template>
 
                 <template v-else-if="statusOptionsSet.has(filter['k'])">
-                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])" :key="v" />
+                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])"
+                    :key="v" />
                 </template>
 
                 <template v-else>
-                  <var-option :label="$t(`meta.${filter['k']}.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])" :key="v" />
+                  <var-option :label="$t(`meta.${filter['k']}.${v}`)" :value="v" v-for="v in sortOptions(filter['k'])"
+                    :key="v" />
                 </template>
               </template>
 
@@ -113,10 +115,16 @@ export default defineComponent({
       this.show = false;
     },
     sortOptions(key: string) {
-      const options = Array.from(store.options[key]);
-      options.sort((a: any, b: any) => {
-        return a.localeCompare(b);
-      });
+      const options = Array.from(store.options[key]) as Array<string>;
+      if (this.statusOptionsSet.has(key)) {
+        options.sort((a: string, b: string) => {
+          return (this.$t(`meta.status.${a}`)).localeCompare(this.$t(`meta.status.${b}`));
+        });
+      } else {
+        options.sort((a: string, b: string) => {
+          return (this.$t(`meta.${key}.${a}`)).localeCompare(this.$t(`meta.${key}.${b}`));
+        });
+      }
       return options;
     }
   },

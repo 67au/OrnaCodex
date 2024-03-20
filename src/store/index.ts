@@ -264,5 +264,6 @@ export const store: any = reactive({
       path: `/codex/${category}/${id}/`
     });
   },
+  
   codexViewLoading: true,
 })
