@@ -52,6 +52,7 @@ jobs:
           yarn install
       - name: Build
         run: |
+          echo 'ORNA_URL=${{ vars.TARGET }}' >> .env
           yarn build
       - name: Setup Pages
         uses: actions/configure-pages@v3
