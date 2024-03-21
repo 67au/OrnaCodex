@@ -11,8 +11,8 @@ import { store, global } from '@/store';
     </template>
 
     <template #image>
-      <var-image :class="`codex-icon ${store.codex.usedItem['aura']}`"
-        :src="`${global.staticUrl}${store.codex.usedItem['icon']}`" width="72" fit="contain" />
+      <var-image :class="`codex-icon ${rarityAura}`"
+        :src="store.getStaticUrl(store.codex.usedItem['icon'])" width="72" fit="contain" />
     </template>
 
     <template #description>
@@ -32,7 +32,7 @@ import { store, global } from '@/store';
             {{ $t('exotic') }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['rarity'] !== undefined" :class="`${store.codex.usedItem['aura']}-text`"
+          <var-chip v-if="store.codex.usedItem['rarity'] !== undefined" :class="rarityText"
             size="small" :round="true" plain>
             {{ $t(`meta.rarity.${store.codex.usedItem['rarity']}`) }}
           </var-chip>
@@ -113,13 +113,33 @@ export default {
     return {
       store,
     }
+  },
+  computed: {
+    rarityAura() {
+      if (store.codexPage.category === 'items') {
+        return store.codex.usedItem['aura'];
+      }
+      if (store.codexPage.category === 'followers') {
+        return global.rarityAura[store.codex.usedItem['rarity']];
+      }
+      return ''
+    },
+    rarityText() {
+      if (store.codexPage.category === 'items') {
+        return `${store.codex.usedItem['aura']}-text`
+      }
+      if (store.codexPage.category === 'followers') {
+        return `${global.rarityAura[store.codex.usedItem['rarity']]}-text`;
+      }
+      return ''
+    }
   }
 }
 </script>
 
-<style src="@/styles/color.css" scoped></style>
+<style src="@/styles/color.less" lang="less" />
 
-<style scoped>
+<style>
 .codex-icon {
   width: 72px;
   height: 72px;

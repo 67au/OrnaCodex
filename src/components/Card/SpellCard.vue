@@ -11,7 +11,7 @@ import { global, store } from '@/store';
             <var-cell class="codex-cell" border v-for="sid in spellers" @click="() => store.enterCodex(category, sid)" :key="sid">
               <template #icon>
                 <var-icon class="append-icon" :size="36"
-                  :name="`${global.staticUrl}${store.codex.used[category][sid]['icon']}`" />
+                  :name="store.getStaticUrl(store.codex.used[category][sid]['icon'])" />
               </template>
               {{ store.codex.based[category][sid]['name'] }}
               <var-chip type="warning" size="mini" :round="true" plain>

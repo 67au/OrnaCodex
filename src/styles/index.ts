@@ -12,12 +12,20 @@ const suppoertedThemes: Themes = {
 	'md3-dark': ComponentsThemes.md3Dark,
 };
 
+function setCustomTheme(theme: string) {
+	if (theme.endsWith('light')) {
+		suppoertedThemes[theme]['--highlight-color'] = 'var(--highlight-color-light)';
+	} else {
+		suppoertedThemes[theme]['--highlight-color'] = 'var(--highlight-color-dark)';
+	}
+}
+
 export function setTheme(theme: string) {
-  store.state.theme = theme
+  store.state.theme = theme;
+	setCustomTheme(theme);
   StyleProvider(suppoertedThemes[store.state.theme]);
 }
 
 export function useDark() {
-	store.state.theme = store.state.theme || 'md2-dark';
-	StyleProvider(suppoertedThemes[store.state.theme]);
+	setTheme(store.state.theme || 'md2-dark');
 }

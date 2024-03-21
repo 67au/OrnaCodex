@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { store, global } from '@/store';
-import '@/styles/color.css';
 </script>
 
 <template>
@@ -23,19 +22,25 @@ import '@/styles/color.css';
           <var-cell v-for="[category, id], index in store.list.content" class="item-cell" border
             @click="() => store.enterCodex(category, id)" :key="index">
             <template #icon>
-              <var-icon class="append-icon" :size="48"
-                :name="`${global.staticUrl}${store.codex.used[category][id]['icon']}`" />
+              <var-icon :class="`append-icon ${rarityAura(category, id)}`" :size="48"
+                :name="store.getStaticUrl(store.codex.used[category][id]['icon'])" />
             </template>
 
+            <span>
+            {{ store.codex.based[category][id]['name'] }}
+            </span>
+
             <template #description>
-              {{ store.codex.based[category][id]['name'] }}
-              <br>
               <var-space size="mini" style="line-height: 120%;">
                 <var-chip type="warning" size="mini" :round="false" plain>
                   {{ global.star + store.codex.used[category][id]['tier'] }}
                 </var-chip>
                 <var-chip type="primary" size="mini" :round="false" plain>
                   {{ $t(`categories.${category}`) }}
+                </var-chip>
+                <var-chip v-if="store.codex.used[category][id]['rarity'] !== undefined" 
+                  size="mini" :round="false" plain :class="rarityText(category, id)">
+                  {{ $t(`meta.rarity.${store.codex.used[category][id]['rarity']}`) }}
                 </var-chip>
                 <template v-if="store.codex.used[category][id]['event'] != undefined">
                   <var-chip class="highlight" size="mini" :round="false" plain
@@ -59,14 +64,31 @@ import '@/styles/color.css';
   </var-card>
 </template>
 
-<style src="@/styles/color.css" scoped>
-.event {
-  padding-top: 5px;
-  max-width: 190px;
-  width: max-content;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
+<script lang="ts">
+export default defineComponent({
+  methods: {
+    rarityAura(category: string, id: string) {
+      const usedItem = store.codex.used[category][id];
+      if (category === 'items') {
+        return usedItem['aura'];
+      }
+      if (category === 'followers') {
+        return global.rarityAura[usedItem['rarity']];
+      }
+      return ''
+    },
+    rarityText(category: string, id: string) {
+      const usedItem = store.codex.used[category][id];
+      if (category === 'items') {
+        return `${usedItem['aura']}-text`
+      }
+      if (category === 'followers') {
+        return `${global.rarityAura[usedItem['rarity']]}-text`;
+      }
+      return ''
+    }
+  }
+})
+</script>
+
+<style src="@/styles/color.less" lang="less" />
