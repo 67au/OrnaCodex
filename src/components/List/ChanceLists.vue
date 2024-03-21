@@ -5,7 +5,7 @@ import { store, global } from '@/store';
 <template>
   <var-cell class="codex-small-cell" border v-for="item, index in codex" :key="index">
     <template #icon>
-      <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${store.codex.icons[item['name']]}`" />
+      <var-icon class="append-icon" :size="36" :name="store.getStaticUrl(store.codex.icons[item['name']])" />
     </template>
     <template v-if="item['tier'] !== undefined">
     {{ item['name'] }}

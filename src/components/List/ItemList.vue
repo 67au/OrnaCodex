@@ -6,18 +6,18 @@ import { defineComponent } from 'vue';
 <template>
   <var-cell class="codex-cell" border @click="click()">
     <template #icon>
-      <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${codex['icon']}`" />
+      <var-icon :class="`append-icon ${rarityAura}`" :size="36" :name="store.getStaticUrl(codex['icon'])" />
     </template>
+    <var-space align="center" size="small">
+    <span>
     {{ store.codex.based[codex['category']][codex['id']]['name'] }}
+    </span>
     <var-chip type="warning" size="mini" :round="true" plain>
       {{ global.star + codex['tier'] }}
     </var-chip>
-    <br>
+    </var-space>
+    <template #description>
     <var-space size="mini" class="cell-chip-space">
-
-      <var-chip v-if="codex['exotic'] === true" class="exotic" size="mini" :round="false" plain>
-        {{ $t('exotic') }}
-      </var-chip>
 
       <var-chip v-if="!['spells', 'items', 'classes'].includes(codex['category'])" type="primary" size="mini"
         :round="false" plain>
@@ -28,9 +28,14 @@ import { defineComponent } from 'vue';
           {{ $t(`meta.event.${event}`) }}
         </var-chip>
       </template>
-      <var-chip v-if="codex['rarity'] !== undefined" :class="`${codex['aura']}-text`" size="mini" :round="false" plain>
+      <var-chip v-if="codex['rarity'] !== undefined" :class="rarityText" size="mini" :round="false" plain>
         {{ $t(`meta.rarity.${codex['rarity']}`) }}
       </var-chip>
+      
+      <var-chip v-if="codex['exotic'] === true" class="exotic" size="mini" :round="false" plain>
+        {{ $t('exotic') }}
+      </var-chip>
+      
       <var-chip v-if="codex['place'] !== undefined" size="mini" :round="false" plain>
         {{ $t(`meta.place.${codex['place']}`) }}
       </var-chip>
@@ -80,6 +85,7 @@ import { defineComponent } from 'vue';
       </template>
       
     </var-space>
+    </template>
   </var-cell>
 </template>
 
@@ -94,8 +100,22 @@ export default defineComponent({
       type: Function,
       default: () => { },
     }
+  },
+ computed: {
+    rarityAura() {
+      if (this.codex['category'] === 'items') {
+        return this.codex['aura'];
+      }
+      return ''
+    },
+    rarityText() {
+      if (this.codex['category'] === 'items') {
+        return `${this.codex['aura']}-text`
+      }
+      return ''
+    }
   }
 })
 </script>
 
-<style src="@/styles/color.css" scoped></style>
+<style src="@/styles/color.less" lang="less" />

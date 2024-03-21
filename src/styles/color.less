@@ -1,0 +1,135 @@
+:root {
+  --highlight-color-dark: #ffb300;
+  --highlight-color-light: #b69000;
+  --highlight-color: var(--highlight-color-light);
+}
+
+.exotic {
+  color: #fff079;
+  font-weight: 700;
+  background: linear-gradient(to bottom, #aa4eef, #49e840);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rarity-bg-image(@rarity) {
+  background: transparent url("@{staticUrl}/img/fx/@{rarity}.png") no-repeat 50% 50%;
+}
+
+.rare {
+  .rarity-bg-image('rare');
+  background-size: 130%;
+}
+
+.famed {
+  .rarity-bg-image('famed');
+  background-size: 130%;
+}
+
+.legendary {
+  .rarity-bg-image('legendary');
+  background-size: 130%;
+}
+
+.ornate {
+  .rarity-bg-image('ornate');
+  background-size: 130%;
+}
+
+.masterforged {
+  .rarity-bg-image('masterforged');
+  background-size: 130%;
+}
+
+.demonforged {
+  .rarity-bg-image('demonforged');
+  background-size: 130%;
+}
+
+.arisen {
+  .rarity-bg-image('arisen');
+  background-size: 130%;
+}
+
+.superboss {
+  .rarity-bg-image('superboss');
+  background-size: 140%;
+}
+
+.celestial {
+  .rarity-bg-image('celestial');
+  background-size: 100%;
+}
+
+.highlight {
+  color: var(--highlight-color);
+}
+
+/* element */
+.water {
+  color: #5facff;
+}
+
+.earthen {
+  color: #0fab0f;
+}
+
+.lightning {
+  color: #a59e46;
+}
+
+.fire {
+  color: #ff8135;
+}
+
+.dark {
+  color: #d900ff;
+}
+
+.holy {
+  color: #ddd;
+}
+
+.arcane {
+  color: #8e78ff;
+}
+
+.dragon {
+  color: #FF9800;
+}
+
+/* rarity text */
+.broken-text, .poor-text {
+    color: #985f17;
+}
+
+.rare-text, .superior-text {
+  color: #49e840;
+}
+
+.famed-text {
+  color: #4ca3ff;
+}
+
+.legendary-text {
+  color: #aa4eef;
+}
+
+.ornate-text {
+  color: #e44646;
+}
+
+.masterforged-text {
+  color: #ffe16f;
+}
+
+.demonforged-text {
+  color: #ff6f8f;
+}
+
+/* placeholder
+.celestial-text {
+
+}
+ */

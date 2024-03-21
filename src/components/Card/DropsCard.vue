@@ -26,7 +26,7 @@ import { defineComponent } from 'vue';
               <template v-else-if="store.codex.isMissEntry(`${category}/${id}`)">
                 <var-cell class="codex-cell" border :key="id">
                   <template #icon>
-                    <var-icon class="append-icon" :size="36" :name="`${global.staticUrl}${store.codex.getMissEntry(`${category}/${id}`)['icon']}`" />
+                    <var-icon class="append-icon" :size="36" :name="store.getStaticUrl(store.codex.getMissEntry(`${category}/${id}`)['icon'])" />
                   </template>
                   <var-link type="primary" :href="`${global.ornaUrl}/codex/${category}/${id}/`" target="_blank">
                     {{ store.codex.getMissEntry(`${category}/${id}`)['name'] }}

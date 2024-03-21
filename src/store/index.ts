@@ -4,7 +4,6 @@ import { reactive, computed } from 'vue'
 
 import router from '@/router'
 
-const ornaUrl = 'https://playorna.com';
 const guideUrl = 'https://orna.guide';
 const languageBased = 'en';
 
@@ -18,6 +17,14 @@ const elementColor: any = {
   arcane: '#8e78ff',
   dragon: '#FF9800',
 }
+
+const rarityAura: any = {
+  uncommon: 'rare',
+  rare: 'famed',
+  storied: 'legendary',
+  cryptid: 'masterforged',
+  steward: 'demonforged',
+};
 
 const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];
 const arrayOptions = ['event', 'tags'];
@@ -38,8 +45,8 @@ const sortKeys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit
 type Index = Array<[string, string]>;
 
 export const global = {
-  ornaUrl: ornaUrl,
-  staticUrl: `${ornaUrl}/static`,
+  ornaUrl: __ORNA_URL__,
+  staticUrl: __ORNA_STATIC_URL__,
   guideUrl: guideUrl,
   guideApiUrl: `${guideUrl}/api/v1`,
   star: '★',
@@ -50,6 +57,7 @@ export const global = {
   statusOptions: statusOptions,
   sortKeys: sortKeys,
   sortKeysSet: new Set(sortKeys),
+  rarityAura: rarityAura,
 }
 
 export const store: any = reactive({
@@ -263,6 +271,9 @@ export const store: any = reactive({
     router.push({
       path: `/codex/${category}/${id}/`
     });
+  },
+  getStaticUrl(url: string) {
+    return `${global.staticUrl}${url}`
   },
   
   codexViewLoading: true,

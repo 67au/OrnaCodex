@@ -11,7 +11,7 @@ import { store, global } from '@/store'
             border @click="() => store.enterCodex(category, mid)" :key="mid">
             <template #icon>
               <var-icon class="append-icon" :size="36"
-                :name="`${global.staticUrl}${store.codex.used[category][mid]['icon']}`" />
+                :name="store.getStaticUrl(store.codex.used[category][mid]['icon'])" />
             </template>
             {{ store.codex.based[category][mid]['name'] }}
             <var-chip type="warning" size="mini" :round="true" plain>

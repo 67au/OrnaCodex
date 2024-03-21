@@ -9,6 +9,9 @@ import autoImport from 'unplugin-auto-import/vite'
 import { VarletImportResolver } from '@varlet/import-resolver'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
+const ornaUrl = 'https://playorna.com';
+const ornaStaticUrl = `${ornaUrl}/static`;
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -38,5 +41,16 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  define: {
+    '__ORNA_URL__': JSON.stringify(ornaUrl),
+    '__ORNA_STATIC_URL__': JSON.stringify(ornaStaticUrl),
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@staticUrl: '${ornaStaticUrl}';`,
+      },
+    },
+  },
 })
