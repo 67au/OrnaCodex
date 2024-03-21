@@ -27,7 +27,7 @@ import { store, global } from '@/store';
             </template>
 
             <span>
-            {{ store.codex.based[category][id]['name'] }}
+              {{ store.codex.based[category][id]['name'] }}
             </span>
 
             <template #description>
@@ -38,10 +38,15 @@ import { store, global } from '@/store';
                 <var-chip type="primary" size="mini" :round="false" plain>
                   {{ $t(`categories.${category}`) }}
                 </var-chip>
-                <var-chip v-if="store.codex.used[category][id]['rarity'] !== undefined" 
-                  size="mini" :round="false" plain :class="rarityText(category, id)">
+                <var-chip v-if="store.codex.used[category][id]['rarity'] !== undefined" size="mini" :round="false" plain
+                  :class="rarityText(category, id)">
                   {{ $t(`meta.rarity.${store.codex.used[category][id]['rarity']}`) }}
                 </var-chip>
+
+                <var-chip v-if="store.codex.used[category][id]['exotic'] === true" class="exotic" size="mini" :round="false" plain>
+                  {{ $t('exotic') }}
+                </var-chip>
+
                 <template v-if="store.codex.used[category][id]['event'] != undefined">
                   <var-chip class="highlight" size="mini" :round="false" plain
                     v-for="event in store.codex.used[category][id]['event']" :key="event">
