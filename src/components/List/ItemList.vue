@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
       <var-icon :class="`append-icon ${rarityAura}`" :size="36" :name="store.getStaticUrl(codex['icon'])" />
     </template>
     <var-space align="center" size="small">
-    <span>
+    <span :class="rarityText">
     {{ store.codex.based[codex['category']][codex['id']]['name'] }}
     </span>
     <var-chip type="warning" size="mini" :round="true" plain>
@@ -28,14 +28,14 @@ import { defineComponent } from 'vue';
           {{ $t(`meta.event.${event}`) }}
         </var-chip>
       </template>
-      <var-chip v-if="codex['rarity'] !== undefined" :class="rarityText" size="mini" :round="false" plain>
+      <var-chip v-if="codex['rarity'] !== undefined && codex['category'] !== 'items'" size="mini" :round="false" plain>
         {{ $t(`meta.rarity.${codex['rarity']}`) }}
       </var-chip>
       
       <var-chip v-if="codex['exotic'] === true" class="exotic" size="mini" :round="false" plain>
         {{ $t('exotic') }}
       </var-chip>
-      
+
       <var-chip v-if="codex['place'] !== undefined" size="mini" :round="false" plain>
         {{ $t(`meta.place.${codex['place']}`) }}
       </var-chip>

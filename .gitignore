@@ -31,3 +31,5 @@ coverage
 
 # codex json
 src/assets/json/*.json
+
+.env
