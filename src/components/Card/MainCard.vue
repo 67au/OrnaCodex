@@ -1,99 +1,99 @@
 <script setup lang="ts">
-import { store, global } from '@/store';
+import { global, useCodexState } from '@/store';
 </script>
 
 <template>
   <var-card class="card" layout="row">
     <template #title>
       <div class="card-title">
-        {{ store.codex.basedItem['name'] }}
+        {{ codexState.basedItem['name'] }}
       </div>
     </template>
 
     <template #image>
       <var-image :class="`codex-icon ${rarityAura}`"
-        :src="store.getStaticUrl(store.codex.usedItem['icon'])" width="72" fit="contain" />
+        :src="global.getStaticUrl(codexState.usedItem['icon'])" width="72" fit="contain" />
     </template>
 
     <template #description>
       <div class="card-description">
         <var-space size="mini" class="space">
           <var-chip type="warning" size="small" :round="true" plain>
-            {{ global.star + store.codex.usedItem['tier'] }}
+            {{ global.getTier(codexState.usedItem['tier']) }}
           </var-chip>
           <var-chip type="primary" size="small" :round="true" plain>
-            {{ $t(`categories.${store.codex.usedItem['category']}`) }}
+            {{ $t(`categories.${codexState.usedItem['category']}`) }}
             <template #left>
               <var-icon name="bookmark" size="14" />
             </template>
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['exotic'] === true" class="exotic" size="small" :round="true" plain>
+          <var-chip v-if="codexState.usedItem['exotic'] === true" class="exotic" size="small" :round="true" plain>
             {{ $t('exotic') }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['rarity'] !== undefined" :class="rarityText"
+          <var-chip v-if="codexState.usedItem['rarity'] !== undefined" :class="rarityText"
             size="small" :round="true" plain>
-            {{ $t(`meta.rarity.${store.codex.usedItem['rarity']}`) }}
+            {{ $t(`meta.rarity.${codexState.usedItem['rarity']}`) }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['event'] !== undefined" class="highlight" size="small" :round="true"
-            plain v-for="event in store.codex.usedItem['event']" :key="event">
+          <var-chip v-if="codexState.usedItem['event'] !== undefined" class="highlight" size="small" :round="true"
+            plain v-for="event in codexState.usedItem['event']" :key="event">
             <span class="event">
               {{ $t(`meta.event.${event}`) }}
             </span>
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['place'] !== undefined" size="small" :round="true" plain>
-            {{ $t(`meta.place.${store.codex.usedItem['place']}`) }}
+          <var-chip v-if="codexState.usedItem['place'] !== undefined" size="small" :round="true" plain>
+            {{ $t(`meta.place.${codexState.usedItem['place']}`) }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['useable_by'] !== undefined" size="small" :round="true" plain>
-            {{ $t(`meta.useable_by.${store.codex.usedItem['useable_by']}`) }}
+          <var-chip v-if="codexState.usedItem['useable_by'] !== undefined" size="small" :round="true" plain>
+            {{ $t(`meta.useable_by.${codexState.usedItem['useable_by']}`) }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['family'] !== undefined" size="small" :round="true" plain>
+          <var-chip v-if="codexState.usedItem['family'] !== undefined" size="small" :round="true" plain>
             <template #left>
               <var-icon name="card-account-details-outline" size="14" />
             </template>
-            {{ $t(`meta.family.${store.codex.usedItem['family']}`) }}
+            {{ $t(`meta.family.${codexState.usedItem['family']}`) }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['hp'] !== undefined" type="danger" size="small" :round="true" plain>
-            {{ Number(store.codex.usedItem['hp']).toLocaleString() }}
+          <var-chip v-if="codexState.usedItem['hp'] !== undefined" type="danger" size="small" :round="true" plain>
+            {{ Number(codexState.usedItem['hp']).toLocaleString() }}
             <template #left>
               <var-icon name="heart" size="14" />
             </template>
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['spell_type'] !== undefined" size="small" :round="true" plain>
-            {{ $t(`meta.spell_type.${store.codex.usedItem['spell_type']}`) }}
+          <var-chip v-if="codexState.usedItem['spell_type'] !== undefined" size="small" :round="true" plain>
+            {{ $t(`meta.spell_type.${codexState.usedItem['spell_type']}`) }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['costs'] !== undefined" size="small" :round="true" plain>
-            {{ `${store.codex.usedItem['costs']} ${$t('mana')}` }}
+          <var-chip v-if="codexState.usedItem['costs'] !== undefined" size="small" :round="true" plain>
+            {{ `${codexState.usedItem['costs']} ${$t('mana')}` }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['price'] !== undefined" size="small" :round="true" plain>
-            {{ `${Number(store.codex.usedItem['price']).toLocaleString()} ${$t('orns')}` }}
+          <var-chip v-if="codexState.usedItem['price'] !== undefined" size="small" :round="true" plain>
+            {{ `${Number(codexState.usedItem['price']).toLocaleString()} ${$t('orns')}` }}
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['target'] !== undefined" size="small" :round="true" plain>
-            {{ $t(`meta.target.${store.codex.usedItem['target']}`) }}
+          <var-chip v-if="codexState.usedItem['target'] !== undefined" size="small" :round="true" plain>
+            {{ $t(`meta.target.${codexState.usedItem['target']}`) }}
             <template #left>
               <var-icon name="alert-circle-outline" size="14" />
             </template>
           </var-chip>
 
-          <var-chip v-if="store.codex.usedItem['power'] !== undefined" size="small" :round="true" plain>
+          <var-chip v-if="codexState.usedItem['power'] !== undefined" size="small" :round="true" plain>
             <template #left>
               <var-icon name="fire" size="14" />
             </template>
-            {{ `${store.codex.usedItem['power']}` }}
+            {{ `${codexState.usedItem['power']}` }}
           </var-chip>
 
-          <template v-if="store.codex.usedItem['tags'] !== undefined">
-            <var-chip size="small" :round="true" plain v-for="tag in store.codex.usedItem['tags']" :key="tag">
+          <template v-if="codexState.usedItem['tags'] !== undefined">
+            <var-chip size="small" :round="true" plain v-for="tag in codexState.usedItem['tags']" :key="tag">
               {{ $t(`meta.tags.${tag}`) }}
               <template #left>
                 <var-icon name="tag" size="14" />
@@ -108,28 +108,25 @@ import { store, global } from '@/store';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
+
 export default {
-  data() {
-    return {
-      store,
-    }
-  },
   computed: {
     rarityAura() {
-      if (store.codexPage.category === 'items') {
-        return store.codex.usedItem['aura'];
+      if (codexState.page.category === 'items') {
+        return codexState.usedItem['aura'];
       }
-      if (store.codexPage.category === 'followers') {
-        return global.rarityAura[store.codex.usedItem['rarity']];
+      if (codexState.page.category === 'followers') {
+        return global.rarityAura[codexState.usedItem['rarity']];
       }
       return ''
     },
     rarityText() {
-      if (store.codexPage.category === 'items') {
-        return `${store.codex.usedItem['aura']}-text`
+      if (codexState.page.category === 'items') {
+        return `${codexState.usedItem['aura']}-text`
       }
-      if (store.codexPage.category === 'followers') {
-        return `${global.rarityAura[store.codex.usedItem['rarity']]}-text`;
+      if (codexState.page.category === 'followers') {
+        return `${global.rarityAura[codexState.usedItem['rarity']]}-text`;
       }
       return ''
     }

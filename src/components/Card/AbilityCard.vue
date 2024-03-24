@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { store } from '@/store';
+import { global, useCodexState } from '@/store';
 import ItemList from '@/components/List/ItemList.vue';
+import { storeToRefs } from 'pinia';
 </script>
 
 <template>
-  <template v-if="store.codex.usedItem['ability'] !== undefined">
+  <template v-if="codexState.usedItem['ability'] !== undefined">
     <var-card class="card" :title="$t('ability')">
       <template #description>
         <div class="card-description">
-          <template v-if="store.codex.isOffhandItem()">
-            <ItemList :codex="offhandSkill" :click="() => store.enterCodex(category, offhandSkillId)"/>
+          <template v-if="codexState.isOffhandItem()">
+            <ItemList :codex="offhandSkill" :click="() => global.enterCodex(category, offhandSkillId)"/>
           </template>
           <template v-else>
-          <var-cell class="codex-cell" :title="store.codex.usedItem['ability'][0]"
-            :description="store.codex.usedItem['ability'][1]">
+          <var-cell class="codex-cell" :title="codexState.usedItem['ability'][0]"
+            :description="codexState.usedItem['ability'][1]">
           </var-cell>
         </template>
         </div>
@@ -23,14 +24,16 @@ import ItemList from '@/components/List/ItemList.vue';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
 const category: string = 'spells';
+const { extra, used } = storeToRefs(codexState);
 export default {
   computed: {
-    offhandSkill() {
-      return store.codex.used[category][this.offhandSkillId];
-    },
     offhandSkillId() {
-      return store.codex.extra['offhand_items'][store.codexPage.id];
+      return extra.value['offhand_items'][codexState.page.id];
+    },
+    offhandSkill() {
+      return (used.value as any)[category][this.offhandSkillId];
     }
   }
 }

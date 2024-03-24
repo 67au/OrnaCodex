@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { store, global } from '@/store';
+import { global, useCodexState } from '@/store';
 </script>
 
 <template>
   <var-cell class="codex-small-cell" border v-for="item, index in codex" :key="index">
     <template #icon>
-      <var-icon class="append-icon" :size="36" :name="store.getStaticUrl(store.codex.icons[item['name']])" />
+      <var-icon class="append-icon" :size="36" :name="global.getStaticUrl(codexState.icons[item['name']])" />
     </template>
     <template v-if="item['tier'] !== undefined">
     {{ item['name'] }}
     <var-chip type="warning" size="small" :round="false" plain>
-      {{ global.star + item['tier'] }}
+      {{ global.getTier(item['tier']) }}
     </var-chip>
     <br>
   </template>
@@ -29,6 +29,8 @@ import { store, global } from '@/store';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
+
 export default {
   props: {
     codex: {

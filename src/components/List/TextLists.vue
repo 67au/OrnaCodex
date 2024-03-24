@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { global, store } from '@/store';
+import { global } from '@/store';
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import { global, store } from '@/store';
     :description="item['description']">
     <template #icon>
       <template v-if="item['icon'] !== undefined">
-      <var-icon class="append-icon" :size="36" :name="store.getStaticUrl(item['icon'])" />
+      <var-icon class="append-icon" :size="36" :name="global.getStaticUrl(item['icon'])" />
     </template>
     </template>
   </var-cell>

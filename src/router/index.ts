@@ -1,4 +1,4 @@
-import { store } from '@/store';
+import { useScrollTopState } from '@/store';
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -22,6 +22,7 @@ const router = createRouter({
     }
   ],
   scrollBehavior(to, from) {
+    const scrollTopState = useScrollTopState();
     const t = document.getElementById('main');
     if (t === null) {
       return
@@ -35,7 +36,7 @@ const router = createRouter({
         });
       } else {
         t.scrollTo({
-          top: store.homeTop,
+          top: scrollTopState.home,
           left: 0,
           behavior: "auto",
         });
@@ -43,7 +44,7 @@ const router = createRouter({
     }
     if (to.name === 'codex') {
       if (from.name === 'codex') {
-        const top = store.codexTop[`${to.params.category}/${to.params.id}`] || 0;
+        const top = scrollTopState.getCodexTop(to.params.category as string, to.params.id as string);
         t.scrollTo({
           top: top,
           left: 0,
@@ -63,21 +64,21 @@ const router = createRouter({
 });
 
 router.afterEach((to, from) => {
+  const scrollTopState = useScrollTopState();
   if (from.name === 'home') {
     const t = document.getElementById('main');
     if (t === null) {
       return
     }
-    store.homeTop = t.scrollTop;
+    scrollTopState.home = t.scrollTop;
   }
   if (to.name === 'codex') {
-    store.guide.cache = undefined;
     if (from.name === 'codex') {
       const t = document.getElementById('main');
       if (t === null) {
         return
       }
-      store.codexTop[`${from.params.category}/${from.params.id}`] = t.scrollTop;
+      scrollTopState.setCodexTop(from.params.category as string, from.params.id as string, t.scrollTop);
     }
   }
 })

@@ -1,5 +1,8 @@
 import { StyleProvider, Themes as ComponentsThemes, type StyleVars } from "@varlet/ui";
-import { store } from "@/store";
+import { useLocalStorage } from "@vueuse/core";
+const defaultTheme = 'md2-dark';
+
+export const currentTheme = useLocalStorage('theme', defaultTheme);
 
 interface Themes {
   [Key: string]: StyleVars
@@ -21,11 +24,11 @@ function setCustomTheme(theme: string) {
 }
 
 export function setTheme(theme: string) {
-  store.state.theme = theme;
+  currentTheme.value = theme;
 	setCustomTheme(theme);
-  StyleProvider(suppoertedThemes[store.state.theme]);
+  StyleProvider(suppoertedThemes[currentTheme.value]);
 }
 
 export function useDark() {
-	setTheme(store.state.theme || 'md2-dark');
+	setTheme(currentTheme.value);
 }

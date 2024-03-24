@@ -58,6 +58,7 @@ declare global {
   const useDebounceFn: typeof import('@vueuse/core')['useDebounceFn']
   const useI18n: typeof import('vue-i18n')['useI18n']
   const useLink: typeof import('vue-router')['useLink']
+  const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']

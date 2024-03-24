@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useFiltersState, useItemListState, useOptionsState } from '@/store';
 import { watch, defineAsyncComponent, defineComponent } from 'vue';
-import { store } from '@/store';
 </script>
+
 
 <template>
   <main>
@@ -13,6 +14,9 @@ import { store } from '@/store';
 </template>
 
 <script lang="ts">
+const filtersState= useFiltersState();
+const optionsState= useOptionsState();
+const itemListState= useItemListState();
 
 export default defineComponent({
   components: {
@@ -20,17 +24,16 @@ export default defineComponent({
     HomeListCard: defineAsyncComponent(() => import('@/components/Card/HomeListCard.vue')),
   },
   mounted() {
-    store.buildOptions();
-    store.renderList();
+    optionsState.init();
+    itemListState.render();
     this.loading = false;
     watch(() => this.$i18n.locale, () => {
-      store.search = '';
-      store.renderList();
+      filtersState.search = '';
+      itemListState.render();
     });
   },
   data() {
     return {
-      store,
       loading: true,
     }
   }

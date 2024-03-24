@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { store, global } from '@/store';
+import { global, useCodexState } from '@/store';
 import { defineComponent } from 'vue';
 </script>
 
 <template>
   <var-cell class="codex-cell" border @click="click()">
     <template #icon>
-      <var-icon :class="`append-icon ${rarityAura}`" :size="36" :name="store.getStaticUrl(codex['icon'])" />
+      <var-icon :class="`append-icon ${rarityAura}`" :size="36" :name="global.getStaticUrl(codex['icon'])" />
     </template>
     <var-space align="center" size="small">
     <span :class="rarityText">
-    {{ store.codex.based[codex['category']][codex['id']]['name'] }}
+    {{ codexState.based[codex['category']][codex['id']]['name'] }}
     </span>
     <var-chip type="warning" size="mini" :round="true" plain>
-      {{ global.star + codex['tier'] }}
+      {{ global.getTier(codex['tier']) }}
     </var-chip>
     </var-space>
     <template #description>
@@ -90,6 +90,8 @@ import { defineComponent } from 'vue';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
+
 export default defineComponent({
   props: {
     codex: {

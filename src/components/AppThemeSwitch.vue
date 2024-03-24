@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { store } from '@/store'
-import { setTheme } from '@/styles'
+import { setTheme, currentTheme } from '@/styles'
 
 const show = ref(false);
 
 function getActiveStyles(theme: string) {
 	return {
-		color: store.state.theme === theme ? 'var(--color-primary)' : undefined,
-		backgroundColor: store.state.theme === theme ? 'var(--app-cell-active-background)' : undefined
+		color: currentTheme.value === theme ? 'var(--color-primary)' : undefined,
+		backgroundColor: currentTheme.value === theme ? 'var(--app-cell-active-background)' : undefined
 	}
 }
 

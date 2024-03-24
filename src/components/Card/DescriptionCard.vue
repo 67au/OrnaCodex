@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { store } from '@/store';
+import { useCodexState } from '@/store';
 </script>
 
 <template>
-  <template v-if="store.codex.basedItem['description'] !== undefined">
+  <template v-if="codexState.basedItem['description'] !== undefined">
     <var-card class="card" :title="$t('description')">
       <template #description>
         <div class="card-description">
-          {{ store.codex.basedItem['description'] }}
+          {{ codexState.basedItem['description'] }}
         </div>
       </template>
     </var-card>
   </template>
 </template>
+
+<script lang="ts">
+const codexState = useCodexState();
+</script>

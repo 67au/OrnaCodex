@@ -1,8 +1,9 @@
-import { useStorage } from '@vueuse/core'
 import { useDebounceFn } from '@vueuse/core';
-import { reactive, computed } from 'vue'
 
 import router from '@/router'
+import { defineStore, storeToRefs } from 'pinia';
+import { i18n } from '@/i18n';
+import { assess, type AssessQuery } from '@/plugins/assess';
 
 const guideUrl = 'https://orna.guide';
 const languageBased = 'en';
@@ -26,23 +27,7 @@ const rarityAura: any = {
   steward: 'demonforged',
 };
 
-const singleOptions = ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'];
-const arrayOptions = ['event', 'tags'];
-const statusOptions = ['causes', 'cures', 'gives', 'immunities'];
-// const tagsOptions = ['items', 'raids', 'spells'];
-
-const stat_precent_keys = new Set(['ward', 'crit', 'gold_bonus',
-  'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
-  'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction']);
-
-const sortKeys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
-  'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
-  'follower_stats', 'follower_act', 'summon_stats',
-  'view_distance', 'adornment_slots', 'monster_attraction',];
-
 // const notTransKeys = ['name', 'description', 'bestial_bond', 'abilities'];
-
-type Index = Array<[string, string]>;
 
 export const global = {
   ornaUrl: __ORNA_URL__,
@@ -50,162 +35,195 @@ export const global = {
   guideUrl: guideUrl,
   guideApiUrl: `${guideUrl}/api/v1`,
   star: '★',
+  getTier: (tier: string | number) => `${global.star}${tier}`,
   languageBased: languageBased,
   elementColor: elementColor,
-  singleOptions: singleOptions,
-  arrayOptions: arrayOptions,
-  statusOptions: statusOptions,
-  sortKeys: sortKeys,
-  sortKeysSet: new Set(sortKeys),
   rarityAura: rarityAura,
+  enterCodex: (category: string, id: string) => router.push({ path: `/codex/${category}/${id}/` }),
+  getStaticUrl: (url: string) => `${global.staticUrl}${url}`,
 }
 
-export const store: any = reactive({
-  homeTop: 0,
-  codexTop: {},
-  state: useStorage('fqegg.top', {
-    language: null,
-    theme: null,
+interface scrollTopMap {
+  [key: string]: number;
+}
+
+export const useScrollTopState = defineStore('scrollTop', {
+  state: () => ({
+    home: 0,
+    codex: {} as scrollTopMap,
   }),
-  codexPage: {
-    category: undefined,
-    id: undefined,
+  actions: {
+    getCodexTop(category: string, id: string): number {
+      return this.codex[`${category}/${id}`] || 0;
+    },
+    setCodexTop(category: string, id: string, top: number): void {
+      this.codex[`${category}/${id}`] = top;
+    }
   },
-  codex: {
-    extra: undefined,  // 'not_trans_keys', 'icons', 'miss_entries', 
-                      // 'upgrade_materials', 'skills', 'offhand_skills', 'offhand_items'
-    base: {},  // {lang: notTransKeys}
-    data: {},  // {category: {id: item}}
-    materials: computed(() => new Set(Object.keys(store.codex.extra['upgrade_materials']))),
-    spells: computed(() => new Set(Object.keys(store.codex.extra['skills']))),
-    offhand_skills: computed(() => new Set(Object.keys(store.codex.extra['offhand_skills']))),
-    offhand_items: computed(() => new Set(Object.keys(store.codex.extra['offhand_items']))),
-    miss_entries: computed(() => new Set(Object.keys(store.codex.extra['miss_entries']))),
-    icons: computed(() => store.codex.extra.icons),
-    isMaterial: () => store.codex.materials.has(store.codexPage.id),
-    isSkill: () => store.codex.spells.has(store.codexPage.id),
-    isOffhandSkill: () => store.codex.offhand_skills.has(store.codexPage.id),
-    isOffhandItem: () => store.codex.offhand_items.has(store.codexPage.id),
-    isMissEntry: (entry: string) => store.codex.miss_entries.has(`${store.state.language}/${entry}`),
-    getMissEntry: (entry: string) => store.codex.extra['miss_entries'][`${store.state.language}/${entry}`],
-    based: computed(() => store.codex.base[store.state.language]),
-    basedItem: computed(() => store.codex.based[store.codexPage.category][store.codexPage.id]),
-    used: computed(() => store.codex.data),
-    usedItem: computed(() => store.codex.used[store.codexPage.category][store.codexPage.id]),
-    url: computed(() => `/codex/${store.codexPage.category}/${store.codexPage.id}/`),
-    filtered: computed(function (): Array<[string, string]> {
-      return store.codex.index.filter(([category, id]: [string, string]) => {
-        if (store.codex.used[category][id]) {
-          const search = new RegExp(store.search, 'i')
-          return search.test(store.codex.based[category][id]['name']) || (store.codex.based[category][id]['description'] != undefined && search.test(store.codex.based[category][id]['description']))
+})
+
+interface Codex {
+  category: string,
+  id: string,
+}
+
+interface CodexMap<T> {
+  [key: string]: T;
+}
+
+interface CodexItem {
+  [key: string]: any;
+}
+
+type CodexIndex = Array<Codex>;
+
+export const useCodexState = defineStore('codex', {
+  state: () => ({
+    meta: {} as CodexMap<CodexMap<CodexItem>>,
+    langs: {} as CodexMap<any>,
+    extra: {} as CodexMap<any>,
+    page: {
+      category: '',
+      id: '',
+    } as Codex,
+  }),
+  getters: {
+    materials: (state) => new Set(Object.keys(state.extra['upgrade_materials'])),
+    spells: (state) => new Set(Object.keys(state.extra['skills'])),
+    offhand_skills: (state) => new Set(Object.keys(state.extra['offhand_skills'])),
+    offhand_items: (state) => new Set(Object.keys(state.extra['offhand_items'])),
+    miss_entries: (state) => new Set(Object.keys(state.extra['miss_entries'])),
+    icons: (state) => state.extra.icons,
+    url: (state) => `/codex/${state.page.category}/${state.page.id}/`,
+
+    used: (state) => state.meta,
+    usedItem: (state) => state.meta[state.page.category][state.page.id],
+
+    based: (state) => state.langs[i18n.global.locale.value],
+    basedItem: (state) => state.langs[i18n.global.locale.value][state.page.category][state.page.id],
+
+    index(): CodexIndex {
+      const index: CodexIndex = [];
+      Object.entries(this.used).forEach(([category, items]) => {
+        Object.keys(items).forEach((id) => {
+          index.push({
+            category: category,
+            id: id,
+          })
+        })
+      })
+      return index;
+    },
+
+    filtered(): CodexIndex {
+      const { search, filters } = storeToRefs(useFiltersState());
+      const optionsState = useOptionsState();
+      return this.index.filter(({ category, id }: Codex) => {
+        if (this.used[category][id]) {
+          const searchKey = new RegExp(search.value, 'i');
+          return searchKey.test(this.based[category][id].name) || (this.based[category][id].description !== undefined && searchKey.test(this.based[category][id].description))
         }
-      }).filter(([category, id]: [string, string]) => {
-        return store.filters.every((filter: any) => {
-          if (singleOptions.includes(filter['k'])) {
-            if (filter['v'] === undefined) { return true }
-            if (filter['k'] === 'exotic') { return store.codex.used[category][id][filter['k']] === filter['v']; }
-            return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']] === filter['v']
+      }).filter(({ category, id }: Codex) => {
+        return filters.value.every((filter: Filter) => {
+          if (filter.value === undefined) { return true }
+          if (optionsState.keys.single.includes(filter.key)) {
+            if (filter.key === 'exotic') { return this.used[category][id][filter.key] === filter.value }
+            return this.used[category][id][filter.key] !== undefined && this.used[category][id][filter.key] === filter.value;
           }
-          if (arrayOptions.includes(filter['k'])) {
-            if (filter['v'] === undefined) { return true }
-            return store.codex.used[category][id][filter['k']] !== undefined && store.codex.used[category][id][filter['k']].includes(filter['v'])
+          if (optionsState.keys.array.includes(filter.key)) {
+            return this.used[category][id][filter.key] !== undefined && this.used[category][id][filter.key].includes(filter.value);
           }
-          if (statusOptions.includes(filter['k'])) {
-            if (filter['v'] === undefined) { return true }
-            if (filter['v'].length === 0) { return true }
-            if (store.codex.used[category][id][filter['k']] !== undefined) {
-              return filter['v'].every((v: string) => {
-                return store.codex.used[category][id][filter['k']].some((f: any) => f['name'] === v);
-              })
-            }
-            else {
-              return false;
-            }
+          if (optionsState.keys.status.includes(filter.key)) {
+            if ((filter.value as Array<string>).length === 0) { return true }
+            return (filter.value as Array<string>).every((value) => {
+              return this.used[category][id][filter.key] !== undefined && this.used[category][id][filter.key].some((status: Status) => status.name === value);
+            })
           }
         })
       })
-    }),
-    sorted: computed(() => {
-      return (store.sort === undefined) ? store.codex.filtered : store.codex.filtered.toSorted((a: string, b: string) => {
-        if (store.sort === 'name') {
-          const itemA = store.codex.based[a[0]][a[1]];
-          const itemB = store.codex.based[b[0]][b[1]];
-          if (store.order) {
-            return itemA['name'].localeCompare(itemB['name']);
-          } else {
-            return itemB['name'].localeCompare(itemA['name']);
+    },
+    sorted(): CodexIndex {
+      const filtersState = useFiltersState();
+      const { sort, asc } = storeToRefs(filtersState);
+      const sortKey = sort.value as string;
+      if (sortKey === undefined) {
+        return this.filtered;
+      } else {
+        return this.filtered.toSorted((a, b) => {
+          if (sortKey === 'name') {
+            const A = this.based[a.category][a.id];
+            const B = this.based[b.category][b.id];
+            if (asc.value) {
+              return A.name.localeCompare(B.name);
+            } else {
+              return B.name.localeCompare(A.name);
+            }
           }
-        }
-        const itemA = store.codex.used[a[0]][a[1]];
-        const itemB = store.codex.used[b[0]][b[1]];
-        if (store.sort === 'tier') {
-          if (store.order) {
-            return itemA['tier'] - itemB['tier'];
-          } else {
-            return itemB['tier'] - itemA['tier'];;
+          const A = this.used[a.category][a.id];
+          const B = this.used[b.category][b.id];
+          if (sortKey === 'tier') {
+            if (asc.value) {
+              return A.tier - B.tier;
+            } else {
+              return B.tier - A.tier;
+            }
           }
-        }
-        if (itemA['stats'] === undefined || itemA['stats'][store.sort] === undefined) {
-          return 1;
-        }
-        if (itemB['stats'] === undefined || itemB['stats'][store.sort] === undefined) {
-          return -1;
-        }
-        return (() => {
-          if (stat_precent_keys.has(store.sort)) {
-            return itemA['stats'][store.sort].slice(0, -1) - itemB['stats'][store.sort].slice(0, -1);
-          }
-          return itemA['stats'][store.sort] - itemB['stats'][store.sort];
-        })() * (store.order ? 1 : -1)
-      })
-    }),
-    index: computed(function (): Index {
-      const index: any[] = [];
-      for (const [category, items] of (Object.entries(store.codex.used) as Array<[string, any]>)) {
-        for (const id of Object.keys(items)) {
-          index.push([category, id]);
-        }
+          if (A.stats === undefined || A.stats[sortKey] === undefined) { return 1 }
+          if (B.stats === undefined || B.stats[sortKey] === undefined) { return -1 }
+          return (() => {
+            if (filtersState.isPercentSortKey) {
+              return A.stats[sortKey].slice(0, -1) - B.stats[sortKey].slice(0, -1);
+            } else {
+              return A.stats[sortKey] - B.stats[sortKey];
+            }
+          })() * (asc.value ? 1 : -1);
+        })
       }
-      return index;
-    }),
+    },
   },
-  options: undefined,
-  search: '',
-  filters: [] as Array<any>,
-  sort: undefined,
-  order: false,
-  list: {
-    loading: false,
-    finished: false,
-    content: [],
-    index: 0,
-  },
-  renderList: useDebounceFn(() => {
-    store.clearList();
-    store.loadList();
-  }, 500, { maxWait: 1000 }),
-  loadList() {
-    store.list.loading = true;
-    const codexLength = store.codex.sorted.length;
-    const chunkSize = 40;
-    const minChunk = Math.min(chunkSize, codexLength - store.list.index);
-    for (let i = 0; i < minChunk; i++) {
-      store.list.content.push(store.codex.sorted[store.list.index + i]);
-    };
-    store.list.index += minChunk;
-    store.list.loading = false;
-    if (store.list.index >= codexLength) {
-      store.list.finished = true;
-    };
-  },
-  clearList() {
-    store.list.content = [];
-    store.list.index = 0;
-    store.list.finished = false;
-  },
-  menus: undefined,
-  buildOptions() {
-    store.options = {
+  actions: {
+    isMaterial() {
+      return this.materials.has(this.page.id);
+    },
+    isSkill() {
+      return this.spells.has(this.page.id);
+    },
+    isOffhandSkill() {
+      return this.offhand_skills.has(this.page.id);
+    },
+    isOffhandItem() {
+      return this.offhand_items.has(this.page.id);
+    },
+    isMissEntry(category: string, id: string) {
+      return this.miss_entries.has(`${i18n.global.locale.value}/${category}/${id}`)
+    },
+    getMissEntry(category: string, id: string) {
+      return this.extra.miss_entries[`${i18n.global.locale.value}/${category}/${id}`]
+    },
+  }
+})
+
+
+interface OptionMap {
+  [key: string]: Set<string | number>,
+}
+
+type Menu = Array<[string, boolean]>;
+
+interface Status {
+  name: string,
+  icon: string,
+  chance?: string,
+}
+
+export const useOptionsState = defineStore('options', {
+  state: () => ({
+    keys: {
+      single: ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'],
+      array: ['event', 'tags'],
+      status: ['causes', 'cures', 'gives', 'immunities'],
+    },
+    options: {
       category: new Set(),
       tier: new Set(),
       exotic: new Set(),
@@ -222,59 +240,310 @@ export const store: any = reactive({
       cures: new Set(),
       gives: new Set(),
       immunities: new Set(),
-    };
+    } as OptionMap,
+    menu: [] as Menu,
+  }),
+  actions: {
+    init() {
+      const codex = useCodexState();
+      this.$reset();
+      this.menu = Object.keys(this.options).slice(1).map((key) => [key, true]);
+      Object.values(codex.used).forEach((items) => {
+        Object.values(items).forEach((item) => {
+          this.update(item);
+        })
+      })
+    },
+    update(item: CodexItem) {
+      this.keys.single.forEach((key) => {
+        this.add(item, key);
+      })
 
-    // store.filters = [];
-    store.search = '';
-    store.menus = Object.keys(store.options).map((key) => [key, true]);
-    for (const items of (Object.values(store.codex.used) as Array<[string, any]>)) {
-      for (const item of Object.values(items)) {
-        store.updateOptions(item);
-      }
-    }
-  },
-  updateOptions(item: any) {
-    // single      
-    for (const option of singleOptions) {
-      store.addOption(item, option);
-    }
-    // array
-    for (const option of arrayOptions) {
-      store.addOption(item, option);
-    }
+      this.keys.array.forEach((key) => {
+        this.add(item, key);
+      })
 
-    // drop
-    for (const option of statusOptions) {
-      if (item[option] != undefined) {
-        for (const t of item[option]) {
-          store.options[option].add(t['name']);
+      this.keys.status.forEach((key) => {
+        if (item[key] !== undefined) {
+          (item[key] as Array<Status>).forEach((status) => {
+            this.options[key].add(status.name);
+          })
+        }
+      })
+    },
+    add(item: CodexItem, key: string) {
+      if (item[key] != undefined) {
+        if (typeof item[key] == 'object') {
+          for (const t of item[key]) {
+            this.options[key].add(t);
+          }
+        }
+        else {
+          this.options[key].add(item[key]);
         }
       }
     }
+  }
+})
+
+interface Filter {
+  key: string,
+  value: Array<string> | string | number | undefined,
+}
+type Filters = Array<Filter>;
+
+export const useFiltersState = defineStore('filters', {
+  state: () => ({
+    search: '' as string,
+    filters: [{
+      key: 'category',
+      value: undefined,
+    }] as Filters,
+    precentKeysSet: new Set(['ward', 'crit', 'gold_bonus',
+      'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
+      'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction']),
+    sortKeys: ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+      'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
+      'follower_stats', 'follower_act', 'summon_stats',
+      'view_distance', 'adornment_slots', 'monster_attraction',],
+    sort: undefined as string | undefined,
+    asc: false,
+  }),
+  getters: {
+    isPercentSortKey: (state) => state.precentKeysSet.has(state.sort as string),
   },
-  addOption(item: any, key: string) {
-    if (item[key] != undefined) {
-      if (typeof item[key] == 'object') {
-        for (const t of item[key]) {
-          store.options[key].add(t);
-        }
+  actions: {
+    reset() {
+      this.$reset();
+    },
+    add(key: string) {
+      const optionsState = useOptionsState()
+      this.filters.push({
+        key: key,
+        value: optionsState.keys.status.includes(key) ? [] : undefined,
+      })
+    }
+  }
+})
+
+export const useItemListState = defineStore('item-list', {
+  state: () => ({
+    items: [] as CodexIndex,
+    index: 0,
+    loading: false,
+    finished: false,
+    render: useDebounceFn(() => {
+      const list = useItemListState();
+      list.clear();
+      list.load();
+    }, 500, { maxWait: 1000 }),
+  }),
+  actions: {
+    clear() {
+      this.items = [];
+      this.index = 0;
+      this.finished = false;
+      this.loading = false;
+    },
+    load() {
+      this.loading = true;
+      const { sorted } = storeToRefs(useCodexState());
+      const sortedCodex = sorted.value;
+      const codexLength = sortedCodex.length;
+      const chunkSize = 40;
+      const minChunkSize = Math.min(chunkSize, codexLength - this.index);
+      for (let i = 0; i < minChunkSize; i++) {
+        this.items.push(sortedCodex[this.index + i]);
       }
-      else {
-        store.options[key].add(item[key]);
+      this.index += minChunkSize;
+      this.loading = false;
+      if (this.index >= codexLength) {
+        this.finished = true;
       }
+    },
+  }
+})
+
+interface GuideMap {
+  [key: string]: string,
+}
+
+interface GuideCache {
+  [key: string]: any,
+}
+
+interface Stat {
+  base: number,
+  values: Array<number>,
+}
+
+const statKeys = ['hp', 'mana', 'attack', 'magic', 'defense',
+  'resistance', 'dexterity', 'ward', 'crit', 'foresight'];
+
+export interface GuideStats {
+  [key: string]: Stat,
+}
+
+export const useGuideState = defineStore('guide', {
+  state: () => ({
+    apiMap: {
+      'items': 'item',
+      'monsters': 'monster',
+      'bosses': 'monster',
+      'raids': 'monster',
+      'followers': 'pet',
+      'spells': 'skill',
+    } as GuideMap,
+    pageMap: {
+      'items': 'items',
+      'monsters': 'monsters',
+      'bosses': 'monsters',
+      'raids': 'monsters',
+      'followers': 'pets',
+      'spells': 'skills',
+    } as GuideMap,
+    cache: undefined as GuideCache | undefined,
+  }),
+  getters: {
+    page(state) {
+      const codexState = useCodexState();
+      return {
+        category: state.pageMap[codexState.page.category],
+        id: state.cache !== undefined ? state.cache.id : '',
+      } as Codex
+    },
+    stats(state) {
+      if (state.cache === undefined) {
+        return undefined;
+      }
+      return state.cache.stats as GuideStats;
     }
   },
-  guide: {
-    cache: undefined,
-  },
-  enterCodex(category: string, id: string) {
-    router.push({
-      path: `/codex/${category}/${id}/`
-    });
-  },
-  getStaticUrl(url: string) {
-    return `${global.staticUrl}${url}`
-  },
-  
-  codexViewLoading: true,
+  actions: {
+    async searchByCodexName() {
+      const codexState = useCodexState();
+      let itemName = codexState.usedItem['name'];
+      if (this.apiMap[codexState.page.category as string] === undefined) {
+        return [];
+      }
+      if (['monsters', 'bosses'].includes(codexState.page.category) && itemName.endsWith(' (Arisen)')) {
+        itemName = itemName.slice(0, -9);
+      }
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 10000);
+      try {
+        const resp = await fetch(`${global.guideApiUrl}/${this.apiMap[codexState.page.category as string]}`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          signal: controller.signal,
+          body: JSON.stringify({ "icontains": [{ "name": itemName }] })
+        })
+        const result = await resp.json();
+        return result;
+      } catch (error) {
+        return [];
+      }
+    },
+    async refreshCache() {
+      const codexState = useCodexState();
+      if (this.cache === undefined) {
+        const result = await this.searchByCodexName();
+        for (const c of result) {
+          if (c['codex'] === codexState.url) {
+            this.cache = c;
+            break
+          }
+        }
+      }
+      return this.cache !== undefined;
+    },
+  }
+})
+
+export const useAssessState = defineStore('assess', {
+  state: () => ({
+    query: <AssessQuery>{
+      data: {},
+      extra: {},
+    },
+    result: {
+      quality: 1,
+      stats: <GuideStats>{},
+    },
+  }),
+  actions: {
+    async queryGuideApi() {
+      try {
+        const resp = await fetch(`${global.guideApiUrl}/assess`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+            Object.fromEntries(
+              Object.entries(this.query.data).map(([k, v]) => [k, Number(v)])
+            )
+          )
+        })
+        this.result = await resp.json();
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    initGuideQuery() {
+      const guideState = useGuideState();
+      if (guideState.stats !== undefined) {
+        this.query.data = {
+          id: (guideState.cache as GuideCache).id,
+          level: 1,
+        }
+        this.query.extra = {
+          isQuality: false,
+          isBoss: (guideState.cache as GuideCache).boss,
+          fromGuide: true,
+          baseStats: guideState.stats,
+        }
+        for (const [key, value] of (Object.entries(guideState.stats) as Array<[string, Stat]>)) {
+          this.query.data[key] = value.base;
+        }
+      }
+    },
+    initYacoQuery(quality: boolean = false) {
+      const guideState = useGuideState();
+      const codexState = useCodexState();
+
+      this.query.data = {
+        level: 1,
+      };
+      this.query.extra = {
+        isQuality: quality,
+        isBoss: true,
+        fromGuide: false,
+        baseStats: {} as GuideStats,
+      };
+      if (quality) {
+        this.query.data.quality = 100;
+        if (guideState.cache !== undefined) {
+          this.query.extra.fromGuide = true;
+          this.query.extra.isBoss = guideState.cache.boss;
+        }
+      }
+      for (const [key, value] of (Object.entries(codexState.usedItem.stats) as Array<[string, string]>)) {
+        if (statKeys.includes(key)) {
+          this.query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+          this.query.extra.baseStats[key] = { base: this.query.data[key], values: [] };
+        }
+      }
+    },
+    queryYacoApi() {
+      const codexState = useCodexState();
+      const isWeapon = codexState.basedItem['place'] === 'Weapon';
+      this.result = assess(this.query, isWeapon);
+    }
+  }
 })
