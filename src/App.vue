@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { RouterView } from 'vue-router';
-import { store } from '@/store';
 import { i18n } from '@/i18n';
 import { useDark } from '@/styles';
 import AppHeader from './components/AppHeader.vue';
 import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
 import AppThemeSwitch from './components/AppThemeSwitch.vue';
 import AppGithub from './components/AppGithub.vue';
+import { useCodexState } from './store';
 
 useDark();
 </script>
@@ -52,36 +52,33 @@ export default {
   created() {
     import(`@/assets/json/codex.json`).then((module: any) => {
       const codex: MetaCodex = module.default;
-      store.codex.data = codex.base;
-      store.codex.extra = codex.extra;
-      this.loadLangCodex(store.state.language, true, () => store.codexViewLoading = false);
+      this.codexState.meta = codex.base;
+      this.codexState.extra = codex.extra;
+      this.loadLangCodex(i18n.global.locale.value, true);
     });
   },
   mounted() {
     watch(() => i18n.global.locale.value, () => {
-      if (store.codex.base[store.state.language] === undefined) {
-        this.loadLangCodex(store.state.language, true);
+      if (this.codexState.langs[i18n.global.locale.value] === undefined) {
+        this.loadLangCodex(i18n.global.locale.value, true);
       };
     });
   },
   methods: {
-    loadLangCodex(lang: string, isLoad: boolean, callback?: Function) {
+    loadLangCodex(lang: string, isLoad: boolean) {
       if (isLoad) { this.loading = true; }
       import(`@/assets/json/codex.${lang}.json`).then((module: any) => {
         const codex: LangCodex = module.default;
-        store.codex.base[lang] = codex.base;
+        this.codexState.langs[lang] = codex.base;
         i18n.global.mergeLocaleMessage(lang, codex.key);
         i18n.global.mergeLocaleMessage(lang, {'meta': codex.meta});
         if (isLoad) { this.loading = false; }
-        if (callback !== undefined) {
-          callback();
-        }
       });
     }
   },
   data() {
     return {
-      store,
+      codexState: useCodexState(),
       loading: true as any,
     }
   },
@@ -103,7 +100,7 @@ body {
 }
 
 .layout {
-  padding: 60px 3px;
+  padding: 62px 3px;
   overflow-y: auto;
   height: 100vh;
 }

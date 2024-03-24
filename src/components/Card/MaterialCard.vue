@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { store, global } from '@/store'
+import { global, useCodexState } from '@/store'
 </script>
 
 <template>
-  <template v-if="store.codexPage.category === 'items' && store.codex.isMaterial()">
+  <template v-if="codexState.page.category === 'items' && codexState.isMaterial()">
     <var-card class="card" :title="$t('materials')">
       <template #description>
         <div class="card-description">
-          <var-cell class="codex-small-cell" v-for="mid in store.codex.extra['upgrade_materials'][store.codexPage.id]"
-            border @click="() => store.enterCodex(category, mid)" :key="mid">
+          <var-cell class="codex-small-cell" v-for="mid in codexState.extra['upgrade_materials'][codexState.page.id]"
+            border @click="() => global.enterCodex(category, mid)" :key="mid">
             <template #icon>
               <var-icon class="append-icon" :size="36"
-                :name="store.getStaticUrl(store.codex.used[category][mid]['icon'])" />
+                :name="global.getStaticUrl(codexState.used[category][mid]['icon'])" />
             </template>
-            {{ store.codex.based[category][mid]['name'] }}
+            {{ codexState.based[category][mid]['name'] }}
             <var-chip type="warning" size="mini" :round="true" plain>
-              {{ global.star + store.codex.used[category][mid]['tier'] }}
+              {{ global.getTier(codexState.used[category][mid]['tier']) }}
             </var-chip>
           </var-cell>
         </div>
@@ -25,5 +25,6 @@ import { store, global } from '@/store'
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
 const category: string = 'items';
 </script>

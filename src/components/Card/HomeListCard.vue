@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store, global } from '@/store';
+import { global, useCodexState, useFiltersState, useItemListState } from '@/store';
 </script>
 
 <template>
@@ -10,57 +10,58 @@ import { store, global } from '@/store';
           <template #left>
             <var-icon name="magnify" size="16" />
           </template>
-          {{ store.codex.filtered.length }}
+          {{ codexState.filtered.length }}
         </var-chip>
       </var-space>
     </template>
 
     <template #description>
       <div class="card-description">
-        <var-list :finished="store.list.finished" v-model:loading="store.list.loading" @load="store.loadList"
+        <var-list :finished="itemListState.finished" v-model:loading="itemListState.loading" @load="itemListState.load"
           :offset="800">
-          <var-cell v-for="[category, id], index in store.list.content" class="item-cell" border
-            @click="() => store.enterCodex(category, id)" :key="index">
+          <var-cell v-for="{ category, id }, index in itemListState.items" class="item-cell" border
+            @click="() => global.enterCodex(category, id)" :key="index">
             <template #icon>
               <var-icon :class="`append-icon ${rarityAura(category, id)}`" :size="48"
-                :name="store.getStaticUrl(store.codex.used[category][id]['icon'])" />
+                :name="global.getStaticUrl(codexState.used[category][id]['icon'])" />
             </template>
 
             <var-space align="center" size="small">
-                          <span>
-                {{ store.codex.based[category][id]['name'] }}
+              <span>
+                {{ codexState.based[category][id]['name'] }}
               </span>
               <var-chip v-if="category === 'items' || category === 'followers'" size="mini" plain
                 :class="rarityText(category, id)">
-                {{ $t(`meta.rarity.${store.codex.used[category][id]['rarity']}`) }}
+                {{ $t(`meta.rarity.${codexState.used[category][id]['rarity']}`) }}
               </var-chip>
             </var-space>
 
             <template #description>
               <var-space size="mini" style="line-height: 120%;">
                 <var-chip type="warning" size="mini" :round="false" plain>
-                  {{ global.star + store.codex.used[category][id]['tier'] }}
+                  {{ global.getTier(codexState.used[category][id]['tier']) }}
                 </var-chip>
                 <var-chip type="primary" size="mini" :round="false" plain>
                   {{ $t(`categories.${category}`) }}
                 </var-chip>
 
-                <var-chip v-if="store.codex.used[category][id]['exotic'] === true" class="exotic" size="mini"
+                <var-chip v-if="codexState.used[category][id]['exotic'] === true" class="exotic" size="mini"
                   :round="false" plain>
                   {{ $t('exotic') }}
                 </var-chip>
 
-                <template v-if="store.codex.used[category][id]['event'] != undefined">
+                <template v-if="codexState.used[category][id]['event'] != undefined">
                   <var-chip class="highlight" size="mini" :round="false" plain
-                    v-for="event in store.codex.used[category][id]['event']" :key="event">
+                    v-for="event in codexState.used[category][id]['event']" :key="event">
                     <span>{{ $t(`meta.event.${event}`) }}</span>
                   </var-chip>
                 </template>
 
                 <template
-                  v-if="global.sortKeysSet.has(store.sort) && store.codex.used[category][id]['stats'] !== undefined && store.codex.used[category][id]['stats'][store.sort] !== undefined">
+                  v-if="filtersState.sort !== undefined && codexState.used[category][id]['stats'] !== undefined && codexState.used[category][id]['stats'][filtersState.sort] !== undefined">
                   <var-chip type="info" size="mini" :round="false" plain>
-                    {{ `${$t(`meta.stats.${store.sort}`)}: ${store.codex.used[category][id]['stats'][store.sort]}` }}
+                    {{ `${$t(`meta.stats.${filtersState.sort}`)}:
+                    ${codexState.used[category][id]['stats'][filtersState.sort]}` }}
                   </var-chip>
                 </template>
               </var-space>
@@ -73,10 +74,14 @@ import { store, global } from '@/store';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
+const filtersState = useFiltersState();
+const itemListState = useItemListState();
+
 export default defineComponent({
   methods: {
     rarityAura(category: string, id: string) {
-      const usedItem = store.codex.used[category][id];
+      const usedItem = codexState.used[category][id];
       if (category === 'items') {
         return usedItem['aura'];
       }
@@ -86,7 +91,7 @@ export default defineComponent({
       return ''
     },
     rarityText(category: string, id: string) {
-      const usedItem = store.codex.used[category][id];
+      const usedItem = codexState.used[category][id];
       if (category === 'items') {
         return `${usedItem['aura']}-text`
       }

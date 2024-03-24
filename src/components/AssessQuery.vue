@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { store } from '@/store';
+import { useCodexState } from '@/store';
 </script>
 
 <template>
-  <var-dialog :show="show" @update:show="$emit('update:show', $event)" :cancel-button="false">
+  <var-dialog :show="show" @update:show="$emit('update:show', $event)" :cancel-button="false" dialog-class="dialog">
     <template #title>
     <var-space align="center" justify="space-between">
       <span>
@@ -15,7 +15,7 @@ import { store } from '@/store';
     </var-space>
     </template>
     <div> 
-      <span> {{ name }} </span>
+      <span> {{ codexState.basedItem['name'] }} </span>
       <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
         <var-col :span="8">
           <div class="assess">
@@ -46,8 +46,8 @@ import { store } from '@/store';
               v-model="query.data[key]" :disabled="query.extra.isQuality" />
           </div>
         </var-col>
-        <var-col :span="8">
-          <var-button style="width: 100%;" type="primary" @click="queryFunc()">
+        <var-col :span="24">
+          <var-button block type="primary" @click="queryFunc()">
             {{ $t('query.query') }}
           </var-button>
         </var-col>
@@ -57,6 +57,8 @@ import { store } from '@/store';
 </template>
 
 <script lang="ts">
+const codexState = useCodexState();
+
 export default {
   props: {
     title: {
@@ -64,10 +66,6 @@ export default {
       required: true,
     },
     query: {
-      type: Object,
-      required: true,
-    },
-    baseStats: {
       type: Object,
       required: true,
     },
@@ -81,18 +79,16 @@ export default {
     }
   },
   computed: {
-    name() {
-      return store.codex.basedItem['name'];
+    baseStats() {
+      return this.query.extra.baseStats;
     }
-  },
+  }
 }
 </script>
 
-<style>
-.popup-content {
-  padding: 24px;
+<style lang="less" scoped>
+.dialog {
   width: 85vw;
-  max-width: 375px;
-  border-radius: 28px;
+  max-width: 425px;
 }
 </style>
