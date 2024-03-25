@@ -113,8 +113,8 @@ const codexState = useCodexState();
 export default {
   computed: {
     rarityAura() {
-      if (codexState.page.category === 'items') {
-        return codexState.usedItem['aura'];
+      if (['items', 'bosses', 'monsters'].includes(codexState.page.category)) {
+        return codexState.usedItem['aura'] || '';
       }
       if (codexState.page.category === 'followers') {
         return global.rarityAura[codexState.usedItem['rarity']];
