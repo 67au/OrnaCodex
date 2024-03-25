@@ -23,6 +23,17 @@
             "raids": "副本",
             "spells": "技能 & 法术"
         },
+        "guide": {
+            "spawns": "生成",
+            "element": {
+                "resistance": "抵抗",
+                "weak": "弱点",
+                "immunity": "免疫"
+            },
+            "status": {
+                "immunity": "状态免疫"
+            }
+        },
         "speller": "施放者",
         "stats": "属性",
         "materials": "材料来源",
@@ -79,6 +90,17 @@
             "raids": "副本",
             "spells": "技能&魔法"
         },
+        "guide": {
+            "spawns": "生成",
+            "element": {
+                "resistance": "抵抗",
+                "weak": "弱點",
+                "immunity": "免疫"
+            },
+            "status": {
+                "immunity": "狀態免疫"
+            }
+        },
         "speller": "施放者",
         "stats": "屬性",
         "materials": "材料來源",
@@ -96,7 +118,7 @@
         "offhands": "副手裝備",
         "assess": "品質查詢",
         "query": {
-            "query": "查詢",   
+            "query": "查詢",
             "level": "等級",
             "quality": "品質",
             "base": "基礎",
@@ -133,6 +155,17 @@
             "monsters": "Monsters",
             "raids": "Raids",
             "spells": "Skills & Spells"
+        },
+        "guide": {
+            "spawns": "Spawns",
+            "element": {
+                "resistance": "Resistance",
+                "weak": "Weak",
+                "immunity": "Immunity"
+            },
+            "status": {
+                "immunity": "Status Immunity"
+            }
         },
         "speller": "User",
         "stats": "Stats",

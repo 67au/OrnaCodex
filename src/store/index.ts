@@ -368,7 +368,7 @@ interface GuideMap {
   [key: string]: string,
 }
 
-interface GuideCache {
+export interface GuideCache {
   [key: string]: any,
 }
 
@@ -420,13 +420,17 @@ export const useGuideState = defineStore('guide', {
     }
   },
   actions: {
+    isMonster() {
+      const codexState = useCodexState();
+      return ['monsters', 'bosses', 'raids'].includes(codexState.page.category);
+    },
     async searchByCodexName() {
       const codexState = useCodexState();
       let itemName = codexState.usedItem['name'];
       if (this.apiMap[codexState.page.category as string] === undefined) {
         return [];
       }
-      if (['monsters', 'bosses'].includes(codexState.page.category) && itemName.endsWith(' (Arisen)')) {
+      if (this.isMonster() && itemName.endsWith(' (Arisen)')) {
         itemName = itemName.slice(0, -9);
       }
       const controller = new AbortController();
