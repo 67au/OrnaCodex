@@ -17,6 +17,7 @@ declare module 'vue' {
     ChanceLists: typeof import('./src/components/List/ChanceLists.vue')['default']
     DescriptionCard: typeof import('./src/components/Card/DescriptionCard.vue')['default']
     DropsCard: typeof import('./src/components/Card/DropsCard.vue')['default']
+    GuideCard: typeof import('./src/components/Card/GuideCard.vue')['default']
     GuideResult: typeof import('./src/components/GuideResult.vue')['default']
     HomeListCard: typeof import('./src/components/Card/HomeListCard.vue')['default']
     HomeSearchCard: typeof import('./src/components/Card/HomeSearchCard.vue')['default']

@@ -70,6 +70,8 @@ import AssessQuery from '@/components/AssessQuery.vue';
           </template>
         </var-card>
 
+        <GuideCard v-if="isGuide && guideState.isMonster()" />
+
         <StatsCard />
         <AbilityCard />
         <DropsCard name="abilities" text />
@@ -119,6 +121,9 @@ const guideState = useGuideState();
 const assessState = useAssessState();
 
 export default defineComponent({
+  components: {
+    GuideCard: defineAsyncComponent(() => import('@/components/Card/GuideCard.vue')),
+  },
   mounted() {
     watch(() => this.$route.params, () => {
       guideState.$reset();
@@ -180,39 +185,39 @@ export default defineComponent({
       await this.refreshGuide();
       setTimeout(() => {
         this.show.guide.page = true;
-      }, 350);
+      }, 150);
     },
     async assessGuidePage() {
       await this.refreshGuide();
       setTimeout(() => {
         this.show.guide.assess = true;
-      }, 350);
+      }, 150);
     },
     async initGuideQuery() {
       await this.refreshGuide();
       assessState.initGuideQuery();
       setTimeout(() => {
         this.show.guide.query = true;
-      }, 200);
+      }, 150);
     },
     async assessGuideApi() {
       if (await assessState.queryGuideApi()) {
         setTimeout(() => {
           this.show.result = true;
-        }, 200);
+        }, 150);
       }
     },
     initYacoQuery(quality: boolean = false) {
       assessState.initYacoQuery(quality);
       setTimeout(() => {
         this.show.yaco.query = true;
-      }, 200);
+      }, 150);
     },
     assessYacoApi() {
       assessState.queryYacoApi();
       setTimeout(() => {
         this.show.result = true;
-      }, 200);
+      }, 150);
     }
   }
 })
