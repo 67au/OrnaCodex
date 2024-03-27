@@ -322,26 +322,35 @@ export const useFiltersState = defineStore('filters', {
   actions: {
     patch(filtersMap: FiltersMap) {
       const { options } = storeToRefs(useOptionsState());
-      if (filtersMap.sort !== undefined && !this.sortKeys.includes(filtersMap.sort)) {
+      if (filtersMap.sort !== undefined
+        && !(['name', 'tier']).includes(filtersMap.sort)
+        && !this.sortKeys.includes(filtersMap.sort)
+      ) {
         filtersMap.sort = undefined;
       }
       const filters = filtersMap.filters.filter(({ key: key }) => key in options.value);
       filters.forEach(({ key: key, value: value }, index) => {
-          if (Array.isArray(value)) {
-            if (value.length>0) {
-              const verified = value.filter((v) => options.value[key].has(v));
-              if (value.length !== verified.length) {
-                filters[index].value = verified;
-              }
-            }
-          } else {
-            if (value !== undefined && !options.value[key].has(value)) {
-              filters[index].value = undefined;
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            const verified = value.filter((v) => options.value[key].has(v));
+            if (value.length !== verified.length) {
+              filters[index].value = verified;
             }
           }
-        })
+        } else {
+          if (value !== undefined && !options.value[key].has(value)) {
+            filters[index].value = undefined;
+          }
+        }
+      })
       filtersMap.filters = filters;
       this.$patch(filtersMap);
+    },
+    encode() {
+      return btoa(encodeURIComponent(JSON.stringify(this.$state)))
+    },
+    decode(base64: string) {
+      return JSON.parse(decodeURIComponent(atob(base64)))
     },
     reset() {
       this.$reset();

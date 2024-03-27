@@ -19,7 +19,7 @@ const router = createRouter({
       meta: {
         keepAlive: false,
       },
-    }
+    },
   ],
   scrollBehavior(to, from) {
     const scrollTopState = useScrollTopState();

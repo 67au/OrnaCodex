@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { global, useFiltersState, useItemListState, useOptionsState } from '@/store';
+import { global, useFiltersState, useOptionsState } from '@/store';
 import { defineComponent } from 'vue';
-import { useLocalStorage } from '@vueuse/core';
+import { useClipboard } from '@vueuse/core';
 </script>
 
 <template>
@@ -15,7 +15,8 @@ import { useLocalStorage } from '@vueuse/core';
             <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="filtersState.sort" clearable>
               <var-option value="name" :label="$t('name')" key="name" />
               <var-option value="tier" :label="$t('tier')" key="tier" />
-              <var-option v-for="key in filtersState.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)" :key="key" />
+              <var-option v-for="key in filtersState.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)"
+                :key="key" />
             </var-select>
             <template #extra>
               <var-button type="primary" @click="filtersState.asc = !filtersState.asc">
@@ -74,15 +75,16 @@ import { useLocalStorage } from '@vueuse/core';
     </template>
 
     <template #extra>
+      <var-button type="primary" text @click="share"> {{ $t('share') }} </var-button>
       <var-button type="primary" text @click="resetFilters"> {{ $t('clear') }} </var-button>
-      <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show"
+      <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show.menu"
         v-if="optionsState.options != undefined">
         <var-button type="primary" text> {{ $t('add') }} </var-button>
         <template #menu>
           <div style="overflow-y: scroll; max-height: 48vh;">
             <template v-for="[key, display], index in optionsState.menu">
               <var-cell ripple
-                @click="() => { filtersState.add(key); show = false; optionsState.menu[index][1] = false; }"
+                @click="() => { filtersState.add(key); show.menu = false; optionsState.menu[index][1] = false; }"
                 v-if="display" :key="key">
                 {{ $t(key) }}
               </var-cell>
@@ -92,35 +94,38 @@ import { useLocalStorage } from '@vueuse/core';
       </var-menu>
     </template>
   </var-card>
+
+  <var-dialog :title="$t('share')" :cancel-button="false" v-model:show="show.share" teleport="body">
+    <var-input size="small" variant="outlined" textarea readonly v-model="source" />
+    <var-button :type="copied ? 'info' : 'primary'" block style="margin-top: 8px;" @click="copy(source)">
+      {{ copied ? $t('copied') : $t('copy') }}
+    </var-button>
+  </var-dialog>
 </template>
 
 <script lang="ts">
 const filtersState = useFiltersState();
 const optionsState = useOptionsState();
-const itemListState = useItemListState();
+
+const source = ref('');
+const { copy, copied } = useClipboard()
 
 export default defineComponent({
-  mounted() {
-    const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.$state));
-    const filtersJson = JSON.parse(filtersStorage.value);
-    filtersState.patch(filtersJson);
-    const saveFilters = useDebounceFn(() => {
-      filtersStorage.value = JSON.stringify(filtersState.$state);
-    }, 500, { maxWait: 1000 })
-    watch(filtersState.$state, (newValue, oldValue) => {
-      saveFilters();
-      itemListState.render();
-    }, { deep: true })
-  },
   data() {
     return {
-      show: false,
+      show: {
+        menu: false,
+        share: false,
+      },
     }
   },
   methods: {
+    share() {
+      source.value = `${location.href.split('#')[0]}#/?search=${filtersState.encode()}`
+      this.show.share = true;
+    },
     resetFilters() {
       filtersState.reset();
-      itemListState.render();
     },
     isStatusKey(key: string) {
       return optionsState.keys.status.includes(key);
