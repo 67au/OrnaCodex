@@ -52,10 +52,10 @@ export default {
       return [this.statusImmunities, this.resistantTo, this.weakTo, this.resistantTo, this.spawns].some((e) => e.length > 0)
     },
     statusImmunities() {
-      if (this.guideCache.immune_to_status === undefined) {
+      if (this.guideCache.immune_to_status === undefined && this.guideCache.vulnerable_to_status === undefined) {
         return [];
       } else {
-        return this.guideCache.immune_to_status;
+        return this.guideCache.immune_to_status || this.guideCache.vulnerable_to_status;
       }
     },
     elements() {
