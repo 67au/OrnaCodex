@@ -66,11 +66,11 @@
     "useRoute": true,
     "useRouter": true,
     "useSlots": true,
-    "useStorage": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
-    "Varlet": true
+    "Varlet": true,
+    "useLocalStorage": true
   }
 }

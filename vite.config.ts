@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }) => {
           'vue-router',
           {
             '@vueuse/core': [
-              'useStorage',
+              'useLocalStorage',
               'useDebounceFn',
             ]
           },
