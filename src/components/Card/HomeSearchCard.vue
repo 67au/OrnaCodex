@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { global, useFiltersState, useItemListState, useOptionsState } from '@/store';
 import { defineComponent } from 'vue';
+import { useLocalStorage } from '@vueuse/core';
 </script>
 
 <template>
@@ -100,7 +101,14 @@ const itemListState = useItemListState();
 
 export default defineComponent({
   mounted() {
+    const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.$state));
+    const filtersJson = JSON.parse(filtersStorage.value);
+    filtersState.patch(filtersJson);
+    const saveFilters = useDebounceFn(() => {
+      filtersStorage.value = JSON.stringify(filtersState.$state);
+    }, 500, { maxWait: 1000 })
     watch(filtersState.$state, (newValue, oldValue) => {
+      saveFilters();
       itemListState.render();
     }, { deep: true })
   },
