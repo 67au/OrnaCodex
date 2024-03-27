@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useFiltersState, useItemListState, useOptionsState } from '@/store';
 import { watch, defineAsyncComponent, defineComponent } from 'vue';
+import router from '@/router';
 </script>
 
 
@@ -14,23 +15,53 @@ import { watch, defineAsyncComponent, defineComponent } from 'vue';
 </template>
 
 <script lang="ts">
-const filtersState= useFiltersState();
-const optionsState= useOptionsState();
-const itemListState= useItemListState();
+const filtersState = useFiltersState();
+const optionsState = useOptionsState();
+const itemListState = useItemListState();
+const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.$state));
+const saveFilters = useDebounceFn(() => {
+  filtersStorage.value = JSON.stringify(filtersState.$state);
+}, 500, { maxWait: 1000 });
 
 export default defineComponent({
   components: {
     HomeSearchCard: defineAsyncComponent(() => import("@/components/Card/HomeSearchCard.vue")),
     HomeListCard: defineAsyncComponent(() => import('@/components/Card/HomeListCard.vue')),
   },
-  mounted() {
+  async beforeRouteUpdate(to, from) {
+    if (to.query.search !== undefined) {
+      try {
+        filtersState.patch(filtersState.decode(to.query.search as string));
+      } catch { }
+      router.replace({ name: 'home' })
+    }
+  },
+  created() {
     optionsState.init();
-    itemListState.render();
+    if (this.$route.query.search !== undefined) {
+      this.enterShare(this.$route.query.search as string);
+    } else {
+      filtersState.patch(JSON.parse(filtersStorage.value));
+    }
+
+    watch(filtersState.$state, () => {
+      saveFilters();
+      itemListState.render();
+    }, { deep: true, immediate: true })
+
     this.loading = false;
     watch(() => this.$i18n.locale, () => {
       filtersState.search = '';
       itemListState.render();
     });
+  },
+  methods: {
+    enterShare(share: string) {
+      try {
+        filtersState.patch(filtersState.decode(share));
+      } catch { }
+      router.replace({ name: 'home' })
+    }
   },
   data() {
     return {
