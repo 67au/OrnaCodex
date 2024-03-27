@@ -6,7 +6,6 @@ import { i18n } from '@/i18n';
 import { assess, type AssessQuery } from '@/plugins/assess';
 
 const guideUrl = 'https://orna.guide';
-const languageBased = 'en';
 
 const elementColor: any = {
   water: '#5facff',
@@ -36,7 +35,6 @@ export const global = {
   guideApiUrl: `${guideUrl}/api/v1`,
   star: '★',
   getTier: (tier: string | number) => `${global.star}${tier}`,
-  languageBased: languageBased,
   elementColor: elementColor,
   rarityAura: rarityAura,
   enterCodex: (category: string, id: string) => router.push({ path: `/codex/${category}/${id}/` }),
@@ -171,7 +169,7 @@ export const useCodexState = defineStore('codex', {
           if (A.stats === undefined || A.stats[sortKey] === undefined) { return 1 }
           if (B.stats === undefined || B.stats[sortKey] === undefined) { return -1 }
           return (() => {
-            if (filtersState.isPercentSortKey) {
+            if (filtersState.isPercentSortKey()) {
               return A.stats[sortKey].slice(0, -1) - B.stats[sortKey].slice(0, -1);
             } else {
               return A.stats[sortKey] - B.stats[sortKey];
@@ -286,11 +284,17 @@ export const useOptionsState = defineStore('options', {
   }
 })
 
-interface Filter {
+export interface Filter {
   key: string,
   value: Array<string> | string | number | undefined,
 }
-type Filters = Array<Filter>;
+export type Filters = Array<Filter>;
+export interface FiltersMap {
+  search: string,
+  filters: Filters,
+  sort: string | undefined,
+  asc: boolean,
+}
 
 export const useFiltersState = defineStore('filters', {
   state: () => ({
@@ -299,22 +303,51 @@ export const useFiltersState = defineStore('filters', {
       key: 'category',
       value: undefined,
     }] as Filters,
-    precentKeysSet: new Set(['ward', 'crit', 'gold_bonus',
-      'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
-      'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction']),
-    sortKeys: ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
-      'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
-      'follower_stats', 'follower_act', 'summon_stats',
-      'view_distance', 'adornment_slots', 'monster_attraction',],
     sort: undefined as string | undefined,
     asc: false,
   }),
   getters: {
-    isPercentSortKey: (state) => state.precentKeysSet.has(state.sort as string),
+    precentKeysSet(): Set<string> {
+      return new Set(['ward', 'crit', 'gold_bonus',
+        'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
+        'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction'])
+    },
+    sortKeys(): Array<string> {
+      return ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+        'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
+        'follower_stats', 'follower_act', 'summon_stats',
+        'view_distance', 'adornment_slots', 'monster_attraction',]
+    },
   },
   actions: {
+    patch(filtersMap: FiltersMap) {
+      const { options } = storeToRefs(useOptionsState());
+      if (filtersMap.sort !== undefined && !this.sortKeys.includes(filtersMap.sort)) {
+        filtersMap.sort = undefined;
+      }
+      const filters = filtersMap.filters.filter(({ key: key }) => key in options.value);
+      filters.forEach(({ key: key, value: value }, index) => {
+          if (Array.isArray(value)) {
+            if (value.length>0) {
+              const verified = value.filter((v) => options.value[key].has(v));
+              if (value.length !== verified.length) {
+                filters[index].value = verified;
+              }
+            }
+          } else {
+            if (value !== undefined && !options.value[key].has(value)) {
+              filters[index].value = undefined;
+            }
+          }
+        })
+      filtersMap.filters = filters;
+      this.$patch(filtersMap);
+    },
     reset() {
       this.$reset();
+    },
+    isPercentSortKey() {
+      return this.precentKeysSet.has(this.$state.sort as string)
     },
     add(key: string) {
       const optionsState = useOptionsState()
