@@ -15,7 +15,7 @@ import { useCodexState } from '@/store';
           {{ `${(result['quality'] * 100).toFixed()}%` }}
         </var-chip>
       </var-space>
-      <var-table :elevation="2" class="assess-table">
+      <var-table :elevation="2" class="assess-table scroll">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
@@ -68,6 +68,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.scroll {
+  scrollbar-width: 5px;
+  scrollbar-base-color: #a0a0a0a0;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: #a0a0a0a0;
+  border-radius: 5px;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  display: block;
+}
+
 .assess-table {
   overflow: auto;
   max-height: 65vh;
@@ -99,5 +117,4 @@ export default {
     max-width: 768px;
   }
 }
-
 </style>
