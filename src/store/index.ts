@@ -588,7 +588,7 @@ export const useAssessState = defineStore('assess', {
     },
     queryYacoApi() {
       const codexState = useCodexState();
-      const isWeapon = codexState.basedItem['place'] === 'Weapon';
+      const isWeapon = codexState.usedItem['place'] === 'weapon';
       this.result = assess(this.query, isWeapon);
     }
   }
