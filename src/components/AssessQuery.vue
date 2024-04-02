@@ -5,16 +5,16 @@ import { useCodexState } from '@/store';
 <template>
   <var-dialog :show="show" @update:show="$emit('update:show', $event)" :cancel-button="false" dialog-class="dialog">
     <template #title>
-    <var-space align="center" justify="space-between">
-      <span>
-        <var-icon name="magnify" /> {{ title }}
-      </span>
-      <var-chip size="small" :type="query.extra.fromGuide?'success':'warning'">
-        {{ query.extra.fromGuide?'Guide':'YACO' }}
-      </var-chip>
-    </var-space>
+      <var-space align="center" justify="space-between">
+        <span>
+          <var-icon name="magnify" /> {{ title }}
+        </span>
+        <var-chip size="small" :type="query.extra.fromGuide ? 'success' : 'warning'">
+          {{ query.extra.fromGuide ? 'Guide' : 'YACO' }}
+        </var-chip>
+      </var-space>
     </template>
-    <div> 
+    <div>
       <span> {{ codexState.basedItem['name'] }} </span>
       <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
         <var-col :span="8">
@@ -29,7 +29,7 @@ import { useCodexState } from '@/store';
         <var-col :span="8" v-if="query.extra.isQuality">
           <div class="assess">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="query.data.quality" :rules="[(v) => (Number(v)>70 && Number(v) < 210) || '']"/>
+              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" />
           </div>
         </var-col>
         <var-col :span="8">
