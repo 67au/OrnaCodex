@@ -6,8 +6,8 @@ function getDelta(base: number, isBoss: boolean) {
   }
 }
 
-const weaponSkipKeys = ['hp', 'mana', 'defense', 'resistance'];
-const commonSkipKeys = ['crit', 'dexterity'];
+const weaponSkipKeys = new Set(['hp', 'mana', 'defense', 'resistance']);
+const commonSkipKeys = new Set(['crit', 'dexterity']);
 
 export function getUpgradedStats(base: number, quality: number, isBoss: boolean, key: string | undefined = undefined, isWeapon: boolean = false) {
   const delta = getDelta(base, isBoss);
@@ -15,7 +15,7 @@ export function getUpgradedStats(base: number, quality: number, isBoss: boolean,
   if (key === 'crit') {
     return Array(13).fill(base);
   }
-  if (key === 'dexterity' || (isWeapon && weaponSkipKeys.includes(key as string))) {
+  if (key === 'dexterity' || (isWeapon && weaponSkipKeys.has(key as string))) {
     return [...Array(13).keys()].map((level) => {
       if (level == 0) {
         return Math.ceil(base);
@@ -80,17 +80,13 @@ export interface AssessQuery {
 }
 
 export function assess(query: AssessQuery, isWeapon: boolean) {
-  let skipKeys: Set<string>;
   const result = {
     quality: 1,
     stats: query.extra.baseStats,
   };
-  if (isWeapon) {
-    skipKeys = new Set(commonSkipKeys.concat(weaponSkipKeys));
-  } else {
-    skipKeys = new Set(commonSkipKeys);
-  }
-  const queryArray = (Object.entries(query.data).filter((m) => !skipKeys.has(m[0]))).toSorted(
+  const queryArray = (Object.entries(query.data).filter(([m, _]) => {
+    return !(commonSkipKeys.has(m) || (isWeapon && weaponSkipKeys.has(m)))
+  })).toSorted(
     (a, b) => Math.abs(b[1]) - Math.abs(a[1])
   )
   if (query.extra.isQuality) {
