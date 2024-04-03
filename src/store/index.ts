@@ -3,7 +3,7 @@ import { useDebounceFn } from '@vueuse/core';
 import router from '@/router'
 import { defineStore, storeToRefs } from 'pinia';
 import { i18n } from '@/i18n';
-import { assess, type AssessQuery } from '@/plugins/assess';
+import { assess, type Stats, type AssessQuery, type Stat } from '@/plugins/assess';
 
 const guideUrl = 'https://orna.guide';
 
@@ -414,17 +414,10 @@ export interface GuideCache {
   [key: string]: any,
 }
 
-interface Stat {
-  base: number,
-  values: Array<number>,
-}
-
 const statKeys = ['hp', 'mana', 'attack', 'magic', 'defense',
   'resistance', 'dexterity', 'ward', 'crit', 'foresight'];
 
-export interface GuideStats {
-  [key: string]: Stat,
-}
+export type GuideStats = Stats;
 
 export const useGuideState = defineStore('guide', {
   state: () => ({
