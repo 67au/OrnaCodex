@@ -8,23 +8,23 @@ import { global, useCodexState } from '@/store';
       <var-icon class="append-icon" :size="36" :name="global.getStaticUrl(codexState.icons[item['name']])" />
     </template>
     <template v-if="item['tier'] !== undefined">
-    {{ item['name'] }}
-    <var-chip type="warning" size="small" :round="false" plain>
-      {{ global.getTier(item['tier']) }}
-    </var-chip>
-    <br>
-  </template>
-    <span v-if="item['chance'] !== undefined">
-      <template v-if="$te(`meta.status.${item['name']}`)">
+      {{ item['name'] }}
+      <var-chip type="warning" size="small" :round="false" plain>
+        {{ global.getTier(item['tier']) }}
+      </var-chip>
+      <br>
+    </template>
+    <template v-if="summons">
+      {{ `${$t(`meta.summons.${item['name']}`)} (${item['chance']})` }}
+    </template>
+    <template v-else>
+      <span v-if="item['chance'] !== undefined">
         {{ `${$t(`meta.status.${item['name']}`)} (${item['chance']})` }}
-      </template>
-      <template v-else>
-        {{ `${$t(`meta.summons.${item['name']}`)} (${item['chance']})` }}
-      </template>
-    </span>
-    <span v-else>
-      {{ `${$t(`meta.status.${item['name']}`)}` }}
-    </span>
+      </span>
+      <span v-else>
+        {{ `${$t(`meta.status.${item['name']}`)}` }}
+      </span>
+    </template>
   </var-cell>
 </template>
 
@@ -36,6 +36,10 @@ export default {
     codex: {
       type: Object,
     },
+    summons: {
+      type: Boolean,
+      default: false,
+    }
   }
 }
 </script>
