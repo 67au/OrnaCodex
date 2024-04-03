@@ -15,7 +15,7 @@ import { defineComponent } from 'vue';
             <TextLists :codex="codexState.basedItem[name]" />
           </template>
           <template v-else-if="chance">
-            <ChanceLists :codex="codexState.usedItem[name]" />
+            <ChanceLists :codex="codexState.usedItem[name]" :summons="name === 'summons'"/>
           </template>
           <template v-else>
             <template v-for="[category, id] in codexState.usedItem[name]">
