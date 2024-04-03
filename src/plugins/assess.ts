@@ -55,28 +55,32 @@ export function getItemQuailty(input: number, base: number, level: number, isBos
   const delta = level > 10 ? (level - 10) / 100 : 0;
   const base_stat = getUpgradedStat(base, level, 1, isBoss);
   const quality = Math.round(((input / base_stat) * (1 + delta) - delta) * 100) / 100;
-  const test_stat = getUpgradedStat(base, level, quality, isBoss);
-  const stat_delta = test_stat - input;
-  if (stat_delta === 0) {
-    return quality;
-  }
-  if (stat_delta > 0) {
-    return base_stat > 0 ? quality - 0.01 : quality + 0.01;
-  } else {
-    return base_stat > 0 ? quality + 0.01 : quality - 0.01;
-  }
+  return quality
+}
+
+export interface Stat {
+  base: number,
+  values: Array<number>,
+}
+
+export interface Stats {
+  [key: string]: Stat,
+}
+
+export interface AssessQueryData {
+  [key: string]: number,
+}
+
+export interface AssessQueryExtra {
+  isBoss: boolean,
+  isQuality: boolean,
+  baseStats: Stats,
+  fromGuide: boolean,
 }
 
 export interface AssessQuery {
-  data: {
-    [key: string]: number,
-  },
-  extra: {
-    isQuality: boolean,
-    isBoss: boolean,
-    fromGuide: boolean,
-    baseStats: any,
-  }
+  data: AssessQueryData,
+  extra: AssessQueryExtra,
 }
 
 export function assess(query: AssessQuery, isWeapon: boolean) {
