@@ -51,11 +51,26 @@ export function getUpgradedStat(base: number, level: number, quality: number, is
   }
 }
 
+
 export function getItemQuailty(input: number, base: number, level: number, isBoss: boolean) {
   const delta = level > 10 ? (level - 10) / 100 : 0;
   const base_stat = getUpgradedStat(base, level, 1, isBoss);
   const quality = Math.round(((input / base_stat) * (1 + delta) - delta) * 100) / 100;
-  return quality
+  const test_stat = getUpgradedStat(base, level, quality, isBoss);
+  const stat_delta = test_stat - input;
+  if (stat_delta === 0) {
+    return quality;
+  } else {
+    const quality_fix = quality + 0.01 * ((base_stat > 0) !== (stat_delta > 0) ? 1 : -1);
+    const fix_stat = getUpgradedStat(base, level, quality_fix, isBoss);
+    const fix_delta = fix_stat - input;
+    if (fix_delta === 0) {
+      return quality_fix
+    } else {
+      return quality_fix + 0.01 * ((base_stat > 0) !== (fix_delta > 0) ? 1 : -1)
+    }
+  }
+
 }
 
 export interface Stat {
