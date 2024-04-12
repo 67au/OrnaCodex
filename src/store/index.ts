@@ -214,13 +214,14 @@ interface Status {
   chance?: string,
 }
 
+interface OptionsKeys {
+  single: Array<string>,
+  array: Array<string>,
+  status: Array<string>,
+}
+
 export const useOptionsState = defineStore('options', {
   state: () => ({
-    keys: {
-      single: ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'],
-      array: ['event', 'tags'],
-      status: ['causes', 'cures', 'gives', 'immunities'],
-    },
     options: {
       category: new Set(),
       tier: new Set(),
@@ -241,11 +242,20 @@ export const useOptionsState = defineStore('options', {
     } as OptionMap,
     menu: [] as Menu,
   }),
+  getters: {
+    keys(): OptionsKeys {
+      return {
+        single: ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'],
+        array: ['event', 'tags'],
+        status: ['causes', 'cures', 'gives', 'immunities'],
+      }
+    }
+  },
   actions: {
     init() {
       const codex = useCodexState();
       this.$reset();
-      this.menu = Object.keys(this.options).slice(1).map((key) => [key, true]);
+      this.initMenu();
       Object.values(codex.used).forEach((items) => {
         Object.values(items).forEach((item) => {
           this.update(item);
@@ -280,6 +290,9 @@ export const useOptionsState = defineStore('options', {
           this.options[key].add(item[key]);
         }
       }
+    },
+    initMenu() {
+      this.menu = Object.keys(this.options).slice(1).map((key) => [key, true]);
     }
   }
 })
@@ -353,6 +366,8 @@ export const useFiltersState = defineStore('filters', {
       return JSON.parse(decodeURIComponent(atob(base64)))
     },
     reset() {
+      const optionsState = useOptionsState();
+      optionsState.initMenu();
       this.$reset();
     },
     isPercentSortKey() {
