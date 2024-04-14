@@ -37,7 +37,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
                     OrnaGuide
                   </var-button>
                 </var-space>
-                <var-chip size="small" :type="isGuide ? 'success' : 'warning'" :closeable="isGuide"
+                <var-chip size="small" :type="isGuide? 'success' : 'warning'" :closeable="isGuide"
                   @close="guideState.$reset()">
                   {{ isGuide ? 'Guide' : 'YACO' }}
                 </var-chip>
@@ -56,13 +56,13 @@ import AssessQuery from '@/components/AssessQuery.vue';
                   Guide
                 </var-button>
                 <var-button type="success" size="small" @click="initGuideQuery()" :loading="show.guide.loading"
-                  loading-type="wave">
+                  loading-type="wave" v-if="!codexState.isCelestialWeapon">
                   GuideAPI
                 </var-button>
-                <var-button type="primary" size="small" @click="initYacoQuery()">
+                <var-button type="primary" size="small" @click="initYacoQuery()" v-if="!codexState.isCelestialWeapon">
                   YACO
                 </var-button>
-                <var-button :type="isGuide?'success':'warning'" size="small" @click="initYacoQuery(true)">
+                <var-button :type="isGuide && !codexState.isCelestialWeapon ?'success':'warning'" size="small" @click="initYacoQuery(true)">
                   Quality
                 </var-button>
               </var-space>
@@ -112,7 +112,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
   <GuideResult v-else v-model:show="show.yaco.query" failed />
 
   <!-- AssessQueryQuailty -->
-  <AssessResult :result="assessState.result" v-model:show="show.result" />
+  <AssessResult :result="assessState.result" v-model:show="show.result"/>
 </template>
 
 <script lang="ts">
@@ -172,7 +172,7 @@ export default defineComponent({
       return `${global.guideUrl}/assess?item=${this.guidePage.id}`
     },
     guideStats() {
-      return guideState.stats as GuideStats;
+      return guideState.stats as GuideStats
     },
   },
   methods: {

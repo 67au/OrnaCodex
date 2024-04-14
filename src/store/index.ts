@@ -60,16 +60,16 @@ export const useScrollTopState = defineStore('scrollTop', {
   },
 })
 
-interface Codex {
+export interface Codex {
   category: string,
   id: string,
 }
 
-interface CodexMap<T> {
+export interface CodexMap<T> {
   [key: string]: T;
 }
 
-interface CodexItem {
+export interface CodexItem {
   [key: string]: any;
 }
 
@@ -178,6 +178,15 @@ export const useCodexState = defineStore('codex', {
         })
       }
     },
+    isCelestial(): boolean {
+      return this.usedItem['rarity'] === 'celestial';
+    },
+    isWeapon(): boolean {
+      return this.usedItem['place'] === 'weapon';
+    },
+    isCelestialWeapon(): boolean {
+      return this.isCelestial && this.isWeapon;
+    }
   },
   actions: {
     isMaterial() {
@@ -570,14 +579,14 @@ export const useAssessState = defineStore('assess', {
     initYacoQuery(quality: boolean = false) {
       const guideState = useGuideState();
       const codexState = useCodexState();
-
       this.query.data = {
         level: 1,
       };
       this.query.extra = {
         isQuality: quality,
-        isBoss: true,
-        fromGuide: false,
+        isCelestial: codexState.isCelestial,
+        isWeapon: codexState.isWeapon,
+        isBoss: !codexState.isCelestialWeapon,
         baseStats: {} as GuideStats,
       };
       if (quality) {
@@ -595,9 +604,7 @@ export const useAssessState = defineStore('assess', {
       }
     },
     queryYacoApi() {
-      const codexState = useCodexState();
-      const isWeapon = codexState.usedItem['place'] === 'weapon';
-      this.result = assess(this.query, isWeapon);
+      this.result = assess(this.query);
     }
   }
 })

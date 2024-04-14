@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCodexState } from '@/store';
+import { useCodexState, useAssessState } from '@/store';
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import { useCodexState } from '@/store';
           {{ `${(result['quality'] * 100).toFixed()}%` }}
         </var-chip>
       </var-space>
-      <var-table :elevation="2" class="assess-table scroll">
+      <var-table :elevation="2" class="assess-table">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
@@ -25,14 +25,15 @@ import { useCodexState } from '@/store';
         <tbody>
           <tr>
             <td> {{ $t('query.base') }} </td>
-            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">{{ stat['base'] }}
+            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
+              {{ stat['base'] }}
             </td>
           </tr>
-          <tr v-for="(_, i) in Array.from({ length: 13 })" :key="i">
+          <tr v-for="(_, i) in Array.from({ length: codexState.isCelestialWeapon ? 20 : 13 })" :key="i">
             <td>{{ i + 1 }}</td>
-            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">{{
-    stat['values'][i]
-  }}</td>
+            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
+              {{ stat['values'][i] }}
+            </td>
           </tr>
           <tr>
             <th> {{ $t('query.level') }} </th>
@@ -51,6 +52,7 @@ import { useCodexState } from '@/store';
 
 <script lang="ts">
 const codexState = useCodexState();
+const assessState = useAssessState();
 type StatValue = Array<any>;
 
 export default {
@@ -62,29 +64,12 @@ export default {
     show: {
       type: Boolean,
       required: true,
-    }
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
-.scroll {
-  scrollbar-width: 5px;
-  scrollbar-base-color: #a0a0a0a0;
-}
-
-.scroll::-webkit-scrollbar {
-  width: 5px;
-}
-
-.scroll::-webkit-scrollbar-thumb {
-  background: #a0a0a0a0;
-  border-radius: 5px;
-}
-
-.scroll::-webkit-scrollbar-thumb:hover {
-  display: block;
-}
 
 .assess-table {
   overflow: auto;

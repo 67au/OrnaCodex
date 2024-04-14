@@ -9,14 +9,15 @@ function getDelta(base: number, isBoss: boolean) {
 const weaponSkipKeys = new Set(['hp', 'mana', 'defense', 'resistance']);
 const commonSkipKeys = new Set(['crit', 'dexterity']);
 
-export function getUpgradedStats(base: number, quality: number, isBoss: boolean, key: string | undefined = undefined, isWeapon: boolean = false) {
+export function getUpgradedStats(base: number, quality: number, isBoss: boolean, key: string | undefined = undefined, isWeapon: boolean = false, isCelestial: boolean = false) {
   const delta = getDelta(base, isBoss);
   const quality_plus = (level: number) => quality + (level - 10) / 100;
+  const levels = isCelestial ? 20 : 13;
   if (key === 'crit') {
-    return Array(13).fill(base);
+    return Array(levels).fill(base);
   }
   if (key === 'dexterity' || (isWeapon && weaponSkipKeys.has(key as string))) {
-    return [...Array(13).keys()].map((level) => {
+    return [...Array(levels).keys()].map((level) => {
       if (level == 0) {
         return Math.ceil(base);
       } else {
@@ -24,11 +25,11 @@ export function getUpgradedStats(base: number, quality: number, isBoss: boolean,
       }
     })
   }
-  return [...Array(13).keys()].map((level) => {
+  return [...Array(levels).keys()].map((level) => {
     if (level == 0) {
       return Math.ceil(base * quality);
     } else {
-      if (level < 10) {
+      if (level < 10 || isCelestial) {
         return Math.ceil((base + (level + 1) * delta) * quality);
       } else {
         return Math.ceil((base + (level + 1) * delta) * quality_plus(level + 1));
@@ -37,13 +38,13 @@ export function getUpgradedStats(base: number, quality: number, isBoss: boolean,
   })
 }
 
-export function getUpgradedStat(base: number, level: number, quality: number, isBoss: boolean) {
+export function getUpgradedStat(base: number, level: number, quality: number, isBoss: boolean, isCelestial: boolean = false) {
   const delta = getDelta(base, isBoss);
   const quality_plus = (level: number) => quality + (level - 10) / 100;
   if (level == 1) {
     return Math.ceil(base * quality);
   } else {
-    if (level <= 10) {
+    if (level <= 10 || isCelestial) {
       return Math.ceil((base + level * delta) * quality);
     } else {
       return Math.ceil((base + level * delta) * quality_plus(level));
@@ -90,7 +91,9 @@ export interface AssessQueryExtra {
   isBoss: boolean,
   isQuality: boolean,
   baseStats: Stats,
-  fromGuide: boolean,
+  fromGuide?: boolean,
+  isWeapon?: boolean,
+  isCelestial?: boolean,
 }
 
 export interface AssessQuery {
@@ -98,13 +101,13 @@ export interface AssessQuery {
   extra: AssessQueryExtra,
 }
 
-export function assess(query: AssessQuery, isWeapon: boolean) {
+export function assess(query: AssessQuery) {
   const result = {
     quality: 1,
     stats: query.extra.baseStats,
   };
   const queryArray = (Object.entries(query.data).filter(([m, _]) => {
-    return !(commonSkipKeys.has(m) || (isWeapon && weaponSkipKeys.has(m)))
+    return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
   })).toSorted(
     (a, b) => Math.abs(b[1]) - Math.abs(a[1])
   )
@@ -118,7 +121,8 @@ export function assess(query: AssessQuery, isWeapon: boolean) {
     }
   }
   (Object.entries(result.stats) as Array<[string, any]>).forEach(([key, stat]) => {
-    result.stats[key].values = getUpgradedStats(stat.base, result.quality, query.extra.isBoss, key, isWeapon)
+    result.stats[key].values = getUpgradedStats(stat.base, result.quality, query.extra.isBoss,
+      key, query.extra.isWeapon, query.extra.isCelestial)
   })
   return result;
 }

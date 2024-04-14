@@ -9,8 +9,8 @@ import { useCodexState } from '@/store';
         <span>
           <var-icon name="magnify" /> {{ title }}
         </span>
-        <var-chip size="small" :type="query.extra.fromGuide ? 'success' : 'warning'">
-          {{ query.extra.fromGuide ? 'Guide' : 'YACO' }}
+        <var-chip size="small" :type="query.extra.fromGuide && !codexState.isCelestialWeapon ? 'success' : 'warning'">
+          {{ query.extra.fromGuide && !codexState.isCelestialWeapon ? 'Guide' : 'YACO' }}
         </var-chip>
       </var-space>
     </template>
@@ -20,7 +20,7 @@ import { useCodexState } from '@/store';
         <var-col :span="8">
           <div class="assess">
             <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="query.extra.isBoss" size="small"
-              :disabled="query.extra.fromGuide">
+              :disabled="query.extra.fromGuide || codexState.isCelestialWeapon">
               <var-option :label="$t('yes')" :value="true" />
               <var-option :label="$t('no')" :value="false" />
             </var-select>
@@ -29,7 +29,7 @@ import { useCodexState } from '@/store';
         <var-col :span="8" v-if="query.extra.isQuality">
           <div class="assess">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" />
+              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexState.isCelestialWeapon"/>
           </div>
         </var-col>
         <var-col :span="8">
@@ -81,7 +81,7 @@ export default {
   computed: {
     baseStats() {
       return this.query.extra.baseStats;
-    }
+    },
   }
 }
 </script>
