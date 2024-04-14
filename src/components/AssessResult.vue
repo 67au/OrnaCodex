@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useCodexState, useAssessState } from '@/store';
+import { useCodexViewState } from '@/store';
 </script>
 
 <template>
   <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
     <var-paper class="popup-assess">
       <var-space align="center" justify="space-between" style="margin-bottom: 2px">
-        <span>{{ codexState.basedItem['name'] }}</span>
+        <span>{{ codexViewState.lang['name'] }}</span>
         <var-chip size="small" :type="result['quality'] > 0 ? 'primary' : 'danger'">
           <template #left>
             <var-icon v-if="result['quality'] > 0" name="checkbox-marked-circle" size="small" />
@@ -29,7 +29,7 @@ import { useCodexState, useAssessState } from '@/store';
               {{ stat['base'] }}
             </td>
           </tr>
-          <tr v-for="(_, i) in Array.from({ length: codexState.isCelestialWeapon ? 20 : 13 })" :key="i">
+          <tr v-for="(_, i) in Array.from({ length: codexViewState.isCelestialWeapon ? 20 : 13 })" :key="i">
             <td>{{ i + 1 }}</td>
             <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
               {{ stat['values'][i] }}
@@ -51,8 +51,7 @@ import { useCodexState, useAssessState } from '@/store';
 </template>
 
 <script lang="ts">
-const codexState = useCodexState();
-const assessState = useAssessState();
+const codexViewState = useCodexViewState();
 type StatValue = Array<any>;
 
 export default {

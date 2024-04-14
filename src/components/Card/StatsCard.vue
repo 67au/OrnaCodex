@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { global, useCodexState } from '@/store';
+import { global, useCodexViewState } from '@/store';
 </script>
 
 <template>
-  <template v-if="codexState.usedItem['stats'] !== undefined">
+  <template v-if="codexViewState.item['stats'] !== undefined">
     <var-card class="card" :title="$t('stats')">
       <template #description>
         <div class="card-description">
           <var-space class="space">
-              <template v-for="[stat_key, value] in (Object.entries(codexState.usedItem['stats']) as Array<[string, string]>)">
+              <template v-for="[stat_key, value] in (Object.entries(codexViewState.item['stats']) as Array<[string, string]>)">
                 <template v-if="!singleSet.has(stat_key)">
                   <var-chip size="small" :round="false" plain :key="stat_key">
                     {{ `${$t('meta.stats.' + stat_key)}: ${value}` }}
@@ -35,6 +35,6 @@ import { global, useCodexState } from '@/store';
 </template>
 
 <script lang="ts">
-const codexState = useCodexState();
+const codexViewState = useCodexViewState();
 const singleSet = new Set(['two_handed', 'element']);
 </script>

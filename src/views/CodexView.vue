@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch, defineComponent } from 'vue';
-import { global, useAssessState, useCodexState, useGuideState, type GuideStats } from '@/store';
+import { global, useAssessState, useCodexViewState, useGuideState, type GuideStats } from '@/store';
 import MainCard from '@/components/Card/MainCard.vue';
 import StatsCard from '@/components/Card/StatsCard.vue';
 import AbilityCard from '@/components/Card/AbilityCard.vue';
@@ -27,7 +27,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
             <div class="card-description">
               <var-space justify="space-between" align="center">
                 <var-space align="center" size="small">
-                  <var-link :href="`${global.ornaUrl}${codexState.url}`" target="_blank" underline="none">
+                  <var-link :href="`${global.ornaUrl}${codexViewState.url}`" target="_blank" underline="none">
                     <var-button type="primary" size="small">
                       OrnaRPG
                     </var-button>
@@ -47,7 +47,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
         </var-card>
 
         <var-card class="card" :title="$t('assess')"
-          v-if="codexPage.category === 'items' && codexState.usedItem['stats'] !== undefined">
+          v-if="codexPage.category === 'items' && codexViewState.item['stats'] !== undefined">
           <template #description>
             <div class="card-description">
               <var-space justify="flex-start" align="center" size="small">
@@ -56,13 +56,13 @@ import AssessQuery from '@/components/AssessQuery.vue';
                   Guide
                 </var-button>
                 <var-button type="success" size="small" @click="initGuideQuery()" :loading="show.guide.loading"
-                  loading-type="wave" v-if="!codexState.isCelestialWeapon">
+                  loading-type="wave" v-if="!codexViewState.isCelestialWeapon">
                   GuideAPI
                 </var-button>
-                <var-button type="primary" size="small" @click="initYacoQuery()" v-if="!codexState.isCelestialWeapon">
+                <var-button type="primary" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
                   YACO
                 </var-button>
-                <var-button :type="isGuide && !codexState.isCelestialWeapon ?'success':'warning'" size="small" @click="initYacoQuery(true)">
+                <var-button :type="isGuide && !codexViewState.isCelestialWeapon ?'success':'warning'" size="small" @click="initYacoQuery(true)">
                   Quality
                 </var-button>
               </var-space>
@@ -116,7 +116,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
 </template>
 
 <script lang="ts">
-const codexState = useCodexState();
+const codexViewState = useCodexViewState();
 const guideState = useGuideState();
 const assessState = useAssessState();
 
@@ -127,8 +127,8 @@ export default defineComponent({
   mounted() {
     watch(() => this.$route.params, () => {
       guideState.$reset();
-      codexState.page.category = this.$route.params.category as string;
-      codexState.page.id = this.$route.params.id as string;
+      codexViewState.page.category = this.$route.params.category as string;
+      codexViewState.page.id = this.$route.params.id as string;
     }, { immediate: true });
     this.loading = false;
   },
@@ -152,8 +152,8 @@ export default defineComponent({
   computed: {
     codexPage() {
       return {
-        category: codexState.page.category,
-        id: codexState.page.id,
+        category: codexViewState.page.category,
+        id: codexViewState.page.id,
       }
     },
     guidePage() {

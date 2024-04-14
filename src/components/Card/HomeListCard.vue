@@ -28,7 +28,7 @@ import { global, useCodexState, useFiltersState, useItemListState } from '@/stor
 
             <var-space align="center" size="small">
               <span>
-                {{ codexState.based[category][id]['name'] }}
+                {{ codexState.lang[category][id]['name'] }}
               </span>
               <var-chip v-if="category === 'items' || category === 'followers'" size="mini" plain
                 :class="rarityText(category, id)">

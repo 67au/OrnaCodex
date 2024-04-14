@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { global, useCodexState } from '@/store'
+import { global, useCodexState, useCodexViewState } from '@/store'
 import ItemList from '@/components/List/ItemList.vue'
 import TextLists from '@/components/List/TextLists.vue';
 import ChanceLists from '@/components/List/ChanceLists.vue';
@@ -7,18 +7,18 @@ import { defineComponent } from 'vue';
 </script>
 
 <template>
-  <template v-if="codexState.usedItem[name] !== undefined || codexState.basedItem[name] !== undefined">
+  <template v-if="codexViewState.item[name] !== undefined || codexViewState.item[name] !== undefined">
     <var-card class="card" :title="$t(name)">
       <template #description>
         <div class="card-description">
           <template v-if="text">
-            <TextLists :codex="codexState.basedItem[name]" />
+            <TextLists :codex="codexViewState.item[name]" />
           </template>
           <template v-else-if="chance">
-            <ChanceLists :codex="codexState.usedItem[name]" :summons="name === 'summons'"/>
+            <ChanceLists :codex="codexViewState.item[name]" :summons="name === 'summons'"/>
           </template>
           <template v-else>
-            <template v-for="[category, id] in codexState.usedItem[name]">
+            <template v-for="[category, id] in codexViewState.item[name]">
               <!-- check exist -->
               <template v-if="codexState.used[category][id] !== undefined">
                 <ItemList :codex="codexState.used[category][id]" :click="() => global.enterCodex(category, id)" :key="id"/>
@@ -57,6 +57,7 @@ import { defineComponent } from 'vue';
 
 <script lang="ts">
 const codexState = useCodexState();
+const codexViewState = useCodexViewState();
 
 export default defineComponent({
   props: {

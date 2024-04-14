@@ -60,7 +60,7 @@ export const useScrollTopState = defineStore('scrollTop', {
   },
 })
 
-export interface Codex {
+export interface CodexView {
   category: string,
   id: string,
 }
@@ -73,17 +73,13 @@ export interface CodexItem {
   [key: string]: any;
 }
 
-type CodexIndex = Array<Codex>;
+type CodexIndex = Array<CodexView>;
 
 export const useCodexState = defineStore('codex', {
   state: () => ({
     meta: {} as CodexMap<CodexMap<CodexItem>>,
     langs: {} as CodexMap<any>,
     extra: {} as CodexMap<any>,
-    page: {
-      category: '',
-      id: '',
-    } as Codex,
   }),
   getters: {
     materials: (state) => new Set(Object.keys(state.extra['upgrade_materials'])),
@@ -92,13 +88,9 @@ export const useCodexState = defineStore('codex', {
     offhand_items: (state) => new Set(Object.keys(state.extra['offhand_items'])),
     miss_entries: (state) => new Set(Object.keys(state.extra['miss_entries'])),
     icons: (state) => state.extra.icons,
-    url: (state) => `/codex/${state.page.category}/${state.page.id}/`,
 
     used: (state) => state.meta,
-    usedItem: (state) => state.meta[state.page.category][state.page.id],
-
-    based: (state) => state.langs[i18n.global.locale.value],
-    basedItem: (state) => state.langs[i18n.global.locale.value][state.page.category][state.page.id],
+    lang: (state) => state.langs[i18n.global.locale.value],
 
     index(): CodexIndex {
       const index: CodexIndex = [];
@@ -116,12 +108,12 @@ export const useCodexState = defineStore('codex', {
     filtered(): CodexIndex {
       const { search, filters } = storeToRefs(useFiltersState());
       const optionsState = useOptionsState();
-      return this.index.filter(({ category, id }: Codex) => {
+      return this.index.filter(({ category, id }: CodexView) => {
         if (this.used[category][id]) {
           const searchKey = new RegExp(search.value, 'i');
-          return searchKey.test(this.based[category][id].name) || (this.based[category][id].description !== undefined && searchKey.test(this.based[category][id].description))
+          return searchKey.test(this.lang[category][id].name) || (this.lang[category][id].description !== undefined && searchKey.test(this.lang[category][id].description))
         }
-      }).filter(({ category, id }: Codex) => {
+      }).filter(({ category, id }: CodexView) => {
         return filters.value.every((filter: Filter) => {
           if (filter.value === undefined) { return true }
           if (optionsState.keys.single.includes(filter.key)) {
@@ -149,8 +141,8 @@ export const useCodexState = defineStore('codex', {
       } else {
         return this.filtered.toSorted((a, b) => {
           if (sortKey === 'name') {
-            const A = this.based[a.category][a.id];
-            const B = this.based[b.category][b.id];
+            const A = this.lang[a.category][a.id];
+            const B = this.lang[b.category][b.id];
             if (asc.value) {
               return A.name.localeCompare(B.name);
             } else {
@@ -178,29 +170,8 @@ export const useCodexState = defineStore('codex', {
         })
       }
     },
-    isCelestial(): boolean {
-      return this.usedItem['rarity'] === 'celestial';
-    },
-    isWeapon(): boolean {
-      return this.usedItem['place'] === 'weapon';
-    },
-    isCelestialWeapon(): boolean {
-      return this.isCelestial && this.isWeapon;
-    }
   },
   actions: {
-    isMaterial() {
-      return this.materials.has(this.page.id);
-    },
-    isSkill() {
-      return this.spells.has(this.page.id);
-    },
-    isOffhandSkill() {
-      return this.offhand_skills.has(this.page.id);
-    },
-    isOffhandItem() {
-      return this.offhand_items.has(this.page.id);
-    },
     isMissEntry(category: string, id: string) {
       return this.miss_entries.has(`${i18n.global.locale.value}/${category}/${id}`)
     },
@@ -210,6 +181,54 @@ export const useCodexState = defineStore('codex', {
   }
 })
 
+export const useCodexViewState = defineStore('codex-view', {
+  state: () => ({
+    page: {
+      category: '',
+      id: '',
+    } as CodexView,
+  }),
+  getters: {
+    url: (state) => `/codex/${state.page.category}/${state.page.id}/`,
+
+    item(state): CodexItem {
+      const codexState = useCodexState();
+      return codexState.meta[state.page.category][state.page.id];
+    },
+    lang(state) {
+      const codexState = useCodexState();
+      return codexState.langs[i18n.global.locale.value][state.page.category][state.page.id];
+    },
+
+    isCelestial(): boolean {
+      return this.item['rarity'] === 'celestial';
+    },
+    isWeapon(): boolean {
+      return this.item['place'] === 'weapon';
+    },
+    isCelestialWeapon(): boolean {
+      return this.isCelestial && this.isWeapon;
+    }
+  },
+  actions: {
+    isMaterial() {
+      const codexState = useCodexState();
+      return codexState.materials.has(this.page.id);
+    },
+    isSkill() {
+      const codexState = useCodexState();
+      return codexState.spells.has(this.page.id);
+    },
+    isOffhandSkill() {
+      const codexState = useCodexState();
+      return codexState.offhand_skills.has(this.page.id);
+    },
+    isOffhandItem() {
+      const codexState = useCodexState();
+      return codexState.offhand_items.has(this.page.id);
+    },
+  }
+})
 
 interface OptionMap {
   [key: string]: Set<string | number>,
@@ -465,11 +484,11 @@ export const useGuideState = defineStore('guide', {
   }),
   getters: {
     page(state) {
-      const codexState = useCodexState();
+      const codexViewState = useCodexViewState();
       return {
-        category: state.pageMap[codexState.page.category],
+        category: state.pageMap[codexViewState.page.category],
         id: state.cache !== undefined ? state.cache.id : '',
-      } as Codex
+      } as CodexView
     },
     stats(state) {
       if (state.cache === undefined) {
@@ -480,13 +499,13 @@ export const useGuideState = defineStore('guide', {
   },
   actions: {
     isMonster() {
-      const codexState = useCodexState();
-      return ['monsters', 'bosses', 'raids'].includes(codexState.page.category);
+      const codexViewState = useCodexViewState();
+      return ['monsters', 'bosses', 'raids'].includes(codexViewState.page.category);
     },
     async searchByCodexName() {
-      const codexState = useCodexState();
-      let itemName = codexState.usedItem['name'];
-      if (this.apiMap[codexState.page.category as string] === undefined) {
+      const codexViewState = useCodexViewState();
+      let itemName = codexViewState.item['name'];
+      if (this.apiMap[codexViewState.page.category as string] === undefined) {
         return [];
       }
       if (this.isMonster() && itemName.endsWith(' (Arisen)')) {
@@ -495,7 +514,7 @@ export const useGuideState = defineStore('guide', {
       const controller = new AbortController();
       setTimeout(() => controller.abort(), 10000);
       try {
-        const resp = await fetch(`${global.guideApiUrl}/${this.apiMap[codexState.page.category as string]}`, {
+        const resp = await fetch(`${global.guideApiUrl}/${this.apiMap[codexViewState.page.category as string]}`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -511,11 +530,11 @@ export const useGuideState = defineStore('guide', {
       }
     },
     async refreshCache() {
-      const codexState = useCodexState();
+      const codexViewState = useCodexViewState();
       if (this.cache === undefined) {
         const result = await this.searchByCodexName();
         for (const c of result) {
-          if (c['codex'] === codexState.url) {
+          if (c['codex'] === codexViewState.url) {
             this.cache = c;
             break
           }
@@ -578,15 +597,15 @@ export const useAssessState = defineStore('assess', {
     },
     initYacoQuery(quality: boolean = false) {
       const guideState = useGuideState();
-      const codexState = useCodexState();
+      const codexViewState = useCodexViewState();
       this.query.data = {
         level: 1,
       };
       this.query.extra = {
         isQuality: quality,
-        isCelestial: codexState.isCelestial,
-        isWeapon: codexState.isWeapon,
-        isBoss: !codexState.isCelestialWeapon,
+        isCelestial: codexViewState.isCelestial,
+        isWeapon: codexViewState.isWeapon,
+        isBoss: !codexViewState.isCelestialWeapon,
         baseStats: {} as GuideStats,
       };
       if (quality) {
@@ -596,7 +615,7 @@ export const useAssessState = defineStore('assess', {
           this.query.extra.isBoss = guideState.cache.boss;
         }
       }
-      for (const [key, value] of (Object.entries(codexState.usedItem.stats) as Array<[string, string]>)) {
+      for (const [key, value] of (Object.entries(codexViewState.item.stats) as Array<[string, string]>)) {
         if (statKeys.includes(key)) {
           this.query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
           this.query.extra.baseStats[key] = { base: this.query.data[key], values: [] };

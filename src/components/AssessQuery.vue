@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCodexState } from '@/store';
+import { useCodexViewState } from '@/store';
 </script>
 
 <template>
@@ -9,18 +9,18 @@ import { useCodexState } from '@/store';
         <span>
           <var-icon name="magnify" /> {{ title }}
         </span>
-        <var-chip size="small" :type="query.extra.fromGuide && !codexState.isCelestialWeapon ? 'success' : 'warning'">
-          {{ query.extra.fromGuide && !codexState.isCelestialWeapon ? 'Guide' : 'YACO' }}
+        <var-chip size="small" :type="query.extra.fromGuide && !codexViewState.isCelestialWeapon ? 'success' : 'warning'">
+          {{ query.extra.fromGuide && !codexViewState.isCelestialWeapon ? 'Guide' : 'YACO' }}
         </var-chip>
       </var-space>
     </template>
     <div>
-      <span> {{ codexState.basedItem['name'] }} </span>
+      <span> {{ codexViewState.lang['name'] }} </span>
       <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
         <var-col :span="8">
           <div class="assess">
             <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="query.extra.isBoss" size="small"
-              :disabled="query.extra.fromGuide || codexState.isCelestialWeapon">
+              :disabled="query.extra.fromGuide || codexViewState.isCelestialWeapon">
               <var-option :label="$t('yes')" :value="true" />
               <var-option :label="$t('no')" :value="false" />
             </var-select>
@@ -29,7 +29,7 @@ import { useCodexState } from '@/store';
         <var-col :span="8" v-if="query.extra.isQuality">
           <div class="assess">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexState.isCelestialWeapon"/>
+              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexViewState.isCelestialWeapon"/>
           </div>
         </var-col>
         <var-col :span="8">
@@ -57,7 +57,7 @@ import { useCodexState } from '@/store';
 </template>
 
 <script lang="ts">
-const codexState = useCodexState();
+const codexViewState = useCodexViewState();
 
 export default {
   props: {

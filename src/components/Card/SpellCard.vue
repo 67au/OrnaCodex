@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { global, useCodexState } from '@/store';
+import { global, useCodexState, useCodexViewState } from '@/store';
 </script>
 
 <template>
-  <template v-if="codexState.page.category === 'spells' && codexState.isSkill()">
+  <template v-if="codexViewState.page.category === 'spells' && codexViewState.isSkill()">
     <var-card class="card" :title="$t('speller')">
       <template #description>
         <div class="card-description">
-          <template v-for="[category, spellers] in Object.entries(codexState.extra['skills'][codexState.page.id])">
+          <template v-for="[category, spellers] in Object.entries(codexState.extra['skills'][codexViewState.page.id])">
             <var-cell class="codex-cell" border v-for="sid in spellers" @click="() => global.enterCodex(category, sid)" :key="sid">
               <template #icon>
                 <var-icon class="append-icon" :size="36"
                   :name="global.getStaticUrl(codexState.used[category][sid]['icon'])" />
               </template>
-              {{ codexState.based[category][sid]['name'] }}
+              {{ codexState.lang[category][sid]['name'] }}
               <var-chip type="warning" size="mini" :round="true" plain>
               {{ global.getTier(codexState.used[category][sid]['tier'])}}
                 </var-chip>
@@ -30,4 +30,5 @@ import { global, useCodexState } from '@/store';
 
 <script lang="ts">
 const codexState = useCodexState();
+const codexViewState = useCodexViewState();
 </script>

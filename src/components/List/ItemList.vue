@@ -10,7 +10,7 @@ import { defineComponent } from 'vue';
     </template>
     <var-space align="center" size="small">
     <span :class="rarityText">
-    {{ codexState.based[codex['category']][codex['id']]['name'] }}
+    {{ codexState.lang[codex['category']][codex['id']]['name'] }}
     </span>
     <var-chip type="warning" size="mini" :round="true" plain>
       {{ global.getTier(codex['tier']) }}
