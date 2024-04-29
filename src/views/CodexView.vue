@@ -70,7 +70,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
           </template>
         </var-card>
 
-        <GuideCard v-if="isGuide && guideState.isMonster()" />
+        <GuideCard v-if="isGuide" />
 
         <StatsCard />
         <AbilityCard />

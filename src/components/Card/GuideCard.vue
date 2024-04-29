@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { global, useGuideState, type GuideCache } from '@/store';
+import { global, useGuideState } from '@/store';
 import { storeToRefs } from 'pinia';
+import { convertStatusKey } from '@/plugins/utils';
+import { parseGuideCache } from '@/plugins/guide';
 </script>
 
 <template>
   <var-card class="card" title="OrnaGuide" v-if="isNotEmpty">
     <template #description>
       <div class="card-description">
-        <template v-for="[status, element] in (Object.entries(elements) as Array<[string, string]>)">
+        <template v-for="[status, element] in (Object.entries(guide?.elements || []) as Array<[string, string[]]>)">
           <var-cell v-if="element.length > 0" class="guide-cell" border>
             <var-space align="center" size="small" style="line-height: 100%;">
-              <span> {{ $t(`guide.element.${status}`) + ':' }} </span>
+              <span> {{ $t(`guide.elements.${status}`) + ':' }} </span>
               <var-chip :color="global.elementColor[elem.toLowerCase()]" size="small" v-for="elem in element"
                 :round="false" plain>
                 {{ $t(`meta.stats.${elem.toLowerCase()}`) }}
@@ -18,19 +20,35 @@ import { storeToRefs } from 'pinia';
             </var-space>
           </var-cell>
         </template>
-        <var-cell v-if="statusImmunities.length > 0" class="guide-cell" border>
+        <var-cell v-if="guide?.statusImmunities" class="guide-cell" border>
           <var-space align="center" size="small" style="line-height: 100%;">
             {{ $t('guide.status.immunity') + ':' }}
-            <var-chip type="primary" size="small" v-for="status in statusImmunities" :round="false" plain>
+            <var-chip type="primary" size="small" v-for="status in guide.statusImmunities" :round="false" plain>
               {{ $t(`meta.status.${convertStatusKey(status)}`) }}
             </var-chip>
           </var-space>
         </var-cell>
-        <var-cell v-if="spawns.length > 0" class="guide-cell" border>
+        <var-cell v-if="guide?.spawns" class="guide-cell" border>
           <var-space align="center" size="small" style="line-height: 100%;">
             {{ $t('guide.spawns') + ':' }}
-            <var-chip type="primary" size="small" v-for="spawn in spawns" :round="false" plain>
+            <var-chip type="primary" size="small" v-for="spawn in guide.spawns" :round="false" plain>
               {{ spawn }}
+            </var-chip>
+          </var-space>
+        </var-cell>
+        <var-cell v-if="guide?.element" class="guide-cell" border>
+          <var-space align="center" size="small" style="line-height: 100%;">
+            {{ $t('guide.element') + ':' }}
+            <var-chip :color="global.elementColor[guide.element.toLowerCase()]" size="small" :round="false" plain>
+              {{ $t(`meta.stats.${guide.element.toLowerCase()}`) }}
+            </var-chip>
+          </var-space>
+        </var-cell>
+        <var-cell v-if="guide?.category" class="guide-cell" border>
+          <var-space align="center" size="small" style="line-height: 100%;">
+            {{ $t('guide.category') + ':' }}
+            <var-chip type="primary" size="small" :round="false" plain>
+              {{ guide.category }}
             </var-chip>
           </var-space>
         </var-cell>
@@ -45,67 +63,13 @@ const { cache } = storeToRefs(guideState);
 
 export default {
   computed: {
-    guideCache() {
-      return cache.value as GuideCache;
+    guide() {
+      return parseGuideCache(cache.value);
     },
     isNotEmpty() {
-      return [this.statusImmunities, this.resistantTo, this.weakTo, this.resistantTo, this.spawns].some((e) => e.length > 0)
-    },
-    statusImmunities() {
-      if (this.guideCache.immune_to_status === undefined && this.guideCache.vulnerable_to_status === undefined) {
-        return [];
-      } else {
-        return this.guideCache.immune_to_status || this.guideCache.vulnerable_to_status;
-      }
-    },
-    elements() {
-      return {
-        resistance: this.resistantTo,
-        weak: this.weakTo,
-        immunity: this.immuneTo,
-      }
-    },
-    resistantTo() {
-      if (this.guideCache.resistant_to === undefined) {
-        return [];
-      } else {
-        return this.guideCache.resistant_to;
-      }
-    },
-    weakTo() {
-      if (this.guideCache.weak_to === undefined) {
-        return [];
-      } else {
-        return this.guideCache.weak_to;
-      }
-    },
-    immuneTo() {
-      if (this.guideCache.immune_to === undefined) {
-        return [];
-      } else {
-        return this.guideCache.immune_to;
-      }
-    },
-    spawns() {
-      if (this.guideCache.spawns === undefined) {
-        return [];
-      } else {
-        return this.guideCache.spawns;
-      }
-    },
-  },
-  methods: {
-    convertStatusKey(key: string) {
-      const regex_temp = / \[temp\]/ig;
-      const regex_underline = / |\.|\:|\\|\/|\'/ig;
-      const regex_up = /↑/ig;
-      const regex_down = /↓/ig;
-      return key.toLowerCase().replaceAll(regex_temp, '')
-        .replaceAll(regex_underline, '_')
-        .replaceAll(regex_up, 'u')
-        .replaceAll(regex_down, 'd')
+      return Object.keys(this.guide).length > 0;
     }
-  }
+  },
 }
 </script>
 

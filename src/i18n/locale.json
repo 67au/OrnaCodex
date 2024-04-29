@@ -25,14 +25,16 @@
         },
         "guide": {
             "spawns": "生成",
-            "element": {
+            "elements": {
                 "resistance": "抵抗",
                 "weak": "弱点",
                 "immunity": "免疫"
             },
             "status": {
                 "immunity": "状态免疫"
-            }
+            },
+            "category": "类别",
+            "element": "技能属性"
         },
         "share": "分享",
         "copy": "复制",
@@ -95,14 +97,16 @@
         },
         "guide": {
             "spawns": "生成",
-            "element": {
+            "elements": {
                 "resistance": "抵抗",
                 "weak": "弱點",
                 "immunity": "免疫"
             },
             "status": {
                 "immunity": "狀態免疫"
-            }
+            },
+            "category": "類別",
+            "element": "屬性"
         },
         "share": "分享",
         "copy": "複製",
@@ -164,14 +168,16 @@
         },
         "guide": {
             "spawns": "Spawns",
-            "element": {
+            "elements": {
                 "resistance": "Resistance",
                 "weak": "Weak",
                 "immunity": "Immunity"
             },
             "status": {
                 "immunity": "Status Immunity"
-            }
+            },
+            "category": "Category",
+            "element": "Element"
         },
         "share": "Share",
         "copy": "Copy",
