@@ -9,9 +9,9 @@ interface Themes {
 }
 
 const suppoertedThemes: Themes = {
-	'md2-light': {},
+	// 'md2-light': {},
 	'md2-dark': ComponentsThemes.dark,
-	'md3-light': ComponentsThemes.md3Light,
+	// 'md3-light': ComponentsThemes.md3Light,
 	'md3-dark': ComponentsThemes.md3Dark,
 };
 
@@ -30,5 +30,8 @@ export function setTheme(theme: string) {
 }
 
 export function useDark() {
+	if (suppoertedThemes[currentTheme.value] === undefined) {
+		currentTheme.value = defaultTheme;
+	}
 	setTheme(currentTheme.value);
 }

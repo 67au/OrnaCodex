@@ -23,15 +23,15 @@ function handleCellClick(theme: string) {
 			<var-icon class="app-switch-icon" name="palette" />
 		</var-button>
 		<template #menu>
-			<var-cell ripple :style="getActiveStyles('md2-light')" @click="() => handleCellClick('md2-light')">
+			<!-- <var-cell ripple :style="getActiveStyles('md2-light')" @click="() => handleCellClick('md2-light')">
 				MD2 Light
-			</var-cell>
+			</var-cell> -->
 			<var-cell ripple :style="getActiveStyles('md2-dark')" @click="() => handleCellClick('md2-dark')">
 				MD2 Dark
 			</var-cell>
-			<var-cell ripple :style="getActiveStyles('md3-light')" @click="() => handleCellClick('md3-light')">
+			<!-- <var-cell ripple :style="getActiveStyles('md3-light')" @click="() => handleCellClick('md3-light')">
 				MD3 Light
-			</var-cell>
+			</var-cell> -->
 			<var-cell ripple :style="getActiveStyles('md3-dark')" @click="() => handleCellClick('md3-dark')">
 				MD3 Dark
 			</var-cell>
