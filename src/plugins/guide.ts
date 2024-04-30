@@ -1,3 +1,5 @@
+import { parseCodexUrl } from "./utils";
+
 export interface Guide {
   statusImmunities?: Array<string>,
   elements?: {
@@ -8,6 +10,9 @@ export interface Guide {
   spawns?: Array<string>,
   element?: string,
   category?: string,
+  level?: string,
+  cost?: number,
+  tier?: number,
 }
 
 export function parseGuideCache(cache: any) {
@@ -16,7 +21,15 @@ export function parseGuideCache(cache: any) {
     spawns: cache?.spawns,
     element: cache?.element,
     category: cache?.category,
+    level: cache?.level,
   } as Guide;
+  if (cache?.codex !== undefined) {
+    const codex = parseCodexUrl(cache.codex);
+    if (codex.category === 'followers' && cache.cost !== undefined) {
+      guide.cost = cache.cost;
+      guide.tier = cache.tier;
+    }
+  }
   const elements = JSON.parse(JSON.stringify({
     resistance: cache?.resistant_to,
     weak: cache?.weak_to,

@@ -34,7 +34,11 @@
                 "immunity": "状态免疫"
             },
             "category": "类别",
-            "element": "技能属性"
+            "element": "技能属性",
+            "orns": "欧币",
+            "gold": "金币",
+            "level": "固定等级",
+            "cost": "价格"
         },
         "share": "分享",
         "copy": "复制",
@@ -106,7 +110,11 @@
                 "immunity": "狀態免疫"
             },
             "category": "類別",
-            "element": "屬性"
+            "element": "屬性",
+            "orns": "歐幣",
+            "gold": "金幣",
+            "level": "固定等級",
+            "cost": "價格"
         },
         "share": "分享",
         "copy": "複製",
@@ -177,7 +185,11 @@
                 "immunity": "Status Immunity"
             },
             "category": "Category",
-            "element": "Element"
+            "element": "Element",
+            "orns": "orns",
+            "gold": "gold",
+            "level": "Level",
+            "cost": "Price"
         },
         "share": "Share",
         "copy": "Copy",

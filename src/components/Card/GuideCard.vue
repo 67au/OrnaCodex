@@ -52,6 +52,22 @@ import { parseGuideCache } from '@/plugins/guide';
             </var-chip>
           </var-space>
         </var-cell>
+        <var-cell v-if="guide?.level" class="guide-cell" border>
+          <var-space align="center" size="small" style="line-height: 100%;">
+            {{ $t('guide.level') + ':' }}
+            <var-chip type="primary" size="small" :round="false" plain>
+              {{ guide.level }}
+            </var-chip>
+          </var-space>
+        </var-cell>
+        <var-cell v-if="guide.cost !== undefined" class="guide-cell" border>
+          <var-space align="center" size="small" style="line-height: 100%;">
+            {{ $t('guide.cost') + ':' }}
+            <var-chip type="primary" size="small" :round="false" plain>
+              {{ `${guide.cost.toLocaleString()} ${$t((guide.tier as number)>7?'guide.orns':'guide.gold')}` }}
+            </var-chip>
+          </var-space>
+        </var-cell>
       </div>
     </template>
   </var-card>
