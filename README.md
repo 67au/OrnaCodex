@@ -8,16 +8,15 @@ Yet Another Codex of Orna
 
 https://codex.fqegg.top
 
-## Docs
+## Data
 
-- Codex Data from https://playorna.com
+- Codex Data from [Official OrnaRPG Codex](https://playorna.com) , Collected by [Codex Crawler](https://github.com/67au/OrnaCodexCrawler)
+- Builtin [OrnaGuide](https://orna.guide) Client
 
-- [Codex Crawler](https://github.com/67au/OrnaCodexCrawler)
+## Credit
+
+- 套套 @yukixz 的 [图鉴](https://github.com/yukixz/orna-tools)
 
 ## License
 
 MIT License
-
-## Credit
-
-- 套套@yukixz 的 [图鉴](https://github.com/yukixz/orna-tools)
