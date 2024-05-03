@@ -101,11 +101,18 @@ export interface AssessQuery {
   extra: AssessQueryExtra,
 }
 
+export interface AssessResult {
+  quality: number,
+  stats: Stats,
+  levels?: number,
+}
+
 export function assess(query: AssessQuery) {
   const result = {
     quality: 1,
     stats: query.extra.baseStats,
-  };
+    levels: 13,
+  } as AssessResult;
   const queryArray = (Object.entries(query.data).filter(([m, _]) => {
     return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
   })).toSorted(
@@ -124,5 +131,8 @@ export function assess(query: AssessQuery) {
     result.stats[key].values = getUpgradedStats(stat.base, result.quality, query.extra.isBoss,
       key, query.extra.isWeapon, query.extra.isCelestial)
   })
+  if (query.extra.isWeapon && query.extra.isCelestial) {
+    result.levels = 20;
+  }
   return result;
 }

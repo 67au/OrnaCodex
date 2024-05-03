@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useCodexViewState } from '@/store';
+import { type PropType } from 'vue';
+import { type AssessResult } from '@/plugins/assess';
 </script>
 
 <template>
@@ -29,7 +31,7 @@ import { useCodexViewState } from '@/store';
               {{ stat['base'] }}
             </td>
           </tr>
-          <tr v-for="(_, i) in Array.from({ length: codexViewState.isCelestialWeapon ? 20 : 13 })" :key="i">
+          <tr v-for="(_, i) in Array.from({ length: result.levels === undefined ? 13 : result.levels })" :key="i">
             <td>{{ i + 1 }}</td>
             <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
               {{ stat['values'][i] }}
@@ -57,7 +59,7 @@ type StatValue = Array<any>;
 export default {
   props: {
     result: {
-      type: Object,
+      type: Object as PropType<AssessResult>,
       required: true,
     },
     show: {
@@ -69,7 +71,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .assess-table {
   overflow: auto;
   max-height: 65vh;
