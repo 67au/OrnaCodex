@@ -59,7 +59,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
                   loading-type="wave" v-if="!codexViewState.isCelestialWeapon">
                   GuideAPI
                 </var-button>
-                <var-button type="primary" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
+                <var-button type="warning" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
                   YACO
                 </var-button>
                 <var-button :type="isGuide && !codexViewState.isCelestialWeapon ?'success':'warning'" size="small" @click="initYacoQuery(true)">
