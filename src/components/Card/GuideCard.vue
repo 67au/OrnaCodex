@@ -52,7 +52,7 @@ import { parseGuideCache } from '@/plugins/guide';
             </var-chip>
           </var-space>
         </var-cell>
-        <var-cell v-if="guide?.level" class="guide-cell" border>
+        <var-cell v-if="guide?.level !== undefined" class="guide-cell" border>
           <var-space align="center" size="small" style="line-height: 100%;">
             {{ $t('guide.level') + ':' }}
             <var-chip type="primary" size="small" :round="false" plain>

@@ -19,15 +19,17 @@ export function parseGuideCache(cache: any) {
   const guide = {
     statusImmunities: cache?.immune_to_status || cache?.vulnerable_to_status,
     spawns: cache?.spawns,
-    element: cache?.element,
     category: cache?.category,
-    level: cache?.level,
   } as Guide;
+  if (cache?.level) { guide.level = cache.level }
   if (cache?.codex !== undefined) {
     const codex = parseCodexUrl(cache.codex);
     if (codex.category === 'followers' && cache.cost !== undefined) {
       guide.cost = cache.cost;
       guide.tier = cache.tier;
+    }
+    if (codex.category === 'spells' && cache.element !== undefined) {
+      guide.element = cache.element;
     }
   }
   const elements = JSON.parse(JSON.stringify({
@@ -35,6 +37,6 @@ export function parseGuideCache(cache: any) {
     weak: cache?.weak_to,
     immunity: cache?.immune_to,
   }))
-  if (Object.keys(elements).length > 0) {guide.elements = elements};
+  if (Object.keys(elements).length > 0) { guide.elements = elements }
   return JSON.parse(JSON.stringify(guide)) as Guide;
 }
