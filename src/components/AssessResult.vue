@@ -7,7 +7,7 @@ import { type AssessResult } from '@/plugins/assess';
 <template>
   <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
     <var-paper class="popup-assess">
-      <var-space align="center" justify="space-between" style="margin-bottom: 2px">
+      <var-space align="center" justify="space-between" style="margin-bottom: 4px">
         <span>{{ codexViewState.lang['name'] }}</span>
         <var-chip size="small" :type="result['quality'] > 0 ? 'primary' : 'danger'">
           <template #left>
@@ -17,7 +17,7 @@ import { type AssessResult } from '@/plugins/assess';
           {{ `${(result['quality'] * 100).toFixed()}%` }}
         </var-chip>
       </var-space>
-      <var-table :elevation="2" class="assess-table">
+      <var-table :elevation="2" class="assess-table" scroller-height="65vh">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
@@ -36,10 +36,6 @@ import { type AssessResult } from '@/plugins/assess';
             <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
               {{ stat['values'][i] }}
             </td>
-          </tr>
-          <tr>
-            <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
           </tr>
         </tbody>
       </var-table>
@@ -72,9 +68,20 @@ export default {
 
 <style lang="less" scoped>
 .assess-table {
-  overflow: auto;
-  max-height: 65vh;
   white-space: nowrap;
+}
+
+.assess-table {
+  thead th {
+    text-align: center;
+    position: sticky;
+    top: 0;
+    background-color: var(--table-background);
+    border-bottom: var(--table-thead-tr-border-bottom);
+  }
+  tbody td{
+    text-align: center;
+  }
 }
 
 .popup-assess {
