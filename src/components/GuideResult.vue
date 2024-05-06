@@ -4,7 +4,7 @@ import { defineComponent } from 'vue';
 </script>
 
 <template>
-  <var-popup :default-style="false" v-model:show="show" @update:show="$emit('update:show', $event)">
+  <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
     <var-result class="popup-guide result" :type="resultType" :title="$t(title)">
       <template #description>
         <template v-if="isSuccess">

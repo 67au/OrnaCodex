@@ -37,6 +37,10 @@ import { type AssessResult } from '@/plugins/assess';
               {{ stat['values'][i] }}
             </td>
           </tr>
+          <tr>
+            <td> {{ $t('query.level') }} </td>
+            <td v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</td>
+          </tr>
         </tbody>
       </var-table>
       <var-space justify="space-around" style="margin-top: 4px;">
@@ -79,7 +83,8 @@ export default {
     background-color: var(--table-background);
     border-bottom: var(--table-thead-tr-border-bottom);
   }
-  tbody td{
+
+  tbody td {
     text-align: center;
   }
 }

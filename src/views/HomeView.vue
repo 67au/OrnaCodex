@@ -25,8 +25,8 @@ const saveFilters = useDebounceFn(() => {
 
 export default defineComponent({
   components: {
-    HomeSearchCard: defineAsyncComponent(() => import("@/components/Card/HomeSearchCard.vue")),
-    HomeListCard: defineAsyncComponent(() => import('@/components/Card/HomeListCard.vue')),
+    HomeSearchCard: defineAsyncComponent(() => import("@/components/Home/HomeSearchCard.vue")),
+    HomeListCard: defineAsyncComponent(() => import('@/components/Home/HomeListCard.vue')),
   },
   async beforeRouteUpdate(to, from) {
     if (to.query.search !== undefined) {

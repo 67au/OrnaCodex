@@ -627,3 +627,72 @@ export const useAssessState = defineStore('assess', {
     }
   }
 })
+
+export interface ComparedItem {
+  id: string,
+  quality: string,
+  level: number,
+  isBoss: boolean,
+}
+
+const COMPARE_ITEMS_MAX = 4;
+
+export const useCompareState = defineStore('compare', {
+  state: () => ({
+    list: Array<ComparedItem>(),
+  }),
+  getters: {
+    keys(state) {
+      const keysSet = new Set();
+      const codexState = useCodexState();
+      state.list.forEach((item) => {
+        Object.keys(codexState.used['items'][item.id]['stats'] || {}).forEach((key) => {
+          keysSet.add(key);
+        })
+      });
+      const filtersState = useFiltersState();
+      return filtersState.sortKeys.filter((key) => { return keysSet.has(key) })
+    },
+    assess(state) {
+      const codexState = useCodexState();
+      return state.list.map((item) => {
+        const usedItem = codexState.used['items'][item.id]
+        const query: AssessQuery = {
+          data: {
+            quality: Number(item.quality),
+          },
+          extra: {
+            isQuality: true,
+            isCelestial: false,
+            isWeapon: usedItem['place'] === 'weapon',
+            isBoss: item.isBoss,
+            baseStats: {} as GuideStats,
+          }
+        };
+        for (const [key, value] of (Object.entries(usedItem.stats) as Array<[string, string]>)) {
+          if (statKeys.includes(key)) {
+            query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
+            query.extra.baseStats[key] = { base: query.data[key], values: [] };
+          }
+        }
+        return assess(query);
+      })
+    },
+  },
+  actions: {
+    addItem(item: ComparedItem) {
+      if (this.list.length < COMPARE_ITEMS_MAX) {
+        this.list.push(item);
+        return true
+      } else {
+        return false
+      }
+    },
+    removeItem(index: number) {
+      this.list.splice(index, 1);
+    },
+    leftShiftItem(index: number) {
+      [this.list[index-1], this.list[index]] = [this.list[index], this.list[index-1]];
+    }
+  }
+})

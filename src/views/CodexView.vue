@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { watch, defineComponent } from 'vue';
-import { global, useAssessState, useCodexViewState, useGuideState, type GuideStats } from '@/store';
-import MainCard from '@/components/Card/MainCard.vue';
-import StatsCard from '@/components/Card/StatsCard.vue';
-import AbilityCard from '@/components/Card/AbilityCard.vue';
-import DropsCard from '@/components/Card/DropsCard.vue';
-import MaterialCard from '@/components/Card/MaterialCard.vue';
-import SpellCard from '@/components/Card/SpellCard.vue';
-import DescriptionCard from '@/components/Card/DescriptionCard.vue';
+import { global, useAssessState, useCodexViewState, useCompareState, useGuideState, type GuideStats, type ComparedItem } from '@/store';
+
+import MainCard from '@/components/Codex/MainCard.vue';
+import StatsCard from '@/components/Codex/StatsCard.vue';
+import AbilityCard from '@/components/Codex/AbilityCard.vue';
+import DropsCard from '@/components/Codex/DropsCard.vue';
+import MaterialCard from '@/components/Codex/MaterialCard.vue';
+import SpellCard from '@/components/Codex/SpellCard.vue';
+import DescriptionCard from '@/components/Codex/DescriptionCard.vue';
 import GuideResult from '@/components/GuideResult.vue';
-import OffHandItemsCard from '@/components/Card/OffHandItemsCard.vue';
+import OffHandItemsCard from '@/components/Codex/OffHandItemsCard.vue';
 import AssessResult from '@/components/AssessResult.vue';
 import AssessQuery from '@/components/AssessQuery.vue';
+
+import { Snackbar } from '@varlet/ui';
+import '@varlet/ui/es/snackbar/style/index';
 </script>
 
 <template>
@@ -26,7 +30,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
           <template #description>
             <div class="card-description">
               <var-space justify="space-between" align="center">
-                <var-space align="center" size="small">
+                <var-space align="center" size="mini">
                   <var-link :href="`${global.ornaUrl}${codexViewState.url}`" target="_blank" underline="none">
                     <var-button type="primary" size="small">
                       OrnaRPG
@@ -37,7 +41,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
                     OrnaGuide
                   </var-button>
                 </var-space>
-                <var-chip size="small" :type="isGuide? 'success' : 'warning'" :closeable="isGuide"
+                <var-chip size="small" :type="isGuide ? 'success' : 'warning'" :closeable="isGuide"
                   @close="guideState.$reset()">
                   {{ isGuide ? 'Guide' : 'YACO' }}
                 </var-chip>
@@ -50,20 +54,26 @@ import AssessQuery from '@/components/AssessQuery.vue';
           v-if="codexPage.category === 'items' && codexViewState.item['stats'] !== undefined">
           <template #description>
             <div class="card-description">
-              <var-space justify="flex-start" align="center" size="small">
+              <var-space justify="flex-start" align="center" size="mini">
+                <var-button-group type="success">
                 <var-button type="info" size="small" @click="assessGuidePage" :loading="show.guide.loading"
                   loading-type="wave">
                   Guide
                 </var-button>
-                <var-button type="success" size="small" @click="initGuideQuery()" :loading="show.guide.loading"
+                <var-button size="small" @click="initGuideQuery()" :loading="show.guide.loading"
                   loading-type="wave" v-if="!codexViewState.isCelestialWeapon">
-                  GuideAPI
+                  API
                 </var-button>
+                </var-button-group>
                 <var-button type="warning" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
                   YACO
                 </var-button>
-                <var-button :type="isGuide && !codexViewState.isCelestialWeapon ?'success':'warning'" size="small" @click="initYacoQuery(true)">
-                  Quality
+                <var-button :type="isGuide && !codexViewState.isCelestialWeapon ? 'success' : 'warning'" size="small"
+                  @click="initYacoQuery(true)">
+                  {{ $t('query.quality') }}
+                </var-button>
+                <var-button type="primary" size="small" @click.stop="addToCompare" v-if="!codexViewState.isCelestialWeapon">
+                  {{ $t('compare.button') }}
                 </var-button>
               </var-space>
             </div>
@@ -112,17 +122,18 @@ import AssessQuery from '@/components/AssessQuery.vue';
   <GuideResult v-else v-model:show="show.yaco.query" failed />
 
   <!-- AssessQueryQuailty -->
-  <AssessResult :result="assessState.result" v-model:show="show.result"/>
+  <AssessResult :result="assessState.result" v-model:show="show.result" />
 </template>
 
 <script lang="ts">
 const codexViewState = useCodexViewState();
 const guideState = useGuideState();
 const assessState = useAssessState();
+const compareState = useCompareState();
 
 export default defineComponent({
   components: {
-    GuideCard: defineAsyncComponent(() => import('@/components/Card/GuideCard.vue')),
+    GuideCard: defineAsyncComponent(() => import('@/components/Codex/GuideCard.vue')),
   },
   mounted() {
     watch(() => this.$route.params, () => {
@@ -176,6 +187,20 @@ export default defineComponent({
     },
   },
   methods: {
+    addToCompare() {
+      const item: ComparedItem = {
+        id: codexViewState.page.id,
+        quality: '200',
+        level: 1,
+        isBoss: true,
+      };
+      const result = compareState.addItem(item);
+      Snackbar.allowMultiple(true);
+      Snackbar({
+        content: result ? this.$t('compare.success') : this.$t('compare.failed'),
+        type: result ? 'success' : 'error',
+      });
+    },
     async refreshGuide() {
       this.show.guide.loading = true;
       await guideState.refreshCache();

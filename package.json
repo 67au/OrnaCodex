@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@varlet/touch-emulator": "^3.2.7",
     "@varlet/ui": "^3.2.7",
     "@vueuse/core": "10",

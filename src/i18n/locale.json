@@ -63,6 +63,12 @@
         "desc": "降序",
         "name": "名称",
         "assess": "品质查询",
+        "compare": {
+            "title": "对比",
+            "button": "加入对比",
+            "success": "添加成功！",
+            "failed": "已达上限！"
+        },
         "query": {
             "query": "查询",
             "level": "等级",
@@ -135,6 +141,12 @@
         "close": "關閉",
         "offhands": "副手裝備",
         "assess": "品質查詢",
+        "compare": {
+            "title": "對比",
+            "button": "加入對比",
+            "success": "添加成功！",
+            "failed": "已達上限！"
+        },
         "query": {
             "query": "查詢",
             "level": "等級",
@@ -208,6 +220,12 @@
         "description": "Description",
         "offhands": "Off-Hands",
         "assess": "Assess",
+        "compare": {
+            "title": "Compare",
+            "button": "Compare",
+            "success": "Item added!",
+            "failed": "Limit reached!"
+        },
         "query": {
             "query": "Query",
             "level": "Level",

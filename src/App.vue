@@ -30,7 +30,9 @@ useDark();
         <keep-alive>
           <component :is="Component" v-if="$route.meta.keepAlive" />
         </keep-alive>
-        <var-back-top :duration="500" />
+        <keep-alive>
+          <Fab />
+        </keep-alive>
       </router-view>
     </template>
   </div>
@@ -71,7 +73,7 @@ export default {
         const codex: LangCodex = module.default;
         this.codexState.langs[lang] = codex.base;
         i18n.global.mergeLocaleMessage(lang, codex.key);
-        i18n.global.mergeLocaleMessage(lang, {'meta': codex.meta});
+        i18n.global.mergeLocaleMessage(lang, { 'meta': codex.meta });
         if (isLoad) { this.loading = false; }
       });
     }
@@ -97,6 +99,8 @@ body {
   background-color: var(--color-body);
   overflow: hidden;
   margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 .layout {
