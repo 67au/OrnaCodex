@@ -35,8 +35,8 @@ import { useCodexViewState } from '@/store';
         <var-col :span="8">
           <div class="assess">
             <var-select variant="outlined" :placeholder="$t('query.level')" v-model="query.data.level" size="small"
-              :disabled="query.extra.isQuality">
-              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i" />
+              :disabled="query.extra.isQuality || !codexViewState.isUpgradable">
+              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
             </var-select>
           </div>
         </var-col>

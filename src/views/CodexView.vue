@@ -55,15 +55,16 @@ import '@varlet/ui/es/snackbar/style/index';
           <template #description>
             <div class="card-description">
               <var-space justify="flex-start" align="center" size="mini">
+                <template v-if="codexViewState.isAssessable">
                 <var-button-group type="success">
-                <var-button type="info" size="small" @click="assessGuidePage" :loading="show.guide.loading"
-                  loading-type="wave">
-                  Guide
-                </var-button>
-                <var-button size="small" @click="initGuideQuery()" :loading="show.guide.loading"
-                  loading-type="wave" v-if="!codexViewState.isCelestialWeapon">
-                  API
-                </var-button>
+                  <var-button type="info" size="small" @click="assessGuidePage" :loading="show.guide.loading"
+                    loading-type="wave">
+                    Guide
+                  </var-button>
+                  <var-button size="small" @click="initGuideQuery()" :loading="show.guide.loading" loading-type="wave"
+                    v-if="!codexViewState.isCelestialWeapon">
+                    API
+                  </var-button>
                 </var-button-group>
                 <var-button type="warning" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
                   YACO
@@ -72,7 +73,9 @@ import '@varlet/ui/es/snackbar/style/index';
                   @click="initYacoQuery(true)">
                   {{ $t('query.quality') }}
                 </var-button>
-                <var-button type="primary" size="small" @click.stop="addToCompare" v-if="!codexViewState.isCelestialWeapon">
+                </template>
+                <var-button type="primary" size="small" @click.stop="addToCompare"
+                  v-if="!codexViewState.isCelestialWeapon">
                   {{ $t('compare.button') }}
                 </var-button>
               </var-space>
@@ -191,7 +194,7 @@ export default defineComponent({
       const item: ComparedItem = {
         id: codexViewState.page.id,
         quality: '200',
-        level: 1,
+        level: codexViewState.isUpgradable ? 13 : 1,
         isBoss: true,
       };
       const result = compareState.addItem(item);

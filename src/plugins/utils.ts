@@ -18,3 +18,7 @@ export function parseCodexUrl(url: string) {
     id: a[5],
   } as CodexView
 }
+
+export function isMoreSlotsItem(item: any) {
+  return item['item_type'] === 'weapon' || (item['item_type'] === 'armor' && (item['place'] !== 'off-hand' && item['place'] !== 'accessory'))
+}

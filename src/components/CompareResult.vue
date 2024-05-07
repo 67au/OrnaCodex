@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineComponent, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { global, useCodexState, useCompareState, type ComparedItem } from '@/store';
+import { global, useCodexState, useCompareState, type CodexItem, type ComparedItem } from '@/store';
 </script>
 
 <template>
@@ -36,7 +36,7 @@ import { global, useCodexState, useCompareState, type ComparedItem } from '@/sto
                 </var-col>
                 <var-col :span="12">
                   <var-select variant="outlined" :placeholder="$t('query.level')" v-model="items[index].level"
-                    size="small" class="assess">
+                    size="small" class="assess" :disabled="!checkUpgradable(item)">
                     <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i" />
                   </var-select>
                 </var-col>
@@ -82,6 +82,8 @@ import { global, useCodexState, useCompareState, type ComparedItem } from '@/sto
 </template>
 
 <script lang="ts">
+const bonusKeysSet = new Set(['orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus'])
+
 export default defineComponent({
   props: {
     show: {
@@ -100,6 +102,9 @@ export default defineComponent({
     }
   },
   computed: {
+    display() {
+      return [this.show, this.items.length];
+    },
     keys() {
       const compareState = useCompareState();
       return compareState.keys
@@ -107,8 +112,18 @@ export default defineComponent({
     initResult() {
       return this.assess.map((ar, index) => {
         return Object.fromEntries(this.keys.map((key) => {
+          const base = ar.stats[key]?.values[this.items[index].level - 1] || parseInt(this.base(this.items[index])['stats'][key]) || 0;
+          let newbase;
+          if (bonusKeysSet.has(key) && this.items[index].level > 10 && base !== 0) {
+            newbase = ((100 + base) * (this.items[index].level + 2) * 10 - 10000) / 100;
+          }
+          if (key === 'adornment_slots' && ar.extra?.isMoreSlots) {
+            newbase = base;
+            if (this.items[index].level > 10) {newbase +=3};
+            if (this.items[index].level === 13) {newbase += 1};
+          }
           return [key, {
-            base: ar['stats'][key]?.values[this.items[index].level - 1] || parseInt(this.base(this.items[index])['stats'][key]) || 0,
+            base: newbase || base,
             delta: 0,
           }]
         }))
@@ -125,8 +140,8 @@ export default defineComponent({
     }
   },
   mounted() {
-    watch(() => this.show, (newValue, _) => {
-      if (newValue && this.items.length > 2 && window.innerWidth < 768) {
+    watch(() => this.display, (newValue, _) => {
+      if (newValue[0] && this.items.length > 2 && window.innerWidth < 768) {
         this.styleVars = {
           '--compare-container-margin': 'unset',
           '--compare-container-just-content': 'flex-start',
@@ -137,16 +152,20 @@ export default defineComponent({
           '--compare-container-just-content': 'center',
         }
       }
-    })
+    }, { deep: true })
   },
   methods: {
     lang(item: ComparedItem) {
       const codexState = useCodexState();
       return codexState.lang['items'][item.id]
     },
-    base(item: ComparedItem) {
+    base(item: ComparedItem): CodexItem {
       const codexState = useCodexState();
       return codexState.used['items'][item.id]
+    },
+    checkUpgradable(item: ComparedItem): boolean {
+      const i = this.base(item);
+      return i['item_type'] === 'weapon' || (i['item_type'] === 'armor' && i['place'] !== 'accessory');
     },
     removeItem(index: number) {
       const compareState = useCompareState();

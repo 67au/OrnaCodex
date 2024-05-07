@@ -4,6 +4,7 @@ import router from '@/router'
 import { defineStore, storeToRefs } from 'pinia';
 import { i18n } from '@/i18n';
 import { assess, type Stats, type AssessQuery, type Stat } from '@/plugins/assess';
+import { isMoreSlotsItem } from '@/plugins/utils';
 
 const guideUrl = 'https://orna.guide';
 
@@ -200,11 +201,38 @@ export const useCodexViewState = defineStore('codex-view', {
       return codexState.langs[i18n.global.locale.value][state.page.category][state.page.id];
     },
 
+    statKeysSet(): Set<string> {
+      return new Set(statKeys)
+    },
+    isAssessable(): boolean {
+      return Object.keys(this.item['stats']).some((key) => this.statKeysSet.has(key))
+    },
+
     isCelestial(): boolean {
       return this.item['rarity'] === 'celestial';
     },
     isWeapon(): boolean {
-      return this.item['place'] === 'weapon';
+      return this.item['item_type'] === 'weapon';
+    },
+    isAccessory(): boolean {
+      return this.item['place'] === 'accessory';
+    },
+    isArmor(): boolean {
+      return this.item['item_type'] === 'armor';
+    },
+    isAdornment(): boolean {
+      return this.item['item_type'] === 'adornment';
+    },
+    isUpgradable(): boolean {
+      // wait for fix
+      // return this.isWeapon || (this.isArmor && !this.isAccessory);
+      return (this.isWeapon && !this.isAdornment) || (this.isArmor && !this.isAccessory);
+    },
+    isOffHand(): boolean {
+      return this.item['place'] === 'off-hand';
+    },
+    isMoreSlots(): boolean {
+      return this.isUpgradable && !this.isOffHand;
     },
     isCelestialWeapon(): boolean {
       return this.isCelestial && this.isWeapon;
@@ -258,6 +286,7 @@ export const useOptionsState = defineStore('options', {
       useable_by: new Set(),
       family: new Set(),
       spell_type: new Set(),
+      item_type: new Set(),
       place: new Set(),
       // array
       event: new Set(),
@@ -273,7 +302,7 @@ export const useOptionsState = defineStore('options', {
   getters: {
     keys(): OptionsKeys {
       return {
-        single: ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'place'],
+        single: ['category', 'tier', 'exotic', 'rarity', 'useable_by', 'family', 'spell_type', 'item_type', 'place'],
         array: ['event', 'tags'],
         status: ['causes', 'cures', 'gives', 'immunities'],
       }
@@ -606,6 +635,8 @@ export const useAssessState = defineStore('assess', {
         isCelestial: codexViewState.isCelestial,
         isWeapon: codexViewState.isWeapon,
         isBoss: !codexViewState.isCelestialWeapon,
+        isMoreSlots: codexViewState.isMoreSlots,
+        isUpgradable: codexViewState.isUpgradable,
         baseStats: {} as GuideStats,
       };
       if (quality) {
@@ -645,10 +676,14 @@ export const useCompareState = defineStore('compare', {
     keys(state) {
       const keysSet = new Set();
       const codexState = useCodexState();
-      state.list.forEach((item) => {
-        Object.keys(codexState.used['items'][item.id]['stats'] || {}).forEach((key) => {
+      state.list.forEach((comparedItem) => {
+        const item = codexState.used['items'][comparedItem.id];
+        Object.keys(item['stats'] || {}).forEach((key) => {
           keysSet.add(key);
         })
+        if (isMoreSlotsItem(item)) {
+          keysSet.add('adornment_slots');
+        }
       });
       const filtersState = useFiltersState();
       return filtersState.sortKeys.filter((key) => { return keysSet.has(key) })
@@ -656,7 +691,7 @@ export const useCompareState = defineStore('compare', {
     assess(state) {
       const codexState = useCodexState();
       return state.list.map((item) => {
-        const usedItem = codexState.used['items'][item.id]
+        const usedItem = codexState.used['items'][item.id];
         const query: AssessQuery = {
           data: {
             quality: Number(item.quality),
@@ -664,8 +699,9 @@ export const useCompareState = defineStore('compare', {
           extra: {
             isQuality: true,
             isCelestial: false,
-            isWeapon: usedItem['place'] === 'weapon',
+            isWeapon: usedItem['item_type'] === 'weapon',
             isBoss: item.isBoss,
+            isMoreSlots: isMoreSlotsItem(usedItem),
             baseStats: {} as GuideStats,
           }
         };
@@ -692,7 +728,10 @@ export const useCompareState = defineStore('compare', {
       this.list.splice(index, 1);
     },
     leftShiftItem(index: number) {
-      [this.list[index-1], this.list[index]] = [this.list[index], this.list[index-1]];
+      [this.list[index - 1], this.list[index]] = [this.list[index], this.list[index - 1]];
+    },
+    checkMoreSlots(item: CodexItem) {
+      return item['item_type'] === 'weapon' || (item['item_type'] === 'armor' && item['place'] !== 'accessory' && item['place'] !== 'off-hand');
     }
   }
 })

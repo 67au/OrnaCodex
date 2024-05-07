@@ -94,6 +94,8 @@ export interface AssessQueryExtra {
   fromGuide?: boolean,
   isWeapon?: boolean,
   isCelestial?: boolean,
+  isMoreSlots?: boolean,
+  isUpgradable?: boolean,
 }
 
 export interface AssessQuery {
@@ -105,6 +107,7 @@ export interface AssessResult {
   quality: number,
   stats: Stats,
   levels?: number,
+  extra?: AssessQueryExtra,
 }
 
 export function assess(query: AssessQuery) {
@@ -112,6 +115,7 @@ export function assess(query: AssessQuery) {
     quality: 1,
     stats: query.extra.baseStats,
     levels: 13,
+    extra: query.extra,
   } as AssessResult;
   const queryArray = (Object.entries(query.data).filter(([m, _]) => {
     return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
@@ -133,6 +137,9 @@ export function assess(query: AssessQuery) {
   })
   if (query.extra.isWeapon && query.extra.isCelestial) {
     result.levels = 20;
+  }
+  if (!query.extra.isUpgradable) {
+    result.levels = 1;
   }
   return result;
 }

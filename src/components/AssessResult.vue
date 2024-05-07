@@ -17,7 +17,7 @@ import { type AssessResult } from '@/plugins/assess';
           {{ `${(result['quality'] * 100).toFixed()}%` }}
         </var-chip>
       </var-space>
-      <var-table :elevation="2" class="assess-table" scroller-height="65vh">
+      <var-table :elevation="2" class="assess-table" :scroller-height="result.levels !== 1 ? '65vh' : undefined">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
@@ -91,26 +91,24 @@ export default {
 
 .popup-assess {
   border-radius: 16px;
+  max-width: 85vw;
 }
 
 @media screen and (max-width: 320px) {
   .popup-assess {
     padding: 18px 6px;
-    width: 85vw;
   }
 }
 
 @media screen and (min-width: 375px) {
   .popup-assess {
     padding: 18px 9px;
-    width: 85vw;
   }
 }
 
 @media screen and (min-width: 768px) {
   .popup-assess {
     padding: 24px 12px;
-    width: 85vw;
     max-width: 768px;
   }
 }
