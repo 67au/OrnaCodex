@@ -229,7 +229,12 @@ export default defineComponent({
       }, 150);
     },
     async assessGuideApi() {
+      const bar = Snackbar({
+        type: 'loading',
+        content: 'Loading...',
+      })
       if (await assessState.queryGuideApi()) {
+        bar.clear();
         setTimeout(() => {
           this.show.result = true;
         }, 150);
