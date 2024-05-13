@@ -4,7 +4,7 @@ import router from '@/router'
 import { defineStore, storeToRefs } from 'pinia';
 import { i18n } from '@/i18n';
 import { assess, type Stats, type AssessQuery, type Stat } from '@/plugins/assess';
-import { isMoreSlotsItem } from '@/plugins/utils';
+import { isAccessory, isAdornment, isArmor, isCelestial, isCelestialWeapon, isOffHand, isUpgradable, isUpgradableSlots, isWeapon } from '@/plugins/item_utils';
 
 const guideUrl = 'https://orna.guide';
 
@@ -209,33 +209,33 @@ export const useCodexViewState = defineStore('codex-view', {
     },
 
     isCelestial(): boolean {
-      return this.item['rarity'] === 'celestial';
+      return isCelestial(this.item);
     },
     isWeapon(): boolean {
-      return this.item['item_type'] === 'weapon';
+      return isWeapon(this.item);
     },
     isAccessory(): boolean {
-      return this.item['place'] === 'accessory';
+      return isAccessory(this.item);
     },
     isArmor(): boolean {
-      return this.item['item_type'] === 'armor';
+      return isArmor(this.item);
     },
     isAdornment(): boolean {
-      return this.item['item_type'] === 'adornment';
+      return isAdornment(this.item);
     },
     isUpgradable(): boolean {
       // wait for fix
       // return this.isWeapon || (this.isArmor && !this.isAccessory);
-      return (this.isWeapon && !this.isAdornment) || (this.isArmor && !this.isAccessory);
+      return isUpgradable(this.item);
     },
     isOffHand(): boolean {
-      return this.item['place'] === 'off-hand';
+      return isOffHand(this.item);
     },
-    isMoreSlots(): boolean {
-      return this.isUpgradable && !this.isOffHand;
+    isUpgradableSlots(): boolean {
+      return isUpgradableSlots(this.item);
     },
     isCelestialWeapon(): boolean {
-      return this.isCelestial && this.isWeapon;
+      return isCelestialWeapon(this.item);
     }
   },
   actions: {
@@ -521,10 +521,17 @@ export const useGuideState = defineStore('guide', {
     },
     stats(state) {
       if (state.cache === undefined) {
-        return undefined;
+        return {};
       }
       return state.cache.stats as GuideStats;
-    }
+    },
+    baseStats() {
+      return Object.fromEntries(
+        Object.entries(this.stats).map(([k, v]) => {
+          return [k, v.base]
+        })
+      )
+    },
   },
   actions: {
     isMonster() {
@@ -617,7 +624,7 @@ export const useAssessState = defineStore('assess', {
           isQuality: false,
           isBoss: (guideState.cache as GuideCache).boss,
           fromGuide: true,
-          baseStats: guideState.stats,
+          baseStats: guideState.baseStats,
         }
         for (const [key, value] of (Object.entries(guideState.stats) as Array<[string, Stat]>)) {
           this.query.data[key] = value.base;
@@ -635,9 +642,9 @@ export const useAssessState = defineStore('assess', {
         isCelestial: codexViewState.isCelestial,
         isWeapon: codexViewState.isWeapon,
         isBoss: !codexViewState.isCelestialWeapon,
-        isMoreSlots: codexViewState.isMoreSlots,
+        isUpgradableSlots: codexViewState.isUpgradableSlots,
         isUpgradable: codexViewState.isUpgradable,
-        baseStats: {} as GuideStats,
+        baseStats: {},
       };
       if (quality) {
         this.query.data.quality = 100;
@@ -649,7 +656,11 @@ export const useAssessState = defineStore('assess', {
       for (const [key, value] of (Object.entries(codexViewState.item.stats) as Array<[string, string]>)) {
         if (statKeys.includes(key)) {
           this.query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
-          this.query.extra.baseStats[key] = { base: this.query.data[key], values: [] };
+          this.query.extra.baseStats[key] = this.query.data[key];
+        } else {
+          if (key === 'adornment_slots') {
+            this.query.extra.baseStats[key] = Number(value);
+          }
         }
       }
     },
@@ -681,7 +692,7 @@ export const useCompareState = defineStore('compare', {
         Object.keys(item['stats'] || {}).forEach((key) => {
           keysSet.add(key);
         })
-        if (isMoreSlotsItem(item)) {
+        if (isUpgradableSlots(item)) {
           keysSet.add('adornment_slots');
         }
       });
@@ -699,16 +710,20 @@ export const useCompareState = defineStore('compare', {
           extra: {
             isQuality: true,
             isCelestial: false,
-            isWeapon: usedItem['item_type'] === 'weapon',
+            isWeapon: isWeapon(usedItem),
             isBoss: item.isBoss,
-            isMoreSlots: isMoreSlotsItem(usedItem),
-            baseStats: {} as GuideStats,
+            isUpgradable: isUpgradable(usedItem),
+            isUpgradableSlots: isUpgradableSlots(usedItem),
+            baseStats: {},
           }
         };
         for (const [key, value] of (Object.entries(usedItem.stats) as Array<[string, string]>)) {
           if (statKeys.includes(key)) {
             query.data[key] = Number(value.endsWith('%') ? value.slice(0, -1) : value);
-            query.extra.baseStats[key] = { base: query.data[key], values: [] };
+            query.extra.baseStats[key] = query.data[key];
+          }
+          if (key === 'adornment_slots') {
+            query.extra.baseStats[key] = Number(value);
           }
         }
         return assess(query);
@@ -731,7 +746,7 @@ export const useCompareState = defineStore('compare', {
       [this.list[index - 1], this.list[index]] = [this.list[index], this.list[index - 1]];
     },
     checkMoreSlots(item: CodexItem) {
-      return item['item_type'] === 'weapon' || (item['item_type'] === 'armor' && item['place'] !== 'accessory' && item['place'] !== 'off-hand');
+      return isUpgradableSlots(item);
     }
   }
 })

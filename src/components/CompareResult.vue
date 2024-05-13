@@ -2,6 +2,7 @@
 import { defineComponent, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { global, useCodexState, useCompareState, type CodexItem, type ComparedItem } from '@/store';
+import { isUpgradable } from '@/plugins/item_utils';
 </script>
 
 <template>
@@ -117,11 +118,6 @@ export default defineComponent({
           if (bonusKeysSet.has(key) && this.items[index].level > 10 && base !== 0) {
             newbase = ((100 + base) * (this.items[index].level + 2) * 10 - 10000) / 100;
           }
-          if (key === 'adornment_slots' && ar.extra?.isMoreSlots) {
-            newbase = base;
-            if (this.items[index].level > 10) {newbase +=3};
-            if (this.items[index].level === 13) {newbase += 1};
-          }
           return [key, {
             base: newbase || base,
             delta: 0,
@@ -165,7 +161,7 @@ export default defineComponent({
     },
     checkUpgradable(item: ComparedItem): boolean {
       const i = this.base(item);
-      return i['item_type'] === 'weapon' || (i['item_type'] === 'armor' && i['place'] !== 'accessory');
+      return isUpgradable(i);
     },
     removeItem(index: number) {
       const compareState = useCompareState();

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { AssessQuery } from '@/plugins/assess';
 import { useCodexViewState } from '@/store';
+import type { PropType } from 'vue';
 </script>
 
 <template>
@@ -29,7 +31,7 @@ import { useCodexViewState } from '@/store';
         <var-col :span="8" v-if="query.extra.isQuality">
           <div class="assess">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="query.data.quality" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexViewState.isCelestialWeapon"/>
+              v-model="(query.data.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexViewState.isCelestialWeapon"/>
           </div>
         </var-col>
         <var-col :span="8">
@@ -41,9 +43,9 @@ import { useCodexViewState } from '@/store';
           </div>
         </var-col>
         <var-col :span="8" v-for="key in Object.keys(baseStats)" :key="key">
-          <div class="assess">
+          <div class="assess" v-if="!immutableKeysSet.has(key)">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`meta.stats.${key}`)"
-              v-model="query.data[key]" :disabled="query.extra.isQuality" />
+              v-model="(query.data[key] as any)" :disabled="query.extra.isQuality" />
           </div>
         </var-col>
         <var-col :span="24">
@@ -58,6 +60,7 @@ import { useCodexViewState } from '@/store';
 
 <script lang="ts">
 const codexViewState = useCodexViewState();
+const immutableKeysSet = new Set(['adornment_slots']);
 
 export default {
   props: {
@@ -66,7 +69,7 @@ export default {
       required: true,
     },
     query: {
-      type: Object,
+      type: Object as PropType<AssessQuery>,
       required: true,
     },
     show: {

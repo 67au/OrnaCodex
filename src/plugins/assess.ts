@@ -90,11 +90,11 @@ export interface AssessQueryData {
 export interface AssessQueryExtra {
   isBoss: boolean,
   isQuality: boolean,
-  baseStats: Stats,
+  baseStats: AssessQueryData,
   fromGuide?: boolean,
   isWeapon?: boolean,
   isCelestial?: boolean,
-  isMoreSlots?: boolean,
+  isUpgradableSlots?: boolean,
   isUpgradable?: boolean,
 }
 
@@ -113,7 +113,7 @@ export interface AssessResult {
 export function assess(query: AssessQuery) {
   const result = {
     quality: 1,
-    stats: query.extra.baseStats,
+    stats: {},
     levels: 13,
     extra: query.extra,
   } as AssessResult;
@@ -128,17 +128,45 @@ export function assess(query: AssessQuery) {
     result.quality = 2;
     if (queryArray.length > 0) {
       const key = queryArray[0][0];
-      result.quality = getItemQuailty(query.data[key], result.stats[key].base, query.data.level, query.extra.isBoss);
+      result.quality = getItemQuailty(query.data[key], query.extra.baseStats[key], query.data.level, query.extra.isBoss);
     }
   }
-  (Object.entries(result.stats) as Array<[string, any]>).forEach(([key, stat]) => {
-    result.stats[key].values = getUpgradedStats(stat.base, result.quality, query.extra.isBoss,
-      key, query.extra.isWeapon, query.extra.isCelestial)
+  (Object.entries(query.extra.baseStats)).forEach(([key, base]) => {
+    result.stats[key] = {
+      base: base,
+      values: getUpgradedStats(base, result.quality, query.extra.isBoss,
+        key, query.extra.isWeapon, query.extra.isCelestial)
+    }
   })
+
   if (query.extra.isWeapon && query.extra.isCelestial) {
     result.levels = 20;
+    result.stats['adornment_slots'] = {
+      base: 1,
+      values: [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5],
+    }
+    return result;
   }
-  if (!query.extra.isUpgradable) {
+
+  if (query.extra.isUpgradable) {
+    if (query.extra.isUpgradableSlots) {
+      const base = query.extra.baseStats['adornment_slots'] || 0;
+      result.stats['adornment_slots'] = {
+        base: base,
+        values: Array(13).fill(base, 0, 10),
+      }
+      result.stats['adornment_slots'].values.fill(base + 3, 10, 12);
+      result.stats['adornment_slots'].values.fill(base + 4, 12, 13);
+    } else {
+      const base = query.extra.baseStats['adornment_slots'];
+      if (base !== undefined) {
+        result.stats['adornment_slots'] = {
+          base: base,
+          values: Array(13).fill(base),
+        }
+      }
+    }
+  } else {
     result.levels = 1;
   }
   return result;
