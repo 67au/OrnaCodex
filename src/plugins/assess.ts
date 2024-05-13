@@ -110,6 +110,18 @@ export interface AssessResult {
   extra?: AssessQueryExtra,
 }
 
+export function getAdditionalSlots(quality: number) {
+  var p;
+  p = -1;
+  const qual = Math.round(quality * 100);
+  if (qual > 70) { p++ };
+  if (qual > 100) { p++ };
+  if (qual >= 170) { p++ };
+  if (qual > 200) { p = -1};
+
+  return p;
+} 
+
 export function assess(query: AssessQuery) {
   const result = {
     quality: 1,
@@ -154,6 +166,10 @@ export function assess(query: AssessQuery) {
       result.stats['adornment_slots'] = {
         base: base,
         values: Array(13).fill(base, 0, 10),
+      }
+      const additionalSlots = getAdditionalSlots(result.quality);
+      if ( additionalSlots > 0 ) {
+        result.stats['adornment_slots'].values.fill(base + additionalSlots, 0, 10);
       }
       result.stats['adornment_slots'].values.fill(base + 3, 10, 12);
       result.stats['adornment_slots'].values.fill(base + 4, 12, 13);

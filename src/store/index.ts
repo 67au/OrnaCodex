@@ -19,6 +19,19 @@ const elementColor: any = {
   dragon: '#FF9800',
 }
 
+const qualityColor: any = {
+  broken: '#985f17',
+  poor: '#985f17',
+  regular: '',
+  superior: '#49e840',
+  famed: '#4ca3ff',
+  legendary: '#aa4eef',
+  ornate: '#e44646',
+  masterforged: '#ffe16f',
+  demonforged: '#ff6f8f',
+  godforged: '#ff9860',
+}
+
 const rarityAura: any = {
   uncommon: 'rare',
   rare: 'famed',
@@ -37,6 +50,7 @@ export const global = {
   star: '★',
   getTier: (tier: string | number) => `${global.star}${tier}`,
   elementColor: elementColor,
+  qualityColor: qualityColor,
   rarityAura: rarityAura,
   enterCodex: (category: string, id: string) => router.push({ path: `/codex/${category}/${id}/` }),
   getStaticUrl: (url: string) => `${global.staticUrl}${url}`,

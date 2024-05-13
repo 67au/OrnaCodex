@@ -2,6 +2,8 @@
 import { useCodexViewState } from '@/store';
 import { type PropType } from 'vue';
 import { type AssessResult } from '@/plugins/assess';
+import { getQualityName } from '@/plugins/item_utils';
+import { global } from '@/store';
 </script>
 
 <template>
@@ -9,37 +11,38 @@ import { type AssessResult } from '@/plugins/assess';
     <var-paper class="popup-assess">
       <var-space align="center" justify="space-between" style="margin-bottom: 4px">
         <span>{{ codexViewState.lang['name'] }}</span>
-        <var-chip size="small" :type="result['quality'] > 0 ? 'primary' : 'danger'">
+        <var-chip size="small" :color="qualityName === undefined?'':`${global.qualityColor[qualityName]}`"
+          :type="qualityName === undefined?'danger':'default'">
           <template #left>
-            <var-icon v-if="result['quality'] > 0" name="checkbox-marked-circle" size="small" />
-            <var-icon v-else name="close-circle" size="small" />
+            <var-icon v-if="qualityName === undefined" name="close-circle" size="small" />
+            <var-icon v-else name="checkbox-marked-circle" size="small" />
           </template>
-          {{ `${(result['quality'] * 100).toFixed()}%` }}
+          {{ `${(result.quality * 100).toFixed()}%` }}
         </var-chip>
       </var-space>
       <var-table :elevation="2" class="assess-table" :scroller-height="result.levels !== 1 ? '65vh' : undefined">
         <thead>
           <tr>
             <th> {{ $t('query.level') }} </th>
-            <th v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
+            <th v-for="key in Object.keys(result.stats)" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td> {{ $t('query.base') }} </td>
-            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
+            <td v-for="stat, index in (Object.values(result.stats) as StatValue)" :key="index">
               {{ stat['base'] }}
             </td>
           </tr>
           <tr v-for="(_, i) in Array.from({ length: result.levels === undefined ? 13 : result.levels })" :key="i">
             <td>{{ i + 1 }}</td>
-            <td v-for="stat, index in (Object.values(result['stats']) as StatValue)" :key="index">
+            <td v-for="stat, index in (Object.values(result.stats) as StatValue)" :key="index">
               {{ stat['values'][i] }}
             </td>
           </tr>
           <tr>
             <td> {{ $t('query.level') }} </td>
-            <td v-for="key in Object.keys(result['stats'])" :key="key">{{ $t(`meta.stats.${key}`) }}</td>
+            <td v-for="key in Object.keys(result.stats)" :key="key">{{ $t(`meta.stats.${key}`) }}</td>
           </tr>
         </tbody>
       </var-table>
@@ -67,6 +70,11 @@ export default {
       required: true,
     },
   },
+  computed: {
+    qualityName(): string | undefined {
+      return getQualityName(codexViewState.item, this.result.quality);
+    }
+  }
 }
 </script>
 
