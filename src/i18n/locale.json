@@ -75,7 +75,21 @@
             "level": "等级",
             "quality": "品质",
             "base": "基础",
-            "isBoss": "头目装备"
+            "isBoss": "头目装备",
+            "qualityextra": "指定品质",
+            "qualitylabel": {
+                "default": "默认",
+                "broken": "损坏",
+                "poor": "破烂",
+                "regular": "标准",
+                "superior": "精良",
+                "famed": "著名",
+                "legendary": "传说",
+                "ornate": "华丽",
+                "masterforged": "匠改",
+                "demonforged": "魔化",
+                "godforged": "神赐"
+            }
         }
     },
     "zh-hant": {
@@ -154,7 +168,21 @@
             "level": "等級",
             "quality": "品質",
             "base": "基礎",
-            "isBoss": "頭目裝備"
+            "isBoss": "頭目裝備",
+            "qualityextra": "指定品質",
+            "qualitylabel": {
+                "default": "默認",
+                "broken": "損壞",
+                "poor": "破爛",
+                "regular": "標準",
+                "superior": "精良",
+                "famed": "著名",
+                "legendary": "傳説",
+                "ornate": "華麗",
+                "masterforged": "匠改",
+                "demonforged": "魔化",
+                "godforged": "神賜"
+            }
         }
     },
     "en": {
@@ -234,7 +262,21 @@
             "level": "Level",
             "quality": "Quality",
             "base": "Base",
-            "isBoss": "BossScale"
+            "isBoss": "BossScale",
+            "qualityextra": "QualityName",
+            "qualitylabel": {
+                "default": "Default",
+                "broken": "Broken",
+                "poor": "Poor",
+                "regular": "Regular",
+                "superior": "Superior",
+                "famed": "Famed",
+                "legendary": "Legendary",
+                "ornate": "Ornate",
+                "masterforged": "Masterforged",
+                "demonforged": "Demonforged",
+                "godforged": "Godforged"
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ import AssessQuery from '@/components/AssessQuery.vue';
 
 import { Snackbar } from '@varlet/ui';
 import '@varlet/ui/es/snackbar/style/index';
+import { isAccessory } from '@/plugins/item_utils';
 </script>
 
 <template>
@@ -196,6 +197,7 @@ export default defineComponent({
         quality: '200',
         level: codexViewState.isUpgradable ? 13 : 1,
         isBoss: true,
+        qualityCode: -1,
       };
       const result = compareState.addItem(item);
       Snackbar.allowMultiple(true);

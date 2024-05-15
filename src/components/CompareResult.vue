@@ -2,7 +2,8 @@
 import { defineComponent, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { global, useCodexState, useCompareState, type CodexItem, type ComparedItem } from '@/store';
-import { isUpgradable } from '@/plugins/item_utils';
+import { isAccessory, isUpgradable } from '@/plugins/item_utils';
+import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess';
 </script>
 
 <template>
@@ -14,7 +15,7 @@ import { isUpgradable } from '@/plugins/item_utils';
       <div class="compare-container">
         <div class="item empty"></div>
         <div class="item" v-for="(item, index) in items">
-          <var-paper class="paper" :elevation="12" :width="170">
+          <var-paper class="paper" :elevation="12" :width="185">
             <var-cell border class="cell" style="display: flex;">
               <template #icon>
                 <var-icon :size="36" :name="global.getStaticUrl(base(item)['icon'])" class="append-icon" />
@@ -46,6 +47,15 @@ import { isUpgradable } from '@/plugins/item_utils';
                     :placeholder="$t(`query.quality`)" class="assess">
                   </var-input>
                 </var-col>
+                <var-col :span="12">
+                  <var-select variant="outlined" :placeholder="$t('query.qualityextra')"
+                    v-model="items[index].qualityCode" size="small" class="assess"
+                    :disabled="Number(items[index].quality) < 200" v-if="isAccessory(base(items[index]))">
+                      <var-option class="option" :value="-1" :label="$t('query.qualitylabel.default')" :key="-1" />
+                      <var-option class="option" :value="i" :label="$t(`query.qualitylabel.${Quality[i]}`)"
+                        v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)" :key="i" />
+                  </var-select>
+                </var-col>
               </var-row>
             </var-cell>
             <var-cell v-for="r, key in result[index]" border class="cell cell-stat">
@@ -60,7 +70,7 @@ import { isUpgradable } from '@/plugins/item_utils';
               </var-space>
             </var-cell>
           </var-paper>
-          <var-space justify="space-between" style="margin: 0 2px; transform: translateY(-14px);">
+          <var-space justify="space-between" style="margin: 0 2px; transform: translateY(-15px);">
             <var-space justify="flex-start" size="mini">
               <var-button v-if="index === 0" type="primary" size="mini">
                 <var-icon class="mdi mdi-pin" :size="16" />
@@ -112,16 +122,30 @@ export default defineComponent({
     },
     initResult() {
       return this.assess.map((ar, index) => {
+        const comparedItem = this.items[index];
         return Object.fromEntries(this.keys.map((key) => {
-          const base = ar.stats[key]?.values[this.items[index].level - 1] || parseInt(this.base(this.items[index])['stats'][key]) || 0;
-          let newbase;
-          if (bonusKeysSet.has(key) && this.items[index].level > 10 && base !== 0) {
-            newbase = ((100 + base) * (this.items[index].level + 2) * 10 - 10000) / 100;
+          let base;
+          if (ar.stats[key] !== undefined) {
+            base = ar.stats[key]?.values[comparedItem.level - 1];
+          } else {
+            const item = this.base(comparedItem);
+            const v = item['stats'][key] || '0';
+            const value = Number(v.endsWith('%') ? v.slice(0, -1) : v)
+            if (bonusKeysSet.has(key)) {
+              if (comparedItem.level > 10) {
+                base = getUpgradedBonus(value, comparedItem.level - 4); // level - 10 + 6
+              } else {
+                if (comparedItem.qualityCode > 0) {
+                  base = getUpgradedBonus(value, comparedItem.qualityCode)
+                } else {
+                  base = getUpgradedBonus(value, getQualityCode(ar.quality))
+                }
+              }
+            } else {
+              base = value;
+            }
           }
-          return [key, {
-            base: newbase || base,
-            delta: 0,
-          }]
+          return [key, { base: base, delta: 0, }]
         }))
       })
     },
@@ -137,7 +161,7 @@ export default defineComponent({
   },
   mounted() {
     watch(() => this.display, (newValue, _) => {
-      if (newValue[0] && this.items.length > 2 && window.innerWidth < 768) {
+      if (newValue[0] && ((this.items.length > 1 && window.innerWidth < 425) || (this.items.length>2 && window.innerWidth > 768))) {
         this.styleVars = {
           '--compare-container-margin': 'unset',
           '--compare-container-just-content': 'flex-start',
@@ -206,6 +230,10 @@ export default defineComponent({
   --field-decorator-outlined-small-padding-right: 8px;
   --field-decorator-outlined-small-margin-top: 4px;
   --field-decorator-outlined-small-margin-bottom: 4px;
+}
+
+.option {
+  --option-font-size: 10px;
 }
 
 .paper {

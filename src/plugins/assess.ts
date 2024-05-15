@@ -1,3 +1,5 @@
+import { isAccessory } from "./item_utils";
+
 function getDelta(base: number, isBoss: boolean) {
   if (isBoss) {
     return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -300);
@@ -117,10 +119,70 @@ export function getAdditionalSlots(quality: number) {
   if (qual > 70) { p++ };
   if (qual > 100) { p++ };
   if (qual >= 170) { p++ };
-  if (qual > 200) { p = -1};
+  if (qual > 200) { p = -1 };
 
   return p;
-} 
+}
+
+export enum Quality {
+  broken,
+  poor,
+  regular,
+  superior,
+  famed,
+  legendary,
+  ornate,
+  masterforged,
+  demonforged,
+  godforged,
+}
+
+export function getQualityCode(quality: number, isAccessory: boolean = false) {
+  var p;
+  p = -1;
+  const qual = Math.round(quality * 100);
+  if (qual >= 70) { p++ };
+  if (qual >= 90) { p++ };
+  if (qual >= 100) { p++ }
+  if (qual > 100) { p++ };
+  if (qual >= 120) { p++ };
+  if (qual >= 140) { p++ };
+  if (qual >= 170) { p++ };
+  if (isAccessory) {
+    if (qual >= 200) { p++ };
+    if (qual > 205) { p++ };
+    if (qual > 210) { p = -1 };
+  } else {
+    if (qual > 200) { p = -1; }
+  }
+
+  return p;
+}
+
+export function getQualityName(quality: number, isAccessory: boolean = false) {
+  return Quality[getQualityCode(quality)]
+}
+
+export const bonusScale: Record<string, number> = {
+  broken: 10,
+  poor: 100,
+  regular: 100,
+  superior: 110,
+  famed: 115,
+  legendary: 120,
+  ornate: 125,
+  masterforged: 130,
+  demonforged: 140,
+  godforged: 150,
+}
+
+export function getUpgradedBonus(base: number, quality_code: Quality) {
+  if (quality_code > 0) {
+    return (((100 + base) * (bonusScale[Quality[quality_code]])) - 10000) / 100
+  } else {
+    return base
+  }
+}
 
 export function assess(query: AssessQuery) {
   const result = {
@@ -168,7 +230,7 @@ export function assess(query: AssessQuery) {
         values: Array(13).fill(base, 0, 10),
       }
       const additionalSlots = getAdditionalSlots(result.quality);
-      if ( additionalSlots > 0 ) {
+      if (additionalSlots > 0) {
         result.stats['adornment_slots'].values.fill(base + additionalSlots, 0, 10);
       }
       result.stats['adornment_slots'].values.fill(base + 3, 10, 12);

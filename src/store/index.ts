@@ -8,7 +8,7 @@ import { isAccessory, isAdornment, isArmor, isCelestial, isCelestialWeapon, isOf
 
 const guideUrl = 'https://orna.guide';
 
-const elementColor: any = {
+const elementColor: Record<string, string> = {
   water: '#5facff',
   earthen: '#0fab0f',
   lightning: '#a59e46',
@@ -19,7 +19,7 @@ const elementColor: any = {
   dragon: '#FF9800',
 }
 
-const qualityColor: any = {
+const qualityColor: Record<string, string> = {
   broken: '#985f17',
   poor: '#985f17',
   regular: '',
@@ -32,7 +32,7 @@ const qualityColor: any = {
   godforged: '#ff9860',
 }
 
-const rarityAura: any = {
+const rarityAura: Record<string, string> = {
   uncommon: 'rare',
   rare: 'famed',
   storied: 'legendary',
@@ -689,6 +689,7 @@ export interface ComparedItem {
   quality: string,
   level: number,
   isBoss: boolean,
+  qualityCode: number,
 }
 
 const COMPARE_ITEMS_MAX = 4;

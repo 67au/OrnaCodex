@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useCodexViewState } from '@/store';
 import { type PropType } from 'vue';
-import { type AssessResult } from '@/plugins/assess';
-import { getQualityName } from '@/plugins/item_utils';
+import { type AssessResult, getQualityName } from '@/plugins/assess';
 import { global } from '@/store';
+import { isAccessory } from '@/plugins/item_utils';
 </script>
 
 <template>
@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     qualityName(): string | undefined {
-      return getQualityName(codexViewState.item, this.result.quality);
+      return getQualityName(this.result.quality, isAccessory(codexViewState.item));
     }
   }
 }
