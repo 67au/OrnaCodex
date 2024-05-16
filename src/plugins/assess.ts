@@ -176,9 +176,13 @@ export const bonusScale: Record<string, number> = {
   godforged: 150,
 }
 
-export function getUpgradedBonus(base: number, quality_code: Quality) {
+export function getUpgradedBonus(base: number, quality_code: Quality, is_adornment: boolean = false) {
   if (quality_code > 0) {
-    return (((100 + base) * (bonusScale[Quality[quality_code]])) - 10000) / 100
+    if (is_adornment) {
+      return (base * (bonusScale[Quality[quality_code]])) / 100
+    } else {
+      return (((100 + base) * (bonusScale[Quality[quality_code]])) - 10000) / 100
+    }
   } else {
     return base
   }

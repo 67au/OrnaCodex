@@ -2,7 +2,7 @@
 import { defineComponent, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { global, useCodexState, useCompareState, type CodexItem, type ComparedItem } from '@/store';
-import { isAccessory, isUpgradable } from '@/plugins/item_utils';
+import { isAccessory, isAdornment, isUpgradable } from '@/plugins/item_utils';
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess';
 import { valueStrip } from '@/plugins/utils';
 </script>
@@ -137,14 +137,14 @@ export default defineComponent({
             } else {
               value = v === true ? 1 : 0;
             }
-            if (bonusKeysSet.has(key)) {
+            if (bonusKeysSet.has(key) && value > 0) {
               if (comparedItem.level > 10) {
                 base = getUpgradedBonus(value, comparedItem.level - 4); // level - 10 + 6
               } else {
                 if (comparedItem.qualityCode > 0) {
-                  base = getUpgradedBonus(value, comparedItem.qualityCode)
+                  base = getUpgradedBonus(value, comparedItem.qualityCode, isAdornment(item))
                 } else {
-                  base = getUpgradedBonus(value, getQualityCode(ar.quality))
+                  base = getUpgradedBonus(value, getQualityCode(ar.quality), isAdornment(item))
                 }
               }
             } else {

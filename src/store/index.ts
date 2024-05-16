@@ -718,6 +718,7 @@ export interface ComparedItem {
 }
 
 const COMPARE_ITEMS_MAX = 4;
+const compareSkipKeysSet = new Set(['element']);
 
 export const useCompareState = defineStore('compare', {
   state: () => ({
@@ -736,7 +737,7 @@ export const useCompareState = defineStore('compare', {
           keysSet.add('adornment_slots');
         }
       });
-      return Array.from(keysSet);
+      return Array.from(keysSet).filter((x) => !compareSkipKeysSet.has(x));
     },
     assess(state) {
       const codexState = useCodexState();
