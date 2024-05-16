@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { global, useCodexState, useCompareState, type CodexItem, type ComparedItem } from '@/store';
 import { isAccessory, isUpgradable } from '@/plugins/item_utils';
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess';
+import { valueStrip } from '@/plugins/utils';
 </script>
 
 <template>
@@ -51,9 +52,9 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess';
                   <var-select variant="outlined" :placeholder="$t('query.qualityextra')"
                     v-model="items[index].qualityCode" size="small" class="assess"
                     :disabled="Number(items[index].quality) < 200" v-if="isAccessory(base(items[index]))">
-                      <var-option class="option" :value="-1" :label="$t('query.qualitylabel.default')" :key="-1" />
-                      <var-option class="option" :value="i" :label="$t(`query.qualitylabel.${Quality[i]}`)"
-                        v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)" :key="i" />
+                    <var-option class="option" :value="-1" :label="$t('query.qualitylabel.default')" :key="-1" />
+                    <var-option class="option" :value="i" :label="$t(`query.qualitylabel.${Quality[i]}`)"
+                      v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)" :key="i" />
                   </var-select>
                 </var-col>
               </var-row>
@@ -130,7 +131,12 @@ export default defineComponent({
           } else {
             const item = this.base(comparedItem);
             const v = item['stats'][key] || '0';
-            const value = Number(v.endsWith('%') ? v.slice(0, -1) : v)
+            let value;
+            if (typeof v === 'string') {
+              value = valueStrip(v);
+            } else {
+              value = v === true ? 1 : 0;
+            }
             if (bonusKeysSet.has(key)) {
               if (comparedItem.level > 10) {
                 base = getUpgradedBonus(value, comparedItem.level - 4); // level - 10 + 6
@@ -161,7 +167,7 @@ export default defineComponent({
   },
   mounted() {
     watch(() => this.display, (newValue, _) => {
-      if (newValue[0] && ((this.items.length > 1 && window.innerWidth < 425) || (this.items.length>2 && window.innerWidth > 768))) {
+      if (newValue[0] && ((this.items.length > 1 && window.innerWidth < 425) || (this.items.length > 2 && window.innerWidth > 768))) {
         this.styleVars = {
           '--compare-container-margin': 'unset',
           '--compare-container-just-content': 'flex-start',

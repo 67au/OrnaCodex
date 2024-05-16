@@ -5,6 +5,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { i18n } from '@/i18n';
 import { assess, type Stats, type AssessQuery, type Stat } from '@/plugins/assess';
 import { isAccessory, isAdornment, isArmor, isCelestial, isCelestialWeapon, isOffHand, isUpgradable, isUpgradableSlots, isWeapon } from '@/plugins/item_utils';
+import { valueStrip } from '@/plugins/utils';
 
 const guideUrl = 'https://orna.guide';
 
@@ -102,6 +103,8 @@ export const useCodexState = defineStore('codex', {
     offhand_skills: (state) => new Set(Object.keys(state.extra['offhand_skills'])),
     offhand_items: (state) => new Set(Object.keys(state.extra['offhand_items'])),
     miss_entries: (state) => new Set(Object.keys(state.extra['miss_entries'])),
+    stat_percent_keys: (state) => new Set(state.extra['stat_percent_keys']) as Set<string>,
+    sort_keys: (state) => new Set(state.extra['sort_keys']) as Set<string>,
     icons: (state) => state.extra.icons,
 
     used: (state) => state.meta,
@@ -175,13 +178,17 @@ export const useCodexState = defineStore('codex', {
           }
           if (A.stats === undefined || A.stats[sortKey] === undefined) { return 1 }
           if (B.stats === undefined || B.stats[sortKey] === undefined) { return -1 }
-          return (() => {
-            if (filtersState.isPercentSortKey()) {
-              return A.stats[sortKey].slice(0, -1) - B.stats[sortKey].slice(0, -1);
+          if (typeof A.stats[sortKey] === 'string') {
+            return (() => {
+              return valueStrip(A.stats[sortKey]) - valueStrip(B.stats[sortKey]);
+            })() * (asc.value ? 1 : -1);
+          } else {
+            if (typeof A.stats[sortKey] === 'boolean') {
+              return true
             } else {
-              return A.stats[sortKey] - B.stats[sortKey];
+              return false
             }
-          })() * (asc.value ? 1 : -1);
+          }
         })
       }
     },
@@ -392,16 +399,34 @@ export const useFiltersState = defineStore('filters', {
   }),
   getters: {
     precentKeysSet(): Set<string> {
-      return new Set(['ward', 'crit', 'gold_bonus',
-        'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
-        'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction'])
+      const codexState = useCodexState();
+      return codexState.stat_percent_keys
     },
     sortKeys(): Array<string> {
-      return ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+      const codexState = useCodexState();
+      const keys = ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
         'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
         'follower_stats', 'follower_act', 'summon_stats',
-        'view_distance', 'adornment_slots', 'monster_attraction',]
+        'view_distance', 'adornment_slots',]
+      const keysSet = new Set(keys);
+      return Array.from(
+        keys.concat(
+          Array.from(codexState.sort_keys).sort((a, b) => a.localeCompare(b))
+            .filter((x) => !keysSet.has(x))
+        )
+      )
     },
+    // precentKeysSet(): Set<string> {
+    //   return new Set(['ward', 'crit', 'gold_bonus',
+    //     'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
+    //     'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction'])
+    // },
+    // sortKeys(): Array<string> {
+    //   return ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
+    //     'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
+    //     'follower_stats', 'follower_act', 'summon_stats',
+    //     'view_distance', 'adornment_slots',]
+    // },
   },
   actions: {
     patch(filtersMap: FiltersMap) {
@@ -700,7 +725,7 @@ export const useCompareState = defineStore('compare', {
   }),
   getters: {
     keys(state) {
-      const keysSet = new Set();
+      const keysSet: Set<string> = new Set();
       const codexState = useCodexState();
       state.list.forEach((comparedItem) => {
         const item = codexState.used['items'][comparedItem.id];
@@ -711,8 +736,7 @@ export const useCompareState = defineStore('compare', {
           keysSet.add('adornment_slots');
         }
       });
-      const filtersState = useFiltersState();
-      return filtersState.sortKeys.filter((key) => { return keysSet.has(key) })
+      return Array.from(keysSet);
     },
     assess(state) {
       const codexState = useCodexState();

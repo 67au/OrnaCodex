@@ -60,8 +60,13 @@ import { global, useCodexState, useFiltersState, useItemListState } from '@/stor
                 <template
                   v-if="filtersState.sort !== undefined && codexState.used[category][id]['stats'] !== undefined && codexState.used[category][id]['stats'][filtersState.sort] !== undefined">
                   <var-chip type="info" size="mini" :round="false" plain>
+                    <template v-if="typeof codexState.used[category][id]['stats'][filtersState.sort] === 'string'">
                     {{ `${$t(`meta.stats.${filtersState.sort}`)}:
                     ${codexState.used[category][id]['stats'][filtersState.sort]}` }}
+                    </template>
+                    <template v-else>
+                    {{ $t(`meta.stats.${filtersState.sort}`) }}
+                    </template>
                   </var-chip>
                 </template>
               </var-space>

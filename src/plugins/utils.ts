@@ -18,3 +18,8 @@ export function parseCodexUrl(url: string) {
     id: a[5],
   } as CodexView
 }
+
+export function valueStrip(value: string) {
+  const regex = /\%|\+/ig;
+  return Number(value.replaceAll(regex, ''))
+}
