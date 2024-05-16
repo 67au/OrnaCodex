@@ -1,6 +1,6 @@
 # Codex YACO
 
-Yet Another Codex of Orna
+Yet Another Codex for Orna
 
 可能是另一个更好的 Orna Codex
 
