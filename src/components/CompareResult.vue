@@ -167,7 +167,7 @@ export default defineComponent({
   },
   mounted() {
     watch(() => this.display, (newValue, _) => {
-      if (newValue[0] && ((this.items.length > 1 && window.innerWidth < 425) || (this.items.length > 2 && window.innerWidth > 768))) {
+      if (newValue[0] && ((this.items.length > 1 && window.innerWidth <= 768) || (this.items.length > 2 && window.innerWidth > 768))) {
         this.styleVars = {
           '--compare-container-margin': 'unset',
           '--compare-container-just-content': 'flex-start',
@@ -255,6 +255,8 @@ export default defineComponent({
   align-items: flex-end;
   flex-wrap: nowrap;
   width: 100vw;
+  max-height: 75vh;
+  overflow-y: scroll;
   position: relative;
   margin: var(--compare-container-margin);
   justify-content: var(--compare-container-just-content);
