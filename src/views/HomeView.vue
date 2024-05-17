@@ -37,17 +37,23 @@ export default defineComponent({
     }
   },
   created() {
-    optionsState.init();
-    if (this.$route.query.search !== undefined) {
-      this.enterShare(this.$route.query.search as string);
-    } else {
-      filtersState.patch(JSON.parse(filtersStorage.value));
+    filtersState.init();
+    const filters = JSON.parse(filtersStorage.value);
+    if (filters.multi !== undefined) {
+      filtersState.patch(filters);
     }
+    filtersState.initCommit();
 
-    watch(filtersState.$state, () => {
+    filtersState.$subscribe((mutation, state) => {
       saveFilters();
       itemListState.render();
     }, { deep: true, immediate: true })
+
+    watch(() => filtersState.$state.multi, () => {
+      filtersState.$patch({ filters: [] });
+      filtersState.initCommit();
+      optionsState.initMenu();
+    })
 
     this.loading = false;
     watch(() => this.$i18n.locale, () => {

@@ -48,6 +48,10 @@ import { global, useCodexViewState } from '@/store';
             {{ $t(`meta.place.${codexViewState.item['place']}`) }}
           </var-chip>
 
+          <var-chip v-if="codexViewState.item['item_type'] !== undefined" size="small" :round="true" plain>
+            {{ $t(`meta.item_type.${codexViewState.item['item_type']}`) }}
+          </var-chip>
+
           <var-chip v-if="codexViewState.item['useable_by'] !== undefined" size="small" :round="true" plain>
             {{ $t(`meta.useable_by.${codexViewState.item['useable_by']}`) }}
           </var-chip>

@@ -124,7 +124,7 @@ export const useCodexState = defineStore('codex', {
     },
 
     filtered(): CodexIndex {
-      const { search, filters } = storeToRefs(useFiltersState());
+      const { search, filters, multi } = storeToRefs(useFiltersState());
       const optionsState = useOptionsState();
       return this.index.filter(({ category, id }: CodexView) => {
         if (this.used[category][id]) {
@@ -134,12 +134,29 @@ export const useCodexState = defineStore('codex', {
       }).filter(({ category, id }: CodexView) => {
         return filters.value.every((filter: Filter) => {
           if (filter.value === undefined) { return true }
+          if (multi.value && (filter.value as Array<string>).length === 0) { return true}
           if (optionsState.keys.single.includes(filter.key)) {
+            if (this.used[category][id][filter.key] === undefined) { return false }
             if (filter.key === 'exotic') { return this.used[category][id][filter.key] === filter.value }
-            return this.used[category][id][filter.key] !== undefined && this.used[category][id][filter.key] === filter.value;
+            if (multi.value) {
+              for (const v of filter.value as Array<string>) {
+                if (this.used[category][id][filter.key] === v) { return true }
+              }
+              return false
+            } else {
+              return this.used[category][id][filter.key] === filter.value;
+            }
           }
           if (optionsState.keys.array.includes(filter.key)) {
-            return this.used[category][id][filter.key] !== undefined && this.used[category][id][filter.key].includes(filter.value);
+            if (this.used[category][id][filter.key] === undefined) { return false }
+            if (multi.value) {
+              for (const v of filter.value as Array<string>) {
+                if (this.used[category][id][filter.key].includes(v)) { return true }
+              }
+              return false
+            } else {
+              return this.used[category][id][filter.key].includes(filter.value);
+            }
           }
           if (optionsState.keys.status.includes(filter.key)) {
             if ((filter.value as Array<string>).length === 0) { return true }
@@ -390,12 +407,10 @@ export interface FiltersMap {
 export const useFiltersState = defineStore('filters', {
   state: () => ({
     search: '' as string,
-    filters: [{
-      key: 'category',
-      value: undefined,
-    }] as Filters,
+    filters: [] as Filters,
     sort: undefined as string | undefined,
     asc: false,
+    multi: false,
   }),
   getters: {
     precentKeysSet(): Set<string> {
@@ -416,17 +431,6 @@ export const useFiltersState = defineStore('filters', {
         )
       )
     },
-    // precentKeysSet(): Set<string> {
-    //   return new Set(['ward', 'crit', 'gold_bonus',
-    //     'follower_stats', 'luck_bonus', 'view_distance', 'summon_stats',
-    //     'follower_act', 'exp_bonus', 'orn_bonus', 'monster_attraction'])
-    // },
-    // sortKeys(): Array<string> {
-    //   return ['attack', 'magic', 'defense', 'resistance', 'dexterity', 'crit',
-    //     'hp', 'mana', 'ward', 'foresight', 'orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus',
-    //     'follower_stats', 'follower_act', 'summon_stats',
-    //     'view_distance', 'adornment_slots',]
-    // },
   },
   actions: {
     patch(filtersMap: FiltersMap) {
@@ -461,10 +465,18 @@ export const useFiltersState = defineStore('filters', {
     decode(base64: string) {
       return JSON.parse(decodeURIComponent(atob(base64)))
     },
-    reset() {
+    init() {
       const optionsState = useOptionsState();
-      optionsState.initMenu();
+      optionsState.init();
+      const tmp = this.multi;
       this.$reset();
+      this.multi = tmp;
+      this.initCommit();
+    },
+    initCommit() {
+      if (this.filters.length === 0) {
+        this.add('category');
+      }
     },
     isPercentSortKey() {
       return this.precentKeysSet.has(this.$state.sort as string)
@@ -473,7 +485,7 @@ export const useFiltersState = defineStore('filters', {
       const optionsState = useOptionsState()
       this.filters.push({
         key: key,
-        value: optionsState.keys.status.includes(key) ? [] : undefined,
+        value: optionsState.keys.status.includes(key) || this.multi ? [] : undefined,
       })
     }
   }

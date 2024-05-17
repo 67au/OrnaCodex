@@ -2,6 +2,7 @@
 import { global, useFiltersState, useOptionsState } from '@/store';
 import { defineComponent } from 'vue';
 import { useClipboard } from '@vueuse/core';
+import { storeToRefs } from 'pinia';
 </script>
 
 <template>
@@ -15,8 +16,7 @@ import { useClipboard } from '@vueuse/core';
             <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="filtersState.sort" clearable>
               <var-option value="name" :label="$t('name')" key="name" />
               <var-option value="tier" :label="$t('tier')" key="tier" />
-              <var-option v-for="key in filtersState.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)"
-                :key="key" />
+              <var-option v-for="key in filtersState.sortKeys" :value="key" :label="$t(`meta.stats.${key}`)" :key="key" />
             </var-select>
             <template #extra>
               <var-button type="primary" @click="filtersState.asc = !filtersState.asc">
@@ -29,10 +29,12 @@ import { useClipboard } from '@vueuse/core';
             <var-divider> {{ $t('filters') }} </var-divider>
           </template>
           <var-cell v-for="filter in filtersState.filters" class="filter-cell" :key="filter.key">
-            <var-select :placeholder="$t(filter.key)" v-model="filter.value" variant="outlined" size="small" clearable
-              :multiple="Array.isArray(filter.value)" :chip="Array.isArray(filter.value)">
+            <var-select
+              :placeholder="`${$t(filter.key)}${Array.isArray(filter.value) && filter.key !== 'exotic' && !isStatusKey(filter.key) ? ` (${$t('multiple')})` : ''}`"
+              v-model="filter.value" variant="outlined" size="small" clearable
+              :multiple="Array.isArray(filter.value) && filter.key !== 'exotic'" :chip="Array.isArray(filter.value)">
 
-              <template v-if="filter.key != undefined">
+              <template v-if="filter.key !== undefined">
                 <template v-if="filter.key === 'category'">
                   <var-option :label="$t(`categories.${v}`)" :value="v" v-for="v in optionsState.options[filter.key]"
                     :key="v" />
@@ -49,8 +51,7 @@ import { useClipboard } from '@vueuse/core';
                 </template>
 
                 <template v-else-if="isStatusKey(filter.key)">
-                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter.key)"
-                    :key="v" />
+                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter.key)" :key="v" />
                 </template>
 
                 <template v-else>
@@ -60,11 +61,7 @@ import { useClipboard } from '@vueuse/core';
               </template>
 
               <template #selected>
-                <template v-if="filter.key === 'category'">
-                  {{ $t(`categories.${filter.value}`) }}
-                </template>
-
-                <template v-else-if="filter.key === 'exotic'">
+                <template v-if="filter.key === 'exotic'">
                   {{ filter.value ? $t('yes') : $t('no') }}
                 </template>
               </template>
@@ -75,40 +72,52 @@ import { useClipboard } from '@vueuse/core';
     </template>
 
     <template #extra>
-      <var-button type="primary" text @click="share"> {{ $t('share') }} </var-button>
-      <var-button type="primary" text @click="resetFilters"> {{ $t('clear') }} </var-button>
-      <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show.menu"
-        v-if="optionsState.options != undefined">
-        <var-button type="primary" text> {{ $t('add') }} </var-button>
-        <template #menu>
-          <div style="overflow-y: scroll; max-height: 48vh;">
-            <template v-for="[key, display], index in optionsState.menu">
-              <var-cell ripple
-                @click="() => { filtersState.add(key); show.menu = false; optionsState.menu[index][1] = false; }"
-                v-if="display" :key="key">
-                {{ $t(key) }}
-              </var-cell>
+      <var-space justify="space-between" align="baseline" style="width: 100%;">
+        <var-checkbox v-model="multi" icon-size="18" style="margin-left: 10px;">
+          <template #default>
+            <div :style="{
+              'font-size': '15px',
+              'color': multiple?'var(--color-primary)':'var(--color-default)',
+              'margin-left': '-2px',
+            }">
+              {{ $t('multiple') }}
+            </div>
+          </template>
+        </var-checkbox>
+        <var-space justify="flex-end" size="mini">
+          <var-button type="primary" text @click="resetFilters">
+            <var-icon name="alert-outline" size="16" style="margin-right: 2px;"/>
+            {{ $t('clear') }}
+          </var-button>
+          <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show.menu"
+            v-if="optionsState.options != undefined">
+            <var-button type="primary" text>
+              <var-icon name="check" size="16" style="margin-right: 2px;"/>
+              {{ $t('add') }}
+            </var-button>
+            <template #menu>
+              <div style="overflow-y: scroll; max-height: 48vh;">
+                <template v-for="[key, display], index in optionsState.menu">
+                  <var-cell ripple
+                    @click="() => { filtersState.add(key); show.menu = false; optionsState.menu[index][1] = false; }"
+                    v-if="display" :key="key">
+                    {{ $t(key) }}
+                  </var-cell>
+                </template>
+              </div>
             </template>
-          </div>
-        </template>
-      </var-menu>
+          </var-menu>
+        </var-space>
+      </var-space>
     </template>
   </var-card>
-
-  <var-dialog :title="$t('share')" :cancel-button="false" v-model:show="show.share" teleport="body">
-    <var-input size="small" variant="outlined" textarea readonly v-model="source" />
-    <var-button :type="copied ? 'info' : 'primary'" block style="margin-top: 8px;" @click="copy(source)">
-      {{ copied ? $t('copied') : $t('copy') }}
-    </var-button>
-  </var-dialog>
 </template>
 
 <script lang="ts">
 const filtersState = useFiltersState();
 const optionsState = useOptionsState();
-
+const { multi } = storeToRefs(filtersState);
 const source = ref('');
-const { copy, copied } = useClipboard()
 
 export default defineComponent({
   data() {
@@ -119,13 +128,23 @@ export default defineComponent({
       },
     }
   },
+  computed: {
+    multiple: {
+      set(newValue: boolean) {
+        multi.value = newValue
+      },
+      get() {
+        return multi.value;
+      }
+    }
+  },
   methods: {
     share() {
       source.value = `${location.href.split('#')[0]}#/?search=${filtersState.encode()}`
       this.show.share = true;
     },
     resetFilters() {
-      filtersState.reset();
+      filtersState.init();
     },
     isStatusKey(key: string) {
       return optionsState.keys.status.includes(key);
