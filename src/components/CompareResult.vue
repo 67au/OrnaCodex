@@ -256,7 +256,7 @@ export default defineComponent({
   flex-wrap: nowrap;
   width: 100vw;
   max-height: 75vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
   margin: var(--compare-container-margin);
   justify-content: var(--compare-container-just-content);
