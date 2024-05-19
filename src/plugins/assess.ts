@@ -147,7 +147,7 @@ export function getQualityCode(quality: number, isAccessory: boolean = false) {
   if (qual >= 140) { p++ };
   if (qual >= 170) { p++ };
   if (isAccessory) {
-    if (qual >= 200) { p++ };
+    if (qual > 200) { p++ };
     if (qual > 205) { p++ };
     if (qual > 210) { p = -1 };
   } else {
@@ -158,7 +158,7 @@ export function getQualityCode(quality: number, isAccessory: boolean = false) {
 }
 
 export function getQualityName(quality: number, isAccessory: boolean = false) {
-  return Quality[getQualityCode(quality)]
+  return Quality[getQualityCode(quality, isAccessory)]
 }
 
 export const bonusScale: Record<string, number> = {
