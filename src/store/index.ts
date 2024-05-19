@@ -134,7 +134,7 @@ export const useCodexState = defineStore('codex', {
       }).filter(({ category, id }: CodexView) => {
         return filters.value.every((filter: Filter) => {
           if (filter.value === undefined) { return true }
-          if (multi.value && (filter.value as Array<string>).length === 0) { return true}
+          if (multi.value && (filter.value as Array<string>).length === 0) { return true }
           if (optionsState.keys.single.includes(filter.key)) {
             if (this.used[category][id][filter.key] === undefined) { return false }
             if (filter.key === 'exotic') { return this.used[category][id][filter.key] === filter.value }
@@ -274,7 +274,11 @@ export const useCodexViewState = defineStore('codex-view', {
     },
     isCelestialWeapon(): boolean {
       return isCelestialWeapon(this.item);
-    }
+    },
+    bossScale(state) {
+      const itemsMetaState = useItemsMetaState();
+      return itemsMetaState.getBossScale(state.page.id);
+    },
   },
   actions: {
     isMaterial() {
@@ -583,6 +587,9 @@ export const useGuideState = defineStore('guide', {
         })
       )
     },
+    boss(state) {
+      return state.cache?.boss
+    }
   },
   actions: {
     isMonster() {
@@ -685,6 +692,7 @@ export const useAssessState = defineStore('assess', {
     initYacoQuery(quality: boolean = false) {
       const guideState = useGuideState();
       const codexViewState = useCodexViewState();
+
       this.query.data = {
         level: 1,
       };
@@ -697,6 +705,9 @@ export const useAssessState = defineStore('assess', {
         isUpgradable: codexViewState.isUpgradable,
         baseStats: {},
       };
+      if (codexViewState.isUpgradable) {
+        this.query.extra.isBoss = codexViewState.bossScale > -1;
+      }
       if (quality) {
         this.query.data.quality = 100;
         if (guideState.cache !== undefined) {
@@ -801,4 +812,49 @@ export const useCompareState = defineStore('compare', {
       return isUpgradableSlots(item);
     }
   }
+})
+
+const ITEMS_META_URL = 'https://items.fqegg.top'
+
+export const useItemsMetaState = defineStore('items-meta', {
+  state: () => ({
+    full: true,
+    data: {} as Record<string, any>,
+  }),
+  actions: {
+    async fetchAll() {
+      await fetch(`${ITEMS_META_URL}/codex/items/meta.json`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.data = data;
+          return true
+        })
+        .catch(() => {
+          return false
+        })
+    },
+    async fetch(id: string, callback?: CallableFunction) {
+      if (this.data[id] !== undefined) {
+        callback?.();
+        return true
+      }
+      await fetch(`${ITEMS_META_URL}/codex/items/${id}/meta.json`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.data[id] = data;
+          callback?.();
+          return true
+        })
+        .catch(() => {
+          return false
+        })
+    },
+    getBossScale(id: string) {
+      if (this.data[id] === undefined || this.data[id]['boss'] === undefined) {
+        return 0
+      } else {
+        return this.data[id]['boss']
+      }
+    }
+  },
 })

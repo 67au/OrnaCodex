@@ -9,16 +9,20 @@ import { isAccessory } from '@/plugins/item_utils';
 <template>
   <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
     <var-paper class="popup-assess">
-      <var-space align="center" justify="space-between" style="margin-bottom: 4px">
+      <var-space align="center" justify="space-between" size="large" style="margin: 0 4px 4px;" line>
         <span>{{ codexViewState.lang['name'] }}</span>
-        <var-chip size="small" :color="qualityName === undefined?'':`${global.qualityColor[qualityName]}`"
-          :type="qualityName === undefined?'danger':'default'">
-          <template #left>
-            <var-icon v-if="qualityName === undefined" name="close-circle" size="small" />
-            <var-icon v-else name="checkbox-marked-circle" size="small" />
-          </template>
-          {{ `${(result.quality * 100).toFixed()}%` }}
-        </var-chip>
+          <var-space align="center" justify="flex-end" size="mini" line>
+            <var-chip size="small" :type="qualityName === undefined ? 'danger' : 'primary'">
+              <template #left>
+                <var-icon v-if="qualityName === undefined" name="close-circle" size="small" />
+                <var-icon v-else name="checkbox-marked-circle" size="small" />
+              </template>
+              {{ `${(result.quality * 100).toFixed()}%` }}
+            </var-chip>
+            <var-chip v-if="qualityName !== undefined" size="small" :color="global.qualityColor[qualityName]">
+              {{ $t(`query.qualitylabel.${qualityName}`) }}
+            </var-chip>
+          </var-space>
       </var-space>
       <var-table :elevation="2" class="assess-table" :scroller-height="result.levels !== 1 ? '65vh' : undefined">
         <thead>

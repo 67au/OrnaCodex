@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AssessQuery } from '@/plugins/assess';
-import { useCodexViewState } from '@/store';
+import { useCodexViewState, useGuideState, useItemsMetaState } from '@/store';
 import type { PropType } from 'vue';
 </script>
 
@@ -11,18 +11,35 @@ import type { PropType } from 'vue';
         <span>
           <var-icon name="magnify" /> {{ title }}
         </span>
-        <var-chip size="small" :type="query.extra.fromGuide && !codexViewState.isCelestialWeapon ? 'success' : 'warning'">
-          {{ query.extra.fromGuide && !codexViewState.isCelestialWeapon ? 'Guide' : 'YACO' }}
+        <var-chip size="small" :type="isGuide ? 'success' : 'warning'">
+          {{ isGuide ? 'Guide' : 'YACO' }}
         </var-chip>
       </var-space>
     </template>
     <div>
-      <span> {{ codexViewState.lang['name'] }} </span>
-      <var-row :gutter="[8, 4]" style="margin-top: 8px;" align="center">
+      <var-row :gutter="[8, 4]" align="center">
+        <var-col :span="24" >
+          <var-cell class="codex-small-cell">
+            <span> {{ codexViewState.lang['name'] }} </span>
+            <template #description>
+              <var-space size="mini" align="center" v-if="!codexViewState.isCelestialWeapon && codexViewState.isUpgradable">
+                <span style="font-size: var(--cell-description-font-size); color: var(--cell-description-color);">
+                {{ $t('query.isBoss') }}:
+                </span>
+                <var-chip type="warning" size="mini" plain>
+                  YACO: {{ scaleText[codexViewState.bossScale] }}
+                </var-chip>
+                <var-chip v-if="guideState.boss !== undefined" type="success" size="mini" plain>
+                  Guide: {{ guideState.boss ? scaleText[1] : scaleText[-1] }}
+                </var-chip>
+              </var-space>
+            </template>
+          </var-cell>
+        </var-col>
         <var-col :span="8">
           <div class="assess">
             <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="query.extra.isBoss" size="small"
-              :disabled="query.extra.fromGuide || codexViewState.isCelestialWeapon">
+              :disabled="query.extra.fromGuide || codexViewState.isCelestialWeapon || !codexViewState.isUpgradable">
               <var-option :label="$t('yes')" :value="true" />
               <var-option :label="$t('no')" :value="false" />
             </var-select>
@@ -31,14 +48,15 @@ import type { PropType } from 'vue';
         <var-col :span="8" v-if="query.extra.isQuality">
           <div class="assess">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="(query.data.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']" :disabled="codexViewState.isCelestialWeapon"/>
+              v-model="(query.data.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
+              :disabled="codexViewState.isCelestialWeapon" />
           </div>
         </var-col>
         <var-col :span="8">
           <div class="assess">
             <var-select variant="outlined" :placeholder="$t('query.level')" v-model="query.data.level" size="small"
               :disabled="query.extra.isQuality || !codexViewState.isUpgradable">
-              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i"/>
+              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i" />
             </var-select>
           </div>
         </var-col>
@@ -60,6 +78,8 @@ import type { PropType } from 'vue';
 
 <script lang="ts">
 const codexViewState = useCodexViewState();
+const itemsMetaState = useItemsMetaState();
+const guideState = useGuideState();
 const immutableKeysSet = new Set(['adornment_slots']);
 
 export default {
@@ -85,6 +105,19 @@ export default {
     baseStats() {
       return this.query.extra.baseStats;
     },
+    isGuide() {
+      return this.query.extra.fromGuide && !codexViewState.isCelestialWeapon;
+    },
+    bossScale() {
+      return itemsMetaState.getBossScale(codexViewState.page.id);
+    },
+    scaleText(): Record<number, string> {
+      return {
+        '-1': this.$t('no'),
+        '0': this.$t('notfound'),
+        '1': this.$t('yes'),
+      }
+    }
   }
 }
 </script>

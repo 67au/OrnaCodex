@@ -16,7 +16,6 @@ import AssessQuery from '@/components/AssessQuery.vue';
 
 import { Snackbar } from '@varlet/ui';
 import '@varlet/ui/es/snackbar/style/index';
-import { isAccessory } from '@/plugins/item_utils';
 </script>
 
 <template>
@@ -57,23 +56,24 @@ import { isAccessory } from '@/plugins/item_utils';
             <div class="card-description">
               <var-space justify="flex-start" align="center" size="mini">
                 <template v-if="codexViewState.isAssessable">
-                <var-button-group type="success">
-                  <var-button type="info" size="small" @click="assessGuidePage" :loading="show.guide.loading"
-                    loading-type="wave">
-                    Guide
-                  </var-button>
-                  <var-button size="small" @click="initGuideQuery()" :loading="show.guide.loading" loading-type="wave"
+                  <var-button-group type="success">
+                    <var-button type="info" size="small" @click="assessGuidePage" :loading="show.guide.loading"
+                      loading-type="wave">
+                      Guide
+                    </var-button>
+                    <var-button size="small" @click="initGuideQuery()" :loading="show.guide.loading" loading-type="wave"
+                      v-if="!codexViewState.isCelestialWeapon">
+                      API
+                    </var-button>
+                  </var-button-group>
+                  <var-button type="warning" size="small" @click="initYacoQuery()"
                     v-if="!codexViewState.isCelestialWeapon">
-                    API
+                    YACO
                   </var-button>
-                </var-button-group>
-                <var-button type="warning" size="small" @click="initYacoQuery()" v-if="!codexViewState.isCelestialWeapon">
-                  YACO
-                </var-button>
-                <var-button :type="isGuide && !codexViewState.isCelestialWeapon ? 'success' : 'warning'" size="small"
-                  @click="initYacoQuery(true)">
-                  {{ $t('query.quality') }}
-                </var-button>
+                  <var-button :type="isGuide && !codexViewState.isCelestialWeapon ? 'success' : 'warning'" size="small"
+                    @click="initYacoQuery(true)">
+                    {{ $t('query.quality') }}
+                  </var-button>
                 </template>
                 <var-button type="primary" size="small" @click.stop="addToCompare"
                   v-if="!codexViewState.isCelestialWeapon">
@@ -196,11 +196,10 @@ export default defineComponent({
         id: codexViewState.page.id,
         quality: '200',
         level: codexViewState.isUpgradable ? 13 : 1,
-        isBoss: true,
+        isBoss: codexViewState.bossScale > -1,
         qualityCode: -1,
       };
       const result = compareState.addItem(item);
-      Snackbar.allowMultiple(true);
       Snackbar({
         content: result ? this.$t('compare.success') : this.$t('compare.failed'),
         type: result ? 'success' : 'error',
@@ -236,13 +235,13 @@ export default defineComponent({
         content: 'Loading...',
       })
       if (await assessState.queryGuideApi()) {
-        bar.clear();
         setTimeout(() => {
           this.show.result = true;
         }, 150);
       }
+      bar.clear();
     },
-    initYacoQuery(quality: boolean = false) {
+    async initYacoQuery(quality: boolean = false) {
       assessState.initYacoQuery(quality);
       setTimeout(() => {
         this.show.yaco.query = true;

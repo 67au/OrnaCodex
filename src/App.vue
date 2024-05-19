@@ -7,7 +7,7 @@ import AppHeader from './components/AppHeader.vue';
 import AppLocaleSwitch from './components/AppLocaleSwitch.vue';
 import AppThemeSwitch from './components/AppThemeSwitch.vue';
 import AppGithub from './components/AppGithub.vue';
-import { useCodexState } from './store';
+import { useCodexState, useItemsMetaState } from './store';
 
 useDark();
 </script>
@@ -58,6 +58,9 @@ export default {
       this.codexState.extra = codex.extra;
       this.loadLangCodex(i18n.global.locale.value, true);
     });
+    if (this.itemsMetaState.full) {
+      this.itemsMetaState.fetchAll();
+    }
   },
   mounted() {
     watch(() => i18n.global.locale.value, () => {
@@ -81,6 +84,7 @@ export default {
   data() {
     return {
       codexState: useCodexState(),
+      itemsMetaState: useItemsMetaState(),
       loading: true as any,
     }
   },

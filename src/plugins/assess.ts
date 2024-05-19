@@ -1,5 +1,3 @@
-import { isAccessory } from "./item_utils";
-
 function getDelta(base: number, isBoss: boolean) {
   if (isBoss) {
     return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -300);
