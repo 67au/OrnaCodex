@@ -9,7 +9,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
     <div class="text-center text-xl">
       {{ $t('compare.title') }}
     </div>
-    <var-style-provider :style-vars="styleVars" style="max-height: 75vh;">
+    <var-style-provider :style-vars="styleVars">
       <div class="compare-container" style="height: 100%;">
         <div class="empty"></div>
         <div v-for="({ entry: entry, query: query }, index) in compareState.list" :key="index">
@@ -56,17 +56,19 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
                 </var-col>
               </var-row>
             </var-cell>
-            <var-cell v-for="r, key in result[index]" border class="p-cell s-cell" :key="key">
-              <var-space justify="space-between" align="baseline">
-                {{ `${$t('meta.stats.' + key)}` }}
-                <div class="cell-description flex">
-                  {{ r.base }}
-                  <div v-if="r.delta !== 0" :class="`${r.delta > 0 ? 'rare-text' : 'ornate-text'}`">
-                    {{ `(${r.delta > 0 ? '+' : ''}${r.delta})` }}
+            <div class="var-elevation--8 mx-1 mt-1" style="max-height: 60vh; overflow: auto;">
+              <var-cell v-for="r, key in result[index]" border class="p-cell s-cell" :key="key">
+                <var-space justify="space-between" align="baseline">
+                  {{ `${$t('meta.stats.' + key)}` }}
+                  <div class="cell-description flex">
+                    {{ r.base }}
+                    <div v-if="r.delta !== 0" :class="`${r.delta > 0 ? 'rare-text' : 'ornate-text'}`">
+                      {{ `(${r.delta > 0 ? '+' : ''}${r.delta})` }}
+                    </div>
                   </div>
-                </div>
-              </var-space>
-            </var-cell>
+                </var-space>
+              </var-cell>
+            </div>
           </var-paper>
           <var-space justify="space-between" class="my-0 px-1 -translate-y-3">
             <var-space justify="flex-start" size="mini">
