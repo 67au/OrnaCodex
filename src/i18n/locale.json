@@ -2,7 +2,7 @@
   "zh-hans": {
     "title": "图鉴 YACO",
     "search": "搜索",
-    "filters": "过滤",
+    "filters": "筛选",
     "category": "分类",
     "tier": "阶级",
     "rarity": "稀有度",
@@ -98,7 +98,7 @@
   "zh-hant": {
     "title": "圖鑑 YACO",
     "search": "搜尋",
-    "filters": "過濾",
+    "filters": "篩選",
     "category": "分類",
     "tier": "階級",
     "rarity": "稀有度",
