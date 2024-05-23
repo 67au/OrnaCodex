@@ -16,7 +16,7 @@ import { useHistoryState } from '@/stores';
           </var-button>
         </var-space>
       </var-space>
-      <div class="var-elevation--4 entries">
+      <div class="var-elevation--4 entries" v-if="historyState.history.length > 0">
         <var-cell class="e-cell" border v-for="entry, index in historyState.history" @click="enter(entry)" :key="index">
           <template #icon>
             <var-icon :class="`append-icon ${rarityAura(entry.category, entry.id)}`" :size="36"
@@ -37,6 +37,9 @@ import { useHistoryState } from '@/stores';
           </template>
 
         </var-cell>
+      </div>
+      <div class="text-center py-4" v-else>
+        {{ $t('notfound') }}
       </div>
     </var-paper>
   </var-popup>
@@ -85,6 +88,6 @@ export default defineComponent({
 .entries {
   max-height: 65vh;
   overflow-y: auto;
-  padding: 2px;
+  padding: 8px 2px;
 }
 </style>
