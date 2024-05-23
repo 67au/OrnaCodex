@@ -58,13 +58,15 @@ export default defineComponent({
     },
     showCompare() {
       this.active = false
-      this.show.compare = true
+      setTimeout(() => {
+        this.show.compare = true
+      }, 100)
     },
     showHistory() {
       this.active = false
       setTimeout(() => {
         this.show.history = true
-      }, 150)
+      }, 100)
     }
   },
   computed: {
