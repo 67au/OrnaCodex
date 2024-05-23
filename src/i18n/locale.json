@@ -73,6 +73,11 @@
       "success": "添加成功！",
       "failed": "已达上限！"
     },
+    "bossScale": {
+      "yes": "头目装备",
+      "unknown": "未知类型",
+      "no": "非头目装备"
+    },
     "query": {
       "query": "查询",
       "level": "等级",
@@ -168,6 +173,11 @@
       "button": "加入對比",
       "success": "添加成功！",
       "failed": "已達上限！"
+    },
+    "bossScale": {
+      "yes": "頭目裝備",
+      "unknown": "未知類型",
+      "no": "非頭目裝備"
     },
     "query": {
       "query": "查詢",
@@ -265,6 +275,11 @@
       "button": "Compare",
       "success": "Item added!",
       "failed": "Limit reached!"
+    },
+    "bossScale": {
+      "yes": "BossScale",
+      "unknown": "UnknownScale",
+      "no": "NotBossScale"
     },
     "query": {
       "query": "Query",

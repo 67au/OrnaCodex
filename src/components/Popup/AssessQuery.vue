@@ -90,9 +90,9 @@ export default defineComponent({
     },
     scaleText(): Record<number, string> {
       return {
-        '-1': this.$t('no'),
-        '0': this.$t('notfound'),
-        '1': this.$t('yes'),
+        '-1': this.$t('bossScale.no'),
+        '0': this.$t('bossScale.unknown'),
+        '1': this.$t('bossScale.yes'),
       }
     }
   },
