@@ -5,7 +5,7 @@ import { useCodexState } from '@/stores';
 
 <template>
   <var-cell class="text-cell" v-for="entry, index in entries" :title="entry.name" :key="index"
-    :description="entry.description">
+    :description="entry.description" border>
     <template #icon>
       <var-icon class="append-icon" :size="36" :name="getStaticUrl(codexState.icons[entry.name])" />
     </template>

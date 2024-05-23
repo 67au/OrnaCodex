@@ -4,7 +4,7 @@ import { getStaticUrl } from '@/plugins/utils';
 
 <template>
   <var-cell class="text-cell" v-for="entry, index in entries" :title="entry.name" :key="index"
-    :description="entry.description">
+    :description="entry.description" border>
     <template #icon>
       <var-icon v-if="entry.icon !== undefined" class="append-icon" :size="36" :name="getStaticUrl(entry.icon)" />
     </template>
