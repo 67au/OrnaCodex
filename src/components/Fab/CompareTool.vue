@@ -68,7 +68,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
               </var-space>
             </var-cell>
           </var-paper>
-          <var-space justify="space-between" class="my-0 mx-1 -translate-y-3">
+          <var-space justify="space-between" class="my-0 px-1 -translate-y-3">
             <var-space justify="flex-start" size="mini">
               <var-button v-if="index === 0" type="primary" size="mini">
                 <div class="i-mdi-pin text-lg"></div>
