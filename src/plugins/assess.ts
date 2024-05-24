@@ -160,7 +160,6 @@ export function getQualityCode(quality: number, isAccessory: boolean = false) {
       p = -1
     }
   }
-
   return p
 }
 
@@ -169,28 +168,30 @@ export function getQualityName(quality: number, isAccessory: boolean = false) {
 }
 
 export const bonusScale: Record<string, number> = {
-  broken: 10,
-  poor: 100,
-  regular: 100,
-  superior: 110,
-  famed: 115,
-  legendary: 120,
-  ornate: 125,
-  masterforged: 130,
-  demonforged: 140,
-  godforged: 150
+  broken: -90,
+  poor: 0,
+  regular: 0,
+  superior: 10,
+  famed: 15,
+  legendary: 20,
+  ornate: 25,
+  masterforged: 30,
+  demonforged: 40,
+  godforged: 50
 }
 
 export function getUpgradedBonus(
   base: number,
   quality_code: Quality,
-  is_adornment: boolean = false
+  is_adornment: boolean = false,
+  is_no_follower_bonus: boolean = false
 ) {
+  const scale = is_no_follower_bonus ? 1 / 5 : 1
   if (quality_code > 0) {
     if (is_adornment) {
       return (base * bonusScale[Quality[quality_code]]) / 100
     } else {
-      return ((100 + base) * bonusScale[Quality[quality_code]] - 10000) / 100
+      return ((100 + base) * (100 + bonusScale[Quality[quality_code]] * scale) - 10000) / 100
     }
   } else {
     return base
