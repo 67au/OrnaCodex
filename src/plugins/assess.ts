@@ -67,24 +67,43 @@ export function getUpgradedStat(
   }
 }
 
+const APPROXIMATE_MAX_DEEP = 10
+
+function approximate(
+  input: number,
+  base: number,
+  test: number,
+  quality: number,
+  fix_func: Function,
+  deep: number = 0,
+  direction: number = 0
+) {
+  const delta = test - input
+  if (delta === 0) {
+    return quality
+  } else {
+    const direction_fix = base > 0 !== delta > 0 ? 1 : -1
+    const quality_fix = quality + 0.01 * direction_fix
+    const fix = fix_func(quality_fix)
+    if (direction !== 0 && direction !== direction_fix) {
+      return Math.abs(fix - input) - Math.abs(delta) > 0 ? quality : quality_fix
+    }
+    if (deep < APPROXIMATE_MAX_DEEP) {
+      return approximate(input, base, fix, quality_fix, fix_func, deep + 1, direction_fix)
+    } else {
+      return 0
+    }
+  }
+}
+
 export function getItemQuailty(input: number, base: number, level: number, isBoss: boolean) {
   const delta = level > 10 ? (level - 10) / 100 : 0
   const base_stat = getUpgradedStat(base, level, 1, isBoss)
   const quality = Math.round(((input / base_stat) * (1 + delta) - delta) * 100) / 100
   const test_stat = getUpgradedStat(base, level, quality, isBoss)
-  const stat_delta = test_stat - input
-  if (stat_delta === 0) {
-    return quality
-  } else {
-    const quality_fix = quality + 0.01 * (base_stat > 0 !== stat_delta > 0 ? 1 : -1)
-    const fix_stat = getUpgradedStat(base, level, quality_fix, isBoss)
-    const fix_delta = fix_stat - input
-    if (fix_delta === 0) {
-      return quality_fix
-    } else {
-      return quality_fix + 0.01 * (base_stat > 0 !== fix_delta > 0 ? 1 : -1)
-    }
-  }
+  return approximate(input, base_stat, test_stat, quality, (fix: number) =>
+    getUpgradedStat(base, level, fix, isBoss)
+  )
 }
 
 export function getAdditionalSlots(quality: number) {
