@@ -20,7 +20,7 @@ export function getUpgradedStats(
   isCelestialWeapon: boolean = false
 ) {
   const delta = getDelta(base, isBoss)
-  const quality_plus = (level: number) => quality + (level - 10) / 100
+  const quality_added = (level: number) => quality + (level - 10) / 100
   const levels = isCelestialWeapon ? 20 : 13
   if (key === 'crit') {
     return Array(levels).fill(base)
@@ -41,7 +41,7 @@ export function getUpgradedStats(
       if (level < 10 || isCelestialWeapon) {
         return Math.ceil((base + (level + 1) * delta) * quality)
       } else {
-        return Math.ceil((base + (level + 1) * delta) * quality_plus(level + 1))
+        return Math.ceil((base + (level + 1) * delta) * quality_added(level + 1))
       }
     }
   })
@@ -55,26 +55,26 @@ export function getUpgradedStat(
   isCelestial: boolean = false
 ) {
   const delta = getDelta(base, isBoss)
-  const quality_plus = (level: number) => quality + (level - 10) / 100
+  const quality_added = (level: number) => quality + (level - 10) / 100
   if (level == 1) {
     return Math.ceil(base * quality)
   } else {
     if (level <= 10 || isCelestial) {
       return Math.ceil((base + level * delta) * quality)
     } else {
-      return Math.ceil((base + level * delta) * quality_plus(level))
+      return Math.ceil((base + level * delta) * quality_added(level))
     }
   }
 }
 
-const APPROXIMATE_MAX_DEEP = 10
+const APPROXIMATION_MAX_DEEP = 10
 
 function approximate(
   input: number,
   base: number,
   test: number,
   quality: number,
-  fix_func: Function,
+  getStatFunc: Function,
   deep: number = 0,
   direction: number = 0
 ) {
@@ -84,12 +84,12 @@ function approximate(
   } else {
     const direction_fix = base > 0 !== delta > 0 ? 1 : -1
     const quality_fix = quality + 0.01 * direction_fix
-    const fix = fix_func(quality_fix)
+    const fix = getStatFunc(quality_fix)
     if (direction !== 0 && direction !== direction_fix) {
       return Math.abs(fix - input) - Math.abs(delta) > 0 ? quality : quality_fix
     }
-    if (deep < APPROXIMATE_MAX_DEEP) {
-      return approximate(input, base, fix, quality_fix, fix_func, deep + 1, direction_fix)
+    if (deep < APPROXIMATION_MAX_DEEP) {
+      return approximate(input, base, fix, quality_fix, getStatFunc, deep + 1, direction_fix)
     } else {
       return 0
     }
@@ -201,16 +201,16 @@ export const bonusScale: Record<string, number> = {
 
 export function getUpgradedBonus(
   base: number,
-  quality_code: Quality,
-  is_adornment: boolean = false,
-  is_no_follower_bonus: boolean = false
+  qualityCode: Quality,
+  isAdornment: boolean = false,
+  isNoFollowerBonus: boolean = false
 ) {
-  const scale = is_no_follower_bonus ? 1 / 5 : 1
-  if (quality_code > -1) {
-    if (is_adornment) {
-      return (base * bonusScale[Quality[quality_code]]) / 100
+  const scale = isNoFollowerBonus ? 1 / 5 : 1
+  if (qualityCode > -1) {
+    if (isAdornment) {
+      return (base * bonusScale[Quality[qualityCode]]) / 100
     } else {
-      return ((100 + base) * (100 + bonusScale[Quality[quality_code]] * scale) - 10000) / 100
+      return ((100 + base) * (100 + bonusScale[Quality[qualityCode]] * scale) - 10000) / 100
     }
   } else {
     return base
