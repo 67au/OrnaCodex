@@ -45,11 +45,13 @@ import { type PropType } from 'vue';
               {{ stat.values[i] }}
             </td>
           </tr>
-          <tr>
-            <td> {{ $t('query.level') }} </td>
-            <td v-for="key in Object.keys(result.stats)" :key="key">{{ $t(`meta.stats.${key}`) }}</td>
-          </tr>
         </tbody>
+        <thead style="border-bottom: unset; border-top: thin solid var(--color-outline);">
+          <tr>
+            <th> {{ $t('query.level') }} </th>
+            <th v-for="key in Object.keys(result.stats)" :key="key">{{ $t(`meta.stats.${key}`) }}</th>
+          </tr>
+        </thead>
       </var-table>
       <var-space justify="space-around" class="pt-2">
         <var-button type="primary" icon-container @click="$emit('update:show', false)">
