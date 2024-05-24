@@ -45,7 +45,7 @@ export default defineConfig(({ mode }) => {
     define: {
       __ORNA_URL__: JSON.stringify(ornaUrl),
       __ORNA_STATIC_URL__: JSON.stringify(ornaStaticUrl),
-      __EXTRA_API_URL__: JSON.stringify('https://items.fqegg.top')
+      __EXTRA_API_URL__: JSON.stringify('https://entries.fqegg.top')
     },
     css: {
       preprocessorOptions: {
