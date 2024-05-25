@@ -30,6 +30,7 @@ export interface FiltersState {
   sort: string | undefined
   asc: boolean
   multiple: boolean
+  version: string | undefined
 }
 
 export type Options = Record<string, Set<string | number>>

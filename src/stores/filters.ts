@@ -2,6 +2,7 @@ import type { Filters, FiltersState } from '@/types'
 import { defineStore } from 'pinia'
 import { useCodexState } from './codex'
 import { useOptionsState } from './options'
+import { global } from '@/plugins/global'
 
 export const useFiltersState = defineStore('filters', {
   state: () => ({
@@ -9,7 +10,8 @@ export const useFiltersState = defineStore('filters', {
     filters: [] as Filters,
     sort: undefined as string | undefined,
     asc: false,
-    multiple: false
+    multiple: false,
+    version: global.filtersVersion as string
   }),
   getters: {
     statsKeys(): Array<string> {
@@ -52,7 +54,7 @@ export const useFiltersState = defineStore('filters', {
     initialize(data?: FiltersState) {
       const optionsState = useOptionsState()
       optionsState.initialize()
-      if (data !== undefined) {
+      if (data !== undefined && data.version === this.version) {
         this.$patch({
           sort:
             data.sort !== undefined && this.statsKeys.concat(['name', 'tier']).includes(data?.sort)
@@ -89,7 +91,6 @@ export const useFiltersState = defineStore('filters', {
         this.$reset()
         this.$patch({ multiple: tmp })
       }
-      // patch after reset
       const optionsState = useOptionsState()
       optionsState.resetMenu()
       if (this.filters.length === 0) {
