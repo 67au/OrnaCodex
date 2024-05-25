@@ -43,6 +43,9 @@ export const useFiltersState = defineStore('filters', {
             .sort((a, b) => a.localeCompare(b))
         )
       )
+    },
+    filtersKeys(state) {
+      return new Set(state.filters.map(({ key: key }) => key))
     }
   },
   actions: {
@@ -76,21 +79,23 @@ export const useFiltersState = defineStore('filters', {
           multiple: data.multiple
         } as FiltersState)
         // patch reset
-        if (this.filters.length === 0) {
-          this.addFilter(0)
-        }
+        this.reset(false)
       } else {
         this.reset()
       }
     },
-    reset() {
-      const tmp = this.multiple
-      this.$reset()
-      this.$patch({ multiple: tmp })
+    reset(init: boolean = true) {
+      if (init) {
+        const tmp = this.multiple
+        this.$reset()
+        this.$patch({ multiple: tmp })
+      }
       // patch after reset
       if (this.filters.length === 0) {
         this.addFilter(0)
       }
+      const optionsState = useOptionsState()
+      optionsState.resetMenu()
     },
     isMultiple(key: string) {
       return this.multiple && key !== 'exotic'
