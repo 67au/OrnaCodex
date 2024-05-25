@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useCodexState } from './codex'
 import type { Options, Status } from '@/types'
+import { useFiltersState } from './filters'
 
 export const useOptionsState = defineStore('options', {
   state: () => ({
@@ -70,11 +71,11 @@ export const useOptionsState = defineStore('options', {
         })
       })
       this.$patch({ options: options })
-      this.reset()
     },
-    reset() {
+    resetMenu() {
+      const filterState = useFiltersState()
       this.$patch({
-        menu: Object.keys(this.options).map((key) => [key, true])
+        menu: Object.keys(this.options).map((key) => [key, !filterState.filtersKeys.has(key)])
       })
     }
   }
