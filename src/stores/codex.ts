@@ -127,22 +127,34 @@ export const useCodexState = defineStore('codex', {
       }, start)
     },
 
+    sortedDefault(): Array<CodexId> {
+      const filtersState = useFiltersState()
+      const { sortDefault } = filtersState
+      if (sortDefault.name === 'name') {
+        return [...this.filtered].sort((a, b) => {
+          const x = this.lang[a.category][a.id]
+          const y = this.lang[b.category][b.id]
+          return (x.name as string).localeCompare(y.name as string) * (sortDefault.asc ? 1 : -1)
+        })
+      }
+      if (sortDefault.name === 'tier') {
+        return [...this.filtered].sort((a, b) => {
+          const x = this.meta[a.category][a.id]
+          const y = this.meta[b.category][b.id]
+          return (x.tier - y.tier) * (sortDefault.asc ? 1 : -1)
+        })
+      }
+      return this.filtered
+    },
+
     sorted(): Array<CodexId> {
       const filtersState = useFiltersState()
       const { sort, asc } = filtersState
       return sort === undefined
-        ? this.filtered
-        : [...this.filtered].sort((a, b) => {
-            if (sort === 'name') {
-              const x = this.lang[a.category][a.id]
-              const y = this.lang[b.category][b.id]
-              return (x.name as string).localeCompare(y.name as string) * (asc ? -1 : -1)
-            }
+        ? this.sortedDefault
+        : [...this.sortedDefault].sort((a, b) => {
             const x = this.meta[a.category][a.id]
             const y = this.meta[b.category][b.id]
-            if (sort === 'tier') {
-              return (x.tier - y.tier) * (asc ? 1 : -1)
-            }
             if (x?.stats === undefined || x?.stats[sort] === undefined) {
               return 1
             }

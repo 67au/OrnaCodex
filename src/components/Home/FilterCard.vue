@@ -9,12 +9,43 @@ import { getTierName } from '@/plugins/utils';
     <template #description>
       <div class="card-description">
         <var-form>
-          <var-input variant="outlined" size="small" :placeholder="$t('search')" v-model="filtersState.search" clearable
-            class="pb-1" />
+          <var-row class="pb-1" gutter="6">
+            <var-col span="16">
+              <var-input class="w-full" variant="outlined" size="small" :placeholder="$t('search')"
+                v-model="filtersState.search" clearable />
+            </var-col>
+            <var-col span="8">
+              <var-select class="w-full" variant="outlined" size="small" :placeholder="$t('sortDefault')"
+                v-model="sortDefaultWarp">
+                <var-option value="default,0" :label="defaultLabel" key="default,0" />
+                <template v-for="name in ['name', 'tier']">
+                  <var-option v-for="asc in ['0', '1']" :value="`${name},${asc}`" :key="`${name},${asc}`">
+                    <var-space align="center" size="mini">
+                      {{ $t(name) }}
+                      <div v-if="asc === '0'" class="i-mdi-arrow-down text-xl"></div>
+                      <div v-else class="i-mdi-arrow-up text-xl"></div>
+                    </var-space>
+                  </var-option>
+                </template>
+                <template #selected>
+                  <div class="text-md">
+                    <var-space align="center" size="mini">
+                      <template v-if="sortDefault.name === 'default'">
+                        {{ defaultLabel }}
+                      </template>
+                      <template v-else>
+                        {{ $t(sortDefault.name) }}
+                        <div v-if="sortDefault.asc" class="i-mdi-arrow-up text-xl"></div>
+                        <div v-else class="i-mdi-arrow-down text-xl"></div>
+                      </template>
+                    </var-space>
+                  </div>
+                </template>
+              </var-select>
+            </var-col>
+          </var-row>
           <var-cell class="filter-cell">
             <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="filtersState.sort" clearable>
-              <var-option value="name" :label="$t('name')" key="name" />
-              <var-option value="tier" :label="$t('tier')" key="tier" />
               <var-option v-for="key in filtersState.statsKeys" :value="key" :label="$t(`meta.stats.${key}`)"
                 :key="key" />
             </var-select>
@@ -128,6 +159,26 @@ export default defineComponent({
     },
     optionsState() {
       return useOptionsState()
+    },
+    sortDefaultWarp: {
+      set(newValue: string) {
+        const r = newValue.split(',')
+        this.filtersState.$patch({
+          sortDefault: {
+            name: r[0],
+            asc: r[1] === '1'
+          }
+        })
+      },
+      get() {
+        return `${this.filtersState.sortDefault.name},${this.filtersState.sortDefault.asc ? '1' : '0'}`
+      }
+    },
+    sortDefault() {
+      return this.filtersState.sortDefault
+    },
+    defaultLabel() {
+      return this.$t('query.qualitylabel.default')
     }
   },
   methods: {
