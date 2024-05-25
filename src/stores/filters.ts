@@ -5,14 +5,19 @@ import { useOptionsState } from './options'
 import { global } from '@/plugins/global'
 
 export const useFiltersState = defineStore('filters', {
-  state: () => ({
-    search: '' as string,
-    filters: [] as Filters,
-    sort: undefined as string | undefined,
-    asc: false,
-    multiple: false,
-    version: global.filtersVersion as string
-  }),
+  state: () =>
+    ({
+      search: '' as string,
+      filters: [] as Filters,
+      sortDefault: {
+        name: 'default',
+        asc: false
+      },
+      sort: undefined as string | undefined,
+      asc: false,
+      multiple: false,
+      version: global.filtersVersion as string
+    }) as FiltersState,
   getters: {
     statsKeys(): Array<string> {
       const codexState = useCodexState()
@@ -78,7 +83,9 @@ export const useFiltersState = defineStore('filters', {
             }),
           asc: data.asc,
           search: data.search,
-          multiple: data.multiple
+          multiple: data.multiple,
+          version: data.version,
+          sortDefault: data.sortDefault
         } as FiltersState)
         this.reset(false)
       } else {
@@ -87,9 +94,9 @@ export const useFiltersState = defineStore('filters', {
     },
     reset(init: boolean = true) {
       if (init) {
-        const tmp = this.multiple
+        const keep = { multiple: this.multiple, sortDefault: this.sortDefault }
         this.$reset()
-        this.$patch({ multiple: tmp })
+        this.$patch(keep)
       }
       const optionsState = useOptionsState()
       optionsState.resetMenu()

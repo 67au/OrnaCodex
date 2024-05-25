@@ -27,6 +27,10 @@ export type Filters = Array<Filter>
 export interface FiltersState {
   search: string
   filters: Filters
+  sortDefault: {
+    name: string
+    asc: boolean
+  }
   sort: string | undefined
   asc: boolean
   multiple: boolean
