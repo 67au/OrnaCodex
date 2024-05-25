@@ -78,7 +78,6 @@ export const useFiltersState = defineStore('filters', {
           search: data.search,
           multiple: data.multiple
         } as FiltersState)
-        // patch reset
         this.reset(false)
       } else {
         this.reset()
@@ -91,11 +90,11 @@ export const useFiltersState = defineStore('filters', {
         this.$patch({ multiple: tmp })
       }
       // patch after reset
+      const optionsState = useOptionsState()
+      optionsState.resetMenu()
       if (this.filters.length === 0) {
         this.addFilter(0)
       }
-      const optionsState = useOptionsState()
-      optionsState.resetMenu()
     },
     isMultiple(key: string) {
       return this.multiple && key !== 'exotic'
