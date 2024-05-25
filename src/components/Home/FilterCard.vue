@@ -26,7 +26,12 @@ import { getTierName } from '@/plugins/utils';
           </var-cell>
 
           <var-cell class="filter-cell min-h-8">
-            <div class="text-lg"> {{ $t('filters') }} </div>
+            <template #icon>
+              <div class="i-mdi-filter text-lg mr-1"></div>
+            </template>
+            <div class="text-lg">
+              {{ $t('filters') }}
+            </div>
             <template #extra>
               <var-checkbox v-model="filtersState.multiple" icon-size="18" class="-mr-1">
                 <template #default>
@@ -130,7 +135,7 @@ export default defineComponent({
       return this.optionsState.keys.status.includes(key)
     },
     getMultipleTag(key: string) {
-      return this.filtersState.isMultiple(key) && !this.isStatusKey(key) ? ` (${this.$t('multiple')})` : ''
+      return this.filtersState.isMultiple(key) ? ` (${this.$t('multiple')})` : ''
     },
     sortOptions(key: string) {
       const options = Array.from(this.optionsState.options[key]) as Array<string>

@@ -101,19 +101,17 @@ export const useFiltersState = defineStore('filters', {
       return this.multiple && key !== 'exotic'
     },
     switchMultiple() {
-      const optionState = useOptionsState()
       const tmp = {
         search: this.search,
         sort: this.sort,
         asc: this.asc,
+        version: this.version,
         filters: this.filters.map((filter) => {
-          if (!optionState.keys.status.includes(filter.key)) {
+          if (filter.key !== 'exotic') {
             if (this.multiple) {
-              if (filter.key !== 'exotic') {
-                filter.value = filter.value !== undefined ? [filter.value as string] : []
-              }
+              filter.value = filter.value !== undefined ? [filter.value as string] : []
             } else {
-              if (filter.key !== 'exotic' && Array.isArray(filter.value)) {
+              if (Array.isArray(filter.value)) {
                 filter.value = (filter.value as any)[0]
               }
             }
@@ -129,7 +127,7 @@ export const useFiltersState = defineStore('filters', {
       const key = optionsState.menu[index][0]
       this.filters.push({
         key: key,
-        value: optionsState.keys.status.includes(key) || this.isMultiple(key) ? [] : undefined
+        value: this.isMultiple(key) ? [] : undefined
       })
       optionsState.menu[index][1] = false
     }
