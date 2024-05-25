@@ -107,20 +107,21 @@ export const useCodexState = defineStore('codex', {
           }
 
           if (optionsState.statusKeysSet.has(filter.key)) {
-            if (Array.isArray(filter.value)) {
-              if (filter.value.length === 0) {
-                return true
-              } else {
-                const testValue: Array<Status> = this.meta[category][id][filter.key]
-                if (testValue === undefined) {
-                  return false
-                }
-                return filter.value.every((v) => {
-                  return testValue.some((status) => status.name === v)
-                })
-              }
+            const statusValue: Array<Status> = this.meta[category][id][filter.key]
+            if (statusValue === undefined) {
+              return false
             }
-            return false
+            const testValue: Array<string> = statusValue.map(({ name: name }) => name)
+            if (multiple) {
+              for (const v of filter.value) {
+                if (testValue.includes(v)) {
+                  return true
+                }
+              }
+              return false
+            } else {
+              return testValue.includes(filter.value as string)
+            }
           }
         })
       }, start)
