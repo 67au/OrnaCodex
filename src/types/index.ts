@@ -70,6 +70,8 @@ export interface AssessResult {
   quality: number
   stats: Stats
   levels?: number
+  exact?: boolean
+  range?: [number, number]
   extra?: AssessQuery['extra']
 }
 

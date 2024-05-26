@@ -9,7 +9,7 @@ function getDelta(base: number, isBoss: boolean) {
 }
 
 const weaponSkipKeys = new Set(['hp', 'mana', 'defense', 'resistance'])
-const commonSkipKeys = new Set(['crit', 'dexterity'])
+const commonSkipKeys = new Set(['crit', 'dexterity', 'level', 'quality'])
 
 export function getUpgradedStats(
   base: number,
@@ -83,7 +83,7 @@ function approximate(
     return quality
   } else {
     const direction_fix = base > 0 !== delta > 0 ? 1 : -1
-    const quality_fix = quality + 0.01 * direction_fix
+    const quality_fix = +(quality + 0.01 * direction_fix).toFixed(12)
     const fix = getStatFunc(quality_fix)
     if (direction !== 0 && direction !== direction_fix) {
       return Math.abs(fix - input) - Math.abs(delta) > 0 ? quality : quality_fix
@@ -224,25 +224,27 @@ export function assess(query: AssessQuery) {
     levels: 13,
     extra: query.extra
   } as AssessResult
-  const queryArray = Object.entries(query.data)
-    .filter(([m]) => {
-      return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
-    })
-    .toSorted((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+  const queryArray = Object.entries(query.data).filter(([m]) => {
+    return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
+  })
+  const assessKey =
+    queryArray.length > 0 ? queryArray.reduce((a, b) => (a[1] > b[1] ? a : b))[0] : undefined
+
   if (query.extra.isQuality) {
     result.quality = query.data.quality / 100
   } else {
-    result.quality = 1
-    if (queryArray.length > 0) {
-      const key = queryArray[0][0]
+    if (assessKey === undefined) {
+      result.quality = 1
+    } else {
       result.quality = getItemQuality(
-        query.data[key],
-        query.extra.baseStats[key],
+        query.data[assessKey],
+        query.extra.baseStats[assessKey],
         query.data.level,
         query.extra.isBoss
       )
     }
   }
+
   Object.entries(query.extra.baseStats).forEach(([key, base]) => {
     result.stats[key] = {
       base: base,
@@ -256,6 +258,11 @@ export function assess(query: AssessQuery) {
       )
     }
   })
+
+  result.exact = true
+  if (!query.extra.isQuality && assessKey !== undefined) {
+    result.exact = query.data[assessKey] === result.stats[assessKey].values[query.data.level - 1]
+  }
 
   if (query.extra.isCelestialWeapon) {
     result.levels = 20
