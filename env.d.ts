@@ -4,3 +4,4 @@ declare const __ORNA_URL__: string
 declare const __ORNA_STATIC_URL__: string
 declare const __EXTRA_API_URL__: string
 declare const __FILTERS_VERSION__: string
+declare const __DATA_CREATED__: string
