@@ -10,21 +10,35 @@ import { type PropType } from 'vue';
 <template>
   <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
     <var-paper class="popup-assess">
-      <var-space align="center" justify="space-between" size="large" class="ml-0 my-1 mr-1" line>
-        <span>{{ ce.lang.name }}</span>
-        <var-space align="center" justify="flex-end" size="mini" line>
-          <var-chip size="small" :type="qualityName === undefined ? 'danger' : 'primary'">
-            <template #left>
-              <var-icon v-if="qualityName === undefined" name="close-circle" size="small" />
-              <var-icon v-else name="checkbox-marked-circle" size="small" />
-            </template>
-            {{ `${(result.quality * 100).toFixed()}%` }}
-          </var-chip>
-          <var-chip v-if="qualityName !== undefined" size="small" :color="global.qualityColor[qualityName]">
-            {{ $t(`query.qualitylabel.${qualityName}`) }}
-          </var-chip>
+      <var-cell class="text-cell">
+        <var-space justify="center" class="text-lg">
+          {{ ce.lang.name }}
         </var-space>
-      </var-space>
+        <template #description>
+          <var-space align="center" justify="center" size="mini" line class="py-1">
+            <var-chip v-if="qualityName !== undefined" size="small" :color="global.qualityColor[qualityName]">
+              <template #left>
+                <div class="i-mdi-clover text-md" />
+              </template>
+              {{ $t(`query.qualitylabel.${qualityName}`) }}
+            </var-chip>
+            <var-chip size="small" :type="resultChipType">
+              <template #left>
+                <div v-if="qualityName === undefined" class="i-mdi-close-circle text-md" />
+                <div v-else-if="result.exact === false" class="i-mdi-alert-circle text-md" />
+                <div v-else class="i-mdi-checkbox-marked-circle text-md" />
+              </template>
+              {{ `${(result.quality * 100).toFixed()}%` }}
+            </var-chip>
+            <var-chip v-if="result.range !== undefined" size="small" type="info">
+              <template #left>
+                <div class="i-mdi-database-search text-md" />
+              </template>
+              {{ result.range.map((x) => `${x}%`).join('-') }}
+            </var-chip>
+          </var-space>
+        </template>
+      </var-cell>
       <var-table :elevation="2" class="assess-table" :scroller-height="result.levels !== 1 ? '65vh' : undefined">
         <thead>
           <tr>
@@ -84,6 +98,13 @@ export default {
     },
     qualityName(): string | undefined {
       return getQualityName(this.result.quality, this.ce.isAccessory);
+    },
+    resultChipType() {
+      if (this.qualityName === undefined) {
+        return 'danger'
+      } else {
+        return this.result.exact !== false ? 'primary' : 'warning'
+      }
     }
   }
 }
@@ -115,13 +136,13 @@ export default {
 
 @media screen and (max-width: 320px) {
   .popup-assess {
-    padding: 18px 6px;
+    padding: 16px 6px;
   }
 }
 
 @media screen and (min-width: 375px) {
   .popup-assess {
-    padding: 18px 9px;
+    padding: 16px 9px;
   }
 }
 
