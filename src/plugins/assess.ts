@@ -262,6 +262,36 @@ export function assess(query: AssessQuery) {
   result.exact = true
   if (!query.extra.isQuality && assessKey !== undefined) {
     result.exact = query.data[assessKey] === result.stats[assessKey].values[query.data.level - 1]
+
+    if (result.exact && Math.abs(query.data[assessKey]) < 200) {
+      const input = result.stats[assessKey].values[query.data.level - 1]
+      const base = getUpgradedStat(
+        query.extra.baseStats[assessKey],
+        query.data.level,
+        1,
+        query.extra.isBoss
+      )
+      const left = +Math.ceil(((input - 1) / base) * 100).toFixed(12)
+      const right = +Math.ceil((input / base) * 100).toFixed(12)
+      result.range = [
+        getUpgradedStat(
+          query.extra.baseStats[assessKey],
+          query.data.level,
+          left / 100,
+          query.extra.isBoss
+        ) < input
+          ? left + 1
+          : left,
+        getUpgradedStat(
+          query.extra.baseStats[assessKey],
+          query.data.level,
+          right / 100,
+          query.extra.isBoss
+        ) > input
+          ? right - 1
+          : right
+      ]
+    }
   }
 
   if (query.extra.isCelestialWeapon) {
