@@ -30,7 +30,7 @@ import { type PropType } from 'vue';
               </template>
               {{ `${(result.quality * 100).toFixed()}%` }}
             </var-chip>
-            <var-chip v-if="result.range !== undefined" size="small" type="info">
+            <var-chip v-if="result.range !== undefined && result.range[0] !== result.range[1]" size="small" type="info">
               <template #left>
                 <div class="i-mdi-database-search text-md" />
               </template>
