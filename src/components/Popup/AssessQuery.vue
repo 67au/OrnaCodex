@@ -13,8 +13,8 @@ import '@varlet/ui/es/snackbar/style/index';
         <span>
           <var-icon name="magnify" /> {{ title }}
         </span>
-        <var-chip size="small" :type="aq.extra.isGuide ? 'success' : 'warning'">
-          {{ aq.extra.isGuide ? 'Guide' : 'YACO' }}
+        <var-chip size="small" :type="aqExtra.isGuide ? 'success' : 'warning'">
+          {{ aqExtra.isGuide ? 'Guide' : 'YACO' }}
         </var-chip>
       </var-space>
     </template>
@@ -37,32 +37,33 @@ import '@varlet/ui/es/snackbar/style/index';
         </var-col>
         <var-col :span="8">
           <div class="w-full">
-            <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="aq.extra.isBoss" size="small"
-              :disabled="aq.extra.isGuide || aq.extra.isCelestialWeapon || !aq.extra.isUpgradable">
+            <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="aqExtra.isBoss" size="small"
+              :disabled="aqExtra.isGuide || aqExtra.isCelestialWeapon || !aqExtra.isUpgradable">
               <var-option :label="$t('yes')" :value="true" />
               <var-option :label="$t('no')" :value="false" />
             </var-select>
           </div>
         </var-col>
-        <var-col :span="8" v-if="aq.extra.isQuality">
+        <var-col :span="8" v-if="aqExtra.isQuality">
           <div class="w-full">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="(aq.data.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
-              :disabled="aq.extra.isCelestialWeapon" />
+              v-model="(aqData.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
+              :disabled="aqExtra.isCelestialWeapon" />
           </div>
         </var-col>
         <var-col :span="8">
           <div class="w-full">
-            <var-select variant="outlined" :placeholder="$t('query.level')" v-model="aq.data.level" size="small"
-              :disabled="aq.extra.isQuality || !aq.extra.isUpgradable">
-              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)" :key="i" />
+            <var-select variant="outlined" :placeholder="$t('query.level')" v-model="aqData.level" size="small"
+              :disabled="aqExtra.isQuality || !aqExtra.isUpgradable">
+              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, n) => String(n + 1))"
+                :key="i" />
             </var-select>
           </div>
         </var-col>
-        <var-col :span="8" v-for="key in Object.keys(aq.extra.baseStats)" :key="key">
+        <var-col :span="8" v-for="key in Object.keys(aqExtra.baseStats)" :key="key">
           <div class="w-full" v-if="!immutableKeysSet.has(key)">
             <var-input variant="outlined" size="small" type="number" :placeholder="$t(`meta.stats.${key}`)"
-              v-model="(aq.data[key] as any)" :disabled="aq.extra.isQuality" />
+              v-model="(aqData[key] as any)" :disabled="aqExtra.isQuality" />
           </div>
         </var-col>
         <var-col :span="24">
@@ -78,6 +79,7 @@ import '@varlet/ui/es/snackbar/style/index';
 
 <script lang="ts">
 const immutableKeysSet = new Set(['adornment_slots']);
+type QueryString = Record<string, string>
 
 export default defineComponent({
   inject: ['view', 'guide'],
@@ -93,6 +95,12 @@ export default defineComponent({
         '-1': this.$t('bossScale.no'),
         '0': this.$t('bossScale.unknown'),
         '1': this.$t('bossScale.yes'),
+      }
+    },
+    aq(): AssessQuery {
+      return {
+        data: this.queryToNumber(this.aqData),
+        extra: this.aqExtra
       }
     }
   },
@@ -116,7 +124,8 @@ export default defineComponent({
   },
   data() {
     return {
-      aq: this.query as AssessQuery,
+      aqData: this.queryToString(this.query.data) as QueryString,
+      aqExtra: this.query.extra as AssessQuery['extra'],
       ar: undefined as AssessResult | undefined,
       showResult: false,
       loading: false
@@ -125,9 +134,10 @@ export default defineComponent({
   mounted() {
     watch(() => this.show, (newValue) => {
       if (newValue === true) {
-        this.aq = this.query
+        this.aqData = this.queryToString(this.query.data)
+        this.aqExtra = this.query.extra
       }
-    }, { immediate: true })
+    })
   },
   methods: {
     async queryAssess() {
@@ -144,6 +154,12 @@ export default defineComponent({
       setTimeout(() => {
         this.showResult = true
       }, 150)
+    },
+    queryToString(query: AssessQuery['data']) {
+      return Object.fromEntries(Object.entries(query).map(([key, value]) => [key, String(value)]))
+    },
+    queryToNumber(query: QueryString) {
+      return Object.fromEntries(Object.entries(query).map(([key, value]) => [key, Number(value)]))
     }
   }
 })
