@@ -14,8 +14,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@varlet/touch-emulator": "^3.2.10",
-    "@varlet/ui": "^3.2.10",
+    "@varlet/touch-emulator": "^3.2.11",
+    "@varlet/ui": "^3.2.11",
     "@vueuse/core": "^10.9.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
@@ -29,8 +29,8 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
     "@unocss/preset-icons": "^0.60.3",
-    "@varlet/import-resolver": "^3.2.10",
-    "@varlet/preset-unocss": "^3.2.10",
+    "@varlet/import-resolver": "^3.2.11",
+    "@varlet/preset-unocss": "^3.2.11",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
