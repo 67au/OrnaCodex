@@ -228,7 +228,9 @@ export function assess(query: AssessQuery) {
     return !(commonSkipKeys.has(m) || (query.extra.isWeapon && weaponSkipKeys.has(m)))
   })
   const assessKey =
-    queryArray.length > 0 ? queryArray.reduce((a, b) => (a[1] > b[1] ? a : b))[0] : undefined
+    queryArray.length > 0
+      ? queryArray.reduce((a, b) => (Math.abs(a[1]) > Math.abs(b[1]) ? a : b))[0]
+      : undefined
 
   if (query.extra.isQuality) {
     result.quality = query.data.quality / 100
@@ -245,6 +247,47 @@ export function assess(query: AssessQuery) {
     }
   }
 
+  result.exact = true
+  if (!query.extra.isQuality && assessKey !== undefined) {
+    const input = getUpgradedStat(
+      query.extra.baseStats[assessKey],
+      query.data.level,
+      result.quality,
+      query.extra.isBoss
+    )
+    result.exact = query.data[assessKey] === input
+    if (result.exact && Math.abs(query.data[assessKey]) < 100) {
+      const base = getUpgradedStat(
+        query.extra.baseStats[assessKey],
+        query.data.level,
+        1,
+        query.extra.isBoss
+      )
+      const left = +Math.ceil(((input + (input > 0 ? -1 : 0)) / base) * 100).toFixed(12)
+      const right = +Math.ceil(((input + (input < 0 ? -1 : 0)) / base) * 100).toFixed(12)
+      const left_output = getUpgradedStat(
+        query.extra.baseStats[assessKey],
+        query.data.level,
+        left / 100,
+        query.extra.isBoss
+      )
+      const right_output = getUpgradedStat(
+        query.extra.baseStats[assessKey],
+        query.data.level,
+        right / 100,
+        query.extra.isBoss
+      )
+      result.range = [
+        (left < 0 && left_output !== input) || (left > 0 && left_output !== input)
+          ? left + 1
+          : left,
+        (right > 0 && right_output !== input) || (right < 0 && right_output !== input)
+          ? right - 1
+          : right
+      ]
+    }
+  }
+
   Object.entries(query.extra.baseStats).forEach(([key, base]) => {
     result.stats[key] = {
       base: base,
@@ -258,41 +301,6 @@ export function assess(query: AssessQuery) {
       )
     }
   })
-
-  result.exact = true
-  if (!query.extra.isQuality && assessKey !== undefined) {
-    result.exact = query.data[assessKey] === result.stats[assessKey].values[query.data.level - 1]
-
-    if (result.exact && Math.abs(query.data[assessKey]) < 200) {
-      const input = result.stats[assessKey].values[query.data.level - 1]
-      const base = getUpgradedStat(
-        query.extra.baseStats[assessKey],
-        query.data.level,
-        1,
-        query.extra.isBoss
-      )
-      const left = +Math.ceil(((input - 1) / base) * 100).toFixed(12)
-      const right = +Math.ceil((input / base) * 100).toFixed(12)
-      result.range = [
-        getUpgradedStat(
-          query.extra.baseStats[assessKey],
-          query.data.level,
-          left / 100,
-          query.extra.isBoss
-        ) < input
-          ? left + 1
-          : left,
-        getUpgradedStat(
-          query.extra.baseStats[assessKey],
-          query.data.level,
-          right / 100,
-          query.extra.isBoss
-        ) > input
-          ? right - 1
-          : right
-      ]
-    }
-  }
 
   if (query.extra.isCelestialWeapon) {
     result.levels = 20
