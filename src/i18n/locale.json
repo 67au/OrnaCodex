@@ -1,6 +1,7 @@
 {
   "zh-hans": {
     "title": "图鉴 YACO",
+    "about": "关于",
     "search": "搜索",
     "filters": "筛选",
     "category": "分类",
@@ -103,6 +104,7 @@
   },
   "zh-hant": {
     "title": "圖鑑 YACO",
+    "about": "關於",
     "search": "搜尋",
     "filters": "篩選",
     "category": "分類",
@@ -204,8 +206,8 @@
     }
   },
   "en": {
-    "language": "English",
     "title": "Codex YACO",
+    "about": "About Project",
     "search": "Search",
     "filters": "Filters",
     "category": "Category",

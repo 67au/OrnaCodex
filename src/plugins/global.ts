@@ -36,6 +36,7 @@ export const global = {
   ornaUrl: __ORNA_URL__,
   staticUrl: __ORNA_STATIC_URL__,
   filtersVersion: __FILTERS_VERSION__,
+  dataCreated: new Date(Number(__DATA_CREATED__) * 1000),
   guideUrl: guideUrl,
   guideApiUrl: `${guideUrl}/api/v1`,
   star: '★',
