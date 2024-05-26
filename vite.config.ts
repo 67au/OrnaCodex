@@ -14,6 +14,7 @@ import UnoCSS from 'unocss/vite'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const ornaUrl = `https://${env.ORNA_URL || 'playorna.com'}`
+  const dataCreated = env.DATA_CREATED || Math.floor(new Date().getTime() / 1000)
   const ornaStaticUrl = `${ornaUrl}/static`
   return {
     plugins: [
@@ -45,6 +46,7 @@ export default defineConfig(({ mode }) => {
     define: {
       __ORNA_URL__: JSON.stringify(ornaUrl),
       __ORNA_STATIC_URL__: JSON.stringify(ornaStaticUrl),
+      __DATA_CREATED__: JSON.stringify(dataCreated),
       __EXTRA_API_URL__: JSON.stringify('https://entries.fqegg.top'),
       __FILTERS_VERSION__: JSON.stringify('v0.1.0')
     },
