@@ -5,6 +5,7 @@ import type { CodexMeta } from './types';
 import { useCodexState } from './stores';
 import { i18n } from './i18n';
 import { useExtraState } from './stores/extra';
+import { global } from './plugins/global';
 
 useDark();
 </script>
@@ -22,7 +23,7 @@ useDark();
       <template #right>
         <AppLocaleSwitch />
         <AppThemeSwitch />
-        <AppGithub link="https://github.com/67au/OrnaCodex" />
+        <AppGithub :data-created="global.dataCreated" link="http://github.com/67au/OrnaCodex" author="FQEGG" />
       </template>
     </AppHeader>
     <template v-if="!isLoading">
