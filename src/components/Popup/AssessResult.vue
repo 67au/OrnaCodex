@@ -9,7 +9,7 @@ import { type PropType } from 'vue';
 
 <template>
   <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
-    <var-paper class="popup-assess">
+    <var-paper class="popup-content">
       <var-cell class="text-cell">
         <var-space justify="center" class="text-lg">
           {{ ce.lang.name }}
@@ -68,7 +68,7 @@ import { type PropType } from 'vue';
         </thead>
       </var-table>
       <var-space justify="space-around" class="pt-2">
-        <var-button type="primary" icon-container @click="$emit('update:show', false)">
+        <var-button type="primary" size="small" icon-container @click="$emit('update:show', false)">
           {{ $t('close') }}
         </var-button>
       </var-space>
@@ -126,30 +126,6 @@ export default {
 
   tbody td {
     text-align: center;
-  }
-}
-
-.popup-assess {
-  border-radius: 16px;
-  max-width: 85vw;
-}
-
-@media screen and (max-width: 320px) {
-  .popup-assess {
-    padding: 16px 6px;
-  }
-}
-
-@media screen and (min-width: 375px) {
-  .popup-assess {
-    padding: 16px 9px;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .popup-assess {
-    padding: 24px 12px;
-    max-width: 768px;
   }
 }
 </style>
