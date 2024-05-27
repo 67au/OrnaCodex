@@ -26,7 +26,7 @@ import { useHistoryState } from '@/stores';
           {{ entry.lang.name }}
 
           <template #description>
-            <var-space size="mini" style="line-height: 120%;">
+            <var-space size="mini" class="line-height-tight">
               <var-chip type="warning" size="mini" :round="false" plain>
                 {{ getTierName(entry.meta.tier) }}
               </var-chip>
