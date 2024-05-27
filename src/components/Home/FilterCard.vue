@@ -19,24 +19,25 @@ import { getTierName } from '@/plugins/utils';
                 v-model="sortDefaultWarp">
                 <var-option value="default,0" :label="defaultLabel" key="default,0" />
                 <template v-for="name in ['name', 'tier']">
-                  <var-option v-for="asc in ['0', '1']" :value="`${name},${asc}`" :key="`${name},${asc}`">
-                    <var-space align="center" size="mini">
+                  <var-option class="text-lg" v-for="asc in ['0', '1']" :value="`${name},${asc}`"
+                    :key="`${name},${asc}`">
+                    <var-space align="center" size="0" line>
                       {{ $t(name) }}
-                      <div v-if="asc === '0'" class="i-mdi-arrow-down text-xl"></div>
-                      <div v-else class="i-mdi-arrow-up text-xl"></div>
+                      <div v-if="asc === '0'" class="i-mdi-arrow-down text-lg"></div>
+                      <div v-else class="i-mdi-arrow-up text-lg"></div>
                     </var-space>
                   </var-option>
                 </template>
                 <template #selected>
                   <div class="text-md">
-                    <var-space align="center" size="mini">
+                    <var-space align="center" size="0" line>
                       <template v-if="sortDefault.name === 'default'">
                         {{ defaultLabel }}
                       </template>
                       <template v-else>
                         {{ $t(sortDefault.name) }}
-                        <div v-if="sortDefault.asc" class="i-mdi-arrow-up text-xl"></div>
-                        <div v-else class="i-mdi-arrow-down text-xl"></div>
+                        <div v-if="sortDefault.asc" class="i-mdi-arrow-up text-lg"></div>
+                        <div v-else class="i-mdi-arrow-down text-lg"></div>
                       </template>
                     </var-space>
                   </div>
