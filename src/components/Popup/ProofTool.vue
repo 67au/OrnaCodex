@@ -84,7 +84,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 425px) {
   .popup-content {
     padding: 24px 12px;
     max-width: 425px;
