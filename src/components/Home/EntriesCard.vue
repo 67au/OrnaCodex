@@ -38,7 +38,7 @@ import { rarityAura, rarityText } from '@/plugins/utils';
             </var-space>
 
             <template #description>
-              <var-space size="mini" style="line-height: 120%;">
+              <var-space size="mini" class="line-height-tight">
                 <var-chip type="warning" size="mini" :round="false" plain>
                   {{ getTierName(codexState.meta[category][id]['tier']) }}
                 </var-chip>

@@ -7,7 +7,7 @@ import { useCompareState, useHistoryState } from '@/stores';
 
 <template>
   <var-fab type="primary" v-model:active="active" drag safe-area>
-    <var-badge style="z-index: 200;" type="danger" offset-x="2" :value="compareState.length"
+    <var-badge class="z-200" type="danger" offset-x="2" :value="compareState.length"
       :hidden="compareState.length === 0">
       <var-button type="warning" icon-container @click.stop="showCompare" :disabled="compareState.length === 0">
         <div class="i-mdi-scale-balance text-xl" />
