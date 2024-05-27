@@ -285,6 +285,11 @@ export function assess(query: AssessQuery) {
           ? right - 1
           : right
       ]
+      if (input > 0) {
+        result.quality = Math.max(result.quality, +(result.range[1] / 100).toFixed(12))
+      } else {
+        result.quality = Math.min(result.quality, +(result.range[0] / 100).toFixed(12))
+      }
     }
   }
 
