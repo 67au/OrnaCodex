@@ -23,8 +23,8 @@ import { getTierName } from '@/plugins/utils';
                     :key="`${name},${asc}`">
                     <var-space align="center" size="0" line>
                       {{ $t(name) }}
-                      <div v-if="asc === '0'" class="i-mdi-arrow-down text-lg"></div>
-                      <div v-else class="i-mdi-arrow-up text-lg"></div>
+                      <div v-if="asc === '0'" class="i-mdi-arrow-downward text-lg"></div>
+                      <div v-else class="i-mdi-arrow-upward text-lg"></div>
                     </var-space>
                   </var-option>
                 </template>
@@ -36,11 +36,14 @@ import { getTierName } from '@/plugins/utils';
                       </template>
                       <template v-else>
                         {{ $t(sortDefault.name) }}
-                        <div v-if="sortDefault.asc" class="i-mdi-arrow-up text-lg"></div>
-                        <div v-else class="i-mdi-arrow-down text-lg"></div>
+                        <div v-if="sortDefault.asc" class="i-mdi-arrow-upward text-lg"></div>
+                        <div v-else class="i-mdi-arrow-downward text-lg"></div>
                       </template>
                     </var-space>
                   </div>
+                </template>
+                <template #arrow-icon>
+                  <div></div>
                 </template>
               </var-select>
             </var-col>
