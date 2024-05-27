@@ -10,7 +10,8 @@ import {
   isOffHand,
   isUpgradableSlots,
   isCelestialWeapon,
-  valueStrip
+  valueStrip,
+  isMaterial
 } from './utils'
 import type { AssessQuery, AssessResult } from '@/types'
 import { assess } from './assess'
@@ -85,6 +86,10 @@ export class CodexEntry {
   }
   get isCelestialWeapon(): boolean {
     return isCelestialWeapon(this.meta)
+  }
+
+  get isMaterial(): boolean {
+    return isMaterial(this.meta)
   }
 
   get bossScale() {
