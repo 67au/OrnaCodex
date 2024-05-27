@@ -99,3 +99,7 @@ export function isUpgradable(item: any) {
 export function isUpgradableSlots(item: any) {
   return isUpgradable(item) && !isOffHand(item)
 }
+
+export function isMaterial(item: any) {
+  return item['item_type'] === 'material'
+}

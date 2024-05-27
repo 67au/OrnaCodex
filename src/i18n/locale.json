@@ -100,6 +100,11 @@
         "demonforged": "魔化",
         "godforged": "神赐"
       }
+    },
+    "tools": "实用工具",
+    "proof": {
+      "title": "公会之证",
+      "count": "材料数量"
     }
   },
   "zh-hant": {
@@ -203,6 +208,11 @@
         "demonforged": "魔化",
         "godforged": "神賜"
       }
+    },
+    "tools": "實用工具",
+    "proof": {
+      "title": "公會之証",
+      "count": "材料數量"
     }
   },
   "en": {
@@ -306,6 +316,11 @@
         "demonforged": "Demonforged",
         "godforged": "Godforged"
       }
+    },
+    "tools": "Tools",
+    "proof": {
+      "title": "Proof",
+      "count": "Materials Count"
     }
   }
 }

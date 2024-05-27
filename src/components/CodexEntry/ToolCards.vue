@@ -60,12 +60,26 @@ import { Snackbar } from '@varlet/ui';
     </template>
   </var-card>
 
+  <var-card class="card" :title="$t('tools')" v-if="displayTools">
+    <template #description>
+      <div class="card-description">
+        <var-space justify="flex-start" align="center" size="mini">
+          <var-button v-if="ce.isMaterial" type="warning" size="small" @click.stop="show.tools.proof = true">
+            {{ $t('proof.title') }}
+          </var-button>
+        </var-space>
+      </div>
+    </template>
+  </var-card>
+
   <GuideResult v-model:show="show.guide.page" :href="ge.pageUrl" :result="ge.exist" />
   <GuideResult v-model:show="show.guide.assessPage" :href="ge.assessUrl" :result="ge.exist" />
 
   <AssessQuery v-if="query !== undefined" title="Assess" :query="query" v-model:show="show.assess"
     :from-guide="fromGuide" />
   <GuideResult v-else v-model:show="show.assess" :result="false" />
+
+  <ProofTool v-model:show="show.tools.proof" />
 </template>
 
 <script lang="ts">
@@ -84,7 +98,10 @@ export default defineComponent({
         yaco: {
           quality: false
         },
-        assess: false
+        assess: false,
+        tools: {
+          proof: false
+        }
       },
       query: undefined as AssessQuery | undefined,
       fromGuide: false,
@@ -99,6 +116,9 @@ export default defineComponent({
     },
     compareState() {
       return useCompareState()
+    },
+    displayTools() {
+      return this.ce.isMaterial
     }
   },
   methods: {
