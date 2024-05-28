@@ -9,6 +9,9 @@ export const useExtraState = defineStore('extra', {
   }),
   actions: {
     async fetchAll() {
+      if (EXTRA_API_URL === '') {
+        return false
+      }
       await fetch(`${EXTRA_API_URL}/codex/items/meta.json`)
         .then((resp) => resp.json())
         .then((data) => {
