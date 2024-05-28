@@ -61,8 +61,9 @@ jobs:
           yarn install
       - name: Build
         run: |
-          echo 'ORNA_URL=${{ vars.TARGET }}' >> .env
+          echo 'ORNA_URL=https://${{ vars.TARGET }}' >> .env
           echo "DATA_CREATED=$(cat ./crawler/tmp/finished)" >> .env
+          echo 'EXTRA_API_URL=https://${{ vars.EXTRA_API }}' >> .env
           yarn build
       - name: Setup Pages
         uses: actions/configure-pages@v5
