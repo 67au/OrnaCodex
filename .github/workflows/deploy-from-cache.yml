@@ -63,7 +63,7 @@ jobs:
         run: |
           echo 'ORNA_URL=https://${{ vars.TARGET }}' >> .env
           echo "DATA_CREATED=$(cat ./crawler/tmp/finished)" >> .env
-          echo 'EXTRA_API_URL=https://${{ vars.EXTRA_API }}' >> .env
+          echo 'EXTRA_API_URL=https://${{ secrets.EXTRA_API_URL }}' >> .env
           yarn build
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -75,3 +75,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Purge CloudFlare Cache
+        if: vars.PURGE_CF_CACHE == '1'
+        run: |
+          curl --request POST \
+            --url https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer ${{ secrets.CF_TOKEN }}' \
+            --data '{
+              "files": [
+                "https://${{ vars.CF_CODEX_URL }}"
+              ]
+            }'
