@@ -92,14 +92,19 @@ export function isCelestialWeapon(item: any) {
   return isCelestial(item) && isWeapon(item)
 }
 
-export function isUpgradable(item: any) {
-  return (isWeapon(item) && !isAdornment(item)) || (isArmor(item) && !isAccessory(item))
-}
-
 export function isUpgradableSlots(item: any) {
   return isUpgradable(item) && !isOffHand(item)
 }
 
 export function isMaterial(item: any) {
   return item['item_type'] === 'material'
+}
+
+const gears = new Set(['weapon', 'armor', 'adornment'])
+export function isGears(item: any) {
+  return item['item_type'] !== undefined && gears.has(item['item_type'])
+}
+
+export function isUpgradable(item: any) {
+  return (isWeapon(item) || isArmor(item)) && !isAccessory(item)
 }

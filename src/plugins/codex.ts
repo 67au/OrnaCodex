@@ -11,7 +11,8 @@ import {
   isUpgradableSlots,
   isCelestialWeapon,
   valueStrip,
-  isMaterial
+  isMaterial,
+  isGears
 } from './utils'
 import type { AssessQuery, AssessResult } from '@/types'
 import { assess } from './assess'
@@ -56,7 +57,7 @@ export class CodexEntry {
   // items
   get isAssessable(): boolean {
     const codexState = useCodexState()
-    return Object.keys(this.meta.stats).some((key) => codexState.sortKeys.has(key))
+    return Object.keys(this.meta.stats).some((key) => codexState.assessKeysSet.has(key))
   }
   get isCelestial(): boolean {
     return isCelestial(this.meta)
@@ -74,8 +75,6 @@ export class CodexEntry {
     return isAdornment(this.meta)
   }
   get isUpgradable(): boolean {
-    // wait for fix
-    // return this.isWeapon || (this.isArmor && !this.isAccessory);
     return isUpgradable(this.meta)
   }
   get isOffHand(): boolean {
@@ -87,9 +86,11 @@ export class CodexEntry {
   get isCelestialWeapon(): boolean {
     return isCelestialWeapon(this.meta)
   }
-
   get isMaterial(): boolean {
     return isMaterial(this.meta)
+  }
+  get isGears(): boolean {
+    return isGears(this.meta)
   }
 
   get bossScale() {

@@ -31,27 +31,28 @@ import { Snackbar } from '@varlet/ui';
     </template>
   </var-card>
 
-  <var-card class="card" :title="$t('assess')" v-if="ce.category === 'items' && ce.meta.stats !== undefined">
+  <var-card class="card" :title="$t('assess')"
+    v-if="ce.category === 'items' && ce.isGears && ce.meta.stats !== undefined">
     <template #description>
       <div class="card-description">
         <var-space justify="flex-start" align="center" size="mini">
-          <template v-if="ce.isAssessable">
-            <var-button-group type="success">
-              <var-button type="info" size="small" @click="getGuideAssess" :loading="loading.guide" loading-type="wave">
-                Guide
-              </var-button>
-              <var-button size="small" @click="initGuideQuery()" :loading="loading.guide" loading-type="wave"
-                v-if="!ce.isCelestialWeapon">
-                API
-              </var-button>
-            </var-button-group>
-            <var-button type="warning" size="small" @click="initYacoQuery()" v-if="!ce.isCelestialWeapon">
-              YACO
+          <var-button-group type="success">
+            <var-button type="info" size="small" @click="getGuideAssess" :loading="loading.guide" loading-type="wave">
+              Guide
             </var-button>
-            <var-button type="warning" size="small" @click="initYacoQuery(true)">
-              {{ $t('query.quality') }}
+            <var-button size="small" @click="initGuideQuery()" :loading="loading.guide" loading-type="wave"
+              v-if="!ce.isCelestialWeapon && ce.isAssessable">
+              API
             </var-button>
-          </template>
+          </var-button-group>
+          <var-button type="warning" size="small" @click="initYacoQuery()"
+            v-if="!ce.isCelestialWeapon && ce.isAssessable || ce.isUpgradableSlots">
+            YACO
+          </var-button>
+          <var-button type="warning" size="small" @click="initYacoQuery(true)"
+            v-if="ce.isAssessable || ce.isUpgradableSlots">
+            {{ $t('query.quality') }}
+          </var-button>
           <var-button type="primary" size="small" @click.stop="addToCompare" v-if="!ce.isCelestialWeapon">
             {{ $t('compare.button') }}
           </var-button>
