@@ -38,7 +38,8 @@ export function enterCodex(category: string, id: string) {
 
 const regex_strip_percent_and_plus = /%|\+/gi
 export function valueStrip(value: string) {
-  return Number(value.replaceAll(regex_strip_percent_and_plus, ''))
+  const s = value.replaceAll(regex_strip_percent_and_plus, '')
+  return Number(s.split(' ')[0])
 }
 
 const auraSet = new Set(['items', 'bosses', 'monsters'])
