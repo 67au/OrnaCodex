@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { useEntriesListState, useFiltersState } from '@/stores';
+import FilterCard from '@/components/Home/FilterCard.vue';
+import EntriesCard from '@/components/Home/EntriesCard.vue';
 </script>
 
 <template>
   <var-sticky :offset-top="64" css-mode :disabled="disableSticky" class="hack-warp">
-    <component :is="'FilterCard'"></component>
+    <FilterCard />
   </var-sticky>
-  <component :is="'EntriesCard'"></component>
+  <EntriesCard />
 </template>
 
 <script lang="ts">
-
 export default defineComponent({
-  components: {
-    FilterCard: defineAsyncComponent(() => import("@/components/Home/FilterCard.vue")),
-    EntriesCard: defineAsyncComponent(() => import("@/components/Home/EntriesCard.vue")),
-  },
   data() {
     return {
       windowWidth: window.innerWidth
