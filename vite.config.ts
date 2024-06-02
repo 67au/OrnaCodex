@@ -9,6 +9,7 @@ import autoImport from 'unplugin-auto-import/vite'
 import { VarletImportResolver } from '@varlet/import-resolver'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import UnoCSS from 'unocss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -20,6 +21,15 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        manifest: {
+          name: 'Yet Another Codex for Orna',
+          short_name: 'Codex YACO',
+          description: 'Yet Another Codex for Orna',
+          theme_color: '#ffffff'
+        }
+      }),
       components({
         resolvers: [VarletImportResolver()]
       }),
