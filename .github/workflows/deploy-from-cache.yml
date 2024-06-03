@@ -75,6 +75,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages deploy ./dist --project-name=${{ vars.CF_PAGES_NAME }}
       - name: Purge CloudFlare Cache
         if: vars.PURGE_CF_CACHE == '1'
         run: |
