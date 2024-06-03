@@ -10,8 +10,8 @@ on:
 permissions:
   actions: read
   contents: read
-  pages: write
-  id-token: write
+  # pages: write
+  # id-token: write
 
 concurrency:
   group: 'pages'
@@ -19,9 +19,9 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment:
+    # name: github-pages
+    # url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,16 +65,16 @@ jobs:
           echo "DATA_CREATED=$(cat ./crawler/tmp/finished)" >> .env
           echo 'EXTRA_API_URL=https://${{ secrets.EXTRA_API_URL }}' >> .env
           yarn build
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: './dist'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v5
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     # Upload entire repository
+      #     path: './dist'
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
