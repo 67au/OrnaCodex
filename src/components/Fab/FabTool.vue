@@ -33,11 +33,15 @@ export default defineComponent({
       }
     })
 
+    const historyStorage = useLocalStorage('history', JSON.stringify(this.historyState.list))
+    this.historyState.initialize(JSON.parse(historyStorage.value))
+
     router.afterEach((to, from) => {
       if (to.name === 'codex') {
         const entry = new CodexEntry(to.params.category as string, to.params.id as string)
         if (entry.meta !== undefined) {
           this.historyState.add(entry)
+          historyStorage.value = JSON.stringify(this.historyState.list)
         }
       }
     })
