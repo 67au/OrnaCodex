@@ -14,6 +14,12 @@ export const useHistoryState = defineStore('history', {
     }
   },
   actions: {
+    initialize(data: Array<CodexEntry>) {
+      this.list = data
+        .map((e) => new CodexEntry(e.category, e.id))
+        .filter((e) => e.meta !== undefined)
+      this.keys = new Set(this.list.map((entry) => entry.url))
+    },
     add(entry: CodexEntry) {
       if (!this.keys.has(entry.url)) {
         if (!(this.list.length < MAX_LENGTH)) {
