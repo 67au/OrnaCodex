@@ -1,4 +1,4 @@
-import { useScrollTopState } from '@/stores'
+import { useScrollTopState } from '@/stores/scrollTop'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({

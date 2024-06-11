@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useFiltersState, useOptionsState } from '@/stores';
+import { useFiltersState } from '@/stores/filters';
+import { useOptionsState } from '@/stores/options';
 import { getTierName } from '@/plugins/utils';
 
 </script>

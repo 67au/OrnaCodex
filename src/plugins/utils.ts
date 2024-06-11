@@ -1,6 +1,6 @@
 import router from '@/router'
 import { global } from './global'
-import { useCodexState } from '@/stores'
+import { useCodexState } from '@/stores/codex'
 import type { CodexId } from '@/types'
 
 const regex_temp = / \[temp\]/gi

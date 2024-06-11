@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex';
 import { enterCodex, rarityAura, getStaticUrl } from '@/plugins/utils';
-import { useHistoryState } from '@/stores';
+import { useHistoryState } from '@/stores/history';
 
 </script>
 

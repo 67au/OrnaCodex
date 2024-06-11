@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useCodexState, useEntriesListState, useFiltersState } from '@/stores';
+import { useCodexState } from '@/stores/codex';
+import { useEntriesListState } from '@/stores/entriesList';
+import { useFiltersState } from '@/stores/filters';
 import { enterCodex, getStaticUrl, getTierName } from '@/plugins/utils';
 import { rarityAura, rarityText } from '@/plugins/utils';
 </script>

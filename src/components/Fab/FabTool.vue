@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { CodexEntry } from '@/plugins/codex';
 import router from '@/router';
-import { useCompareState, useHistoryState } from '@/stores';
+import { useCompareState } from '@/stores/compare';
+import { useHistoryState } from '@/stores/history';
 
 </script>
 

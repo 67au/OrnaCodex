@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useEntriesListState, useFiltersState } from '@/stores';
+import { useEntriesListState } from '@/stores/entriesList';
+import { useFiltersState } from '@/stores/filters';
 import FilterCard from '@/components/Home/FilterCard.vue';
 import EntriesCard from '@/components/Home/EntriesCard.vue';
 </script>

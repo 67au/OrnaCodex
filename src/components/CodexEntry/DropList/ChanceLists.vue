@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getStaticUrl, getTierName } from '@/plugins/utils';
-import { useCodexState } from '@/stores';
+import { useCodexState } from '@/stores/codex';
 </script>
 
 <template>
