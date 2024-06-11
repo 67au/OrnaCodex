@@ -1,35 +1,40 @@
 import { CodexEntry } from '@/plugins/codex'
 import { defineStore } from 'pinia'
 
-const MAX_LENGTH = 30
+const MAX_MAP_SIZE = 30
 
 export const useHistoryState = defineStore('history', {
   state: () => ({
-    list: Array<CodexEntry>(),
-    keys: new Set() as Set<string>
+    map: new Map<string, CodexEntry>()
   }),
   getters: {
-    history(state) {
-      return [...state.list].reverse()
+    history(state): Array<CodexEntry> {
+      return [...state.map.values()].reverse()
+    },
+    string(state): string {
+      return JSON.stringify([...state.map.values()])
     }
   },
   actions: {
     initialize(data: Array<CodexEntry>) {
-      this.list = data
-        .map((e) => new CodexEntry(e.category, e.id))
-        .filter((e) => e.meta !== undefined)
-      this.keys = new Set(this.list.map((entry) => entry.url))
+      data.forEach((e) => {
+        const entry = new CodexEntry(e.category, e.id)
+        if (entry.meta !== undefined) {
+          this.add(entry)
+        }
+      })
     },
     add(entry: CodexEntry) {
-      if (!this.keys.has(entry.url)) {
-        if (!(this.list.length < MAX_LENGTH)) {
-          const out = this.list.shift()
-          if (out !== undefined) {
-            this.keys.delete(out?.url)
+      if (this.map.has(entry.url)) {
+        this.map.delete(entry.url)
+        this.map.set(entry.url, entry)
+      } else {
+        this.map.set(entry.url, entry)
+        if (this.map.size >= MAX_MAP_SIZE) {
+          for (const e of this.history.slice(MAX_MAP_SIZE, this.map.size)) {
+            this.map.delete(e.url)
           }
         }
-        this.list.push(entry)
-        this.keys.add(entry.url)
       }
     },
     reset() {
