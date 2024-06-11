@@ -319,8 +319,8 @@
     },
     "tools": "Tools",
     "proof": {
-      "title": "Proof",
-      "count": "Materials Count"
+      "title": "GuildProofs",
+      "count": "Materials"
     }
   }
 }
