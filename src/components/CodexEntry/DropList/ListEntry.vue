@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex';
-import { enterCodex, getStaticUrl, getTierName, rarityAura, rarityText } from '@/plugins/utils';
+import { enterCodex, getStaticUrl, rarityAura, rarityText } from '@/plugins/utils';
 import { useCodexState } from '@/stores';
 import type { Status } from '@/types';
 import type { PropType } from 'vue';
@@ -18,7 +18,7 @@ import type { PropType } from 'vue';
         {{ entry.lang.name }}
       </span>
       <var-chip type="warning" size="mini" :round="true" plain>
-        {{ getTierName(entry.meta.tier) }}
+        {{ entry.tier }}
       </var-chip>
     </var-space>
 
