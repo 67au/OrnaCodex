@@ -25,7 +25,7 @@ useDark();
         <AppHistory v-if="!isLoading" />
         <AppLocaleSwitch />
         <AppThemeSwitch />
-        <AppGithub :data-created="global.dataCreated" link="http://github.com/67au/OrnaCodex" author="FQEGG" />
+        <AppGithub :data-created="global.dataCreated" />
       </template>
     </AppHeader>
     <template v-if="!isLoading">
