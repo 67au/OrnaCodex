@@ -6,6 +6,7 @@ import { useCodexState } from './stores/codex';
 import { i18n } from './i18n';
 import { useExtraState } from './stores/extra';
 import { global } from './plugins/global';
+import AppHistory from './components/Header/AppHistory.vue';
 
 useDark();
 </script>
@@ -21,6 +22,7 @@ useDark();
   <MainLayout>
     <AppHeader :title="$t('title')">
       <template #right>
+        <AppHistory v-if="!isLoading" />
         <AppLocaleSwitch />
         <AppThemeSwitch />
         <AppGithub :data-created="global.dataCreated" link="http://github.com/67au/OrnaCodex" author="FQEGG" />

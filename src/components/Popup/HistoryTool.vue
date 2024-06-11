@@ -11,8 +11,11 @@ import { useHistoryState } from '@/stores/history';
       <var-space align="center" justify="space-between" size="large" class="pb-3" line>
         <span class="text-xl">{{ $t('history') }}</span>
         <var-space align="center" justify="flex-end" size="mini" line>
-          <var-button type="danger" size="small" icon-container @click="$emit('update:show', false)">
-            {{ $t('close') }}
+          <var-button type="warning" size="small" round icon-container @click="historyState.reset()">
+            <div class="i-mdi-trash text-lg"></div>
+          </var-button>
+          <var-button type="danger" size="small" round icon-container @click="$emit('update:show', false)">
+            <div class="i-mdi-window-close text-lg"></div>
           </var-button>
         </var-space>
       </var-space>
