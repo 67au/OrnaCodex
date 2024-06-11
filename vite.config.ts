@@ -27,7 +27,13 @@ export default defineConfig(({ mode }) => {
           name: 'Yet Another Codex for Orna',
           short_name: 'Codex YACO',
           description: 'Yet Another Codex for Orna',
-          theme_color: '#ffffff'
+          theme_color: '#ffffff',
+          icons: [192, 256, 384, 512].map((x) => ({
+            src: '/favicon.svg',
+            sizes: `${x}x${x}`,
+            type: 'image/svg+xml',
+            purpose: 'any'
+          }))
         }
       }),
       components({
