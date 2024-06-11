@@ -1,5 +1,5 @@
 import { i18n } from '@/i18n'
-import { useCodexState } from '@/stores'
+import { useCodexState } from '@/stores/codex'
 import {
   isCelestial,
   isWeapon,

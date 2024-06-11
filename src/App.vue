@@ -2,7 +2,7 @@
 import MainLayout from './pages/MainLayout.vue';
 import { useDark } from '@/styles';
 import type { CodexMeta } from './types';
-import { useCodexState } from './stores';
+import { useCodexState } from './stores/codex';
 import { i18n } from './i18n';
 import { useExtraState } from './stores/extra';
 import { global } from './plugins/global';

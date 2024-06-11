@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex';
 import { enterCodex, getStaticUrl, rarityAura, rarityText } from '@/plugins/utils';
-import { useCodexState } from '@/stores';
+import { useCodexState } from '@/stores/codex';
 import type { Status } from '@/types';
 import type { PropType } from 'vue';
 </script>

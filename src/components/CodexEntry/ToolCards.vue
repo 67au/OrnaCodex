@@ -2,7 +2,7 @@
 import { CodexEntry } from '@/plugins/codex';
 import { global } from '@/plugins/global';
 import type { GuideEntry } from '@/plugins/guide';
-import { useCompareState } from '@/stores';
+import { useCompareState } from '@/stores/compare';
 import type { AssessQuery } from '@/types';
 import { Snackbar } from '@varlet/ui';
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCompareState } from '@/stores'
+import { useCompareState } from '@/stores/compare'
 import { getStaticUrl, valueStrip } from '@/plugins/utils'
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
 </script>
