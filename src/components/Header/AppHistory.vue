@@ -19,15 +19,22 @@ export default {
     }
   },
   mounted() {
-    const historyStorage = useLocalStorage('history', JSON.stringify(this.historyState.list))
+    const historyStorage = useLocalStorage('history', this.historyState.string)
     this.historyState.initialize(JSON.parse(historyStorage.value))
+
+    const saveHistory = useDebounceFn(() => {
+      historyStorage.value = this.historyState.string
+    }, 500, { maxWait: 1000 })
+
+    watch(() => this.historyState.map.size, () => {
+      saveHistory()
+    }, { immediate: true })
 
     router.afterEach((to, from) => {
       if (to.name === 'codex') {
         const entry = new CodexEntry(to.params.category as string, to.params.id as string)
         if (entry.meta !== undefined) {
           this.historyState.add(entry)
-          historyStorage.value = JSON.stringify(this.historyState.list)
         }
       }
     })
