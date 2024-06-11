@@ -31,6 +31,9 @@ export const useHistoryState = defineStore('history', {
         this.list.push(entry)
         this.keys.add(entry.url)
       }
+    },
+    reset() {
+      this.$reset()
     }
   }
 })

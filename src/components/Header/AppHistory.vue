@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import { useHistoryState } from '@/stores/history';
+import router from '@/router';
+import { CodexEntry } from '@/plugins/codex';
+</script>
+
+<template>
+  <var-button text-color="#fff" text round @click="show = true">
+    <div class="i-mdi-history text-xl" />
+  </var-button>
+  <HistoryTool v-model:show="show" />
+</template>
+
+<script lang="ts">
+export default {
+  data() {
+    return {
+      show: false
+    }
+  },
+  mounted() {
+    const historyStorage = useLocalStorage('history', JSON.stringify(this.historyState.list))
+    this.historyState.initialize(JSON.parse(historyStorage.value))
+
+    router.afterEach((to, from) => {
+      if (to.name === 'codex') {
+        const entry = new CodexEntry(to.params.category as string, to.params.id as string)
+        if (entry.meta !== undefined) {
+          this.historyState.add(entry)
+          historyStorage.value = JSON.stringify(this.historyState.list)
+        }
+      }
+    })
+  },
+  computed: {
+    historyState() {
+      return useHistoryState()
+    }
+  }
+}
+</script>
