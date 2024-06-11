@@ -3,7 +3,7 @@
     <div class="i-mdi-github text-xl" />
   </var-button>
   <var-dialog :title="$t('about')" v-model:show="show" :cancel-button="false">
-    <var-cell class="text-cell" title="Data Last Updated At:">
+    <var-cell class="mini-cell line-height-normal" title="Data Last Updated At">
       <template #icon>
         <div class="i-mdi-update text-size-3xl mr-2"></div>
       </template>
@@ -13,25 +13,59 @@
         </div>
       </template>
     </var-cell>
-    <var-cell class="text-cell" title="Repo:">
+    <var-cell class="mini-cell line-height-normal" title="Repo">
       <template #icon>
         <div class="i-mdi-github text-size-3xl mr-2"></div>
       </template>
       <template #description>
         <div class="cell-description">
-          <var-link :href="link" target="_blank">
+          <var-link text-color="#aaa" href="https://github.com/67au/OrnaCodex" target="_blank">
             GitHub
           </var-link>
         </div>
       </template>
     </var-cell>
-    <var-cell class="text-cell" title="Author:">
+    <var-cell class="mini-cell line-height-normal" title="Author">
       <template #icon>
         <div class="i-mdi-account-circle text-size-3xl mr-2"></div>
       </template>
       <template #description>
         <div class="cell-description">
-          {{ author }}
+          <var-link text-color="#aaa" href="https://github.com/67au" target="_blank">
+            FQEGG
+          </var-link>
+        </div>
+      </template>
+    </var-cell>
+    <var-cell class="mini-cell line-height-normal" title="Credit">
+      <template #icon>
+        <div class="i-mdi-thumb-up text-size-3xl mr-2"></div>
+      </template>
+      <template #description>
+        <div class="cell-description">
+          <var-link text-color="#aaa" href="https://playorna.com" target="_blank">
+            Official OrnaRPG Codex
+          </var-link>
+          ,
+          <var-link text-color="#aaa" href="https://github.com/yukixz/orna-tools" target="_blank">
+            套套@yukixz
+          </var-link>
+          ,
+          <var-link text-color="#aaa" href="https://orna.guide" target="_blank">
+            OrnaGuide
+          </var-link>
+        </div>
+      </template>
+    </var-cell>
+    <var-cell class="mini-cell line-height-normal" title="License">
+      <template #icon>
+        <div class="i-mdi-license text-size-3xl mr-2"></div>
+      </template>
+      <template #description>
+        <div class="cell-description">
+          <var-link text-color="#aaa" href="https://github.com/67au/OrnaCodex/raw/main/LICENSE" target="_blank">
+            MIT License
+          </var-link>
         </div>
       </template>
     </var-cell>
@@ -45,12 +79,6 @@ export default {
     dataCreated: {
       type: Object as PropType<Date>,
     },
-    link: {
-      type: String,
-    },
-    author: {
-      type: String,
-    }
   },
   data() {
     return {
