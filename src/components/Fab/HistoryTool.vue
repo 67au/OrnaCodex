@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex';
-import { enterCodex, rarityAura, getStaticUrl, getTierName } from '@/plugins/utils';
+import { enterCodex, rarityAura, getStaticUrl } from '@/plugins/utils';
 import { useHistoryState } from '@/stores';
 
 </script>
@@ -28,7 +28,7 @@ import { useHistoryState } from '@/stores';
           <template #description>
             <var-space size="mini" class="line-height-tight">
               <var-chip type="warning" size="mini" :round="false" plain>
-                {{ getTierName(entry.meta.tier) }}
+                {{ entry.tier }}
               </var-chip>
               <var-chip type="primary" size="mini" :round="false" plain>
                 {{ $t(`categories.${entry.category}`) }}

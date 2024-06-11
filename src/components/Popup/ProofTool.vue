@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CodexEntry } from '@/plugins/codex';
 import { PROOF_IDS, getMaterials, getProofRate, getProofs } from '@/plugins/proof';
-import { getStaticUrl, getTierName } from '@/plugins/utils';
+import { getStaticUrl } from '@/plugins/utils';
 </script>
 
 <template>
@@ -11,7 +11,7 @@ import { getStaticUrl, getTierName } from '@/plugins/utils';
         <var-space justify="center" align="baseline" class="text-lg" size="small">
           {{ ce.lang.name }}
           <var-chip type="warning" size="small" plain>
-            {{ getTierName(ce.meta.tier) }}
+            {{ ce.tier }}
           </var-chip>
         </var-space>
       </var-cell>

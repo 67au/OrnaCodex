@@ -12,7 +12,8 @@ import {
   isCelestialWeapon,
   valueStrip,
   isMaterial,
-  isGears
+  isGears,
+  getTierName
 } from './utils'
 import type { AssessQuery, AssessResult } from '@/types'
 import { assess } from './assess'
@@ -35,6 +36,9 @@ export class CodexEntry {
   }
   get url() {
     return CodexEntry.getUrl(this.category, this.id)
+  }
+  get tier() {
+    return getTierName(this.meta.tier)
   }
   get miss() {
     const codexState = useCodexState()

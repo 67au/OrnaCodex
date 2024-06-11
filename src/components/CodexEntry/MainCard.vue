@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex';
-import { getStaticUrl, getTierName, rarityAura, rarityText } from '@/plugins/utils';
+import { getStaticUrl, rarityAura, rarityText } from '@/plugins/utils';
 
 </script>
 
@@ -21,7 +21,7 @@ import { getStaticUrl, getTierName, rarityAura, rarityText } from '@/plugins/uti
         <var-space size="mini" class="space">
 
           <var-chip type="warning" :size="chipSize" :round="true" plain>
-            {{ getTierName(ce.meta.tier) }}
+            {{ ce.tier }}
           </var-chip>
 
           <var-chip type="primary" :size="chipSize" :round="true" plain>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCompareState } from '@/stores'
-import { getStaticUrl, getTierName, valueStrip } from '@/plugins/utils'
+import { getStaticUrl, valueStrip } from '@/plugins/utils'
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
 </script>
 
@@ -21,7 +21,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
               <div>
                 {{ entry.lang.name }}
                 <var-chip type="warning" size="mini" :round="true" plain>
-                  {{ getTierName(entry.meta.tier) }}
+                  {{ entry.tier }}
                 </var-chip>
               </div>
             </var-cell>
