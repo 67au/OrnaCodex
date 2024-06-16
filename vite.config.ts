@@ -34,6 +34,12 @@ export default defineConfig(({ mode }) => {
             type: 'image/svg+xml',
             purpose: 'any'
           }))
+        },
+        workbox: {
+          navigateFallbackDenylist: [
+            // cloudflare cdn trace
+            /^\/cdn-cgi\/trace/
+          ]
         }
       }),
       components({
