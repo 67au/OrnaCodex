@@ -5,12 +5,17 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
 </script>
 
 <template>
-  <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)" safe-area>
+  <var-popup
+    :default-style="false"
+    :show="show"
+    @update:show="$emit('update:show', $event)"
+    safe-area
+  >
     <div class="text-center text-xl">
       {{ $t('compare.title') }}
     </div>
     <var-style-provider :style-vars="styleVars">
-      <div class="compare-container" style="height: 100%;">
+      <div class="compare-container" style="height: 100%">
         <div class="empty"></div>
         <div v-for="({ entry: entry, query: query }, index) in compareState.list" :key="index">
           <var-paper class="paper mx-auto" :elevation="12" :width="cardSize">
@@ -28,41 +33,82 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
             <var-cell border class="p-cell form">
               <var-row :gutter="[8, 4]" align="center">
                 <var-col :span="12">
-                  <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="query.isBoss" size="small"
-                    class="w-full">
+                  <var-select
+                    variant="outlined"
+                    :placeholder="$t('query.isBoss')"
+                    v-model="query.isBoss"
+                    size="small"
+                    class="w-full"
+                  >
                     <var-option :label="$t('yes')" :value="true" />
                     <var-option :label="$t('no')" :value="false" />
                   </var-select>
                 </var-col>
                 <var-col :span="12">
-                  <var-select variant="outlined" :placeholder="$t('query.level')" v-model="query.level" size="small"
-                    class="w-full" :disabled="!entry.isUpgradable">
-                    <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)"
-                      :key="i" />
+                  <var-select
+                    variant="outlined"
+                    :placeholder="$t('query.level')"
+                    v-model="query.level"
+                    size="small"
+                    class="w-full"
+                    :disabled="!entry.isUpgradable"
+                  >
+                    <var-option
+                      :value="i"
+                      :label="i"
+                      v-for="i in Array.from({ length: 13 }, (_, i) => i + 1)"
+                      :key="i"
+                    />
                   </var-select>
                 </var-col>
                 <var-col :span="12">
-                  <var-input variant="outlined" size="small" type="number" v-model="query.quality"
-                    :placeholder="$t(`query.quality`)" class="w-full">
+                  <var-input
+                    variant="outlined"
+                    size="small"
+                    type="number"
+                    v-model="query.quality"
+                    :placeholder="$t(`query.quality`)"
+                    class="w-full"
+                  >
                   </var-input>
                 </var-col>
                 <var-col :span="12">
-                  <var-select variant="outlined" :placeholder="$t('query.qualityextra')" v-model="query.qualityCode"
-                    size="small" class="w-full" :disabled="Number(query.quality) < 200" v-if="entry.isAccessory">
-                    <var-option class="option" :value="-1" :label="$t('query.qualitylabel.default')" :key="-1" />
-                    <var-option class="option" :value="i" :label="$t(`query.qualitylabel.${Quality[i]}`)"
-                      v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)" :key="i" />
+                  <var-select
+                    variant="outlined"
+                    :placeholder="$t('query.qualityextra')"
+                    v-model="query.qualityCode"
+                    size="small"
+                    class="w-full"
+                    :disabled="Number(query.quality) < 200"
+                    v-if="entry.isAccessory"
+                  >
+                    <var-option
+                      class="option"
+                      :value="-1"
+                      :label="$t('query.qualitylabel.default')"
+                      :key="-1"
+                    />
+                    <var-option
+                      class="option"
+                      :value="i"
+                      :label="$t(`query.qualitylabel.${Quality[i]}`)"
+                      v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)"
+                      :key="i"
+                    />
                   </var-select>
                 </var-col>
               </var-row>
             </var-cell>
-            <div class="var-elevation--8 mx-1 mt-1" style="max-height: 60vh; overflow: auto;">
-              <var-cell v-for="r, key in result[index]" border class="p-cell s-cell" :key="key">
+            <div class="var-elevation--8 mx-1 mt-1" style="max-height: 60vh; overflow: auto">
+              <var-cell v-for="(r, key) in result[index]" border class="p-cell s-cell" :key="key">
                 <var-space justify="space-between" align="baseline">
                   {{ `${$t('meta.stats.' + key)}` }}
                   <div class="cell-description flex">
                     {{ r.base }}
-                    <div v-if="r.delta !== 0" :class="`${r.delta > 0 ? 'rare-text' : 'ornate-text'}`">
+                    <div
+                      v-if="r.delta !== 0"
+                      :class="`${r.delta > 0 ? 'rare-text' : 'ornate-text'}`"
+                    >
                       {{ `(${r.delta > 0 ? '+' : ''}${r.delta})` }}
                     </div>
                   </div>
@@ -93,15 +139,21 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
 </template>
 
 <script lang="ts">
-const bonusKeysSet = new Set(['orn_bonus', 'exp_bonus', 'luck_bonus', 'gold_bonus'])
+const bonusKeysSet = new Set([
+  'orn_bonus',
+  'exp_bonus',
+  'luck_bonus',
+  'gold_bonus',
+  'monster_encounters'
+])
 const cardSize = 185
 
 export default defineComponent({
   props: {
     show: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -141,42 +193,64 @@ export default defineComponent({
             base = ar.stats[key]?.values[query.level - 1]
           } else {
             const v = entry.meta.stats[key] || '0'
-            const value = (typeof v === 'string') ? valueStrip(v) : (v === true ? 1 : 0)
+            const value = typeof v === 'string' ? valueStrip(v) : v === true ? 1 : 0
             const isNoFollowerBonus = key === 'no_follower_bonus'
             if ((bonusKeysSet.has(key) || isNoFollowerBonus) && value > 0) {
               if (query.level > 10) {
-                base = getUpgradedBonus(value, query.level - 4, false, isNoFollowerBonus)  // level - 10 + 6
+                base = getUpgradedBonus(value, query.level - 4, false, isNoFollowerBonus) // level - 10 + 6
               } else {
                 if (query.qualityCode > 0) {
-                  base = getUpgradedBonus(value, query.qualityCode, entry.isAdorment, isNoFollowerBonus)
+                  base = getUpgradedBonus(
+                    value,
+                    query.qualityCode,
+                    entry.isAdorment,
+                    isNoFollowerBonus
+                  )
                 } else {
-                  base = getUpgradedBonus(value, getQualityCode(ar.quality), entry.isAdorment, isNoFollowerBonus)
+                  base = getUpgradedBonus(
+                    value,
+                    getQualityCode(ar.quality),
+                    entry.isAdorment,
+                    isNoFollowerBonus
+                  )
                 }
               }
             } else {
               base = value
             }
           }
-          return [key, { base: base, delta: 0, }]
+          return [key, { base: base, delta: 0 }]
         })
       })
     },
     result() {
       return this.initializeResult.map((r, index) => {
-        if (index === 0) { return Object.fromEntries(r) }
-        return Object.fromEntries((r as Array<[string, any]>).map(([key, res], index) => {
-          return [key, { base: (res.base as number), delta: res.base - (this.initializeResult[0][index][1] as any).base }]
-        }))
+        if (index === 0) {
+          return Object.fromEntries(r)
+        }
+        return Object.fromEntries(
+          (r as Array<[string, any]>).map(([key, res], index) => {
+            return [
+              key,
+              {
+                base: res.base as number,
+                delta: res.base - (this.initializeResult[0][index][1] as any).base
+              }
+            ]
+          })
+        )
       })
     }
   },
   methods: {
     remove(index: number) {
-      this.compareState.remove(index);
-      if (this.compareState.length === 0) { this.$emit('update:show', false) }
+      this.compareState.remove(index)
+      if (this.compareState.length === 0) {
+        this.$emit('update:show', false)
+      }
     },
     leftShift(index: number) {
-      this.compareState.leftShift(index);
+      this.compareState.leftShift(index)
     }
   }
 })
@@ -236,7 +310,7 @@ export default defineComponent({
   justify-content: var(--compare-container-just-content);
 }
 
-.compare-container>.empty {
+.compare-container > .empty {
   min-width: var(--empty-min-width);
 }
 </style>
