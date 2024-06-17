@@ -6,8 +6,8 @@
 
 <style lang="less">
 /* Hack Card */
-.hack-card>.var-card,
-.hack-card>.hack-warp {
+.hack-card > .var-card,
+.hack-card > .hack-warp {
   break-inside: avoid;
   margin: 0 auto 4px;
   min-width: var(--card-min-width);
