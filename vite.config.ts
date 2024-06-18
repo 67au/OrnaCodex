@@ -39,6 +39,22 @@ export default defineConfig(({ mode }) => {
           navigateFallbackDenylist: [
             // cloudflare cdn trace
             /^\/cdn-cgi\/trace/
+          ],
+          runtimeCaching: [
+            {
+              urlPattern: new RegExp(`^${ornaStaticUrl}/`),
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'static-images-cache',
+                expiration: {
+                  maxEntries: 10000,
+                  maxAgeSeconds: 60 * 60 * 24 * 7 // <== 7 days
+                },
+                cacheableResponse: {
+                  statuses: [0, 200]
+                }
+              }
+            }
           ]
         }
       }),
