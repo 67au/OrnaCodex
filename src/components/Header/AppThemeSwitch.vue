@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { setTheme, currentTheme } from '@/styles'
 
-const show = ref(false);
+const show = ref(false)
 
 function getActiveStyles(theme: string) {
   return {
@@ -12,8 +12,8 @@ function getActiveStyles(theme: string) {
 }
 
 function handleCellClick(theme: string) {
-  setTheme(theme);
-  show.value = false;
+  setTheme(theme)
+  show.value = false
 }
 </script>
 
@@ -23,10 +23,18 @@ function handleCellClick(theme: string) {
       <div class="i-mdi-palette text-xl" />
     </var-button>
     <template #menu>
-      <var-cell ripple :style="getActiveStyles('md2-dark')" @click="() => handleCellClick('md2-dark')">
+      <var-cell
+        ripple
+        :style="getActiveStyles('md2-dark')"
+        @click="() => handleCellClick('md2-dark')"
+      >
         MD2 Dark
       </var-cell>
-      <var-cell ripple :style="getActiveStyles('md3-dark')" @click="() => handleCellClick('md3-dark')">
+      <var-cell
+        ripple
+        :style="getActiveStyles('md3-dark')"
+        @click="() => handleCellClick('md3-dark')"
+      >
         MD3 Dark
       </var-cell>
     </template>

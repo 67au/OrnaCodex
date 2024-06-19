@@ -1,84 +1,118 @@
 <script setup lang="ts">
-import type { CodexEntry } from '@/plugins/codex';
-import type { GuideEntry } from '@/plugins/guide';
-import type { AssessQuery, AssessResult } from '@/types';
-import { Snackbar } from '@varlet/ui';
-import '@varlet/ui/es/snackbar/style/index';
+import type { CodexEntry } from '@/plugins/codex'
+import type { GuideEntry } from '@/plugins/guide'
+import type { AssessQuery, AssessResult } from '@/types'
+import { Snackbar } from '@varlet/ui'
+import '@varlet/ui/es/snackbar/style/index'
 </script>
 
 <template>
-  <var-dialog :show="show" @update:show="$emit('update:show', $event)" :cancel-button="false" dialog-class="dialog">
+  <PopupPaper :show="show" @update:show="$emit('update:show', $event)" max-width="xs">
     <template #title>
-      <var-space align="center" justify="space-between">
-        <span>
-          <var-icon name="magnify" /> {{ title }}
-        </span>
-        <var-chip size="small" :type="aqExtra.isGuide ? 'success' : 'warning'">
-          {{ aqExtra.isGuide ? 'Guide' : 'YACO' }}
-        </var-chip>
-      </var-space>
+      <var-chip class="text-md" type="default" elevation="2">
+        <template #left>
+          <Icon icon-class="i-mdi-magnify" />
+        </template>
+        <div>{{ $t('assess') }}</div>
+        <template #right>
+          <var-chip size="mini" :type="aqExtra.isGuide ? 'success' : 'warning'">
+            {{ aqExtra.isGuide ? 'Guide' : 'YACO' }}
+          </var-chip>
+        </template>
+      </var-chip>
     </template>
-    <div>
-      <var-row :gutter="[8, 4]" align="center">
-        <var-col :span="24">
-          <var-cell class="text-cell">
-            <span> {{ ce.lang.name }} </span>
-            <template #description>
-              <var-space size="mini" align="center" v-if="!ce.isCelestialWeapon && ce.isUpgradable">
-                <var-chip type="warning" size="mini" plain>
-                  YACO | {{ scaleText[ce.bossScale] }}
-                </var-chip>
-                <var-chip v-if="ge.exist" type="success" size="mini" plain>
-                  Guide | {{ ge.cache.boss ? scaleText[1] : scaleText[-1] }}
-                </var-chip>
-              </var-space>
-            </template>
-          </var-cell>
-        </var-col>
-        <var-col :span="8">
-          <div class="w-full">
-            <var-select variant="outlined" :placeholder="$t('query.isBoss')" v-model="aqExtra.isBoss" size="small"
-              :disabled="aqExtra.isGuide || aqExtra.isCelestialWeapon || !aqExtra.isUpgradable">
-              <var-option :label="$t('yes')" :value="true" />
-              <var-option :label="$t('no')" :value="false" />
-            </var-select>
-          </div>
-        </var-col>
-        <var-col :span="8" v-if="aqExtra.isQuality">
-          <div class="w-full">
-            <var-input variant="outlined" size="small" type="number" :placeholder="$t(`query.quality`)"
-              v-model="(aqData.quality as any)" :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
-              :disabled="aqExtra.isCelestialWeapon" />
-          </div>
-        </var-col>
-        <var-col :span="8">
-          <div class="w-full">
-            <var-select variant="outlined" :placeholder="$t('query.level')" v-model="aqData.level" size="small"
-              :disabled="aqExtra.isQuality || !aqExtra.isUpgradable">
-              <var-option :value="i" :label="i" v-for="i in Array.from({ length: 13 }, (_, n) => String(n + 1))"
-                :key="i" />
-            </var-select>
-          </div>
-        </var-col>
-        <var-col :span="8" v-for="key in Object.keys(aqExtra.baseStats)" :key="key">
-          <div class="w-full" v-if="!immutableKeysSet.has(key)">
-            <var-input variant="outlined" size="small" type="number" :placeholder="$t(`meta.stats.${key}`)"
-              v-model="(aqData[key] as any)" :disabled="aqExtra.isQuality" />
-          </div>
-        </var-col>
-        <var-col :span="24">
-          <var-button block type="primary" @click="queryAssess">
-            {{ $t('query.query') }}
-          </var-button>
-        </var-col>
-      </var-row>
-    </div>
-  </var-dialog>
+    <var-row :gutter="[8, 6]" align="center" class="px-2 py-2">
+      <var-col :span="24">
+        <var-cell class="text-cell pb-2">
+          <var-space justify="center" class="text-lg py-2">
+            {{ ce.lang.name }}
+          </var-space>
+          <template #description>
+            <var-space
+              size="mini"
+              justify="center"
+              align="center"
+              v-if="!ce.isCelestialWeapon && ce.isUpgradable"
+            >
+              <var-chip type="warning" size="mini" plain>
+                YACO | {{ scaleText[ce.bossScale] }}
+              </var-chip>
+              <var-chip v-if="ge.exist" type="success" size="mini" plain>
+                Guide | {{ ge.cache.boss ? scaleText[1] : scaleText[-1] }}
+              </var-chip>
+            </var-space>
+          </template>
+        </var-cell>
+      </var-col>
+      <var-col :span="8">
+        <div class="w-full">
+          <var-select
+            variant="outlined"
+            :placeholder="$t('query.isBoss')"
+            v-model="aqExtra.isBoss"
+            size="small"
+            :disabled="aqExtra.isGuide || aqExtra.isCelestialWeapon || !aqExtra.isUpgradable"
+          >
+            <var-option :label="$t('yes')" :value="true" />
+            <var-option :label="$t('no')" :value="false" />
+          </var-select>
+        </div>
+      </var-col>
+      <var-col :span="8" v-if="aqExtra.isQuality">
+        <div class="w-full">
+          <var-input
+            variant="outlined"
+            size="small"
+            type="number"
+            :placeholder="$t(`query.quality`)"
+            v-model="aqData.quality as any"
+            :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
+            :disabled="aqExtra.isCelestialWeapon"
+          />
+        </div>
+      </var-col>
+      <var-col :span="8">
+        <div class="w-full">
+          <var-select
+            variant="outlined"
+            :placeholder="$t('query.level')"
+            v-model="aqData.level"
+            size="small"
+            :disabled="aqExtra.isQuality || !aqExtra.isUpgradable"
+          >
+            <var-option
+              :value="i"
+              :label="i"
+              v-for="i in Array.from({ length: 13 }, (_, n) => String(n + 1))"
+              :key="i"
+            />
+          </var-select>
+        </div>
+      </var-col>
+      <var-col :span="8" v-for="key in Object.keys(aqExtra.baseStats)" :key="key">
+        <div class="w-full" v-if="!immutableKeysSet.has(key)">
+          <var-input
+            variant="outlined"
+            size="small"
+            type="number"
+            :placeholder="$t(`meta.stats.${key}`)"
+            v-model="aqData[key] as any"
+            :disabled="aqExtra.isQuality"
+          />
+        </div>
+      </var-col>
+      <var-col :span="24">
+        <var-button block type="primary" @click="queryAssess">
+          {{ $t('query.query') }}
+        </var-button>
+      </var-col>
+    </var-row>
+  </PopupPaper>
   <AssessResult v-if="ar !== undefined" :result="ar" v-model:show="showResult" />
 </template>
 
 <script lang="ts">
-const immutableKeysSet = new Set(['adornment_slots']);
+const immutableKeysSet = new Set(['adornment_slots'])
 type QueryString = Record<string, string>
 
 export default defineComponent({
@@ -94,7 +128,7 @@ export default defineComponent({
       return {
         '-1': this.$t('bossScale.no'),
         '0': this.$t('bossScale.unknown'),
-        '1': this.$t('bossScale.yes'),
+        '1': this.$t('bossScale.yes')
       }
     },
     aq(): AssessQuery {
@@ -107,19 +141,19 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: true,
+      required: true
     },
     query: {
       type: Object as PropType<AssessQuery>,
-      required: true,
+      required: true
     },
     show: {
       type: Boolean,
-      required: true,
+      required: true
     },
     fromGuide: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   data() {
@@ -132,19 +166,22 @@ export default defineComponent({
     }
   },
   mounted() {
-    watch(() => this.show, (newValue) => {
-      if (newValue === true) {
-        this.aqData = this.queryToString(this.query.data)
-        this.aqExtra = this.query.extra
+    watch(
+      () => this.show,
+      (newValue) => {
+        if (newValue === true) {
+          this.aqData = this.queryToString(this.query.data)
+          this.aqExtra = this.query.extra
+        }
       }
-    })
+    )
   },
   methods: {
     async queryAssess() {
       if (this.fromGuide) {
         const bar = Snackbar({
           type: 'loading',
-          content: 'Loading...',
+          content: 'Loading...'
         })
         this.ar = await this.ge.assess(this.aq)
         bar.clear()

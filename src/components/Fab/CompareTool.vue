@@ -11,14 +11,32 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
     @update:show="$emit('update:show', $event)"
     safe-area
   >
-    <div class="text-center text-xl">
-      {{ $t('compare.title') }}
-    </div>
+    <var-space justify="center">
+      <var-paper class="py-2 px-4" radius="16px">
+        <var-space class="max-w-md" align="center" size="large" justify="space-between" line>
+          <var-chip class="text-lg" type="default" elevation="2">
+            <template #left>
+              <Icon icon-class="i-mdi-scale-balance" />
+            </template>
+            <div>{{ $t('compare.title') }}</div>
+          </var-chip>
+          <div class="w-full"></div>
+          <var-space align="center" justify="flex-end" size="mini" line>
+            <PopupButton type="warning" icon-class="i-mdi-trash" @click="reset" />
+            <PopupButton
+              type="danger"
+              icon-class="i-mdi-window-close"
+              @click="$emit('update:show', false)"
+            />
+          </var-space>
+        </var-space>
+      </var-paper>
+    </var-space>
     <var-style-provider :style-vars="styleVars">
       <div class="compare-container" style="height: 100%">
         <div class="empty"></div>
         <div v-for="({ entry: entry, query: query }, index) in compareState.list" :key="index">
-          <var-paper class="paper mx-auto" :elevation="12" :width="cardSize">
+          <var-paper radius="16px" class="paper mx-auto" :elevation="8" :width="cardSize">
             <var-cell border class="p-cell flex">
               <template #icon>
                 <var-icon :size="36" :name="getStaticUrl(entry.meta.icon)" class="append-icon" />
@@ -99,7 +117,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
                 </var-col>
               </var-row>
             </var-cell>
-            <div class="var-elevation--8 mx-1 mt-1" style="max-height: 60vh; overflow: auto">
+            <div class="var-elevation--4 mx-1 mt-1" style="max-height: 60vh; overflow: auto">
               <var-cell v-for="(r, key) in result[index]" border class="p-cell s-cell" :key="key">
                 <var-space justify="space-between" align="baseline">
                   {{ `${$t('meta.stats.' + key)}` }}
@@ -118,15 +136,15 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
           </var-paper>
           <var-space justify="space-between" class="my-0 px-1 -translate-y-3">
             <var-space justify="flex-start" size="mini">
-              <var-button v-if="index === 0" type="primary" size="mini">
+              <var-button v-if="index === 0" type="primary" size="mini" round>
                 <div class="i-mdi-pin text-lg"></div>
               </var-button>
             </var-space>
             <var-space justify="flex-end" size="mini">
-              <var-button v-if="index > 0" type="info" size="mini" @click="leftShift(index)">
+              <var-button v-if="index > 0" type="info" size="mini" @click="leftShift(index)" round>
                 <div class="i-mdi-chevron-double-left text-lg"></div>
               </var-button>
-              <var-button type="danger" size="mini" @click="remove(index)">
+              <var-button type="danger" size="mini" @click="remove(index)" round>
                 <div class="i-mdi-delete text-lg"></div>
               </var-button>
             </var-space>
@@ -251,6 +269,10 @@ export default defineComponent({
     },
     leftShift(index: number) {
       this.compareState.leftShift(index)
+    },
+    reset() {
+      this.compareState.$reset()
+      this.$emit('update:show', false)
     }
   }
 })
@@ -299,7 +321,7 @@ export default defineComponent({
 }
 
 .compare-container {
-  padding: 20px 0;
+  padding: 12px 0;
   overflow-x: auto;
   display: flex;
   align-items: flex-end;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CodexEntry } from '@/types';
+import type { CodexEntry } from '@/types'
 </script>
 
 <template>

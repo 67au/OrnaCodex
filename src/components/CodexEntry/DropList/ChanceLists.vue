@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { getStaticUrl, getTierName } from '@/plugins/utils';
-import { useCodexState } from '@/stores/codex';
+import { getStaticUrl, getTierName } from '@/plugins/utils'
+import { useCodexState } from '@/stores/codex'
 </script>
 
 <template>
-  <var-cell class="text-cell" v-for="entry, index in entries" :title="entry.name" :key="index"
-    :description="entry.description" border>
+  <var-cell
+    class="text-cell"
+    v-for="(entry, index) in entries"
+    :title="entry.name"
+    :key="index"
+    :description="entry.description"
+    border
+  >
     <template #icon>
       <var-icon class="append-icon" :size="36" :name="getStaticUrl(codexState.icons[entry.name])" />
     </template>
@@ -14,7 +20,7 @@ import { useCodexState } from '@/stores/codex';
       <var-chip type="warning" size="small" :round="false" plain>
         {{ getTierName(entry.tier) }}
       </var-chip>
-      <br>
+      <br />
     </template>
     <template v-if="summons">
       {{ `${$t(`meta.summons.${entry.name}`)} (${entry.chance})` }}
@@ -34,11 +40,11 @@ import { useCodexState } from '@/stores/codex';
 export default {
   props: {
     entries: {
-      type: Object,
+      type: Object
     },
     summons: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   computed: {

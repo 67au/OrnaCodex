@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CodexEntry } from '@/plugins/codex';
-import { global } from '@/plugins/global';
+import type { CodexEntry } from '@/plugins/codex'
+import { global } from '@/plugins/global'
 </script>
 
 <template>
@@ -8,10 +8,16 @@ import { global } from '@/plugins/global';
     <template #description>
       <div class="card-description">
         <var-space>
-          <template v-for="[key, value] in (Object.entries(ce.meta.stats))">
+          <template v-for="[key, value] in Object.entries(ce.meta.stats)">
             <template v-if="typeof value === 'string'">
               <template v-if="key === 'element'">
-                <var-chip size="small" :round="false" plain :color="global.elementColor[value]" :key="key">
+                <var-chip
+                  size="small"
+                  :round="false"
+                  plain
+                  :color="global.elementColor[value]"
+                  :key="key"
+                >
                   {{ $t(`meta.stats.${value}`) }}
                 </var-chip>
               </template>

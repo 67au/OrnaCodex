@@ -1,24 +1,22 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <var-popup :default-style="false" :show="show" @update:show="$emit('update:show', $event)">
-    <var-result class="popup-guide result" :type="resultType" :title="$t(title)">
-      <template #description>
+  <PopupPaper :show="show" @update:show="$emit('update:show', $event)" max-width="xs">
+    <template #title>
+      <var-button text disabled></var-button>
+    </template>
+    <var-result :type="resultType" :title="$t(title)">
+      <template #footer>
         <template v-if="result">
-          <br>
-          <var-link type="primary" :href="href" target="_blank" text-size="16">
-            {{ $t('clickHere') }}
+          <var-link type="primary" :href="href" target="_blank" underline="none" text-size="16">
+            <var-button :color="resultButtonColor" text-color="#fff">
+              {{ $t('clickHere') }}
+            </var-button>
           </var-link>
         </template>
       </template>
-      <template #footer>
-        <var-button :color="resultButtonColor" text-color="#fff" @click="$emit('update:show', false)">
-          {{ $t('close') }}
-        </var-button>
-      </template>
     </var-result>
-  </var-popup>
+  </PopupPaper>
 </template>
 
 <script lang="ts">
@@ -26,40 +24,27 @@ export default defineComponent({
   props: {
     href: {
       type: String,
-      default: '',
+      default: ''
     },
     show: {
       type: Boolean,
-      required: true,
+      required: true
     },
     result: {
       type: Boolean,
-      default: false,
+      default: false
     }
   },
   computed: {
     title() {
-      return this.result ? 'found' : 'notfound';
+      return this.result ? 'found' : 'notfound'
     },
     resultType() {
-      return this.result ? 'success' : 'question';
+      return this.result ? 'success' : 'question'
     },
     resultButtonColor() {
-      return this.result ? 'var(--result-success-color)' : 'var(--result-question-color)';
-    },
-
+      return this.result ? 'var(--result-success-color)' : 'var(--result-question-color)'
+    }
   }
 })
 </script>
-
-<style lang="less">
-.popup-guide {
-  padding: 24px;
-  max-width: 375px;
-  border-radius: 28px;
-}
-
-.result {
-  width: 75vw !important;
-}
-</style>

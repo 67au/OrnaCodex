@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodexEntry } from '@/plugins/codex';
+import { CodexEntry } from '@/plugins/codex'
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useHistoryState } from '@/stores/history';
-import router from '@/router';
-import { CodexEntry } from '@/plugins/codex';
+import { useHistoryState } from '@/stores/history'
+import router from '@/router'
+import { CodexEntry } from '@/plugins/codex'
 </script>
 
 <template>
@@ -22,13 +22,21 @@ export default {
     const historyStorage = useLocalStorage('history', this.historyState.string)
     this.historyState.initialize(JSON.parse(historyStorage.value))
 
-    const saveHistory = useDebounceFn(() => {
-      historyStorage.value = this.historyState.string
-    }, 500, { maxWait: 1000 })
+    const saveHistory = useDebounceFn(
+      () => {
+        historyStorage.value = this.historyState.string
+      },
+      500,
+      { maxWait: 1000 }
+    )
 
-    watch(() => this.historyState.map.size, () => {
-      saveHistory()
-    }, { immediate: true })
+    watch(
+      () => this.historyState.map.size,
+      () => {
+        saveHistory()
+      },
+      { immediate: true }
+    )
 
     router.afterEach((to, from) => {
       if (to.name === 'codex') {

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { CodexEntry } from '@/plugins/codex';
-import { getStaticUrl } from '@/plugins/utils';
-import { global } from '@/plugins/global';
-
+import { CodexEntry } from '@/plugins/codex'
+import { getStaticUrl } from '@/plugins/utils'
+import { global } from '@/plugins/global'
 </script>
 
 <template>
@@ -26,12 +25,16 @@ import { global } from '@/plugins/global';
               <template v-else-if="entry.miss !== undefined">
                 <var-cell class="text-cell" border :key="entry.id">
                   <template #icon>
-                    <var-icon class="append-icon" :size="36" :name="getStaticUrl(entry.miss.icon)" />
+                    <var-icon
+                      class="append-icon"
+                      :size="36"
+                      :name="getStaticUrl(entry.miss.icon)"
+                    />
                   </template>
                   <var-link type="primary" :href="`${global.ornaUrl}${entry.url}`" target="_blank">
                     {{ entry.miss.name }}
                   </var-link>
-                  <br>
+                  <br />
                   <var-chip type="danger" size="mini" :round="false" plain>
                     <template #left>
                       <div class="i-mdi-alert-circle-outline text-sm"></div>
@@ -54,7 +57,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     text: {
       type: Boolean,
@@ -63,14 +66,16 @@ export default defineComponent({
     chance: {
       type: Boolean,
       default: false
-    },
+    }
   },
   computed: {
     ce() {
       return this.view as CodexEntry
     },
     entries(): Array<CodexEntry> {
-      return this.ce.meta[this.name]?.map((entry: [string, string]) => new CodexEntry(entry[0], entry[1]))
+      return this.ce.meta[this.name]?.map(
+        (entry: [string, string]) => new CodexEntry(entry[0], entry[1])
+      )
     }
   }
 })
