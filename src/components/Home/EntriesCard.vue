@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useCodexState } from '@/stores/codex';
-import { useEntriesListState } from '@/stores/entriesList';
-import { useFiltersState } from '@/stores/filters';
-import { enterCodex, getStaticUrl, getTierName } from '@/plugins/utils';
-import { rarityAura, rarityText } from '@/plugins/utils';
+import { useCodexState } from '@/stores/codex'
+import { useEntriesListState } from '@/stores/entriesList'
+import { useFiltersState } from '@/stores/filters'
+import { enterCodex, getStaticUrl, getTierName } from '@/plugins/utils'
+import { rarityAura, rarityText } from '@/plugins/utils'
 </script>
 
 <template>
@@ -20,21 +20,37 @@ import { rarityAura, rarityText } from '@/plugins/utils';
     </template>
     <template #description>
       <div class="card-description">
-        <var-list :finished="entriesListState.finished" v-model:loading="entriesListState.loading"
-          @load="entriesListState.load" :offset="800">
-          <var-cell v-for="{ category, id }, index in entriesListState.entries" class="entry-cell" border
-            @click="() => enterCodex(category, id)" :key="index">
+        <var-list
+          :finished="entriesListState.finished"
+          v-model:loading="entriesListState.loading"
+          @load="entriesListState.load"
+          :offset="800"
+        >
+          <var-cell
+            v-for="({ category, id }, index) in entriesListState.entries"
+            class="entry-cell"
+            border
+            @click="() => enterCodex(category, id)"
+            :key="index"
+          >
             <template #icon>
-              <var-icon :class="`append-icon ${rarityAura(category, id)}`" :size="48"
-                :name="getStaticUrl(codexState.meta[category][id]['icon'])" />
+              <var-icon
+                :class="`append-icon ${rarityAura(category, id)}`"
+                :size="48"
+                :name="getStaticUrl(codexState.meta[category][id]['icon'])"
+              />
             </template>
 
             <var-space align="center" size="small">
               <span>
                 {{ codexState.lang[category][id]['name'] }}
               </span>
-              <var-chip v-if="category === 'items' || category === 'followers'" size="mini" plain
-                :class="rarityText(category, id)">
+              <var-chip
+                v-if="category === 'items' || category === 'followers'"
+                size="mini"
+                plain
+                :class="rarityText(category, id)"
+              >
                 {{ $t(`meta.rarity.${codexState.meta[category][id]['rarity']}`) }}
               </var-chip>
             </var-space>
@@ -48,24 +64,47 @@ import { rarityAura, rarityText } from '@/plugins/utils';
                   {{ $t(`categories.${category}`) }}
                 </var-chip>
 
-                <var-chip v-if="codexState.meta[category][id]['exotic'] === true" class="exotic" size="mini"
-                  :round="false" plain>
+                <var-chip
+                  v-if="codexState.meta[category][id]['exotic'] === true"
+                  class="exotic"
+                  size="mini"
+                  :round="false"
+                  plain
+                >
                   {{ $t('exotic') }}
                 </var-chip>
 
                 <template v-if="codexState.meta[category][id]['event'] != undefined">
-                  <var-chip class="highlight" size="mini" :round="false" plain
-                    v-for="event in codexState.meta[category][id]['event']" :key="event">
+                  <var-chip
+                    class="highlight"
+                    size="mini"
+                    :round="false"
+                    plain
+                    v-for="event in codexState.meta[category][id]['event']"
+                    :key="event"
+                  >
                     <span>{{ $t(`meta.event.${event}`) }}</span>
                   </var-chip>
                 </template>
 
                 <template
-                  v-if="filtersState.sort !== undefined && codexState.meta[category][id]['stats'] !== undefined && codexState.meta[category][id]['stats'][filtersState.sort] !== undefined">
+                  v-if="
+                    filtersState.sort !== undefined &&
+                    codexState.meta[category][id]['stats'] !== undefined &&
+                    codexState.meta[category][id]['stats'][filtersState.sort] !== undefined
+                  "
+                >
                   <var-chip type="info" size="mini" :round="false" plain>
-                    <template v-if="typeof codexState.meta[category][id]['stats'][filtersState.sort] === 'string'">
-                      {{ `${$t(`meta.stats.${filtersState.sort}`)}:
-                      ${codexState.meta[category][id]['stats'][filtersState.sort]}` }}
+                    <template
+                      v-if="
+                        typeof codexState.meta[category][id]['stats'][filtersState.sort] ===
+                        'string'
+                      "
+                    >
+                      {{
+                        `${$t(`meta.stats.${filtersState.sort}`)}:
+                      ${codexState.meta[category][id]['stats'][filtersState.sort]}`
+                      }}
                     </template>
                     <template v-else>
                       {{ $t(`meta.stats.${filtersState.sort}`) }}
@@ -82,7 +121,6 @@ import { rarityAura, rarityText } from '@/plugins/utils';
 </template>
 
 <script lang="ts">
-
 export default defineComponent({
   computed: {
     codexState() {
@@ -94,7 +132,7 @@ export default defineComponent({
     entriesListState() {
       return useEntriesListState()
     }
-  },
+  }
 })
 </script>
 

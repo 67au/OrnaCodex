@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import { getStaticUrl } from '@/plugins/utils';
+import { getStaticUrl } from '@/plugins/utils'
 </script>
 
 <template>
-  <var-cell class="text-cell" v-for="entry, index in entries" :title="entry.name" :key="index"
-    :description="entry.description" border>
+  <var-cell
+    class="text-cell"
+    v-for="(entry, index) in entries"
+    :title="entry.name"
+    :key="index"
+    :description="entry.description"
+    border
+  >
     <template #icon>
-      <var-icon v-if="entry.icon !== undefined" class="append-icon" :size="36" :name="getStaticUrl(entry.icon)" />
+      <var-icon
+        v-if="entry.icon !== undefined"
+        class="append-icon"
+        :size="36"
+        :name="getStaticUrl(entry.icon)"
+      />
     </template>
   </var-cell>
 </template>
@@ -15,8 +26,8 @@ import { getStaticUrl } from '@/plugins/utils';
 export default {
   props: {
     entries: {
-      type: Object,
-    },
+      type: Object
+    }
   }
 }
 </script>

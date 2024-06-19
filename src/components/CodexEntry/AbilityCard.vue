@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CodexEntry } from '@/plugins/codex';
+import { CodexEntry } from '@/plugins/codex'
 </script>
 
 <template>
@@ -12,7 +12,11 @@ import { CodexEntry } from '@/plugins/codex';
           </template>
           <template v-else>
             <!-- worng -->
-            <var-cell class="text-cell" :title="ce.lang.ability[0]" :description="ce.lang.ability[1]">
+            <var-cell
+              class="text-cell"
+              :title="ce.lang.ability[0]"
+              :description="ce.lang.ability[1]"
+            >
             </var-cell>
           </template>
         </div>
@@ -31,6 +35,6 @@ export default defineComponent({
     ability() {
       return new CodexEntry(this.ce.meta.ability[0], this.ce.meta.ability[1])
     }
-  },
+  }
 })
 </script>

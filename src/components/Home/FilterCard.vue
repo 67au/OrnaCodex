@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useFiltersState } from '@/stores/filters';
-import { useOptionsState } from '@/stores/options';
-import { getTierName } from '@/plugins/utils';
-
+import { useFiltersState } from '@/stores/filters'
+import { useOptionsState } from '@/stores/options'
+import { getTierName } from '@/plugins/utils'
 </script>
 
 <template>
@@ -12,16 +11,31 @@ import { getTierName } from '@/plugins/utils';
         <var-form>
           <var-row class="pb-1" gutter="6">
             <var-col span="16">
-              <var-input class="w-full" variant="outlined" size="small" :placeholder="$t('search')"
-                v-model="filtersState.search" clearable />
+              <var-input
+                class="w-full"
+                variant="outlined"
+                size="small"
+                :placeholder="$t('search')"
+                v-model="filtersState.search"
+                clearable
+              />
             </var-col>
             <var-col span="8">
-              <var-select class="w-full" variant="outlined" size="small" :placeholder="$t('sortDefault')"
-                v-model="sortDefaultWarp">
+              <var-select
+                class="w-full"
+                variant="outlined"
+                size="small"
+                :placeholder="$t('sortDefault')"
+                v-model="sortDefaultWarp"
+              >
                 <var-option value="default,0" :label="defaultLabel" key="default,0" />
                 <template v-for="name in ['name', 'tier']">
-                  <var-option class="text-lg" v-for="asc in ['0', '1']" :value="`${name},${asc}`"
-                    :key="`${name},${asc}`">
+                  <var-option
+                    class="text-lg"
+                    v-for="asc in ['0', '1']"
+                    :value="`${name},${asc}`"
+                    :key="`${name},${asc}`"
+                  >
                     <var-space align="center" size="0" line>
                       {{ $t(name) }}
                       <div v-if="asc === '0'" class="i-mdi-arrow-downward text-lg"></div>
@@ -50,9 +64,19 @@ import { getTierName } from '@/plugins/utils';
             </var-col>
           </var-row>
           <var-cell class="filter-cell">
-            <var-select variant="outlined" size="small" :placeholder="$t('sort')" v-model="filtersState.sort" clearable>
-              <var-option v-for="key in filtersState.statsKeys" :value="key" :label="$t(`meta.stats.${key}`)"
-                :key="key" />
+            <var-select
+              variant="outlined"
+              size="small"
+              :placeholder="$t('sort')"
+              v-model="filtersState.sort"
+              clearable
+            >
+              <var-option
+                v-for="key in filtersState.statsKeys"
+                :value="key"
+                :label="$t(`meta.stats.${key}`)"
+                :key="key"
+              />
             </var-select>
             <template #extra>
               <var-button type="primary" @click="filtersState.asc = !filtersState.asc">
@@ -71,9 +95,12 @@ import { getTierName } from '@/plugins/utils';
             <template #extra>
               <var-checkbox v-model="filtersState.multiple" icon-size="18" class="-mr-1">
                 <template #default>
-                  <div :style="{
-                    'color': filtersState.multiple ? 'var(--color-primary)' : 'var(--color-default)',
-                  }" class="whitespace-nowrap">
+                  <div
+                    :style="{
+                      color: filtersState.multiple ? 'var(--color-primary)' : 'var(--color-default)'
+                    }"
+                    class="whitespace-nowrap"
+                  >
                     {{ $t('multiple') }}
                   </div>
                 </template>
@@ -82,34 +109,59 @@ import { getTierName } from '@/plugins/utils';
           </var-cell>
 
           <var-cell class="filter-cell" v-for="filter in filtersState.filters" :key="filter.key">
-            <var-select :placeholder="`${$t(filter.key)}${getMultipleTag(filter.key)}`" v-model="filter.value"
-              variant="outlined" size="small" clearable
-              :multiple="Array.isArray(filter.value) && filter.key !== 'exotic'" :chip="Array.isArray(filter.value)">
-
+            <var-select
+              :placeholder="`${$t(filter.key)}${getMultipleTag(filter.key)}`"
+              v-model="filter.value"
+              variant="outlined"
+              size="small"
+              clearable
+              :multiple="Array.isArray(filter.value) && filter.key !== 'exotic'"
+              :chip="Array.isArray(filter.value)"
+            >
               <template v-if="filter.key !== undefined">
                 <template v-if="filter.key === 'category'">
-                  <var-option :label="$t(`categories.${v}`)" :value="v" v-for="v in optionsState.options[filter.key]"
-                    :key="v" />
+                  <var-option
+                    :label="$t(`categories.${v}`)"
+                    :value="v"
+                    v-for="v in optionsState.options[filter.key]"
+                    :key="v"
+                  />
                 </template>
 
                 <template v-else-if="filter.key === 'exotic'">
-                  <var-option :label="v ? $t('yes') : $t('no')" :value="v" v-for="v in optionsState.options[filter.key]"
-                    :key="v" />
+                  <var-option
+                    :label="v ? $t('yes') : $t('no')"
+                    :value="v"
+                    v-for="v in optionsState.options[filter.key]"
+                    :key="v"
+                  />
                 </template>
 
                 <template v-else-if="filter.key === 'tier'">
-                  <var-option :label="getTierName(v + 1)" :value="`${v + 1}`"
-                    v-for="(_, v) in Array.from({ length: 10 })" :key="v" />
+                  <var-option
+                    :label="getTierName(v + 1)"
+                    :value="`${v + 1}`"
+                    v-for="(_, v) in Array.from({ length: 10 })"
+                    :key="v"
+                  />
                 </template>
 
                 <template v-else-if="isStatusKey(filter.key)">
-                  <var-option :label="$t(`meta.status.${v}`)" :value="v" v-for="v in sortOptions(filter.key)"
-                    :key="v" />
+                  <var-option
+                    :label="$t(`meta.status.${v}`)"
+                    :value="v"
+                    v-for="v in sortOptions(filter.key)"
+                    :key="v"
+                  />
                 </template>
 
                 <template v-else>
-                  <var-option :label="$t(`meta.${filter.key}.${v}`)" :value="v" v-for="v in sortOptions(filter.key)"
-                    :key="v" />
+                  <var-option
+                    :label="$t(`meta.${filter.key}.${v}`)"
+                    :value="v"
+                    v-for="v in sortOptions(filter.key)"
+                    :key="v"
+                  />
                 </template>
               </template>
 
@@ -128,16 +180,29 @@ import { getTierName } from '@/plugins/utils';
         <var-button type="primary" @click="filtersState.reset">
           {{ $t('clear') }}
         </var-button>
-        <var-menu placement="cover-bottom-end" close-on-click-reference v-model:show="show.menu"
-          v-if="optionsState.options != undefined">
+        <var-menu
+          placement="cover-bottom-end"
+          close-on-click-reference
+          v-model:show="show.menu"
+          v-if="optionsState.options != undefined"
+        >
           <var-button type="primary">
             {{ $t('add') }}
           </var-button>
           <template #menu>
             <div class="overflow-y-auto max-h-50vh">
-              <template v-for="[key, display], index in optionsState.menu">
-                <var-cell ripple @click="() => { filtersState.addFilter(index); show.menu = false; }" v-if="display"
-                  :key="key">
+              <template v-for="([key, display], index) in optionsState.menu">
+                <var-cell
+                  ripple
+                  @click="
+                    () => {
+                      filtersState.addFilter(index)
+                      show.menu = false
+                    }
+                  "
+                  v-if="display"
+                  :key="key"
+                >
                   {{ `${$t(key)} ${getMultipleTag(key)}` }}
                 </var-cell>
               </template>
@@ -197,12 +262,12 @@ export default defineComponent({
       const options = Array.from(this.optionsState.options[key]) as Array<string>
       if (this.isStatusKey(key)) {
         options.sort((a: string, b: string) => {
-          return (this.$t(`meta.status.${a}`)).localeCompare(this.$t(`meta.status.${b}`))
-        });
+          return this.$t(`meta.status.${a}`).localeCompare(this.$t(`meta.status.${b}`))
+        })
       } else {
         options.sort((a: string, b: string) => {
-          return (this.$t(`meta.${key}.${a}`)).localeCompare(this.$t(`meta.${key}.${b}`))
-        });
+          return this.$t(`meta.${key}.${a}`).localeCompare(this.$t(`meta.${key}.${b}`))
+        })
       }
       return options
     }
