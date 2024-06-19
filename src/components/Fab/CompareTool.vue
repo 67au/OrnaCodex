@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCompareState } from '@/stores/compare'
-import { getStaticUrl, valueStrip } from '@/plugins/utils'
+import { getStaticUrl, numerFixed, valueStrip } from '@/plugins/utils'
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
 </script>
 
@@ -122,12 +122,12 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
                 <var-space justify="space-between" align="baseline">
                   {{ `${$t('meta.stats.' + key)}` }}
                   <div class="cell-description flex">
-                    {{ r.base }}
+                    {{ numerFixed(r.base) }}
                     <div
                       v-if="r.delta !== 0"
                       :class="`${r.delta > 0 ? 'rare-text' : 'ornate-text'}`"
                     >
-                      {{ `(${r.delta > 0 ? '+' : ''}${r.delta})` }}
+                      {{ `(${r.delta > 0 ? '+' : ''}${numerFixed(r.delta)})` }}
                     </div>
                   </div>
                 </var-space>
@@ -221,14 +221,14 @@ export default defineComponent({
                   base = getUpgradedBonus(
                     value,
                     query.qualityCode,
-                    entry.isAdorment,
+                    entry.isAdornment,
                     isNoFollowerBonus
                   )
                 } else {
                   base = getUpgradedBonus(
                     value,
                     getQualityCode(ar.quality),
-                    entry.isAdorment,
+                    entry.isAdornment,
                     isNoFollowerBonus
                   )
                 }

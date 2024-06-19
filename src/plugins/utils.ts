@@ -32,6 +32,10 @@ export function parseCodexUrl(url: string) {
   } as CodexId
 }
 
+export function numerFixed(num: number) {
+  return Number(num.toFixed(12))
+}
+
 export function enterCodex(category: string, id: string) {
   router.push({ path: `/codex/${category}/${id}/` })
 }

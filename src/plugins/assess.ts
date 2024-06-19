@@ -208,7 +208,7 @@ export function getUpgradedBonus(
   const scale = isNoFollowerBonus ? 1 / 5 : 1
   if (qualityCode > -1) {
     if (isAdornment) {
-      return (base * bonusScale[Quality[qualityCode]]) / 100
+      return base + (base * bonusScale[Quality[qualityCode]]) / 100
     } else {
       return ((100 + base) * (100 + bonusScale[Quality[qualityCode]] * scale) - 10000) / 100
     }
