@@ -21,12 +21,13 @@ import { useSortState } from '@/stores/sort'
             />
             <template #extra>
               <var-chip
+                size="large"
                 type="primary"
                 class="whitespace-nowrap"
                 elevation="2"
                 @click="() => (show.sortDefault = !show.sortDefault)"
               >
-                <div class="-m-2 text-md">
+                <div class="-m-3 text-md">
                   <template v-if="sortState.default.name === 'default'">
                     {{ $t('sortDefault') }}
                   </template>
@@ -37,11 +38,11 @@ import { useSortState } from '@/stores/sort'
                 <template #right>
                   <template v-if="sortState.default.name !== 'default'">
                     <Icon
-                      class="-m-2 ml-1 text-lg"
+                      class="-m-3 ml-2 text-lg"
                       v-if="sortState.default.asc"
                       icon-class="i-mdi-arrow-downward"
                     />
-                    <Icon class="-m-2 ml-1 text-lg" v-else icon-class="i-mdi-arrow-upward" />
+                    <Icon class="-m-3 ml-2 text-lg" v-else icon-class="i-mdi-arrow-upward" />
                   </template>
                 </template>
               </var-chip>

@@ -20,6 +20,7 @@
     "single": "单选",
     "multiple": "多选",
     "history": "历史记录",
+    "extraTags": "额外属性",
     "categories": {
       "bosses": "头目",
       "classes": "职业",
@@ -134,6 +135,7 @@
     "single": "單選",
     "multiple": "多選",
     "history": "歷史記錄",
+    "extraTags": "額外屬性",
     "categories": {
       "bosses": "頭目",
       "classes": "職業",
@@ -245,6 +247,7 @@
     "single": "Single",
     "multiple": "Multiple",
     "history": "History",
+    "extraTags": "Extra Stats",
     "categories": {
       "bosses": "Bosses",
       "classes": "Classes",
