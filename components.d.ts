@@ -45,9 +45,9 @@ declare module 'vue' {
     VarButtonGroup: typeof import('@varlet/ui')['_ButtonGroupComponent']
     VarCard: typeof import('@varlet/ui')['_CardComponent']
     VarCell: typeof import('@varlet/ui')['_CellComponent']
-    VarCheckbox: typeof import('@varlet/ui')['_CheckboxComponent']
     VarChip: typeof import('@varlet/ui')['_ChipComponent']
     VarCol: typeof import('@varlet/ui')['_ColComponent']
+    VarCollapseTransition: typeof import('@varlet/ui')['_CollapseTransitionComponent']
     VarDivider: typeof import('@varlet/ui')['_DividerComponent']
     VarFab: typeof import('@varlet/ui')['_FabComponent']
     VarForm: typeof import('@varlet/ui')['_FormComponent']
@@ -69,5 +69,6 @@ declare module 'vue' {
     VarSticky: typeof import('@varlet/ui')['_StickyComponent']
     VarStyleProvider: typeof import('@varlet/ui')['_StyleProviderComponent']
     VarTable: typeof import('@varlet/ui')['_TableComponent']
+    VarTooltip: typeof import('@varlet/ui')['_TooltipComponent']
   }
 }

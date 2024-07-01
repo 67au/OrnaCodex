@@ -2,6 +2,7 @@
 import { useCodexState } from '@/stores/codex'
 import { useEntriesListState } from '@/stores/entriesList'
 import { useFiltersState } from '@/stores/filters'
+import { useSortState } from '@/stores/sort'
 import { enterCodex, getStaticUrl, getTierName } from '@/plugins/utils'
 import { rarityAura, rarityText } from '@/plugins/utils'
 </script>
@@ -89,25 +90,24 @@ import { rarityAura, rarityText } from '@/plugins/utils'
 
                 <template
                   v-if="
-                    filtersState.sort !== undefined &&
+                    sortState.name !== undefined &&
                     codexState.meta[category][id]['stats'] !== undefined &&
-                    codexState.meta[category][id]['stats'][filtersState.sort] !== undefined
+                    codexState.meta[category][id]['stats'][sortState.name] !== undefined
                   "
                 >
                   <var-chip type="info" size="mini" :round="false" plain>
                     <template
                       v-if="
-                        typeof codexState.meta[category][id]['stats'][filtersState.sort] ===
-                        'string'
+                        typeof codexState.meta[category][id]['stats'][sortState.name] === 'string'
                       "
                     >
                       {{
-                        `${$t(`meta.stats.${filtersState.sort}`)}:
-                      ${codexState.meta[category][id]['stats'][filtersState.sort]}`
+                        `${$t(`meta.stats.${sortState.name}`)}:
+                      ${codexState.meta[category][id]['stats'][sortState.name]}`
                       }}
                     </template>
                     <template v-else>
-                      {{ $t(`meta.stats.${filtersState.sort}`) }}
+                      {{ $t(`meta.stats.${sortState.name}`) }}
                     </template>
                   </var-chip>
                 </template>
@@ -131,6 +131,9 @@ export default defineComponent({
     },
     entriesListState() {
       return useEntriesListState()
+    },
+    sortState() {
+      return useSortState()
     }
   }
 })
