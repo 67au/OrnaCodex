@@ -24,7 +24,7 @@ import '@varlet/ui/es/snackbar/style/index'
     <var-row :gutter="[8, 6]" align="center" class="px-2 py-2">
       <var-col :span="24">
         <var-cell class="text-cell pb-2">
-          <var-space justify="center" class="text-lg py-2">
+          <var-space justify="center" class="text-lg py-1">
             {{ ce.lang.name }}
           </var-space>
           <template #description>
