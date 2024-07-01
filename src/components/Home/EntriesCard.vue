@@ -24,7 +24,7 @@ import { rarityAura, rarityText } from '@/plugins/utils'
           :finished="entriesListState.finished"
           v-model:loading="entriesListState.loading"
           @load="entriesListState.load"
-          :offset="800"
+          :offset="1200"
         >
           <var-cell
             v-for="({ category, id }, index) in entriesListState.entries"
