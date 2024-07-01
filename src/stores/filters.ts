@@ -9,48 +9,10 @@ export const useFiltersState = defineStore('filters', {
     ({
       search: '' as string,
       filters: [] as Filters,
-      sortDefault: {
-        name: 'default',
-        asc: false
-      },
-      sort: undefined as string | undefined,
-      asc: false,
       multiple: false,
       version: global.filtersVersion as string
     }) as FiltersState,
   getters: {
-    statsKeys(): Array<string> {
-      const codexState = useCodexState()
-      const keys = [
-        'attack',
-        'magic',
-        'defense',
-        'resistance',
-        'dexterity',
-        'crit',
-        'hp',
-        'mana',
-        'ward',
-        'foresight',
-        'orn_bonus',
-        'exp_bonus',
-        'luck_bonus',
-        'gold_bonus',
-        'follower_stats',
-        'follower_act',
-        'summon_stats',
-        'view_distance',
-        'adornment_slots'
-      ]
-      const keysSet = new Set(keys)
-      return Array.from(
-        keys.concat(
-          Array.from(codexState.sortKeys)
-            .filter((x) => !keysSet.has(x))
-            .sort((a, b) => a.localeCompare(b))
-        )
-      )
-    },
     filtersKeys(state) {
       return new Set(state.filters.map(({ key: key }) => key))
     }
@@ -61,10 +23,6 @@ export const useFiltersState = defineStore('filters', {
       optionsState.initialize()
       if (data !== undefined && data.version === this.version) {
         this.$patch({
-          sort:
-            data.sort !== undefined && this.statsKeys.concat(['name', 'tier']).includes(data?.sort)
-              ? data.sort
-              : undefined,
           filters: data.filters
             .filter((filter) => filter.key in optionsState.options)
             .map(({ key: key, value: value }) => {
@@ -81,11 +39,9 @@ export const useFiltersState = defineStore('filters', {
                 }
               }
             }),
-          asc: data.asc,
           search: data.search,
           multiple: data.multiple,
-          version: data.version,
-          sortDefault: data.sortDefault
+          version: data.version
         } as FiltersState)
         this.reset(false)
       } else {
@@ -94,7 +50,7 @@ export const useFiltersState = defineStore('filters', {
     },
     reset(init: boolean = true) {
       if (init) {
-        const keep = { multiple: this.multiple, sortDefault: this.sortDefault }
+        const keep = { multiple: this.multiple }
         this.$reset()
         this.$patch(keep)
       }
@@ -110,8 +66,6 @@ export const useFiltersState = defineStore('filters', {
     switchMultiple() {
       const tmp = {
         search: this.search,
-        sort: this.sort,
-        asc: this.asc,
         version: this.version,
         filters: this.filters.map((filter) => {
           if (filter.key !== 'exotic') {

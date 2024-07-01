@@ -27,13 +27,17 @@ export type Filters = Array<Filter>
 export interface FiltersState {
   search: string
   filters: Filters
-  sortDefault: {
+  multiple: boolean
+  version: string | undefined
+}
+
+export interface SortState {
+  default: {
     name: string
     asc: boolean
   }
-  sort: string | undefined
+  name: string | undefined
   asc: boolean
-  multiple: boolean
   version: string | undefined
 }
 

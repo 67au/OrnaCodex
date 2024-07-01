@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { useFiltersState } from './filters'
 import { useOptionsState } from './options'
 import { valueStrip } from '@/plugins/utils'
+import { useSortState } from './sort'
 
 export const useCodexState = defineStore('codex', {
   state: () => ({
@@ -128,43 +129,44 @@ export const useCodexState = defineStore('codex', {
     },
 
     sortedDefault(): Array<CodexId> {
-      const filtersState = useFiltersState()
-      const { sortDefault } = filtersState
-      if (sortDefault.name === 'name') {
+      const sortState = useSortState()
+      if (sortState.default.name === 'name') {
         return [...this.filtered].sort((a, b) => {
           const x = this.lang[a.category][a.id]
           const y = this.lang[b.category][b.id]
-          return (x.name as string).localeCompare(y.name as string) * (sortDefault.asc ? 1 : -1)
+          return (
+            (x.name as string).localeCompare(y.name as string) * (sortState.default.asc ? 1 : -1)
+          )
         })
       }
-      if (sortDefault.name === 'tier') {
+      if (sortState.default.name === 'tier') {
         return [...this.filtered].sort((a, b) => {
           const x = this.meta[a.category][a.id]
           const y = this.meta[b.category][b.id]
-          return (x.tier - y.tier) * (sortDefault.asc ? 1 : -1)
+          return (x.tier - y.tier) * (sortState.default.asc ? 1 : -1)
         })
       }
       return this.filtered
     },
 
     sorted(): Array<CodexId> {
-      const filtersState = useFiltersState()
-      const { sort, asc } = filtersState
-      return sort === undefined
+      const sortState = useSortState()
+      const { name, asc } = sortState
+      return name === undefined
         ? this.sortedDefault
         : [...this.sortedDefault].sort((a, b) => {
             const x = this.meta[a.category][a.id]
             const y = this.meta[b.category][b.id]
-            if (x?.stats === undefined || x?.stats[sort] === undefined) {
+            if (x?.stats === undefined || x?.stats[name] === undefined) {
               return 1
             }
-            if (y?.stats === undefined || y?.stats[sort] === undefined) {
+            if (y?.stats === undefined || y?.stats[name] === undefined) {
               return -1
             }
-            if (typeof x.stats[sort] === 'string') {
-              return (valueStrip(x.stats[sort]) - valueStrip(y.stats[sort])) * (asc ? 1 : -1)
+            if (typeof x.stats[name] === 'string') {
+              return (valueStrip(x.stats[name]) - valueStrip(y.stats[name])) * (asc ? 1 : -1)
             } else {
-              return typeof x.stats[sort] === 'boolean' ? 1 : -1
+              return typeof x.stats[name] === 'boolean' ? 1 : -1
             }
           })
     }
