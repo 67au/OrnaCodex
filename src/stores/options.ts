@@ -24,7 +24,8 @@ export const useOptionsState = defineStore('options', {
           'family',
           'spell_type',
           'item_type',
-          'place'
+          'place',
+          'target'
         ],
         array: ['event', 'tags'],
         status: ['causes', 'cures', 'gives', 'immunities']
