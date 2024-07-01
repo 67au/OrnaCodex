@@ -10,13 +10,24 @@ import { rarityAura, rarityText } from '@/plugins/utils'
 <template>
   <var-card class="card">
     <template #title>
-      <var-space justify="flex-end">
-        <var-chip size="small" :round="false">
-          <template #left>
-            <div class="i-mdi-magnify text-md"></div>
-          </template>
-          {{ codexState.sorted.length }}
-        </var-chip>
+      <var-space justify="space-between" align="center" class="pt-2 px-4">
+        <var-space justify="flex-start" align="center" size="small">
+          <var-chip size="small" elevation="2">
+            <template #left>
+              <Icon class="text-lg" icon-class="i-mdi-magnify" />
+            </template>
+            <div class="text-md">
+              {{ codexState.sorted.length }}
+            </div>
+          </var-chip>
+        </var-space>
+        <var-space justify="flex-end" align="center" size="small">
+          <PopupButton
+            type="info"
+            icon-class="i-mdi-layers-edit"
+            @click="() => (show.layer = !show.layer)"
+          />
+        </var-space>
       </var-space>
     </template>
     <template #description>
@@ -88,29 +99,52 @@ import { rarityAura, rarityText } from '@/plugins/utils'
                   </var-chip>
                 </template>
 
-                <template
+                <var-chip
                   v-if="
-                    sortState.name !== undefined &&
                     codexState.meta[category][id]['stats'] !== undefined &&
+                    sortState.name !== undefined &&
                     codexState.meta[category][id]['stats'][sortState.name] !== undefined
                   "
+                  type="success"
+                  size="mini"
+                  :round="false"
+                  plain
                 >
-                  <var-chip type="info" size="mini" :round="false" plain>
-                    <template
-                      v-if="
-                        typeof codexState.meta[category][id]['stats'][sortState.name] === 'string'
-                      "
-                    >
-                      {{
-                        `${$t(`meta.stats.${sortState.name}`)}:
-                      ${codexState.meta[category][id]['stats'][sortState.name]}`
-                      }}
-                    </template>
-                    <template v-else>
-                      {{ $t(`meta.stats.${sortState.name}`) }}
-                    </template>
-                  </var-chip>
-                </template>
+                  <template
+                    v-if="
+                      typeof codexState.meta[category][id]['stats'][sortState.name] === 'string'
+                    "
+                  >
+                    {{
+                      `${$t(`meta.stats.${sortState.name}`)}: ${codexState.meta[category][id]['stats'][sortState.name]}`
+                    }}
+                  </template>
+                  <template v-else>
+                    {{ $t(`meta.stats.${sortState.name}`) }}
+                  </template>
+                </var-chip>
+
+                <var-chip
+                  v-for="key in (Array.from(display) as Array<string>).filter(
+                    (key) =>
+                      codexState.meta[category][id]['stats'] !== undefined &&
+                      codexState.meta[category][id]['stats'][key] !== undefined &&
+                      key !== sortState.name
+                  )"
+                  type="info"
+                  size="mini"
+                  :round="false"
+                  plain
+                >
+                  <template v-if="typeof codexState.meta[category][id]['stats'][key] === 'string'">
+                    {{
+                      `${$t(`meta.stats.${key}`)}: ${codexState.meta[category][id]['stats'][key]}`
+                    }}
+                  </template>
+                  <template v-else>
+                    {{ $t(`meta.stats.${key}`) }}
+                  </template>
+                </var-chip>
               </var-space>
             </template>
           </var-cell>
@@ -118,10 +152,56 @@ import { rarityAura, rarityText } from '@/plugins/utils'
       </div>
     </template>
   </var-card>
+
+  <PopupPaper v-model:show="show.layer">
+    <template #title>
+      <var-chip class="text-md" type="info" elevation="3">
+        <template #left>
+          <Icon icon-class="i-mdi-layers-edit text-lg" />
+        </template>
+        <div>{{ $t('extraTags') }}</div>
+      </var-chip>
+    </template>
+    <template #button>
+      <PopupButton type="warning" icon-class="i-mdi-trash" @click="() => display.clear()" />
+    </template>
+
+    <var-divider dashed />
+
+    <var-paper radius="0px">
+      <var-space size="small" class="chip-list px-1 py-1">
+        <var-chip
+          :type="display.has(key) ? 'success' : 'default'"
+          v-for="key in sortState.statsKeys"
+          elevation="3"
+          @click="() => editLayer(key)"
+        >
+          {{ $t(`meta.stats.${key}`) }}
+        </var-chip>
+      </var-space>
+    </var-paper>
+  </PopupPaper>
 </template>
 
 <script lang="ts">
 export default defineComponent({
+  data() {
+    return {
+      show: {
+        layer: false
+      },
+      display: new Set()
+    }
+  },
+  methods: {
+    editLayer(key: string) {
+      if (this.display.has(key)) {
+        this.display.delete(key)
+      } else {
+        this.display.add(key)
+      }
+    }
+  },
   computed: {
     codexState() {
       return useCodexState()
@@ -145,6 +225,10 @@ export default defineComponent({
   padding: 3px 0px;
   --cell-border-left: 6px;
   --cell-border-right: 6px;
+}
+.chip-list {
+  max-height: 60vh;
+  overflow-y: auto;
 }
 </style>
 <style src="@/styles/color.less" lang="less" />
