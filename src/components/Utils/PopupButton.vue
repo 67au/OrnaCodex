@@ -4,7 +4,7 @@ import type { ButtonType } from '@varlet/ui'
 </script>
 
 <template>
-  <var-button :type="type" size="small" round icon-container @click="$emit('click')" elevation="3">
+  <var-button :type="type" size="small" round icon-container elevation="3">
     <div class="text-lg" :class="iconClass"></div>
   </var-button>
 </template>
