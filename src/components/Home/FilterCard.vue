@@ -40,9 +40,9 @@ import { useSortState } from '@/stores/sort'
                     <Icon
                       class="-m-3 ml-2 text-lg"
                       v-if="sortState.default.asc"
-                      icon-class="i-mdi-arrow-downward"
+                      icon-class="i-mdi-arrow-upward"
                     />
-                    <Icon class="-m-3 ml-2 text-lg" v-else icon-class="i-mdi-arrow-upward" />
+                    <Icon class="-m-3 ml-2 text-lg" v-else icon-class="i-mdi-arrow-downward" />
                   </template>
                 </template>
               </var-chip>
@@ -303,8 +303,8 @@ import { useSortState } from '@/stores/sort'
         >
           <var-space align="center" size="0" line>
             {{ $t(name as string) }}
-            <Icon v-if="asc as boolean" class="text-lg" icon-class="i-mdi-arrow-downward" />
-            <Icon v-else class="text-lg" icon-class="i-mdi-arrow-upward" />
+            <Icon v-if="asc as boolean" class="text-lg" icon-class="i-mdi-arrow-upward" />
+            <Icon v-else class="text-lg" icon-class="i-mdi-arrow-downward" />
           </var-space>
         </var-chip>
       </var-space>
