@@ -153,7 +153,7 @@ import { rarityAura, rarityText } from '@/plugins/utils'
     </template>
   </var-card>
 
-  <PopupPaper v-model:show="show.layer">
+  <PopupPaper v-model:show="show.layer" max-width="md">
     <template #title>
       <var-chip class="text-md" type="info" elevation="3">
         <template #left>

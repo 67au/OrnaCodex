@@ -224,7 +224,7 @@ import { useSortState } from '@/stores/sort'
     </template>
   </var-card>
 
-  <PopupPaper v-model:show="show.sort">
+  <PopupPaper v-model:show="show.sort" max-width="md">
     <template #title>
       <var-chip class="text-md" type="primary" elevation="3">
         <template #left>
@@ -267,7 +267,7 @@ import { useSortState } from '@/stores/sort'
     </var-paper>
   </PopupPaper>
 
-  <PopupPaper v-model:show="show.sortDefault">
+  <PopupPaper v-model:show="show.sortDefault" max-width="md">
     <template #title>
       <var-chip class="text-md" type="primary" elevation="3">
         <template #left>
