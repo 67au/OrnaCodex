@@ -55,6 +55,12 @@ import { useSortState } from '@/stores/sort'
                   elevation="2"
                   @click="() => (show.sort = !show.sort)"
                 >
+                  <template #left>
+                    <div
+                      v-if="sortState.name === undefined"
+                      class="text-lg i-mdi-view-dashboard-edit"
+                    ></div>
+                  </template>
                   <div v-if="sortState.name === undefined">{{ defaultLabel }}</div>
                   <div v-else>{{ $t(`meta.stats.${sortState.name}`) }}</div>
                 </var-chip>
@@ -103,33 +109,11 @@ import { useSortState } from '@/stores/sort'
                   <PopupButton type="danger" icon-class="i-mdi-trash" @click="filtersState.reset" />
                 </var-tooltip>
                 <var-tooltip placement="top" :content="$t('add')">
-                  <var-menu
-                    placement="bottom-end"
-                    close-on-click-reference
-                    v-model:show="show.menu"
-                    v-if="optionsState.options != undefined"
-                  >
-                    <PopupButton type="primary" icon-class="i-mdi-add" />
-                    <template #menu>
-                      <div class="overflow-y-auto max-h-50vh">
-                        <template v-for="([key, display], index) in optionsState.menu">
-                          <var-cell
-                            ripple
-                            @click="
-                              () => {
-                                filtersState.addFilter(index)
-                                show.menu = false
-                              }
-                            "
-                            v-if="display"
-                            :key="key"
-                          >
-                            {{ `${$t(key)} ${getMultipleTag(key)}` }}
-                          </var-cell>
-                        </template>
-                      </div>
-                    </template>
-                  </var-menu>
+                  <PopupButton
+                    type="primary"
+                    icon-class="i-mdi-add"
+                    @click="show.menu = !show.menu"
+                  />
                 </var-tooltip>
               </var-space>
             </var-space>
@@ -146,74 +130,47 @@ import { useSortState } from '@/stores/sort'
             />
           </var-cell>
 
-          <var-cell class="filter-cell" v-for="filter in filtersState.filters" :key="filter.key">
+          <var-cell class="filter-cell" v-for="[key, filter] in filtersState.filters" :key="key">
             <var-select
-              :placeholder="`${$t(filter.key)}${getMultipleTag(filter.key)}`"
+              :placeholder="`${$t(key)}${getMultipleTag(key)}`"
               v-model="filter.value"
               variant="outlined"
               size="small"
               clearable
-              :multiple="Array.isArray(filter.value) && filter.key !== 'exotic'"
+              :multiple="Array.isArray(filter.value) && key !== 'exotic'"
               :chip="Array.isArray(filter.value)"
+              :options="optionsMap[key]"
             >
-              <template v-if="filter.key !== undefined">
-                <template v-if="filter.key === 'category'">
-                  <var-option
-                    :label="$t(`categories.${v}`)"
-                    :value="v"
-                    v-for="v in optionsState.options[filter.key]"
-                    :key="v"
-                  />
-                </template>
-
-                <template v-else-if="filter.key === 'exotic'">
-                  <var-option
-                    :label="v ? $t('yes') : $t('no')"
-                    :value="v"
-                    v-for="v in optionsState.options[filter.key]"
-                    :key="v"
-                  />
-                </template>
-
-                <template v-else-if="filter.key === 'tier'">
-                  <var-option
-                    :label="getTierName(v + 1)"
-                    :value="`${v + 1}`"
-                    v-for="(_, v) in Array.from({ length: 10 })"
-                    :key="v"
-                  />
-                </template>
-
-                <template v-else-if="isStatusKey(filter.key)">
-                  <var-option
-                    :label="$t(`meta.status.${v}`)"
-                    :value="v"
-                    v-for="v in sortOptions(filter.key)"
-                    :key="v"
-                  />
-                </template>
-
-                <template v-else>
-                  <var-option
-                    :label="$t(`meta.${filter.key}.${v}`)"
-                    :value="v"
-                    v-for="v in sortOptions(filter.key)"
-                    :key="v"
-                  />
-                </template>
-              </template>
-
-              <template #selected>
-                <template v-if="filter.key === 'exotic'">
-                  {{ filter.value ? $t('yes') : $t('no') }}
-                </template>
-              </template>
             </var-select>
           </var-cell>
         </var-form>
       </div>
     </template>
   </var-card>
+
+  <PopupPaper v-model:show="show.menu" max-width="md">
+    <template #title>
+      <var-chip class="text-md" type="primary" elevation="3">
+        <template #left>
+          <Icon icon-class="i-mdi-filter text-lg" />
+        </template>
+        <div>{{ $t('filters') }}</div>
+      </var-chip>
+    </template>
+    <var-divider dashed />
+    <var-paper radius="0px">
+      <var-space size="small" class="chip-list px-1 py-1">
+        <var-chip
+          :type="filtersState.filters.has(key) ? 'success' : 'default'"
+          v-for="key in Object.keys(optionsMap)"
+          elevation="3"
+          @click="() => editFilters(key)"
+        >
+          {{ `${$t(key)} ${getMultipleTag(key)}` }}
+        </var-chip>
+      </var-space>
+    </var-paper>
+  </PopupPaper>
 
   <PopupPaper v-model:show="show.sort" max-width="md">
     <template #title>
@@ -336,6 +293,47 @@ export default defineComponent({
       return this.sortState.statsKeys.filter((key) => {
         return regex.test(this.$t(`meta.stats.${key}`))
       })
+    },
+    optionsMap() {
+      return Object.fromEntries(
+        Object.entries(this.optionsState.options).map(([key, value]) => {
+          if (key === 'category') {
+            return [
+              key,
+              Array.from(value as Set<string>).map((v: string) => {
+                return { label: this.$t(`categories.${v}`), value: v }
+              })
+            ]
+          }
+          if (key === 'exotic') {
+            return [
+              key,
+              Array.from(value as Set<boolean>).map((v: boolean) => {
+                return { label: v ? this.$t('yes') : this.$t('no'), value: v }
+              })
+            ]
+          }
+          if (key === 'tier') {
+            return [
+              key,
+              Array.from({ length: 10 }).map((_, v: number) => {
+                return { label: getTierName(v + 1), value: String(v + 1) }
+              })
+            ]
+          }
+          const k = this.isStatusKey(key) ? 'status' : key
+          return [
+            key,
+            Array.from(value as Set<string>)
+              .sort((a: string, b: string) => {
+                return this.$t(`meta.${k}.${a}`).localeCompare(this.$t(`meta.${k}.${b}`))
+              })
+              .map((v: string) => {
+                return { label: this.$t(`meta.${k}.${v}`), value: v }
+              })
+          ]
+        })
+      )
     }
   },
   methods: {
@@ -344,19 +342,6 @@ export default defineComponent({
     },
     getMultipleTag(key: string) {
       return this.filtersState.isMultiple(key) ? ` (${this.$t('multiple')})` : ''
-    },
-    sortOptions(key: string) {
-      const options = Array.from(this.optionsState.options[key]) as Array<string>
-      if (this.isStatusKey(key)) {
-        options.sort((a: string, b: string) => {
-          return this.$t(`meta.status.${a}`).localeCompare(this.$t(`meta.status.${b}`))
-        })
-      } else {
-        options.sort((a: string, b: string) => {
-          return this.$t(`meta.${key}.${a}`).localeCompare(this.$t(`meta.${key}.${b}`))
-        })
-      }
-      return options
     },
     editSort(key: string) {
       this.show.sort = false
@@ -370,6 +355,13 @@ export default defineComponent({
         this.sortState.default.name = key
         this.sortState.default.asc = asc
       }, 50)
+    },
+    editFilters(key: string) {
+      if (this.filtersState.filters.has(key)) {
+        this.filtersState.removeFilter(key)
+      } else {
+        this.filtersState.addFilter(key)
+      }
     }
   }
 })

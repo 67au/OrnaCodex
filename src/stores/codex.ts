@@ -61,7 +61,7 @@ export const useCodexState = defineStore('codex', {
             searchPattern.test(this.lang[category][id].description))
         )
       })
-      return filters.reduce((i, filter) => {
+      return Array.from(filters.values()).reduce((i, filter) => {
         return i.filter(({ category, id }: CodexId) => {
           if (filter.value === undefined) {
             return true

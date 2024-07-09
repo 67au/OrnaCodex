@@ -22,11 +22,11 @@ export interface Filter {
   value: Array<string> | string | undefined
 }
 
-export type Filters = Array<Filter>
+export type Filters = Map<string, Filter>
 
-export interface FiltersState {
+export interface FiltersStorage {
   search: string
-  filters: Filters
+  filters: Array<[string, Filter]>
   multiple: boolean
   version: string | undefined
 }
@@ -41,7 +41,7 @@ export interface SortState {
   version: string | undefined
 }
 
-export type Options = Record<string, Set<string | number>>
+export type Options = Record<string, Set<string | number | boolean>>
 
 export interface Status {
   name: string

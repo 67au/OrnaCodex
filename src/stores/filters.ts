@@ -1,64 +1,63 @@
-import type { Filters, FiltersState } from '@/types'
+import type { Filters, FiltersStorage } from '@/types'
 import { defineStore } from 'pinia'
-import { useCodexState } from './codex'
 import { useOptionsState } from './options'
 import { global } from '@/plugins/global'
 
 export const useFiltersState = defineStore('filters', {
-  state: () =>
-    ({
-      search: '' as string,
-      filters: [] as Filters,
-      multiple: false,
-      version: global.filtersVersion as string
-    }) as FiltersState,
+  state: () => ({
+    search: '' as string,
+    filters: new Map() as Filters,
+    multiple: false,
+    version: global.filtersVersion as string
+  }),
   getters: {
     filtersKeys(state) {
-      return new Set(state.filters.map(({ key: key }) => key))
+      return new Set(state.filters.keys())
+    },
+    storage(state): FiltersStorage {
+      return {
+        search: state.search,
+        filters: Array.from(state.filters),
+        multiple: state.multiple,
+        version: state.version
+      }
     }
   },
   actions: {
-    initialize(data?: FiltersState) {
+    initialize(data?: FiltersStorage) {
       const optionsState = useOptionsState()
       optionsState.initialize()
       if (data !== undefined && data.version === this.version) {
         this.$patch({
-          filters: data.filters
-            .filter((filter) => filter.key in optionsState.options)
-            .map(({ key: key, value: value }) => {
-              if (Array.isArray(value)) {
-                return {
-                  key: key,
-                  value: value.filter((v) => optionsState.options[key].has(v))
-                }
-              } else {
-                return {
-                  key: key,
-                  value:
-                    value !== undefined && optionsState.options[key].has(value) ? value : undefined
-                }
-              }
-            }),
+          filters: new Map(
+            data.filters
+              .filter(([key, _]) => key in optionsState.options)
+              .map(([_, { key: key, value: value }]) => {
+                return [
+                  key,
+                  {
+                    key: key,
+                    value: Array.isArray(value)
+                      ? value.filter((v) => optionsState.options[key].has(v))
+                      : value !== undefined && optionsState.options[key].has(value)
+                        ? value
+                        : undefined
+                  }
+                ]
+              })
+          ),
           search: data.search,
           multiple: data.multiple,
           version: data.version
-        } as FiltersState)
-        this.reset(false)
+        })
       } else {
         this.reset()
       }
     },
-    reset(init: boolean = true) {
-      if (init) {
-        const keep = { multiple: this.multiple }
-        this.$reset()
-        this.$patch(keep)
-      }
-      const optionsState = useOptionsState()
-      optionsState.resetMenu()
-      if (this.filters.length === 0) {
-        this.addFilter(0)
-      }
+    reset() {
+      const keep = { multiple: this.multiple }
+      this.$reset()
+      this.$patch(keep)
     },
     isMultiple(key: string) {
       return this.multiple && key !== 'exotic'
@@ -67,30 +66,32 @@ export const useFiltersState = defineStore('filters', {
       const tmp = {
         search: this.search,
         version: this.version,
-        filters: this.filters.map((filter) => {
-          if (filter.key !== 'exotic') {
-            if (this.multiple) {
-              filter.value = filter.value !== undefined ? [filter.value as string] : []
-            } else {
-              if (Array.isArray(filter.value)) {
-                filter.value = (filter.value as any)[0]
+        filters: new Map(
+          Array.from(this.filters).map(([key, filter]) => {
+            if (key !== 'exotic') {
+              if (this.multiple) {
+                filter.value = filter.value !== undefined ? [filter.value as string] : []
+              } else {
+                if (Array.isArray(filter.value)) {
+                  filter.value = (filter.value as any)[0]
+                }
               }
             }
-          }
-          return filter
-        })
-      } as FiltersState
+            return [key, filter]
+          })
+        )
+      }
       this.reset()
       this.$patch(tmp)
     },
-    addFilter(index: number) {
-      const optionsState = useOptionsState()
-      const key = optionsState.menu[index][0]
-      this.filters.push({
+    addFilter(key: string) {
+      this.filters.set(key, {
         key: key,
         value: this.isMultiple(key) ? [] : undefined
       })
-      optionsState.menu[index][1] = false
+    },
+    removeFilter(key: string) {
+      this.filters.delete(key)
     }
   }
 })

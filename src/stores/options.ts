@@ -5,8 +5,7 @@ import { useFiltersState } from './filters'
 
 export const useOptionsState = defineStore('options', {
   state: () => ({
-    options: {} as Options,
-    menu: [] as Array<[string, boolean]>
+    options: {} as Options
   }),
   getters: {
     keys(): {
@@ -72,12 +71,6 @@ export const useOptionsState = defineStore('options', {
         })
       })
       this.$patch({ options: options })
-    },
-    resetMenu() {
-      const filterState = useFiltersState()
-      this.$patch({
-        menu: Object.keys(this.options).map((key) => [key, !filterState.filtersKeys.has(key)])
-      })
     }
   }
 })

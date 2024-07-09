@@ -33,7 +33,7 @@ export default defineComponent({
     const filtersState = useFiltersState()
     const sortState = useSortState()
     const entriesListState = useEntriesListState()
-    const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.$state))
+    const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.storage))
     filtersState.initialize(JSON.parse(filtersStorage.value))
     const sortStorage = useLocalStorage('sort', JSON.stringify(sortState.$state))
     sortState.initialize(JSON.parse(sortStorage.value))
@@ -47,7 +47,7 @@ export default defineComponent({
 
     const saveFilters = useDebounceFn(
       () => {
-        filtersStorage.value = JSON.stringify(filtersState.$state)
+        filtersStorage.value = JSON.stringify(filtersState.storage)
       },
       500,
       { maxWait: 1000 }
