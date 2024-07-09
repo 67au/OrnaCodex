@@ -10,80 +10,60 @@ import { useSortState } from '@/stores/sort'
     <template #description>
       <div class="card-description">
         <var-form>
-          <var-cell class="filter-cell">
-            <var-input
-              class="w-full"
-              variant="outlined"
-              size="small"
-              :placeholder="$t('search')"
-              v-model="filtersState.search"
-              clearable
-            />
-            <template #extra>
-              <var-chip
-                size="large"
-                type="primary"
-                class="whitespace-nowrap"
-                elevation="2"
-                @click="() => (show.sortDefault = !show.sortDefault)"
-              >
-                <div class="-m-3 text-md">
-                  <template v-if="sortState.default.name === 'default'">
-                    {{ $t('sortDefault') }}
-                  </template>
-                  <template v-else>
-                    {{ $t(sortState.default.name) }}
-                  </template>
-                </div>
-                <template #right>
-                  <template v-if="sortState.default.name !== 'default'">
-                    <Icon
-                      class="-m-3 ml-2 text-lg"
-                      v-if="sortState.default.asc"
-                      icon-class="i-mdi-arrow-upward"
-                    />
-                    <Icon class="-m-3 ml-2 text-lg" v-else icon-class="i-mdi-arrow-downward" />
-                  </template>
-                </template>
-              </var-chip>
-            </template>
-          </var-cell>
-
           <var-cell class="filter-cell min-h-8">
-            <var-space justify="space-between" align="center" class="pt-1">
+            <var-space justify="space-between" align="center" class="pb-1">
               <var-space justify="flex-start" align="center" size="small">
+                <Icon class="text-lg" icon-class="i-mdi-sort" />
+                <div class="text-lg">{{ $t('sort') }}</div>
+              </var-space>
+              <var-space justify="flex-end" align="center" size="small">
                 <var-chip
+                  size="small"
                   class="text-md"
                   type="primary"
                   elevation="2"
-                  @click="() => (show.sort = !show.sort)"
-                  v-if="sortState.name === undefined"
+                  @click="() => (show.sortDefault = !show.sortDefault)"
                 >
-                  <template #left>
-                    <Icon icon-class="i-mdi-sort text-lg" />
-                  </template>
-                  <div>{{ $t('sort') }}</div>
+                  <var-space align="center" size="0" line>
+                    <template v-if="sortState.default.name === 'default'">
+                      {{ $t('sortDefault') }}
+                    </template>
+                    <template v-else>
+                      {{ $t(sortState.default.name) }}
+                    </template>
+                    <template v-if="sortState.default.name !== 'default'">
+                      <Icon
+                        class="text-lg"
+                        v-if="sortState.default.asc"
+                        icon-class="i-mdi-arrow-upward"
+                      />
+                      <Icon class="text-lg" v-else icon-class="i-mdi-arrow-downward" />
+                    </template>
+                  </var-space>
                 </var-chip>
+              </var-space>
+            </var-space>
+          </var-cell>
+
+          <var-cell class="filter-cell min-h-8">
+            <var-space justify="space-between" align="center">
+              <var-space justify="flex-start" align="center" size="small">
                 <var-chip
                   class="text-md"
-                  type="success"
+                  size="small"
+                  :type="sortState.name === undefined ? 'default' : 'success'"
                   elevation="2"
                   @click="() => (show.sort = !show.sort)"
-                  v-else
                 >
-                  <template #left>
-                    <Icon icon-class="i-mdi-sort text-lg" />
-                  </template>
-                  <div>
-                    {{ $t(`meta.stats.${sortState.name}`) }}
-                  </div>
+                  <div v-if="sortState.name === undefined">{{ defaultLabel }}</div>
+                  <div v-else>{{ $t(`meta.stats.${sortState.name}`) }}</div>
                 </var-chip>
               </var-space>
               <var-space justify="flex-end" align="center" size="small">
                 <var-tooltip placement="top" :content="$t(sortState.asc ? 'asc' : 'desc')">
                   <PopupButton
                     type="warning"
-                    :icon-class="sortState.asc ? 'i-mdi-arrow-up' : 'i-mdi-arrow-down'"
+                    :icon-class="sortState.asc ? 'i-mdi-sort-ascending' : 'i-mdi-sort-descending'"
                     @click="() => (sortState.asc = !sortState.asc)"
                   />
                 </var-tooltip>
@@ -153,6 +133,17 @@ import { useSortState } from '@/stores/sort'
                 </var-tooltip>
               </var-space>
             </var-space>
+          </var-cell>
+
+          <var-cell class="filter-cell">
+            <var-input
+              class="w-full"
+              variant="outlined"
+              size="small"
+              :placeholder="$t('search')"
+              v-model="filtersState.search"
+              clearable
+            />
           </var-cell>
 
           <var-cell class="filter-cell" v-for="filter in filtersState.filters" :key="filter.key">
