@@ -1,7 +1,7 @@
 import type { AssessQuery, AssessResult, ComparedEntry } from '@/types'
 import { defineStore } from 'pinia'
 
-const ENTRIES_MAX = 4
+const ENTRIES_MAX = 6
 const compareSkipKeysSet = new Set(['element'])
 
 export const useCompareState = defineStore('compare', {

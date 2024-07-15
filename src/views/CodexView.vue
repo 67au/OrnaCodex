@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { CodexEntry } from '@/plugins/codex';
-import { GuideEntry } from '@/plugins/guide';
+import { CodexEntry } from '@/plugins/codex'
+import { GuideEntry } from '@/plugins/guide'
+import type { CodexCategory } from '@/types'
 </script>
 
 <template>
@@ -14,19 +15,19 @@ import { GuideEntry } from '@/plugins/guide';
   <StatsCard />
   <AbilityCard />
   <DropsCard name="abilities" text />
+  <DropsCard name="causes" chip />
+  <DropsCard name="gives" chip />
+  <DropsCard name="cures" chip />
+  <DropsCard name="immunities" chip />
   <DropsCard name="skills" />
   <DropsCard name="dropped_by" />
   <DropsCard name="drops" />
-  <DropsCard name="causes" chance />
-  <DropsCard name="gives" chance />
-  <DropsCard name="cures" chance />
-  <DropsCard name="immunities" chance />
-  <DropsCard name="summons" chance />
+  <DropsCard name="summons" chip />
   <DropsCard name="upgrade_materials" />
-  <DropsCard name="bestial_bond" text />
   <DropsCard name="learned_by" />
   <DropsCard name="requirements" />
   <DropsCard name="celestial_classes" />
+  <BestialBondCard />
   <MaterialCard />
   <SpellCard />
   <OffhandItemsCard />
@@ -35,14 +36,17 @@ import { GuideEntry } from '@/plugins/guide';
 <script lang="ts">
 export default defineComponent({
   mounted() {
-    watch(() => this.$route.params, () => {
-      this.category = this.$route.params.category as string
-      this.id = this.$route.params.id as string
-    })
+    watch(
+      () => this.$route.params,
+      () => {
+        this.category = this.$route.params.category as CodexCategory
+        this.id = this.$route.params.id as string
+      }
+    )
   },
   data() {
     return {
-      category: this.$route.params.category as string,
+      category: this.$route.params.category as CodexCategory,
       id: this.$route.params.id as string,
       loading: {
         guide: false

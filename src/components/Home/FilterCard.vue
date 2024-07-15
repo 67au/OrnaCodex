@@ -3,6 +3,7 @@ import { useFiltersState } from '@/stores/filters'
 import { useOptionsState } from '@/stores/options'
 import { getTierName } from '@/plugins/utils'
 import { useSortState } from '@/stores/sort'
+import { useCodexState } from '@/stores/codex'
 </script>
 
 <template>
@@ -61,8 +62,17 @@ import { useSortState } from '@/stores/sort'
                       class="text-lg i-mdi-view-dashboard-edit"
                     ></div>
                   </template>
-                  <div v-if="sortState.name === undefined">{{ defaultLabel }}</div>
-                  <div v-else>{{ $t(`meta.stats.${sortState.name}`) }}</div>
+                  <div v-if="sortState.nameTuple === undefined">
+                    {{ defaultLabel }}
+                  </div>
+                  <div v-else>
+                    {{
+                      getSortName(
+                        sortState.nameTuple[0] as string,
+                        sortState.nameTuple[1] as string
+                      )
+                    }}
+                  </div>
                 </var-chip>
               </var-space>
               <var-space justify="flex-end" align="center" size="small">
@@ -132,7 +142,7 @@ import { useSortState } from '@/stores/sort'
 
           <var-cell class="filter-cell" v-for="[key, filter] in filtersState.filters" :key="key">
             <var-select
-              :placeholder="`${$t(key)}${getMultipleTag(key)}`"
+              :placeholder="`${$t(`${isStatusKey(key) ? 'meta.' : ''}${key}`)} ${getMultipleTag(key)}`"
               v-model="filter.value"
               variant="outlined"
               size="small"
@@ -166,7 +176,7 @@ import { useSortState } from '@/stores/sort'
           elevation="3"
           @click="() => editFilters(key)"
         >
-          {{ `${$t(key)} ${getMultipleTag(key)}` }}
+          {{ `${$t(`${isStatusKey(key) ? 'meta.' : ''}${key}`)} ${getMultipleTag(key)}` }}
         </var-chip>
       </var-space>
     </var-paper>
@@ -199,19 +209,22 @@ import { useSortState } from '@/stores/sort'
       />
     </var-collapse-transition>
 
-    <var-divider dashed />
-
-    <var-paper radius="0px">
-      <var-space size="small" class="chip-list px-1 py-1">
-        <var-chip
-          :type="sortState.name === key ? 'success' : 'default'"
-          v-for="key in sortKeys"
-          elevation="3"
-          @click="() => editSort(key)"
-        >
-          {{ $t(`meta.stats.${key}`) }}
-        </var-chip>
-      </var-space>
+    <var-paper radius="0px" class="overflow-y-auto px-1 mt-2" style="max-height: 65vh">
+      <template v-for="[k, values] in sortKeys">
+        <template v-if="values.length > 0">
+          <var-divider :description="$t(`sortKeys.${k}`)" />
+          <var-space size="small">
+            <var-chip
+              :type="sortState.name === `${k}.${v}` ? 'success' : 'default'"
+              elevation="3"
+              v-for="v in values"
+              @click="() => editSort(`${k}.${v}`)"
+            >
+              {{ getSortName(k as string, v) }}
+            </var-chip>
+          </var-space>
+        </template>
+      </template>
     </var-paper>
   </PopupPaper>
 
@@ -285,13 +298,21 @@ export default defineComponent({
     sortState() {
       return useSortState()
     },
+    codexState() {
+      return useCodexState()
+    },
     defaultLabel() {
       return this.$t('query.qualitylabel.default')
     },
     sortKeys() {
       const regex = new RegExp(this.sort.search)
-      return this.sortState.statsKeys.filter((key) => {
-        return regex.test(this.$t(`meta.stats.${key}`))
+      return Object.entries(this.sortState.keys).map(([k, v]) => {
+        return [
+          k,
+          Array.from(v).filter((key) => {
+            return regex.test(this.getSortName(k, key))
+          })
+        ]
       })
     },
     optionsMap() {
@@ -318,6 +339,22 @@ export default defineComponent({
               key,
               Array.from({ length: 10 }).map((_, v: number) => {
                 return { label: getTierName(v + 1), value: String(v + 1) }
+              })
+            ]
+          }
+          if (key === 'gear_element') {
+            return [
+              key,
+              Array.from(value as Set<string>).map((v: string) => {
+                return { label: this.$t(`meta.stats.${v}`), value: v }
+              })
+            ]
+          }
+          if (key === 'abilities') {
+            return [
+              key,
+              Array.from(value as Set<string>).map((v: string) => {
+                return { label: this.codexState.abilities[v].name, value: v }
               })
             ]
           }
@@ -362,6 +399,9 @@ export default defineComponent({
       } else {
         this.filtersState.addFilter(key)
       }
+    },
+    getSortName(k: string, v: string) {
+      return this.$t(`meta.stats.${v}`)
     }
   }
 })

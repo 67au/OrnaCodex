@@ -173,12 +173,12 @@ import { getStaticUrl, rarityAura, rarityText } from '@/plugins/utils'
 
           <var-chip
             type="danger"
-            v-if="ce.meta.power !== undefined"
+            v-if="ce.power !== undefined"
             :size="chipSize"
             :round="true"
             plain
           >
-            {{ ce.meta.power }}
+            {{ ce.power }}
             <template #left>
               <div class="i-mdi-fire text-lg"></div>
             </template>

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import MainLayout from './pages/MainLayout.vue';
-import { useDark } from '@/styles';
-import type { CodexMeta } from './types';
-import { useCodexState } from './stores/codex';
-import { i18n } from './i18n';
-import { useExtraState } from './stores/extra';
-import { global } from './plugins/global';
-import AppHistory from './components/Header/AppHistory.vue';
+import MainLayout from './pages/MainLayout.vue'
+import { useDark } from '@/styles'
+import type { CodexMeta } from './types'
+import { useCodexState } from './stores/codex'
+import { i18n } from './i18n'
+import { useExtraState } from './stores/extra'
+import { global } from './plugins/global'
+import AppHistory from './components/Header/AppHistory.vue'
+import type { CodexEntry } from './plugins/codex'
 
-useDark();
+useDark()
 </script>
 
 <template>
@@ -46,27 +47,36 @@ export default defineComponent({
     return {
       loading: {
         language: true,
-        meta: true,
-      },
+        meta: true
+      }
     }
   },
   async created() {
-    const codexState = useCodexState();
+    const codexState = useCodexState()
     import('@/assets/json/codex.json').then((module) => {
-      const codex = module.default as CodexMeta;
+      const codex = module.default
       codexState.$patch({
-        meta: codex.base,
+        meta: codex.meta as any,
         extra: codex.extra
       })
-      this.loading.meta = false;
+      this.loading.meta = false
     })
-    watch(() => i18n.global.locale.value, async (newValue) => {
-      if (!(newValue in codexState.langs)) {
-        this.loading.language = true
-        codexState.langs[newValue] = await this.getCodexLanuage(newValue);
-        this.loading.language = false
-      }
-    }, { immediate: true })
+    watch(
+      () => i18n.global.locale.value,
+      async (newValue) => {
+        if (!(newValue in codexState.langs)) {
+          this.loading.language = true
+          const codex = await this.getCodexLanuage(newValue)
+          codexState.langs[newValue] = {
+            base: codex.base,
+            abilities: codex.abilities,
+            miss: codex.miss
+          }
+          this.loading.language = false
+        }
+      },
+      { immediate: true }
+    )
 
     const extraState = useExtraState()
     if (extraState.full) {
@@ -75,16 +85,15 @@ export default defineComponent({
   },
   computed: {
     isLoading() {
-      return this.loading.language || this.loading.meta;
+      return this.loading.language || this.loading.meta
     }
   },
   methods: {
     async getCodexLanuage(language: string) {
       return await import(`@/assets/json/codex.${language}.json`).then((module) => {
-        const codex = module.default;
-        i18n.global.mergeLocaleMessage(language, codex.key);
-        i18n.global.mergeLocaleMessage(language, { meta: codex.meta });
-        return codex.base
+        const codex = module.default
+        i18n.global.mergeLocaleMessage(language, { meta: codex.meta })
+        return codex
       })
     }
   }

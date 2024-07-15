@@ -7,7 +7,7 @@ import { CodexEntry } from '@/plugins/codex'
     <var-card class="card" :title="$t('ability')">
       <template #description>
         <div class="card-description">
-          <template v-if="ability.meta !== undefined">
+          <template v-if="ce.meta.ability !== undefined">
             <ListEntry :entry="ability" />
           </template>
           <template v-else>

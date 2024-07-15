@@ -1,5 +1,5 @@
 export interface CodexId {
-  category: string
+  category: CodexCategory
   id: string
 }
 
@@ -8,9 +8,21 @@ export interface CodexEntry {
   [key: string]: any
 }
 
+export type CodexCategory = keyof CodexMeta['meta']
+
 export interface CodexMeta {
-  base: Record<string, CodexEntry>
-  extra: Record<string, CodexEntry>
+  meta: {
+    bosses: CodexEntry
+    classes: CodexEntry
+    followers: CodexEntry
+    items: CodexEntry
+    monsters: CodexEntry
+    raids: CodexEntry
+    spells: CodexEntry
+  }
+  extra: {
+    icons: Record<string, string>
+  }
 }
 
 export interface CodexLangs {
@@ -55,6 +67,10 @@ export interface Stat {
 }
 
 export type Stats = Record<string, Stat>
+
+export interface BestialBond {
+  [key: string]: Array<[string, string] | [string, string, string]>
+}
 
 export interface AssessQuery {
   data: Record<string, number>

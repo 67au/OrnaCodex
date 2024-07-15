@@ -10,7 +10,8 @@ import type { PropType } from 'vue'
   <var-cell class="entry-cell" border @click="enterCodex(entry.category, entry.id)">
     <template #icon>
       <var-icon
-        :class="`append-icon ${rarityAura(entry.category, entry.id)}`"
+        class="append-icon"
+        :class="rarityAura(entry.category, entry.id)"
         :size="36"
         :name="getStaticUrl(entry.meta.icon)"
       />
@@ -78,11 +79,11 @@ import type { PropType } from 'vue'
         >
           {{ $t(`meta.spell_type.${entry.meta.spell_type}`) }}
         </var-chip>
-        <var-chip v-if="entry.meta.power !== undefined" size="mini" :round="false" plain>
+        <var-chip v-if="ce.power !== undefined" size="mini" :round="false" plain>
           <template #left>
             <div class="i-mdi-fire text-sm"></div>
           </template>
-          {{ entry.meta.power }}
+          {{ ce.power }}
         </var-chip>
 
         <!-- Drops -->
@@ -123,7 +124,7 @@ import type { PropType } from 'vue'
             size="mini"
             :round="false"
             plain
-            v-for="(status, index) in ce.meta.cures"
+            v-for="(status, index) in ce.meta.cures as Array<Status>"
             :key="index"
           >
             {{ `${$t(`meta.status.${status.name}`)}` }}
@@ -136,7 +137,7 @@ import type { PropType } from 'vue'
             size="mini"
             :round="false"
             plain
-            v-for="(status, index) in ce.meta.immunities"
+            v-for="(status, index) in ce.meta.immunities as Array<Status>"
             :key="index"
           >
             {{ `${$t(`meta.status.${status.name}`)}` }}

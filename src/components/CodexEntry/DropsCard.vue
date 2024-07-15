@@ -2,19 +2,19 @@
 import { CodexEntry } from '@/plugins/codex'
 import { getStaticUrl } from '@/plugins/utils'
 import { global } from '@/plugins/global'
+import type { CodexCategory } from '@/types'
 </script>
 
 <template>
   <template v-if="ce.meta[name] !== undefined || ce.lang[name] !== undefined">
-    <var-card class="card" :title="$t(name)">
+    <var-card class="card" :title="$t(`meta.${name}`)">
       <template #description>
         <div class="card-description">
           <template v-if="text">
-            <TextLists v-if="ce.meta[name] !== undefined" :entries="ce.meta[name]" />
-            <TextLists v-else :entries="ce.lang[name]" />
+            <TextLists :entries="textEntries" />
           </template>
-          <template v-else-if="chance">
-            <ChanceLists :entries="ce.meta[name]" :summons="name === 'summons'" />
+          <template v-else-if="chip">
+            <ChipLists :entries="ce.meta[name]" :name="name" />
           </template>
           <template v-else>
             <template v-for="entry in entries">
@@ -66,6 +66,10 @@ export default defineComponent({
     chance: {
       type: Boolean,
       default: false
+    },
+    chip: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -74,8 +78,14 @@ export default defineComponent({
     },
     entries(): Array<CodexEntry> {
       return this.ce.meta[this.name]?.map(
-        (entry: [string, string]) => new CodexEntry(entry[0], entry[1])
+        (entry: [CodexCategory, string]) => new CodexEntry(entry[0], entry[1])
       )
+    },
+    textEntries() {
+      if (this.name === 'abilities') {
+        return this.ce.meta[this.name].map((k: string) => this.ce.abilities[k])
+      }
+      return []
     }
   }
 })

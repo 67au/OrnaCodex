@@ -7,7 +7,7 @@ import { global } from '@/plugins/global'
   <var-card v-if="ce.meta.stats !== undefined" class="card" :title="$t('stats')">
     <template #description>
       <div class="card-description">
-        <var-space>
+        <var-space size="small">
           <template v-for="[key, value] in Object.entries(ce.meta.stats)">
             <template v-if="typeof value === 'string'">
               <template v-if="key === 'element'">

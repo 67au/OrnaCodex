@@ -1,7 +1,8 @@
 import router from '@/router'
 import { global } from './global'
 import { useCodexState } from '@/stores/codex'
-import type { CodexId } from '@/types'
+import type { CodexCategory, CodexId } from '@/types'
+import type { CodexEntry } from './codex'
 
 const regex_temp = / \[temp\]/gi
 const regex_underline = / |\.|:|\\|\/|'/gi
@@ -47,7 +48,7 @@ export function valueStrip(value: string) {
 }
 
 const auraSet = new Set(['items', 'bosses', 'monsters'])
-export function rarityAura(category: string, id: string) {
+export function rarityAura(category: CodexCategory, id: string) {
   const codexState = useCodexState()
   const entry = codexState.meta[category][id]
   if (auraSet.has(category)) {
@@ -60,7 +61,7 @@ export function rarityAura(category: string, id: string) {
 }
 
 const regex_disable_rarity_text = /arisen|superboss/gi
-export function rarityText(category: string, id: string) {
+export function rarityText(category: CodexCategory, id: string) {
   const aura = rarityAura(category, id)
   if (regex_disable_rarity_text.test(aura)) {
     return ''
@@ -113,3 +114,67 @@ export function isGears(item: any) {
 export function isUpgradable(item: any) {
   return (isWeapon(item) || isArmor(item)) && !isAccessory(item)
 }
+
+export function getNameTuple(name: string) {
+  const l = name.split('.')
+  if (Array.isArray(l) && l.length > 1) {
+    const v = l.pop()
+    const k = l.join('.')
+    return [k, v] as [string, string]
+  } else {
+    return undefined
+  }
+}
+
+// export function cacheBondBonus() {
+//   const cache = {} as Record<string, any>
+//   return function (entry: CodexEntry, v: string) {
+//     if (cache[v] === undefined) {
+//       cache[v] = {}
+//     }
+//     if (cache[v][entry.url] !== undefined) {
+//       return cache[v][entry.url]
+//     }
+//     const r = Object.values(entry.meta.bestial_bond)
+//       .flatMap((n) => n as [string, string, string] | [string, string])
+//       .filter((n) => {
+//         if (n[0] === 'bonus' && n[1] === v) {
+//           return true
+//         }
+//         return false
+//       })
+//       .sort((n, m) => valueStrip(n[2] || '0') - valueStrip(m[2] || '0'))
+//     if (r.length > 0) {
+//       cache[v][entry.url] = r[0]
+//     } else {
+//       cache[v][entry.url] = false
+//     }
+//     return cache[v][entry.url]
+//   }
+// }
+
+// export function cacheBondSkill() {
+//   const cache = {} as Record<string, any>
+//   return function (entry: CodexEntry, v: string) {
+//     if (cache[v] === undefined) {
+//       cache[v] = {}
+//     }
+//     if (cache[v][entry.url] !== undefined) {
+//       return cache[v][entry.url]
+//     }
+//     const r = Object.values(entry.meta.bestial_bond)
+//       .flatMap((n) => n as [string, string, string] | [string, string])
+//       .filter((n) => {
+//         if (n[0] === 'ability' && n[1] === v) {
+//           return true
+//         }
+//         return false
+//       })
+//     if (r.length > 0) {
+//       cache[v][entry.url] = r[0]
+//     } else {
+//       cache[v][entry.url] = false
+//     }
+//     return cache[v][entry.url]
+//   }
+// }

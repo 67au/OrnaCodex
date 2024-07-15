@@ -5,6 +5,7 @@ import { useFiltersState } from '@/stores/filters'
 import { useSortState } from '@/stores/sort'
 import { enterCodex, getStaticUrl, getTierName } from '@/plugins/utils'
 import { rarityAura, rarityText } from '@/plugins/utils'
+import { global } from '@/plugins/global'
 </script>
 
 <template>
@@ -86,63 +87,53 @@ import { rarityAura, rarityText } from '@/plugins/utils'
                   {{ $t('exotic') }}
                 </var-chip>
 
-                <template v-if="codexState.meta[category][id]['event'] != undefined">
-                  <var-chip
-                    class="highlight"
-                    size="mini"
-                    :round="false"
-                    plain
-                    v-for="event in codexState.meta[category][id]['event']"
-                    :key="event"
-                  >
-                    <span>{{ $t(`meta.event.${event}`) }}</span>
-                  </var-chip>
-                </template>
-
                 <var-chip
-                  v-if="
-                    codexState.meta[category][id]['stats'] !== undefined &&
-                    sortState.name !== undefined &&
-                    codexState.meta[category][id]['stats'][sortState.name] !== undefined
-                  "
-                  type="success"
+                  class="highlight"
                   size="mini"
                   :round="false"
                   plain
+                  v-for="event in codexState.meta[category][id]['event'] || []"
+                  :key="event"
                 >
-                  <template
-                    v-if="
-                      typeof codexState.meta[category][id]['stats'][sortState.name] === 'string'
-                    "
-                  >
-                    {{
-                      `${$t(`meta.stats.${sortState.name}`)}: ${codexState.meta[category][id]['stats'][sortState.name]}`
-                    }}
-                  </template>
-                  <template v-else>
-                    {{ $t(`meta.stats.${sortState.name}`) }}
-                  </template>
+                  <span>{{ $t(`meta.event.${event}`) }}</span>
                 </var-chip>
 
                 <var-chip
-                  v-for="key in (Array.from(display) as Array<string>).filter(
-                    (key) =>
+                  v-for="([key, v], index) in displayKeys.filter(([k, v]) => {
+                    if (k === 'raids') {
+                      return codexState.meta[category][id][v] !== undefined
+                    }
+                    return (
                       codexState.meta[category][id]['stats'] !== undefined &&
-                      codexState.meta[category][id]['stats'][key] !== undefined &&
-                      key !== sortState.name
-                  )"
-                  type="info"
+                      codexState.meta[category][id]['stats'][v] !== undefined
+                    )
+                  })"
+                  :type="sortState.nameTuple !== undefined && index === 0 ? 'success' : 'info'"
                   size="mini"
                   :round="false"
+                  :color="
+                    v === 'element'
+                      ? global.elementColor[codexState.meta[category][id]['stats'][v]]
+                      : ''
+                  "
                   plain
+                  :key="index"
                 >
-                  <template v-if="typeof codexState.meta[category][id]['stats'][key] === 'string'">
+                  <template v-if="key === 'raids' && v === 'hp'">
                     {{
-                      `${$t(`meta.stats.${key}`)}: ${codexState.meta[category][id]['stats'][key]}`
+                      `${$t('meta.stats.hp')}: ${Number(codexState.meta[category][id]['hp']).toLocaleString()}`
                     }}
                   </template>
+                  <template v-else-if="v === 'element'">
+                    {{ $t(`meta.stats.${codexState.meta[category][id]['stats'][v]}`) }}
+                  </template>
+                  <template
+                    v-else-if="typeof codexState.meta[category][id]['stats'][v] === 'string'"
+                  >
+                    {{ `${$t(`meta.stats.${v}`)}: ${codexState.meta[category][id]['stats'][v]}` }}
+                  </template>
                   <template v-else>
-                    {{ $t(`meta.stats.${key}`) }}
+                    {{ $t(`meta.stats.${v}`) }}
                   </template>
                 </var-chip>
               </var-space>
@@ -171,12 +162,12 @@ import { rarityAura, rarityText } from '@/plugins/utils'
     <var-paper radius="0px">
       <var-space size="small" class="chip-list px-1 py-1">
         <var-chip
-          :type="display.has(key) ? 'success' : 'default'"
-          v-for="key in sortState.statsKeys"
+          :type="display.has(k) ? 'success' : 'default'"
+          v-for="[k, _] in sortKeys"
           elevation="3"
-          @click="() => editLayer(key)"
+          @click="() => editLayer(k)"
         >
-          {{ $t(`meta.stats.${key}`) }}
+          {{ $t(`sortKeys.${k}`) }}
         </var-chip>
       </var-space>
     </var-paper>
@@ -214,6 +205,30 @@ export default defineComponent({
     },
     sortState() {
       return useSortState()
+    },
+    sortKeys() {
+      return Object.entries(this.sortState.keys)
+    },
+    displayKeys() {
+      return (this.sortState.nameTuple === undefined ? [] : [this.sortState.nameTuple]).concat(
+        this.sortKeys
+          .filter(([key]) => this.display.has(key))
+          .map(([key, value]) => {
+            return (
+              key === 'items.stats' ? Array.from(value).concat('element') : Array.from(value)
+            ).map((v) => [key, v])
+          })
+          .flat(1)
+          .filter(([k, v]) => {
+            if (this.sortState.nameTuple === undefined) {
+              return true
+            }
+            if (k === this.sortState.nameTuple[0] && v === this.sortState.nameTuple[1]) {
+              return false
+            }
+            return true
+          }) as [string, string][]
+      )
     }
   }
 })

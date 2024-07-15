@@ -2,6 +2,7 @@
 import { useHistoryState } from '@/stores/history'
 import router from '@/router'
 import { CodexEntry } from '@/plugins/codex'
+import type { CodexCategory } from '@/types'
 </script>
 
 <template>
@@ -40,7 +41,7 @@ export default {
 
     router.afterEach((to, from) => {
       if (to.name === 'codex') {
-        const entry = new CodexEntry(to.params.category as string, to.params.id as string)
+        const entry = new CodexEntry(to.params.category as CodexCategory, to.params.id as string)
         if (entry.meta !== undefined) {
           this.historyState.add(entry)
         }

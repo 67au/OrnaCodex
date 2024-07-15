@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CodexEntry } from '@/plugins/codex'
+import type { CodexCategory } from '@/types'
 </script>
 
 <template>
@@ -22,10 +23,8 @@ export default defineComponent({
       return this.view as CodexEntry
     },
     spells(): Array<CodexEntry> {
-      return Object.entries(this.ce.spells as Record<string, Array<string>>).flatMap(
-        ([category, ids]) => {
-          return ids.map((id: string) => new CodexEntry(category, id))
-        }
+      return (this.ce.spells as Array<[CodexCategory, string]>).map(
+        ([category, id]) => new CodexEntry(category, id)
       )
     }
   }

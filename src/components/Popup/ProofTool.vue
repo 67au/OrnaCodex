@@ -88,12 +88,12 @@ export default defineComponent({
       )
     },
     proofs() {
-      return this.proofRate.map((rate) => getProofs(this.materials, rate as number))
+      return this.proofRate.map((rate) => String(getProofs(this.materials, rate as number)))
     }
   },
   methods: {
     updateMaterials(index: number) {
-      this.materials = getMaterials(this.proofs[index], this.proofRate[index])
+      this.materials = getMaterials(Number(this.proofs[index]), this.proofRate[index])
     }
   }
 })

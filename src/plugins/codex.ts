@@ -15,14 +15,14 @@ import {
   isGears,
   getTierName
 } from './utils'
-import type { AssessQuery, AssessResult } from '@/types'
+import type { AssessQuery, AssessResult, CodexCategory, Status } from '@/types'
 import { assess } from './assess'
 import { useExtraState } from '@/stores/extra'
 
 export class CodexEntry {
-  category: string
+  category: CodexCategory
   id: string
-  constructor(category: string, id: string) {
+  constructor(category: CodexCategory, id: string) {
     this.category = category
     this.id = id
   }
@@ -42,20 +42,42 @@ export class CodexEntry {
   }
   get miss() {
     const codexState = useCodexState()
-    // https://github.com/67au/OrnaCodexCrawler/blob/a1782bf2c13dbedb1eb2bb3a0a639357e8127dbc/crawler/cmd/codex.py#L183
-    return codexState.missEntries[`${i18n.global.locale.value}/${this.category}/${this.id}`]
+    return codexState.miss[this.category][this.id]
   }
   get materials() {
-    const codexState = useCodexState()
-    return codexState.materials?.[this.id]
-  }
-  get spells() {
-    const codexState = useCodexState()
-    return codexState.spells?.[this.id]
+    return this.meta.source
   }
   get offhandItems() {
+    return this.meta.items
+  }
+  get spells() {
+    return this.meta.users
+  }
+  get abilities() {
     const codexState = useCodexState()
-    return codexState.offhandSkills?.[this.id]
+    return codexState.abilities
+  }
+
+  get power() {
+    const p = this.meta.power
+    if (p === undefined) {
+      return undefined
+    } else {
+      const l = []
+      l.push(p.pve.value !== undefined ? p.pve.value : p.pve.range.join('-'))
+      if (p.pve.multi !== undefined) {
+        l.push(`(x${p.pve.multi})`)
+      }
+      if (p.pvp !== undefined) {
+        l.push('|')
+        l.push('PvP:')
+        l.push(p.pvp.value !== undefined ? p.pvp.value : p.pvp.range.join('-'))
+        if (p.pve.multi !== undefined) {
+          l.push(`(x${p.pvp.multi})`)
+        }
+      }
+      return l.join(' ')
+    }
   }
 
   // items

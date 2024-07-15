@@ -15,12 +15,14 @@
     "place": "部位",
     "ability": "副手技能",
     "target": "技能目标",
+    "gear_element": "装备元素属性",
+    "abilities": "被动能力",
     "event": "活动",
     "tags": "标签",
     "single": "单选",
     "multiple": "多选",
     "history": "历史记录",
-    "extraTags": "额外属性",
+    "extraTags": "显示更多",
     "categories": {
       "bosses": "头目",
       "classes": "职业",
@@ -66,6 +68,18 @@
     "close": "关闭",
     "offhands": "副手装备",
     "sort": "排序",
+    "sortKeys": {
+      "items": {
+        "stats": "物品基础属性",
+        "extra": "物品特殊属性"
+      },
+      "followers": {
+        "stats": "追随者属性",
+        "bonus": "野兽羁绊加成",
+        "ability": "野兽羁绊技能"
+      },
+      "raids": "副本"
+    },
     "sortDefault": "默认排序",
     "asc": "升序",
     "desc": "降序",
@@ -125,9 +139,23 @@
     "place": "部位",
     "ability": "副手技能",
     "target": "技能目標",
+    "gear_element": "裝備元素屬性",
+    "abilities": "被動能力",
     "event": "活動",
     "tags": "標簽",
     "sort": "排序",
+    "sortKeys": {
+      "items": {
+        "stats": "物品基礎屬性",
+        "extra": "物品基礎屬性"
+      },
+      "followers": {
+        "stats": "跟隨者屬性",
+        "bonus": "野獸羈絆加成",
+        "ability": "野獸羈絆技能"
+      },
+      "raids": "副本"
+    },
     "sortDefault": "默認排序",
     "asc": "升序",
     "desc": "降序",
@@ -135,7 +163,7 @@
     "single": "單選",
     "multiple": "多選",
     "history": "歷史記錄",
-    "extraTags": "額外屬性",
+    "extraTags": "顯示更多",
     "categories": {
       "bosses": "頭目",
       "classes": "職業",
@@ -235,11 +263,25 @@
     "place": "Place",
     "ability": "Ability",
     "target": "Spell Target",
+    "gear_element": "Gear Element",
+    "abilities": "Passive",
     "event": "Event",
     "tags": "Tags",
     "clickHere": "Click Here",
     "close": "Close",
     "sort": "Sort",
+    "sortKeys": {
+      "items": {
+        "stats": "Item Basic Stats",
+        "extra": "Item Extra Stats"
+      },
+      "followers": {
+        "stats": "Follower Stats",
+        "bonus": "Bond Bonus",
+        "ability": "Bond Skills"
+      },
+      "raids": "Raids"
+    },
     "sortDefault": "DefaultOrder",
     "asc": "ASC",
     "desc": "DESC",
@@ -247,7 +289,7 @@
     "single": "Single",
     "multiple": "Multiple",
     "history": "History",
-    "extraTags": "Extra Stats",
+    "extraTags": "Display More",
     "categories": {
       "bosses": "Bosses",
       "classes": "Classes",

@@ -1,24 +1,19 @@
 import { i18n } from '@/i18n'
-import type { CodexId, CodexLangs, CodexMeta, Status } from '@/types'
+import type { CodexCategory, CodexId, CodexLangs, CodexMeta, Status } from '@/types'
 import { defineStore } from 'pinia'
 import { useFiltersState } from './filters'
 import { useOptionsState } from './options'
 import { valueStrip } from '@/plugins/utils'
 import { useSortState } from './sort'
+import { CodexEntry } from '@/plugins/codex'
 
 export const useCodexState = defineStore('codex', {
   state: () => ({
-    meta: {} as CodexMeta['base'],
+    meta: {} as CodexMeta['meta'],
     langs: {} as CodexLangs,
     extra: {} as CodexMeta['extra']
   }),
   getters: {
-    materials: (state) => state.extra['upgrade_materials'],
-    spells: (state) => state.extra['skills'],
-    offhandSkills: (state) => state.extra['offhand_skills'],
-    missEntries: (state) => state.extra['miss_entries'],
-    statPercentKeys: (state) => new Set(state.extra['stat_percent_keys'] as Array<string>),
-    sortKeys: (state) => new Set(state.extra['sort_keys'] as Array<string>),
     assessKeysSet: () =>
       new Set([
         'hp',
@@ -34,13 +29,15 @@ export const useCodexState = defineStore('codex', {
       ]),
     icons: (state) => state.extra.icons,
 
-    lang: (state) => state.langs[i18n.global.locale.value],
+    lang: (state) => state.langs[i18n.global.locale.value].base,
+    abilities: (state) => state.langs[i18n.global.locale.value].abilities,
+    miss: (state) => state.langs[i18n.global.locale.value].miss,
 
     index(state): Array<CodexId> {
       return Object.entries(state.meta).flatMap(([category, entries]) => {
         return Object.keys(entries).map((id) => {
           return {
-            category: category,
+            category: category as CodexCategory,
             id: id
           }
         })
@@ -71,7 +68,10 @@ export const useCodexState = defineStore('codex', {
           }
 
           if (optionsState.singleKeysSet.has(filter.key)) {
-            const testValue: string = this.meta[category][id][filter.key]
+            let testValue: string = this.meta[category][id][filter.key]
+            if (filter.key === 'gear_element') {
+              testValue = this.meta[category][id]?.stats?.element
+            }
             if (testValue === undefined) {
               return false
             }
@@ -151,24 +151,45 @@ export const useCodexState = defineStore('codex', {
 
     sorted(): Array<CodexId> {
       const sortState = useSortState()
-      const { name, asc } = sortState
-      return name === undefined
+      const { nameTuple, asc } = sortState
+      return nameTuple === undefined
         ? this.sortedDefault
-        : [...this.sortedDefault].sort((a, b) => {
-            const x = this.meta[a.category][a.id]
-            const y = this.meta[b.category][b.id]
-            if (x?.stats === undefined || x?.stats[name] === undefined) {
-              return 1
-            }
-            if (y?.stats === undefined || y?.stats[name] === undefined) {
-              return -1
-            }
-            if (typeof x.stats[name] === 'string') {
-              return (valueStrip(x.stats[name]) - valueStrip(y.stats[name])) * (asc ? 1 : -1)
-            } else {
-              return typeof x.stats[name] === 'boolean' ? 1 : -1
-            }
-          })
+        : [...this.sortedDefault]
+            .filter((x) => {
+              const [k, v] = nameTuple as [string, string]
+              if (x.category !== k.split('.')[0]) {
+                return false
+              }
+              if (k === 'raids') {
+                return this.meta[x.category][x.id][v] !== undefined
+              }
+              if (this.meta[x.category][x.id].stats?.[v] === undefined) {
+                return false
+              }
+              return true
+            })
+            .sort((a, b) => {
+              const [k, v] = nameTuple as [string, string]
+              let x = this.meta[a.category][a.id].stats?.[v]
+              let y = this.meta[b.category][b.id].stats?.[v]
+              if (k === 'raids') {
+                x = this.meta[a.category][a.id][v]
+                y = this.meta[b.category][b.id][v]
+              }
+              if (x === undefined || y === undefined) {
+                return x === undefined ? 1 : -1
+              }
+              if (typeof x === 'string') {
+                return (valueStrip(x) - valueStrip(y)) * (asc ? 1 : -1)
+              } else {
+                return typeof x === 'boolean' ? 1 : -1
+              }
+            })
+    }
+  },
+  actions: {
+    getIcon(name: string) {
+      return this.icons[name]
     }
   }
 })
