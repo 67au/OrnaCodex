@@ -5,7 +5,7 @@
         {{ title }}
       </var-link>
       <template #right>
-        <var-space justify="flex-end" size="mini">
+        <var-space size="mini">
           <slot name="right"></slot>
         </var-space>
       </template>

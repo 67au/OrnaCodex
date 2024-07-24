@@ -13,6 +13,15 @@ useDark()
 </script>
 
 <template>
+  <AppHeader :title="$t('title')">
+    <template #right>
+      <AppHistory v-if="!isLoading" />
+      <AppLocaleSwitch />
+      <AppThemeSwitch />
+      <AppGithub :data-created="global.dataCreated" />
+    </template>
+  </AppHeader>
+
   <template v-if="isLoading">
     <div class="mt-16">
       <var-loading description="LOADING" :loading="isLoading" class="max-w-lg mx-auto">
@@ -20,15 +29,8 @@ useDark()
       </var-loading>
     </div>
   </template>
+
   <MainLayout>
-    <AppHeader :title="$t('title')">
-      <template #right>
-        <AppHistory v-if="!isLoading" />
-        <AppLocaleSwitch />
-        <AppThemeSwitch />
-        <AppGithub :data-created="global.dataCreated" />
-      </template>
-    </AppHeader>
     <template v-if="!isLoading">
       <router-view v-slot="{ Component }">
         <component :is="Component" v-if="!$route.meta.keepAlive" />

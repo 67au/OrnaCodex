@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { useCompareState } from '@/stores/compare';
-
+import { useCompareState } from '@/stores/compare'
 </script>
 
 <template>
-  <var-fab type="primary" v-model:active="active" drag safe-area>
-    <var-badge class="z-200" type="danger" offset-x="2" :value="compareState.length"
-      :hidden="compareState.length === 0">
-      <var-button type="warning" icon-container @click.stop="showCompare" :disabled="compareState.length === 0">
+  <var-fab type="primary" v-model:active="active" drag safe-area style="left: calc(100vw - 64px)">
+    <var-badge
+      class="z-200"
+      type="danger"
+      offset-x="2"
+      :value="compareState.length"
+      :hidden="compareState.length === 0"
+    >
+      <var-button
+        type="warning"
+        icon-container
+        @click.stop="showCompare"
+        :disabled="compareState.length === 0"
+      >
         <div class="i-mdi-scale-balance text-xl" />
       </var-button>
     </var-badge>
@@ -21,11 +30,14 @@ import { useCompareState } from '@/stores/compare';
 <script lang="ts">
 export default defineComponent({
   mounted() {
-    watch(() => this.compareState.length, (newValue) => {
-      if (newValue > 0) {
-        this.active = true
+    watch(
+      () => this.compareState.length,
+      (newValue) => {
+        if (newValue > 0) {
+          this.active = true
+        }
       }
-    })
+    )
   },
   data() {
     return {
@@ -45,12 +57,12 @@ export default defineComponent({
       setTimeout(() => {
         this.show.compare = true
       }, 100)
-    },
+    }
   },
   computed: {
     compareState() {
       return useCompareState()
-    },
+    }
   }
 })
 </script>
