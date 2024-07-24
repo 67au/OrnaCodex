@@ -3,7 +3,14 @@ import { useCompareState } from '@/stores/compare'
 </script>
 
 <template>
-  <var-fab type="primary" v-model:active="active" drag safe-area style="left: calc(100vw - 64px)">
+  <var-fab
+    type="primary"
+    :show="display"
+    v-model:active="active"
+    drag
+    safe-area
+    style="left: calc(100vw - 64px)"
+  >
     <var-badge
       class="z-200"
       type="danger"
@@ -20,6 +27,17 @@ import { useCompareState } from '@/stores/compare'
         <div class="i-mdi-scale-balance text-xl" />
       </var-button>
     </var-badge>
+    <var-button
+      type="danger"
+      icon-container
+      @click.stop="
+        () => {
+          $emit('update:display', false)
+        }
+      "
+    >
+      <div class="i-mdi-visibility-off text-xl" />
+    </var-button>
     <var-button type="primary" icon-container @click.stop="backToTop">
       <div class="i-mdi-chevron-up text-xl" />
     </var-button>
@@ -29,6 +47,11 @@ import { useCompareState } from '@/stores/compare'
 
 <script lang="ts">
 export default defineComponent({
+  props: {
+    display: {
+      type: Boolean
+    }
+  },
   mounted() {
     watch(
       () => this.compareState.length,

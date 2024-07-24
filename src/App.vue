@@ -15,6 +15,9 @@ useDark()
 <template>
   <AppHeader :title="$t('title')">
     <template #right>
+      <var-button v-if="show.fab === false" text-color="#fff" text round @click="show.fab = true">
+        <div class="i-mdi-plus-circle text-xl" />
+      </var-button>
       <AppHistory v-if="!isLoading" />
       <AppLocaleSwitch />
       <AppThemeSwitch />
@@ -37,7 +40,7 @@ useDark()
         <keep-alive>
           <component :is="Component" v-if="$route.meta.keepAlive" />
         </keep-alive>
-        <FabTool />
+        <FabTool v-model:display="show.fab" />
       </router-view>
     </template>
   </MainLayout>
@@ -50,6 +53,9 @@ export default defineComponent({
       loading: {
         language: true,
         meta: true
+      },
+      show: {
+        fab: true
       }
     }
   },
