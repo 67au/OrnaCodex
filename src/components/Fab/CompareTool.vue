@@ -162,7 +162,8 @@ const bonusKeysSet = new Set([
   'exp_bonus',
   'luck_bonus',
   'gold_bonus',
-  'monster_encounters'
+  'monster_encounters',
+  'no_follower_bonus'
 ])
 const cardSize = 185
 
@@ -212,25 +213,14 @@ export default defineComponent({
           } else {
             const v = entry.meta.stats[key] || '0'
             const value = typeof v === 'string' ? valueStrip(v) : v === true ? 1 : 0
-            const isNoFollowerBonus = key === 'no_follower_bonus'
-            if ((bonusKeysSet.has(key) || isNoFollowerBonus) && value > 0) {
+            if (bonusKeysSet.has(key) && value > 0) {
               if (query.level > 10) {
-                base = getUpgradedBonus(value, query.level - 4, false, isNoFollowerBonus) // level - 10 + 6
+                base = getUpgradedBonus(value, query.level - 4, false, key) // level - 10 + 6
               } else {
                 if (query.qualityCode > 0) {
-                  base = getUpgradedBonus(
-                    value,
-                    query.qualityCode,
-                    entry.isAdornment,
-                    isNoFollowerBonus
-                  )
+                  base = getUpgradedBonus(value, query.qualityCode, entry.isAdornment, key)
                 } else {
-                  base = getUpgradedBonus(
-                    value,
-                    getQualityCode(ar.quality),
-                    entry.isAdornment,
-                    isNoFollowerBonus
-                  )
+                  base = getUpgradedBonus(value, getQualityCode(ar.quality), entry.isAdornment, key)
                 }
               }
             } else {

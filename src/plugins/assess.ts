@@ -203,9 +203,16 @@ export function getUpgradedBonus(
   base: number,
   qualityCode: Quality,
   isAdornment: boolean = false,
-  isNoFollowerBonus: boolean = false
+  key: string | undefined = undefined
 ) {
-  const scale = isNoFollowerBonus ? 1 / 5 : 1
+  let scale
+  switch (key) {
+    case 'no_follower_bonus':
+      scale = 1 / 5
+      break
+    default:
+      scale = 1
+  }
   if (qualityCode > -1) {
     if (isAdornment) {
       return base + (base * bonusScale[Quality[qualityCode]]) / 100
