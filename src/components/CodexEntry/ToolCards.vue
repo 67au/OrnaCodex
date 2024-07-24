@@ -71,7 +71,7 @@ import { Snackbar } from '@varlet/ui'
             type="warning"
             size="small"
             @click="initYacoQuery()"
-            v-if="!ce.isCelestialWeapon && (ce.isAssessable || ce.isUpgradableSlots)"
+            v-if="!ce.isCelestialWeapon && ce.isAssessable"
           >
             YACO
           </var-button>
@@ -79,7 +79,7 @@ import { Snackbar } from '@varlet/ui'
             type="warning"
             size="small"
             @click="initYacoQuery(true)"
-            v-if="ce.isAssessable || ce.isUpgradableSlots"
+            v-if="ce.isAssessable"
           >
             {{ $t('query.quality') }}
           </var-button>

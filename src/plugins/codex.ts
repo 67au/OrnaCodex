@@ -83,7 +83,10 @@ export class CodexEntry {
   // items
   get isAssessable(): boolean {
     const codexState = useCodexState()
-    return Object.keys(this.meta.stats).some((key) => codexState.assessKeysSet.has(key))
+    return (
+      Object.keys(this.meta.stats).some((key) => codexState.assessKeysSet.has(key)) ||
+      isUpgradableSlots(this.meta)
+    )
   }
   get isCelestial(): boolean {
     return isCelestial(this.meta)
