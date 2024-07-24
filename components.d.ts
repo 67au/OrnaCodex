@@ -22,7 +22,7 @@ declare module 'vue' {
     DropsCard: typeof import('./src/components/CodexEntry/DropsCard.vue')['default']
     EntriesCard: typeof import('./src/components/Home/EntriesCard.vue')['default']
     FabTool: typeof import('./src/components/Fab/FabTool.vue')['default']
-    FilterCard: typeof import('./src/components/Home/FilterCard.vue')['default']
+    FiltersCard: typeof import('./src/components/Home/FiltersCard.vue')['default']
     GuideCard: typeof import('./src/components/CodexEntry/GuideCard.vue')['default']
     GuideResult: typeof import('./src/components/Popup/GuideResult.vue')['default']
     HistoryTool: typeof import('./src/components/Popup/HistoryTool.vue')['default']

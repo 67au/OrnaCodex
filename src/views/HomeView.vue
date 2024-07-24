@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useEntriesListState } from '@/stores/entriesList'
 import { useFiltersState } from '@/stores/filters'
-import FilterCard from '@/components/Home/FilterCard.vue'
+import FiltersCard from '@/components/Home/FiltersCard.vue'
 import EntriesCard from '@/components/Home/EntriesCard.vue'
 import { useSortState } from '@/stores/sort'
 </script>
 
 <template>
   <var-sticky :offset-top="64" css-mode :disabled="disableSticky" class="hack-warp">
-    <FilterCard />
+    <FiltersCard />
   </var-sticky>
   <EntriesCard />
 </template>
