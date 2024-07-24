@@ -29,9 +29,16 @@ export interface CodexLangs {
   [language: string]: Record<string, CodexEntry>
 }
 
+export interface OptionsKeys {
+  single: Array<string>
+  array: Array<string>
+  status: Array<string>
+}
+
 export interface Filter {
   key: string
   value: Array<string> | string | undefined
+  type: keyof OptionsKeys | undefined
 }
 
 export type Filters = Map<string, Filter>

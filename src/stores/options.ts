@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useCodexState } from './codex'
-import type { BestialBond, CodexEntry, Options, Status } from '@/types'
+import type { BestialBond, CodexEntry, Options, OptionsKeys, Status } from '@/types'
 
 export const useOptionsState = defineStore('options', {
   state: () => ({
@@ -33,11 +33,7 @@ export const useOptionsState = defineStore('options', {
     } as Record<string, Set<string>>
   }),
   getters: {
-    keys(): {
-      single: Array<string>
-      array: Array<string>
-      status: Array<string>
-    } {
+    keys(): OptionsKeys {
       return {
         single: [
           'category',
@@ -56,23 +52,31 @@ export const useOptionsState = defineStore('options', {
         status: ['causes', 'cures', 'gives', 'immunities']
       }
     },
-    singleKeysSet() {
-      return new Set((this.keys as any).single)
-    },
-    arrayKeysSet() {
-      return new Set((this.keys as any).array)
-    },
-    statusKeysSet() {
-      return new Set((this.keys as any).status)
+    keysSet(): Record<keyof OptionsKeys, Set<string>> {
+      return {
+        single: new Set(this.keys.single),
+        array: new Set(this.keys.array),
+        status: new Set(this.keys.status)
+      }
     }
   },
   actions: {
+    getOptionsType(key: string): keyof OptionsKeys | undefined {
+      for (const [k, v] of Object.entries(this.keysSet) as Array<
+        [keyof OptionsKeys, Set<string>]
+      >) {
+        if (v.has(key)) {
+          return k
+        }
+      }
+      return undefined
+    },
     initialize() {
       const codexState = useCodexState()
       this.$reset()
       const options = Object.fromEntries(
         Object.values(this.keys).flatMap((keys) =>
-          keys.map((key) => {
+          keys.map((key: string) => {
             return [key, new Set()]
           })
         )

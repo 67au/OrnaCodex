@@ -142,12 +142,12 @@ import { useCodexState } from '@/stores/codex'
 
           <var-cell class="filter-cell" v-for="[key, filter] in filtersState.filters" :key="key">
             <var-select
-              :placeholder="`${$t(`${isStatusKey(key) ? 'meta.' : ''}${key}`)} ${getMultipleTag(key)}`"
+              :placeholder="getMultipleTag(key)"
               v-model="filter.value"
               variant="outlined"
               size="small"
               clearable
-              :multiple="Array.isArray(filter.value) && key !== 'exotic'"
+              :multiple="Array.isArray(filter.value)"
               :chip="Array.isArray(filter.value)"
               :options="optionsMap[key]"
             >
@@ -176,7 +176,7 @@ import { useCodexState } from '@/stores/codex'
           elevation="3"
           @click="() => editFilters(key)"
         >
-          {{ `${$t(`${isStatusKey(key) ? 'meta.' : ''}${key}`)} ${getMultipleTag(key)}` }}
+          {{ getMultipleTag(key) }}
         </var-chip>
       </var-space>
     </var-paper>
@@ -304,6 +304,9 @@ export default defineComponent({
     defaultLabel() {
       return this.$t('query.qualitylabel.default')
     },
+    multipleTag() {
+      return this.filtersState.multiple ? ` (${this.$t('multiple')})` : ''
+    },
     sortKeys() {
       const regex = new RegExp(this.sort.search)
       return Object.entries(this.sortState.keys).map(([k, v]) => {
@@ -378,7 +381,7 @@ export default defineComponent({
       return this.optionsState.keys.status.includes(key)
     },
     getMultipleTag(key: string) {
-      return this.filtersState.isMultiple(key) ? ` (${this.$t('multiple')})` : ''
+      return `${this.$t(`${this.isStatusKey(key) ? 'meta.' : ''}${key}`)} ${this.multipleTag}`
     },
     editSort(key: string) {
       this.show.sort = false

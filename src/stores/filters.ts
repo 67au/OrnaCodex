@@ -59,22 +59,17 @@ export const useFiltersState = defineStore('filters', {
       this.$reset()
       this.$patch(keep)
     },
-    isMultiple(key: string) {
-      return this.multiple && key !== 'exotic'
-    },
     switchMultiple() {
       const tmp = {
         search: this.search,
         version: this.version,
         filters: new Map(
           Array.from(this.filters).map(([key, filter]) => {
-            if (key !== 'exotic') {
-              if (this.multiple) {
-                filter.value = filter.value !== undefined ? [filter.value as string] : []
-              } else {
-                if (Array.isArray(filter.value)) {
-                  filter.value = (filter.value as any)[0]
-                }
+            if (this.multiple) {
+              filter.value = filter.value !== undefined ? [filter.value as string] : []
+            } else {
+              if (Array.isArray(filter.value)) {
+                filter.value = (filter.value as any)[0]
               }
             }
             return [key, filter]
@@ -85,9 +80,11 @@ export const useFiltersState = defineStore('filters', {
       this.$patch(tmp)
     },
     addFilter(key: string) {
+      const optionsState = useOptionsState()
       this.filters.set(key, {
         key: key,
-        value: this.isMultiple(key) ? [] : undefined
+        value: this.multiple ? [] : undefined,
+        type: optionsState.getOptionsType(key)
       })
     },
     removeFilter(key: string) {

@@ -87,7 +87,7 @@ export default defineConfig(({ mode }) => {
       __ORNA_STATIC_URL__: JSON.stringify(ornaStaticUrl),
       __DATA_CREATED__: JSON.stringify(dataCreated),
       __EXTRA_API_URL__: JSON.stringify(extraApiUrl),
-      __FILTERS_VERSION__: JSON.stringify('v0.1.3')
+      __FILTERS_VERSION__: JSON.stringify('v0.1.4')
     },
     css: {
       preprocessorOptions: {

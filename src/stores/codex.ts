@@ -2,10 +2,10 @@ import { i18n } from '@/i18n'
 import type { CodexCategory, CodexId, CodexLangs, CodexMeta, Status } from '@/types'
 import { defineStore } from 'pinia'
 import { useFiltersState } from './filters'
-import { useOptionsState } from './options'
 import { valueStrip } from '@/plugins/utils'
 import { useSortState } from './sort'
 import { CodexEntry } from '@/plugins/codex'
+import { getFilterResult } from '@/plugins/filters'
 
 export const useCodexState = defineStore('codex', {
   state: () => ({
@@ -46,7 +46,6 @@ export const useCodexState = defineStore('codex', {
 
     filtered(): Array<CodexId> {
       const { search, filters, multiple } = useFiltersState()
-      const optionsState = useOptionsState()
       const searchPattern = new RegExp(search, 'i')
       if (this.lang === undefined) {
         return this.index
@@ -67,63 +66,7 @@ export const useCodexState = defineStore('codex', {
             return true
           }
 
-          if (optionsState.singleKeysSet.has(filter.key)) {
-            let testValue: string = this.meta[category][id][filter.key]
-            if (filter.key === 'gear_element') {
-              testValue = this.meta[category][id]?.stats?.element
-            }
-            if (testValue === undefined) {
-              return false
-            }
-            if (filter.key === 'exotic') {
-              return testValue === filter.value
-            }
-            if (multiple) {
-              for (const v of filter.value) {
-                if (testValue === v) {
-                  return true
-                }
-              }
-              return false
-            } else {
-              return testValue === filter.value
-            }
-          }
-
-          if (optionsState.arrayKeysSet.has(filter.key)) {
-            const testValue: Array<string> = this.meta[category][id][filter.key]
-            if (testValue === undefined) {
-              return false
-            }
-            if (multiple) {
-              for (const v of filter.value) {
-                if (testValue.includes(v)) {
-                  return true
-                }
-              }
-              return false
-            } else {
-              return testValue.includes(filter.value as string)
-            }
-          }
-
-          if (optionsState.statusKeysSet.has(filter.key)) {
-            const statusValue: Array<Status> = this.meta[category][id][filter.key]
-            if (statusValue === undefined) {
-              return false
-            }
-            const testValue: Array<string> = statusValue.map(({ name: name }) => name)
-            if (multiple) {
-              for (const v of filter.value) {
-                if (testValue.includes(v)) {
-                  return true
-                }
-              }
-              return false
-            } else {
-              return testValue.includes(filter.value as string)
-            }
-          }
+          return getFilterResult(this.meta[category][id], filter, multiple)
         })
       }, start)
     },
