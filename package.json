@@ -14,11 +14,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@varlet/touch-emulator": "^3.3.6",
-    "@varlet/ui": "^3.3.6",
+    "@varlet/touch-emulator": "^3.3.9",
+    "@varlet/ui": "^3.3.9",
     "@vueuse/core": "^10.11.0",
     "pinia": "^2.1.7",
-    "vue": "^3.4.31",
+    "vue": "^3.4.33",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.4.0"
   },
@@ -27,11 +27,11 @@
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.14.10",
-    "@unocss/preset-icons": "^0.61.3",
-    "@varlet/import-resolver": "^3.3.6",
-    "@varlet/preset-unocss": "^3.3.6",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@types/node": "^20.14.12",
+    "@unocss/preset-icons": "^0.61.5",
+    "@varlet/import-resolver": "^3.3.9",
+    "@varlet/preset-unocss": "^3.3.9",
+    "@vitejs/plugin-vue": "^5.1.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
@@ -40,12 +40,12 @@
     "less": "^4.2.0",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
-    "typescript": "~5.5.3",
-    "unocss": "^0.61.3",
-    "unplugin-auto-import": "^0.18.0",
-    "unplugin-vue-components": "^0.27.2",
-    "vite": "^5.3.3",
+    "typescript": "~5.5.4",
+    "unocss": "^0.61.5",
+    "unplugin-auto-import": "^0.18.1",
+    "unplugin-vue-components": "^0.27.3",
+    "vite": "^5.3.4",
     "vite-plugin-pwa": "^0.20.0",
-    "vue-tsc": "^2.0.26"
+    "vue-tsc": "^2.0.28"
   }
 }
