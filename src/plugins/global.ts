@@ -35,6 +35,7 @@ const guideUrl = 'https://orna.guide'
 export const global = {
   ornaUrl: __ORNA_URL__,
   staticUrl: __ORNA_STATIC_URL__,
+  extraApiUrl: __EXTRA_API_URL__,
   filtersVersion: __FILTERS_VERSION__,
   dataCreated: new Date(Number(__DATA_CREATED__) * 1000),
   guideUrl: guideUrl,

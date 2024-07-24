@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-
-const EXTRA_API_URL = __EXTRA_API_URL__
+import { fetchExtra } from '@/plugins/extra'
 
 export const useExtraState = defineStore('extra', {
   state: () => ({
@@ -9,18 +8,15 @@ export const useExtraState = defineStore('extra', {
   }),
   actions: {
     async fetchAll() {
-      if (EXTRA_API_URL === '') {
+      const data = await fetchExtra()
+      if (data !== undefined) {
+        this.$patch({
+          data: data
+        })
+        return true
+      } else {
         return false
       }
-      await fetch(`${EXTRA_API_URL}/codex/items/meta.json`)
-        .then((resp) => resp.json())
-        .then((data) => {
-          this.data = data
-          return true
-        })
-        .catch(() => {
-          return false
-        })
     },
     getBossScale(id: string) {
       if (this.data[id] === undefined || this.data[id]['boss'] === undefined) {
