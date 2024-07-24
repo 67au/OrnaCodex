@@ -25,7 +25,8 @@ export const useOptionsState = defineStore('options', {
         'follower_act',
         'summon_stats',
         'view_distance',
-        'adornment_slots'
+        'adornment_slots',
+        'two_handed'
       ]),
       'items.extra': new Set(),
       'followers.stats': new Set(),

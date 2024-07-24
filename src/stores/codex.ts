@@ -102,14 +102,9 @@ export const useCodexState = defineStore('codex', {
               const [k, v] = nameTuple as [string, string]
               if (x.category !== k.split('.')[0]) {
                 return false
+              } else {
+                return true
               }
-              if (k === 'raids') {
-                return this.meta[x.category][x.id][v] !== undefined
-              }
-              if (this.meta[x.category][x.id].stats?.[v] === undefined) {
-                return false
-              }
-              return true
             })
             .sort((a, b) => {
               const [k, v] = nameTuple as [string, string]

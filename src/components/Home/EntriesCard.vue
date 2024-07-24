@@ -108,7 +108,7 @@ import { global } from '@/plugins/global'
                       codexState.meta[category][id]['stats'][v] !== undefined
                     )
                   })"
-                  :type="sortState.nameTuple !== undefined && index === 0 ? 'success' : 'info'"
+                  :type="index === 0 && sortState?.nameTuple?.[1] === v ? 'success' : 'info'"
                   size="mini"
                   :round="false"
                   :color="
@@ -116,7 +116,7 @@ import { global } from '@/plugins/global'
                       ? global.elementColor[codexState.meta[category][id]['stats'][v]]
                       : ''
                   "
-                  plain
+                  :plain="codexState.meta[category][id]?.stats?.[v] !== true"
                   :key="index"
                 >
                   <template v-if="key === 'raids' && v === 'hp'">
