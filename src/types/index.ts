@@ -90,6 +90,7 @@ export interface AssessQuery {
     isCelestialWeapon?: boolean
     isUpgradable?: boolean
     isUpgradableSlots?: boolean
+    isTwoHanded?: boolean
   }
 }
 

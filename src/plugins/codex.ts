@@ -13,7 +13,8 @@ import {
   valueStrip,
   isMaterial,
   isGears,
-  getTierName
+  getTierName,
+  isTwoHanded
 } from './utils'
 import type { AssessQuery, AssessResult, CodexCategory, Status } from '@/types'
 import { assess } from './assess'
@@ -121,6 +122,9 @@ export class CodexEntry {
   get isGears(): boolean {
     return isGears(this.meta)
   }
+  get isTwoHanded(): boolean {
+    return isTwoHanded(this.meta)
+  }
 
   get bossScale() {
     const extraState = useExtraState()
@@ -142,7 +146,8 @@ export class CodexEntry {
         isWeapon: this.isWeapon,
         isCelestialWeapon: this.isCelestialWeapon,
         isUpgradable: this.isUpgradable,
-        isUpgradableSlots: this.isUpgradableSlots
+        isUpgradableSlots: this.isUpgradableSlots,
+        isTwoHanded: this.isTwoHanded
       }
     }
     if (this.isCelestialWeapon) {

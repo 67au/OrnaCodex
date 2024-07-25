@@ -115,6 +115,10 @@ export function isUpgradable(item: any) {
   return (isWeapon(item) || isArmor(item)) && !isAccessory(item)
 }
 
+export function isTwoHanded(item: any) {
+  return item?.stats?.['two_handed'] === true
+}
+
 export function getNameTuple(name: string) {
   const l = name.split('.')
   if (Array.isArray(l) && l.length > 1) {

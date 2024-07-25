@@ -316,9 +316,17 @@ export function assess(query: AssessQuery) {
 
   if (query.extra.isCelestialWeapon) {
     result.levels = 20
-    result.stats['adornment_slots'] = {
-      base: 1,
-      values: [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5]
+    const celestial_weapon_slots = [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5]
+    if (query.extra.isTwoHanded) {
+      result.stats['adornment_slots'] = {
+        base: 2,
+        values: celestial_weapon_slots.map((x) => x + 1)
+      }
+    } else {
+      result.stats['adornment_slots'] = {
+        base: 1,
+        values: celestial_weapon_slots
+      }
     }
     return result
   }
