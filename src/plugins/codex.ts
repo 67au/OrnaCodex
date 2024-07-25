@@ -135,7 +135,7 @@ export class CodexEntry {
         level: 1
       },
       extra: {
-        isBoss: !this.isCelestialWeapon,
+        isBoss: this.isUpgradable ? this.bossScale > -1 : true,
         isQuality: quality,
         baseStats: {},
         isGuide: false,
@@ -145,8 +145,8 @@ export class CodexEntry {
         isUpgradableSlots: this.isUpgradableSlots
       }
     }
-    if (query.extra.isUpgradable) {
-      query.extra.isBoss = this.bossScale > -1
+    if (this.isCelestialWeapon) {
+      query.extra.isBoss = false
     }
     if (query.extra.isQuality) {
       query.data.quality = 100
