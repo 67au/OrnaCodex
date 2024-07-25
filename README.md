@@ -32,5 +32,3 @@ https://codex.fqegg.top
 ## License
 
 MIT License
-
-采用的 favicon.svg 来自于 [SVG REPO](https://www.svgrepo.com/svg/529407/book-bookmark)，许可证为 CC Attribution License ，作者为 Solar Icons
