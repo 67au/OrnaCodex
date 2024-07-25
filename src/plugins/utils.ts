@@ -71,27 +71,27 @@ export function rarityText(category: CodexCategory, id: string) {
 
 // for items
 export function isCelestial(item: any) {
-  return item['rarity'] === 'celestial'
+  return item?.rarity === 'celestial'
 }
 
 export function isWeapon(item: any) {
-  return item['item_type'] === 'weapon'
+  return item?.item_type === 'weapon'
 }
 
 export function isArmor(item: any) {
-  return item['item_type'] === 'armor'
+  return item?.item_type === 'armor'
 }
 
 export function isAdornment(item: any) {
-  return item['item_type'] === 'adornment'
+  return item?.item_type === 'adornment'
 }
 
 export function isOffHand(item: any) {
-  return item['place'] === 'off-hand'
+  return item?.place === 'off-hand'
 }
 
 export function isAccessory(item: any) {
-  return item['place'] === 'accessory'
+  return item?.place === 'accessory'
 }
 
 export function isCelestialWeapon(item: any) {
@@ -103,12 +103,12 @@ export function isUpgradableSlots(item: any) {
 }
 
 export function isMaterial(item: any) {
-  return item['item_type'] === 'material'
+  return item?.item_type === 'material'
 }
 
 const gears = new Set(['weapon', 'armor', 'adornment'])
 export function isGears(item: any) {
-  return item['item_type'] !== undefined && gears.has(item['item_type'])
+  return item?.item_type !== undefined && gears.has(item?.item_type)
 }
 
 export function isUpgradable(item: any) {
