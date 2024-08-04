@@ -16,7 +16,7 @@ import type { PropType } from 'vue'
         'max-w-xl': maxWidth === 'xl'
       }"
     >
-      <var-space align="center" justify="space-between" size="large" line>
+      <var-space align="center" justify="space-between" size="large" class="pb-1" line>
         <slot name="title"></slot>
         <var-space align="center" justify="flex-end" size="mini" line>
           <slot name="button"></slot>

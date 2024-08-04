@@ -36,6 +36,8 @@ declare module 'vue' {
     ProofTool: typeof import('./src/components/Popup/ProofTool.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SortDefaultSelect: typeof import('./src/components/Popup/SortDefaultSelect.vue')['default']
+    SortSelect: typeof import('./src/components/Popup/SortSelect.vue')['default']
     SpellCard: typeof import('./src/components/CodexEntry/SpellCard.vue')['default']
     StatsCard: typeof import('./src/components/CodexEntry/StatsCard.vue')['default']
     TextLists: typeof import('./src/components/CodexEntry/DropList/TextLists.vue')['default']

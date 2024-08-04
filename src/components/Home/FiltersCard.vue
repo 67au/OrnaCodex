@@ -66,12 +66,7 @@ import { useCodexState } from '@/stores/codex'
                     {{ defaultLabel }}
                   </div>
                   <div v-else>
-                    {{
-                      getSortName(
-                        sortState.nameTuple[0] as string,
-                        sortState.nameTuple[1] as string
-                      )
-                    }}
+                    {{ $t(`meta.stats.${sortState.nameTuple[1] as string}`) }}
                   </div>
                 </var-chip>
               </var-space>
@@ -90,7 +85,6 @@ import { useCodexState } from '@/stores/codex'
                     @click="
                       () => {
                         sortState.reset()
-                        sort.search = ''
                       }
                     "
                   />
@@ -182,95 +176,8 @@ import { useCodexState } from '@/stores/codex'
     </var-paper>
   </PopupPaper>
 
-  <PopupPaper v-model:show="show.sort" max-width="md">
-    <template #title>
-      <var-chip class="text-md" type="primary" elevation="3">
-        <template #left>
-          <Icon icon-class="i-mdi-sort text-lg" />
-        </template>
-        <div>{{ $t('sort') }}</div>
-      </var-chip>
-    </template>
-    <template #button>
-      <PopupButton
-        type="info"
-        icon-class="i-mdi-magnify"
-        @click="() => (show.expand = !show.expand)"
-      />
-    </template>
-    <var-collapse-transition :expand="show.expand">
-      <var-input
-        class="w-full pt-3"
-        variant="outlined"
-        size="small"
-        :placeholder="$t('search')"
-        v-model="sort.search"
-        clearable
-      />
-    </var-collapse-transition>
-
-    <var-paper radius="0px" class="overflow-y-auto px-1 mt-2" style="max-height: 65vh">
-      <template v-for="[k, values] in sortKeys">
-        <template v-if="values.length > 0">
-          <var-divider :description="$t(`sortKeys.${k}`)" />
-          <var-space size="small">
-            <var-chip
-              :type="sortState.name === `${k}.${v}` ? 'success' : 'default'"
-              elevation="3"
-              v-for="v in values"
-              @click="() => editSort(`${k}.${v}`)"
-            >
-              {{ getSortName(k as string, v) }}
-            </var-chip>
-          </var-space>
-        </template>
-      </template>
-    </var-paper>
-  </PopupPaper>
-
-  <PopupPaper v-model:show="show.sortDefault" max-width="md">
-    <template #title>
-      <var-chip class="text-md" type="primary" elevation="3">
-        <template #left>
-          <Icon icon-class="i-mdi-sort text-lg" />
-        </template>
-        <div>{{ $t('sortDefault') }}</div>
-      </var-chip>
-    </template>
-
-    <var-divider dashed />
-
-    <var-paper radius="0px">
-      <var-space size="small" class="chip-list px-1 py-1">
-        <var-chip
-          :type="sortState.default.name === 'default' ? 'success' : 'default'"
-          elevation="3"
-          @click="() => editSortDefault()"
-        >
-          {{ $t('query.qualitylabel.default') }}
-        </var-chip>
-        <var-chip
-          v-for="[name, asc] in [
-            ['name', true],
-            ['name', false],
-            ['tier', true],
-            ['tier', false]
-          ]"
-          :type="
-            sortState.default.name === name && sortState.default.asc === asc ? 'success' : 'default'
-          "
-          elevation="3"
-          @click="() => editSortDefault(name as string, asc as boolean)"
-        >
-          <var-space align="center" size="0" line>
-            {{ $t(name as string) }}
-            <Icon v-if="asc as boolean" class="text-lg" icon-class="i-mdi-arrow-upward" />
-            <Icon v-else class="text-lg" icon-class="i-mdi-arrow-downward" />
-          </var-space>
-        </var-chip>
-      </var-space>
-    </var-paper>
-  </PopupPaper>
+  <SortSelect v-model:show="show.sort" />
+  <SortDefaultSelect v-model:show="show.sortDefault" />
 </template>
 
 <script lang="ts">
@@ -280,11 +187,7 @@ export default defineComponent({
       show: {
         menu: false,
         sort: false,
-        sortDefault: false,
-        expand: false
-      },
-      sort: {
-        search: ''
+        sortDefault: false
       }
     }
   },
@@ -306,17 +209,6 @@ export default defineComponent({
     },
     multipleTag() {
       return this.filtersState.multiple ? ` (${this.$t('multiple')})` : ''
-    },
-    sortKeys() {
-      const regex = new RegExp(this.sort.search)
-      return Object.entries(this.sortState.keys).map(([k, v]) => {
-        return [
-          k,
-          Array.from(v).filter((key) => {
-            return regex.test(this.getSortName(k, key))
-          })
-        ]
-      })
     },
     optionsMap() {
       return Object.fromEntries(
@@ -389,28 +281,12 @@ export default defineComponent({
     getMultipleTag(key: string) {
       return `${this.$t(`${this.isStatusKey(key) ? 'meta.' : ''}${key}`)} ${this.multipleTag}`
     },
-    editSort(key: string) {
-      this.show.sort = false
-      setTimeout(() => {
-        this.sortState.name = key
-      }, 50)
-    },
-    editSortDefault(key: string = 'default', asc: boolean = false) {
-      this.show.sortDefault = false
-      setTimeout(() => {
-        this.sortState.default.name = key
-        this.sortState.default.asc = asc
-      }, 50)
-    },
     editFilters(key: string) {
       if (this.filtersState.filters.has(key)) {
         this.filtersState.removeFilter(key)
       } else {
         this.filtersState.addFilter(key)
       }
-    },
-    getSortName(k: string, v: string) {
-      return this.$t(`meta.stats.${v}`)
     }
   }
 })
@@ -419,10 +295,5 @@ export default defineComponent({
 <style scoped lang="less">
 .filter-cell {
   padding: 4px 0px;
-}
-
-.chip-list {
-  max-height: 60vh;
-  overflow-y: auto;
 }
 </style>
