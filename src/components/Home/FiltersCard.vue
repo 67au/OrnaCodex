@@ -102,6 +102,13 @@ import { useCodexState } from '@/stores/codex'
                 <div class="text-lg">{{ $t('filters') }}</div>
               </var-space>
               <var-space justify="flex-end" align="center" size="small">
+                <var-tooltip placement="top" :content="$t('share')">
+                  <PopupButton
+                    type="info"
+                    icon-class="i-mdi-share-variant"
+                    @click="show.share = true"
+                  />
+                </var-tooltip>
                 <var-tooltip placement="top" :content="$t('multiple')">
                   <PopupButton
                     :type="filtersState.multiple ? 'success' : 'default'"
@@ -178,6 +185,7 @@ import { useCodexState } from '@/stores/codex'
 
   <SortSelect v-model:show="show.sort" />
   <SortDefaultSelect v-model:show="show.sortDefault" />
+  <Share v-model:show="show.share" />
 </template>
 
 <script lang="ts">
@@ -187,7 +195,8 @@ export default defineComponent({
       show: {
         menu: false,
         sort: false,
-        sortDefault: false
+        sortDefault: false,
+        share: false
       }
     }
   },

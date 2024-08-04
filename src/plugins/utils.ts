@@ -2,7 +2,7 @@ import router from '@/router'
 import { global } from './global'
 import { useCodexState } from '@/stores/codex'
 import type { CodexCategory, CodexId } from '@/types'
-import type { CodexEntry } from './codex'
+import { strFromU8, strToU8, unzlibSync, zlibSync } from 'fflate'
 
 const regex_temp = / \[temp\]/gi
 const regex_underline = / |\.|:|\\|\/|'/gi
@@ -130,55 +130,21 @@ export function getNameTuple(name: string) {
   }
 }
 
-// export function cacheBondBonus() {
-//   const cache = {} as Record<string, any>
-//   return function (entry: CodexEntry, v: string) {
-//     if (cache[v] === undefined) {
-//       cache[v] = {}
-//     }
-//     if (cache[v][entry.url] !== undefined) {
-//       return cache[v][entry.url]
-//     }
-//     const r = Object.values(entry.meta.bestial_bond)
-//       .flatMap((n) => n as [string, string, string] | [string, string])
-//       .filter((n) => {
-//         if (n[0] === 'bonus' && n[1] === v) {
-//           return true
-//         }
-//         return false
-//       })
-//       .sort((n, m) => valueStrip(n[2] || '0') - valueStrip(m[2] || '0'))
-//     if (r.length > 0) {
-//       cache[v][entry.url] = r[0]
-//     } else {
-//       cache[v][entry.url] = false
-//     }
-//     return cache[v][entry.url]
-//   }
-// }
+export function utoa(data: string): string {
+  const buffer = strToU8(data)
+  const zipped = zlibSync(buffer, { level: 9 })
+  const binary = strFromU8(zipped, true)
+  return encodeURIComponent(btoa(binary))
+}
 
-// export function cacheBondSkill() {
-//   const cache = {} as Record<string, any>
-//   return function (entry: CodexEntry, v: string) {
-//     if (cache[v] === undefined) {
-//       cache[v] = {}
-//     }
-//     if (cache[v][entry.url] !== undefined) {
-//       return cache[v][entry.url]
-//     }
-//     const r = Object.values(entry.meta.bestial_bond)
-//       .flatMap((n) => n as [string, string, string] | [string, string])
-//       .filter((n) => {
-//         if (n[0] === 'ability' && n[1] === v) {
-//           return true
-//         }
-//         return false
-//       })
-//     if (r.length > 0) {
-//       cache[v][entry.url] = r[0]
-//     } else {
-//       cache[v][entry.url] = false
-//     }
-//     return cache[v][entry.url]
-//   }
-// }
+export function atou(base64: string): string {
+  const binary = atob(base64)
+
+  if (binary.startsWith('\x78\xDA')) {
+    const buffer = strToU8(binary, true)
+    const unzipped = unzlibSync(buffer)
+    return strFromU8(unzipped)
+  }
+
+  return '{}'
+}

@@ -20,6 +20,12 @@ const router = createRouter({
       meta: {
         keepAlive: false
       }
+    },
+    {
+      name: 'share',
+      path: '/share/:share',
+      component: () => import('@/views/ShareView.vue'),
+      props: true
     }
   ],
   scrollBehavior(to, from) {

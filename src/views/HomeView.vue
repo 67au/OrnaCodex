@@ -4,6 +4,7 @@ import { useFiltersState } from '@/stores/filters'
 import FiltersCard from '@/components/Home/FiltersCard.vue'
 import EntriesCard from '@/components/Home/EntriesCard.vue'
 import { useSortState } from '@/stores/sort'
+import router from '@/router'
 </script>
 
 <template>
@@ -23,6 +24,15 @@ export default defineComponent({
   computed: {
     disableSticky() {
       return this.windowWidth < 768
+    },
+    filtersState() {
+      return useFiltersState()
+    },
+    sortState() {
+      return useSortState()
+    },
+    route() {
+      return useRoute()
     }
   },
   mounted() {
@@ -30,24 +40,20 @@ export default defineComponent({
       this.windowWidth = window.innerWidth
     }
 
-    const filtersState = useFiltersState()
-    const sortState = useSortState()
     const entriesListState = useEntriesListState()
-    const filtersStorage = useLocalStorage('filters', JSON.stringify(filtersState.storage))
-    filtersState.initialize(JSON.parse(filtersStorage.value))
-    const sortStorage = useLocalStorage('sort', JSON.stringify(sortState.$state))
-    sortState.initialize(JSON.parse(sortStorage.value))
+    const filtersStorage = useLocalStorage('filters', JSON.stringify(this.filtersState.storage))
+    const sortStorage = useLocalStorage('sort', JSON.stringify(this.sortState.$state))
 
     watch(
-      () => filtersState.multiple,
+      () => this.filtersState.multiple,
       () => {
-        filtersState.switchMultiple()
+        this.filtersState.switchMultiple()
       }
     )
 
     const saveFilters = useDebounceFn(
       () => {
-        filtersStorage.value = JSON.stringify(filtersState.storage)
+        filtersStorage.value = JSON.stringify(this.filtersState.storage)
       },
       500,
       { maxWait: 1000 }
@@ -55,13 +61,20 @@ export default defineComponent({
 
     const saveSort = useDebounceFn(
       () => {
-        sortStorage.value = JSON.stringify(sortState.$state)
+        sortStorage.value = JSON.stringify(this.sortState.$state)
       },
       500,
       { maxWait: 1000 }
     )
 
-    filtersState.$subscribe(
+    if (this.route.query?.share === '1') {
+      router.replace({ name: 'home' })
+    } else {
+      this.filtersState.initialize(JSON.parse(filtersStorage.value))
+      this.sortState.initialize(JSON.parse(sortStorage.value))
+    }
+
+    this.filtersState.$subscribe(
       () => {
         saveFilters()
         entriesListState.render()
@@ -69,7 +82,7 @@ export default defineComponent({
       { deep: true, immediate: true }
     )
 
-    sortState.$subscribe(
+    this.sortState.$subscribe(
       () => {
         saveSort()
         entriesListState.render()
@@ -80,7 +93,7 @@ export default defineComponent({
     watch(
       () => this.$i18n.locale,
       () => {
-        filtersState.search = ''
+        this.filtersState.search = ''
         entriesListState.render()
       }
     )

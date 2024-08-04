@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
           'vue',
           'vue-router',
           {
-            '@vueuse/core': ['useLocalStorage', 'useDebounceFn']
+            '@vueuse/core': ['useLocalStorage', 'useDebounceFn', 'useClipboard']
           }
         ],
         eslintrc: { enabled: true },

@@ -17,6 +17,7 @@
     "@varlet/touch-emulator": "^3.3.11",
     "@varlet/ui": "^3.3.11",
     "@vueuse/core": "^10.11.0",
+    "fflate": "^0.8.2",
     "pinia": "^2.2.0",
     "vue": "^3.4.35",
     "vue-i18n": "^9.13.1",

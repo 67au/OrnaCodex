@@ -69,6 +69,8 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "useClipboard": true,
+    "usePermission": true
   }
 }
