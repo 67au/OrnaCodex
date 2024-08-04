@@ -3,14 +3,7 @@ import { useCompareState } from '@/stores/compare'
 </script>
 
 <template>
-  <var-fab
-    type="primary"
-    :show="display"
-    v-model:active="active"
-    drag
-    safe-area
-    style="left: calc(100vw - 64px)"
-  >
+  <var-fab type="primary" :show="display" v-model:active="active" drag safe-area>
     <var-badge
       class="z-200"
       type="danger"
