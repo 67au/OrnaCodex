@@ -66,7 +66,7 @@ import '@varlet/ui/es/snackbar/style/index'
             type="number"
             :placeholder="$t(`query.quality`)"
             v-model="aqData.quality as any"
-            :rules="[(v) => (Number(v) > 70 && Number(v) < 210) || '']"
+            :rules="[(v: any) => (Number(v) > 70 && Number(v) < 210) || '']"
             :disabled="aqExtra.isCelestialWeapon"
           />
         </div>
