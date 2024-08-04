@@ -356,9 +356,15 @@ export default defineComponent({
           if (key === 'abilities') {
             return [
               key,
-              Array.from(value as Set<string>).map((v: string) => {
-                return { label: this.codexState.abilities[v].name, value: v }
-              })
+              Array.from(value as Set<string>)
+                .sort((a: string, b: string) => {
+                  return this.codexState.abilities[a].name.localeCompare(
+                    this.codexState.abilities[b].name
+                  )
+                })
+                .map((v: string) => {
+                  return { label: this.codexState.abilities[v].name, value: v }
+                })
             ]
           }
           const k = this.isStatusKey(key) ? 'status' : key
