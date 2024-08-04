@@ -35,19 +35,18 @@ import type { CodexCategory } from '@/types'
 
 <script lang="ts">
 export default defineComponent({
-  mounted() {
-    watch(
-      () => this.$route.params,
-      () => {
-        this.category = this.$route.params.category as CodexCategory
-        this.id = this.$route.params.id as string
-      }
-    )
+  props: {
+    category: {
+      type: String as PropType<CodexCategory>,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    }
   },
   data() {
     return {
-      category: this.$route.params.category as CodexCategory,
-      id: this.$route.params.id as string,
       loading: {
         guide: false
       }

@@ -16,6 +16,7 @@ const router = createRouter({
       path: '/codex/:category/:id/',
       name: 'codex',
       component: () => import('@/views/CodexView.vue'),
+      props: true,
       meta: {
         keepAlive: false
       }
