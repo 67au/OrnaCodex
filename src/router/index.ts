@@ -77,3 +77,9 @@ router.afterEach((to, from) => {
 })
 
 export default router
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    keepAlive?: boolean
+  }
+}

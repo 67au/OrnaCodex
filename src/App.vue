@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import MainLayout from './pages/MainLayout.vue'
 import { useDark } from '@/styles'
-import type { CodexMeta } from './types'
 import { useCodexState } from './stores/codex'
 import { i18n } from './i18n'
 import { useExtraState } from './stores/extra'
 import { global } from './plugins/global'
 import AppHistory from './components/Header/AppHistory.vue'
-import type { CodexEntry } from './plugins/codex'
 
 useDark()
 </script>
@@ -36,9 +34,9 @@ useDark()
   <MainLayout>
     <template v-if="!isLoading">
       <router-view v-slot="{ Component }">
-        <component :is="Component" v-if="!$route.meta.keepAlive" />
+        <component :is="Component" v-if="!route.meta.keepAlive" />
         <keep-alive>
-          <component :is="Component" v-if="$route.meta.keepAlive" />
+          <component :is="Component" v-if="route.meta.keepAlive" />
         </keep-alive>
         <FabTool v-model:display="fab" />
       </router-view>
@@ -95,6 +93,9 @@ export default defineComponent({
   computed: {
     isLoading() {
       return this.loading.language || this.loading.meta
+    },
+    route() {
+      return useRoute()
     },
     fab: {
       get() {
