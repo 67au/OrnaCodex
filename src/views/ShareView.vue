@@ -4,7 +4,7 @@ import router from '@/router'
 import { useFiltersState } from '@/stores/filters'
 import { useSortState } from '@/stores/sort'
 import { Snackbar } from '@varlet/ui'
-import '@varlet/ui/es/snackbar/snackbar.css'
+import '@varlet/ui/es/snackbar/style/index'
 </script>
 
 <template></template>
