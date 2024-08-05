@@ -185,7 +185,7 @@ import { useCodexState } from '@/stores/codex'
 
   <SortSelect v-model:show="show.sort" />
   <SortDefaultSelect v-model:show="show.sortDefault" />
-  <Share v-model:show="show.share" />
+  <ShareUrl v-model:show="show.share" />
 </template>
 
 <script lang="ts">
