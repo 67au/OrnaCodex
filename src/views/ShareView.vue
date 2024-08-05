@@ -17,11 +17,22 @@ export default defineComponent({
     }
   },
   mounted() {
+    Snackbar.allowMultiple(true)
     if (this.share !== undefined) {
       try {
         const { sort: sort, filters: filters } = JSON.parse(atou(this.share))
-        this.filtersState.initialize(filters)
-        this.sortState.initialize(sort)
+        if (
+          sort.version === this.sortState.version &&
+          filters.version === this.filtersState.version
+        ) {
+          this.sortState.initialize(sort)
+          this.filtersState.initialize(filters)
+        } else {
+          Snackbar({
+            content: this.$t('shareVerionError'),
+            type: 'error'
+          })
+        }
         router.push({
           name: 'home',
           query: { share: '1' }
