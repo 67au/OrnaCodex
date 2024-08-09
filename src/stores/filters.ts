@@ -32,7 +32,7 @@ export const useFiltersState = defineStore('filters', {
           filters: new Map(
             data.filters
               .filter(([key, _]) => key in optionsState.options)
-              .map(([_, { key: key, value: value }]) => {
+              .map(([key, { type: type, value: value }]) => {
                 return [
                   key,
                   {
@@ -47,8 +47,7 @@ export const useFiltersState = defineStore('filters', {
               })
           ),
           search: data.search,
-          multiple: data.multiple,
-          version: data.version
+          multiple: data.multiple
         })
       } else {
         this.reset()
@@ -62,7 +61,6 @@ export const useFiltersState = defineStore('filters', {
     switchMultiple() {
       const tmp = {
         search: this.search,
-        version: this.version,
         filters: new Map(
           Array.from(this.filters).map(([key, filter]) => {
             if (this.multiple) {
@@ -81,11 +79,13 @@ export const useFiltersState = defineStore('filters', {
     },
     addFilter(key: string) {
       const optionsState = useOptionsState()
-      this.filters.set(key, {
-        key: key,
-        value: this.multiple ? [] : undefined,
-        type: optionsState.getOptionsType(key)
-      })
+      const type = optionsState.getOptionsType(key)
+      if (type !== undefined) {
+        this.filters.set(key, {
+          value: this.multiple ? [] : undefined,
+          type: type
+        })
+      }
     },
     removeFilter(key: string) {
       this.filters.delete(key)

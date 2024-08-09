@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useCodexState } from './codex'
-import type { BestialBond, CodexEntry, Options, OptionsKeys, Status } from '@/types'
+import type { CodexEntry, Options, OptionsKeys, Status } from '@/types'
+import { OptionType } from '@/enums'
 
 export const useOptionsState = defineStore('options', {
   state: () => ({
@@ -62,12 +63,12 @@ export const useOptionsState = defineStore('options', {
     }
   },
   actions: {
-    getOptionsType(key: string): keyof OptionsKeys | undefined {
+    getOptionsType(key: string): OptionType | undefined {
       for (const [k, v] of Object.entries(this.keysSet) as Array<
         [keyof OptionsKeys, Set<string>]
       >) {
         if (v.has(key)) {
-          return k
+          return OptionType[k]
         }
       }
       return undefined

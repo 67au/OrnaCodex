@@ -1,3 +1,5 @@
+import type { OptionType } from '@/enums'
+
 export interface CodexId {
   category: CodexCategory
   id: string
@@ -36,9 +38,8 @@ export interface OptionsKeys {
 }
 
 export interface Filter {
-  key: string
   value: Array<string> | string | undefined
-  type: keyof OptionsKeys | undefined
+  type: OptionType
 }
 
 export type Filters = Map<string, Filter>

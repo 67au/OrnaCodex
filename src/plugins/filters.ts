@@ -1,13 +1,18 @@
 import type { CodexEntry, Filter, Status } from '@/types'
 
-export function getFilterResult(entry: CodexEntry, filter: Filter, multiple: boolean) {
+export function getFilterResult(
+  entry: CodexEntry,
+  filterKey: string,
+  filter: Filter,
+  multiple: boolean
+) {
   let srcValue
-  switch (filter.key) {
+  switch (filterKey) {
     case 'gear_element':
       srcValue = entry?.stats?.element
       break
     default:
-      srcValue = entry[filter.key]
+      srcValue = entry[filterKey]
   }
   if (srcValue === undefined) {
     return false
