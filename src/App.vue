@@ -13,7 +13,13 @@ useDark()
 <template>
   <AppHeader :title="$t('title')">
     <template #right>
-      <var-button v-if="fab === false" text-color="#fff" text round @click="fab = true">
+      <var-button
+        v-if="fabStorage === false"
+        text-color="#fff"
+        text
+        round
+        @click="fabStorage = true"
+      >
         <div class="i-mdi-plus-circle text-xl" />
       </var-button>
       <AppHistory v-if="!isLoading" />
@@ -38,7 +44,7 @@ useDark()
         <keep-alive>
           <component :is="Component" v-if="route.meta.keepAlive" />
         </keep-alive>
-        <FabTool v-model:display="fab" />
+        <FabTool v-model:display="fabStorage" />
       </router-view>
     </template>
   </MainLayout>
@@ -52,7 +58,7 @@ export default defineComponent({
         language: true,
         meta: true
       },
-      fabStorage: undefined as any
+      fabStorage: useLocalStorage('fab', true)
     }
   },
   async created() {
@@ -87,25 +93,12 @@ export default defineComponent({
       extraState.fetchAll()
     }
   },
-  mounted() {
-    this.fabStorage = useLocalStorage('fab', {})
-  },
   computed: {
     isLoading() {
       return this.loading.language || this.loading.meta
     },
     route() {
       return useRoute()
-    },
-    fab: {
-      get() {
-        return this.fabStorage === undefined ? true : this.fabStorage
-      },
-      set(v: boolean) {
-        if (this.fabStorage !== undefined) {
-          this.fabStorage = v
-        }
-      }
     }
   },
   methods: {
