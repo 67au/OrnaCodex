@@ -44,13 +44,6 @@ export default defineComponent({
     const filtersStorage = useLocalStorage('filters', JSON.stringify(this.filtersState.storage))
     const sortStorage = useLocalStorage('sort', JSON.stringify(this.sortState.$state))
 
-    watch(
-      () => this.filtersState.multiple,
-      () => {
-        this.filtersState.switchMultiple()
-      }
-    )
-
     const saveFilters = useDebounceFn(
       () => {
         filtersStorage.value = JSON.stringify(this.filtersState.storage)
@@ -73,6 +66,13 @@ export default defineComponent({
       this.filtersState.initialize(JSON.parse(filtersStorage.value))
       this.sortState.initialize(JSON.parse(sortStorage.value))
     }
+
+    watch(
+      () => this.filtersState.multiple,
+      () => {
+        this.filtersState.switchMultiple()
+      }
+    )
 
     this.filtersState.$subscribe(
       () => {
