@@ -33,7 +33,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
       </var-paper>
     </var-space>
     <var-style-provider :style-vars="styleVars">
-      <div class="compare-container" style="height: 100%">
+      <div class="compare-container h-full">
         <div class="empty"></div>
         <div v-for="({ entry: entry, query: query }, index) in compareState.list" :key="index">
           <var-paper radius="16px" class="paper mx-auto" :elevation="8" :width="cardSize">
@@ -117,7 +117,7 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
                 </var-col>
               </var-row>
             </var-cell>
-            <div class="var-elevation--4 mx-1 mt-1" style="max-height: 60vh; overflow: auto">
+            <div class="mx-1 mt-1 max-h-60vh overflow-auto">
               <var-cell v-for="(r, key) in result[index]" border class="p-cell s-cell" :key="key">
                 <var-space justify="space-between" align="baseline">
                   {{ `${$t('meta.stats.' + key)}` }}
