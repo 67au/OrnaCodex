@@ -2,6 +2,7 @@
 import { useCompareState } from '@/stores/compare'
 import { getStaticUrl, numerFixed, valueStrip } from '@/plugins/utils'
 import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
+import { i18n } from '@/i18n'
 </script>
 
 <template>
@@ -98,22 +99,9 @@ import { Quality, getQualityCode, getUpgradedBonus } from '@/plugins/assess'
                     size="small"
                     class="w-full"
                     :disabled="Number(query.quality) < 200"
+                    :options="qualityOptions"
                     v-if="entry.isAccessory"
-                  >
-                    <var-option
-                      class="option"
-                      :value="-1"
-                      :label="$t('query.qualitylabel.default')"
-                      :key="-1"
-                    />
-                    <var-option
-                      class="option"
-                      :value="i"
-                      :label="$t(`query.qualitylabel.${Quality[i]}`)"
-                      v-for="i in Array.from({ length: 3 }, (_, i) => i + 7)"
-                      :key="i"
-                    />
-                  </var-select>
+                  />
                 </var-col>
               </var-row>
             </var-cell>
@@ -166,6 +154,7 @@ const bonusKeysSet = new Set([
   'no_follower_bonus'
 ])
 const cardSize = 185
+const qualityNameEn = ['MF', 'DF', 'GF']
 
 export default defineComponent({
   props: {
@@ -229,6 +218,28 @@ export default defineComponent({
           }
           return [key, { base: base, delta: 0 }]
         })
+      })
+    },
+    qualityOptions() {
+      return Array.from({ length: 4 }).map((_, i: number) => {
+        if (i === 0) {
+          return {
+            label: this.$t('query.qualitylabel.default'),
+            value: -1
+          }
+        } else {
+          if (i18n.global.locale.value === 'en') {
+            return {
+              label: qualityNameEn[i - 1],
+              value: i + 6
+            }
+          } else {
+            return {
+              label: this.$t(`query.qualitylabel.${Quality[i + 6]}`),
+              value: i + 6
+            }
+          }
+        }
       })
     },
     result() {
@@ -298,10 +309,6 @@ export default defineComponent({
   --field-decorator-outlined-small-padding-right: 8px;
   --field-decorator-outlined-small-margin-top: 4px;
   --field-decorator-outlined-small-margin-bottom: 4px;
-}
-
-.option {
-  --option-font-size: 10px;
 }
 
 .paper {
