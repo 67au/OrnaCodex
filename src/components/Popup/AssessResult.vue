@@ -15,6 +15,11 @@ import { type PropType } from 'vue'
           <Icon icon-class="i-mdi-magnify" />
         </template>
         <div>{{ $t('assess') }}</div>
+        <template #right>
+          <var-chip size="mini" :type="isGuide ? 'success' : 'warning'">
+            {{ isGuide ? 'Guide' : 'YACO' }}
+          </var-chip>
+        </template>
       </var-chip>
     </template>
     <var-cell class="text-cell">

@@ -108,7 +108,12 @@ import '@varlet/ui/es/snackbar/style/index'
       </var-col>
     </var-row>
   </PopupPaper>
-  <AssessResult v-if="ar !== undefined" :result="ar" v-model:show="showResult" />
+  <AssessResult
+    v-if="ar !== undefined"
+    :result="ar"
+    v-model:show="showResult"
+    :is-guide="aqExtra.isGuide"
+  />
 </template>
 
 <script lang="ts">
