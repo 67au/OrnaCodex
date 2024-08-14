@@ -58,7 +58,7 @@ import { type PropType } from 'vue'
     <var-table
       elevation="3"
       class="assess-table"
-      :scroller-height="result.levels !== 1 ? '65vh' : undefined"
+      :scroller-height="result.levels !== 1 && windowHeight < 1135 ? '65vh' : undefined"
     >
       <thead>
         <tr>
@@ -104,6 +104,19 @@ export default {
     show: {
       type: Boolean,
       required: true
+    },
+    isGuide: {
+      type: Boolean
+    }
+  },
+  data() {
+    return {
+      windowHeight: window.innerHeight
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      this.windowHeight = window.innerHeight
     }
   },
   computed: {
