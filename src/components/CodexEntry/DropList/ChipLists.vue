@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex'
-import { getStaticUrl, getTierName } from '@/plugins/utils'
+import { getStaticUrl } from '@/plugins/utils'
 import { useCodexState } from '@/stores/codex'
 import type { PropType } from 'vue'
 </script>
@@ -10,12 +10,12 @@ import type { PropType } from 'vue'
     <var-chip size="small" v-for="(entry, index) in entries" :key="index" elevation="2">
       <template #left>
         <var-icon
-          class="image-render-pixel"
-          :size="24"
+          class="image-render-pixel m-0.25"
+          :size="20"
           :name="getStaticUrl(codexState.icons[entry.name])"
         />
       </template>
-      <div class="text-md">
+      <div>
         <template v-if="name === 'summons'">
           {{ `${$t(`meta.summon.${entry.name}`)} (${entry.chance})` }}
         </template>
