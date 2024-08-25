@@ -65,7 +65,7 @@ export default defineComponent({
       return useSortState()
     },
     sortKeys() {
-      const regex = new RegExp(this.search)
+      const regex = new RegExp(this.search, 'i')
       return Object.entries(this.sortState.keys).map(([k, v]) => {
         return [
           k,
