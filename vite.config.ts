@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
           ],
           runtimeCaching: [
             {
-              urlPattern: new RegExp(`^${ornaStaticUrl}/`),
+              urlPattern: new RegExp(`^${ornaStaticUrl}/.+`),
               handler: 'StaleWhileRevalidate',
               options: {
                 cacheName: 'static-images-cache',
