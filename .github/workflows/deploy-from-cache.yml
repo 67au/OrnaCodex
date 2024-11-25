@@ -32,7 +32,7 @@ jobs:
           repository: '67au/OrnaCodexCrawler'
           path: './crawler'
       - name: Download Codex from Artifact
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v6
         with:
           name: codex-data
           path: './crawler/tmp'
