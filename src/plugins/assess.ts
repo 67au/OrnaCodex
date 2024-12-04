@@ -2,7 +2,7 @@ import type { AssessQuery, AssessResult } from '@/types'
 
 function getDelta(base: number, isBoss: boolean) {
   if (isBoss) {
-    return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -300)
+    return base > 0 ? Math.ceil(base / 8) : Math.ceil(base / -600)
   } else {
     return base > 0 ? Math.ceil(base / 10) : Math.ceil(base / -75)
   }
