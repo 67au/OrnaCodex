@@ -82,6 +82,7 @@ import { global } from '@/plugins/global'
                   class="exotic"
                   size="mini"
                   :round="false"
+                  key="exotic"
                   plain
                 >
                   {{ $t('exotic') }}
