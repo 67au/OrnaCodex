@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => {
           }))
         },
         workbox: {
+          maximumFileSizeToCacheInBytes: 4000000,
           navigateFallbackDenylist: [
             // cloudflare cdn trace
             /^\/cdn-cgi\/trace/
