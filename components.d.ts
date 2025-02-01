@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AbilityCard: typeof import('./src/components/CodexEntry/AbilityCard.vue')['default']
+    AppCompare: typeof import('./src/components/Header/AppCompare.vue')['default']
     AppGithub: typeof import('./src/components/Header/AppGithub.vue')['default']
     AppHeader: typeof import('./src/components/Header/AppHeader.vue')['default']
     AppHistory: typeof import('./src/components/Header/AppHistory.vue')['default']
@@ -17,7 +18,7 @@ declare module 'vue' {
     AssessResult: typeof import('./src/components/Popup/AssessResult.vue')['default']
     BestialBondCard: typeof import('./src/components/CodexEntry/BestialBondCard.vue')['default']
     ChipLists: typeof import('./src/components/CodexEntry/DropList/ChipLists.vue')['default']
-    CompareTool: typeof import('./src/components/Fab/CompareTool.vue')['default']
+    CompareTool: typeof import('./src/components/Popup/CompareTool.vue')['default']
     DescriptionCard: typeof import('./src/components/CodexEntry/DescriptionCard.vue')['default']
     DropsCard: typeof import('./src/components/CodexEntry/DropsCard.vue')['default']
     EntriesCard: typeof import('./src/components/Home/EntriesCard.vue')['default']

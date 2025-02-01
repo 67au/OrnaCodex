@@ -6,6 +6,7 @@ import { i18n } from './i18n'
 import { useExtraState } from './stores/extra'
 import { global } from './plugins/global'
 import AppHistory from './components/Header/AppHistory.vue'
+import AppCompare from './components/Header/AppCompare.vue'
 
 useDark()
 </script>
@@ -13,15 +14,7 @@ useDark()
 <template>
   <AppHeader :title="$t('title')">
     <template #right>
-      <var-button
-        v-if="fabStorage === false"
-        text-color="#fff"
-        text
-        round
-        @click="fabStorage = true"
-      >
-        <div class="i-mdi-plus-circle text-xl" />
-      </var-button>
+      <AppCompare v-if="!isLoading" />
       <AppHistory v-if="!isLoading" />
       <AppLocaleSwitch />
       <AppThemeSwitch />
