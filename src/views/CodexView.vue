@@ -8,9 +8,8 @@ import type { CodexCategory } from '@/types'
   <MainCard />
   <DescriptionCard />
 
-  <!-- Extra Website -->
   <ToolCards />
-  <GuideCard v-if="ge.exist" />
+  <GuideCard />
 
   <StatsCard />
   <AbilityCard />

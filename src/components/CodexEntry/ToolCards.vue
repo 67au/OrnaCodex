@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CodexEntry } from '@/plugins/codex'
-import { global } from '@/plugins/global'
 import type { GuideEntry } from '@/plugins/guide'
 import { useCompareState } from '@/stores/compare'
 import type { AssessQuery } from '@/types'
@@ -8,37 +7,6 @@ import { Snackbar } from '@varlet/ui'
 </script>
 
 <template>
-  <var-card class="card">
-    <template #description>
-      <div class="card-description">
-        <var-space justify="space-between" align="center">
-          <var-space align="center" size="mini">
-            <var-link :href="`${global.ornaUrl}${ce.url}`" target="_blank" underline="none">
-              <var-button type="primary" size="small"> OrnaRPG </var-button>
-            </var-link>
-            <var-button
-              type="success"
-              size="small"
-              @click="getGuidePage"
-              :loading="loading.guide"
-              loading-type="wave"
-            >
-              OrnaGuide
-            </var-button>
-          </var-space>
-          <var-chip
-            size="small"
-            :type="ge.exist ? 'success' : 'warning'"
-            :closeable="ge.exist"
-            @close="ge.cache = undefined"
-          >
-            {{ ge.exist ? 'Guide' : 'YACO' }}
-          </var-chip>
-        </var-space>
-      </div>
-    </template>
-  </var-card>
-
   <var-card
     class="card"
     :title="$t('assess')"
@@ -113,7 +81,6 @@ import { Snackbar } from '@varlet/ui'
     </template>
   </var-card>
 
-  <GuideResult v-model:show="show.guide.page" :href="ge.pageUrl" :result="ge.exist" />
   <GuideResult v-model:show="show.guide.assessPage" :href="ge.assessUrl" :result="ge.exist" />
 
   <AssessQuery
@@ -138,7 +105,6 @@ export default defineComponent({
       },
       show: {
         guide: {
-          page: false,
           assessPage: false
         },
         yaco: {
@@ -168,12 +134,6 @@ export default defineComponent({
     }
   },
   methods: {
-    async getGuidePage() {
-      await this.fetchCache()
-      setTimeout(() => {
-        this.show.guide.page = true
-      }, 120)
-    },
     async getGuideAssess() {
       await this.fetchCache()
       setTimeout(() => {
