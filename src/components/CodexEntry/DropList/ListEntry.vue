@@ -144,6 +144,10 @@ import type { PropType } from 'vue'
           </var-chip>
         </template>
       </var-space>
+      <template v-if="ce.meta.stats !== undefined">
+        <var-divider dashed/>
+        <StatLists class="color-gray" size="mini" :stats="ce.meta.stats"/>
+      </template>
     </template>
   </var-cell>
 </template>
