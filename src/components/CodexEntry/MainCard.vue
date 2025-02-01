@@ -1,26 +1,47 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex'
+import { global } from '@/plugins/global'
 import { getStaticUrl, rarityAura, rarityText } from '@/plugins/utils'
 </script>
 
 <template>
   <var-card class="card" layout="row">
-    <template #title>
+    <template #title slotClass="">
       <div class="card-title">
         {{ ce.lang['name'] }}
       </div>
     </template>
     <template #image>
-      <var-image
-        :class="`codex-icon ${rarityAura(ce.category, ce.id)}`"
-        :src="getStaticUrl(ce.meta['icon'])"
-        width="72"
-        fit="contain"
-      />
+      <var-space
+        class="ml-4 mt-6"
+        direction="column"
+        size="large"
+        justify="flex-start"
+        align="center"
+      >
+        <var-image
+          :class="['codex-icon', rarityAura(ce.category, ce.id)]"
+          :src="getStaticUrl(ce.meta['icon'])"
+          width="72"
+          fit="contain"
+        />
+      </var-space>
+    </template>
+
+    <template #extra>
+      <var-space class="mb-1" direction="column">
+        <var-link :href="`${global.ornaUrl}${ce.url}`" target="_blank" underline="none">
+          <var-button type="primary" size="small">
+            <div class="i-mdi-export-variant text-md mr-0.5"></div>
+            OrnaRPG
+          </var-button>
+        </var-link>
+      </var-space>
     </template>
 
     <template #description>
-      <div class="card-description">
+      <div class="card-description mt-2 pb-8">
+        <var-divider dashed />
         <var-space size="mini" class="line-height-tight">
           <var-chip type="warning" :size="chipSize" :round="true" plain>
             {{ ce.tier }}
@@ -200,6 +221,7 @@ import { getStaticUrl, rarityAura, rarityText } from '@/plugins/utils'
             </var-chip>
           </template>
         </var-space>
+        <var-divider />
       </div>
     </template>
   </var-card>
@@ -230,7 +252,6 @@ export default defineComponent({
 .codex-icon {
   width: 72px;
   height: 72px;
-  margin: 16px 0 0 16px;
   flex-shrink: 0;
   image-rendering: pixelated;
 }
