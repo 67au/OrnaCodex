@@ -1,7 +1,8 @@
-import type { Filters, FiltersStorage } from '@/types'
+import type { Filters } from '@/types'
 import { defineStore } from 'pinia'
 import { useOptionsState } from './options'
 import { global } from '@/plugins/global'
+import { deserialize, serialize } from '@/plugins/filters'
 
 export const useFiltersState = defineStore('filters', {
   state: () => ({
@@ -13,46 +14,9 @@ export const useFiltersState = defineStore('filters', {
   getters: {
     filtersKeys(state) {
       return new Set(state.filters.keys())
-    },
-    storage(state): FiltersStorage {
-      return {
-        search: state.search,
-        filters: Array.from(state.filters),
-        multiple: state.multiple,
-        version: state.version
-      }
     }
   },
   actions: {
-    initialize(data?: FiltersStorage) {
-      const optionsState = useOptionsState()
-      optionsState.initialize()
-      if (data !== undefined && data.version === this.version) {
-        this.$patch({
-          filters: new Map(
-            data.filters
-              .filter(([key, _]) => key in optionsState.options)
-              .map(([key, { type: type, value: value }]) => {
-                return [
-                  key,
-                  {
-                    key: key,
-                    value: Array.isArray(value)
-                      ? value.filter((v) => optionsState.options[key].has(v))
-                      : value !== undefined && optionsState.options[key].has(value)
-                        ? value
-                        : undefined
-                  }
-                ]
-              })
-          ),
-          search: data.search,
-          multiple: data.multiple
-        })
-      } else {
-        this.reset()
-      }
-    },
     reset() {
       const keep = { multiple: this.multiple }
       this.$reset()
@@ -89,6 +53,15 @@ export const useFiltersState = defineStore('filters', {
     },
     removeFilter(key: string) {
       this.filters.delete(key)
+    }
+  },
+  persistedState: {
+    persist: true,
+    deserialize: (value: string) => {
+      return deserialize(value)
+    },
+    serialize: (value) => {
+      return serialize(value)
     }
   }
 })

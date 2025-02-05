@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { serialize } from '@/plugins/filters';
 import { utoa } from '@/plugins/utils'
 import { useFiltersState } from '@/stores/filters'
 import { useSortState } from '@/stores/sort'
@@ -52,7 +53,7 @@ export default defineComponent({
     output() {
       return JSON.stringify({
         sort: useSortState().$state,
-        filters: useFiltersState().storage
+        filters: serialize(useFiltersState().$state)
       })
     }
   }

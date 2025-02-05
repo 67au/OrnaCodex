@@ -18,7 +18,9 @@
     "@varlet/ui": "^3.8.4",
     "@vueuse/core": "^12.5.0",
     "fflate": "^0.8.2",
+    "localforage": "^1.10.0",
     "pinia": "^2.3.1",
+    "pinia-plugin-persistedstate-2": "^2.0.28",
     "vue": "^3.4.37",
     "vue-i18n": "^11.1.0",
     "vue-router": "^4.4.3"

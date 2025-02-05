@@ -40,3 +40,12 @@ export function getFilterResult(
     }
   }
 }
+
+export function deserialize(value: string) {
+  const json = JSON.parse(value)
+  return { ...json, filters: new Map(json.filters) }
+}
+
+export function serialize(value: any) {
+  return JSON.stringify({ ...value, filters: [...value.filters.entries()] })
+}

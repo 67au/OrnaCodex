@@ -94,7 +94,7 @@ export const useCodexState = defineStore('codex', {
 
     sorted(): Array<CodexId> {
       const sortState = useSortState()
-      const { nameTuple, asc } = sortState
+      const { nameTuple, sort } = sortState
       return nameTuple === undefined
         ? this.sortedDefault
         : [...this.sortedDefault]
@@ -118,7 +118,7 @@ export const useCodexState = defineStore('codex', {
                 return x === undefined ? 1 : -1
               }
               if (typeof x === 'string') {
-                return (valueStrip(x) - valueStrip(y)) * (asc ? 1 : -1)
+                return (valueStrip(x) - valueStrip(y)) * (sort.asc ? 1 : -1)
               } else {
                 return typeof x === 'boolean' ? 1 : -1
               }

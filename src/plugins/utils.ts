@@ -29,7 +29,7 @@ export function parseCodexUrl(url: string) {
   const a = url.split('/')
   return {
     category: a[2],
-    id: a[5]
+    id: a[3]
   } as CodexId
 }
 

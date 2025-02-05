@@ -11,8 +11,10 @@ export const useSortState = defineStore('sort', {
         name: 'default',
         asc: false
       },
+      sort: {
       name: undefined as string | undefined,
       asc: false,
+      },
       version: global.filtersVersion as string
     }) as SortState,
   getters: {
@@ -21,22 +23,21 @@ export const useSortState = defineStore('sort', {
       return optionsState.sortKeys
     },
     nameTuple(state) {
-      return state.name === undefined ? undefined : getNameTuple(state.name)
+      return state.sort.name === undefined ? undefined : getNameTuple(state.sort.name)
     }
   },
   actions: {
-    initialize(data?: SortState) {
-      if (data !== undefined && data.version === this.version) {
-        this.$patch({
-          name: data.name,
-          asc: data.asc,
-          default: data.default,
-          version: data.version
-        })
-      }
-    },
     reset() {
       this.$reset()
     }
+  },
+  persistedState: {
+    persist: true,
+    deserialize: (value: string) => {
+      const json = JSON.parse(value) as SortState
+      if (json?.version === global.filtersVersion) {
+        return json
+      }
+    },
   }
 })

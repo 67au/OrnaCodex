@@ -38,7 +38,7 @@ import '@varlet/ui/es/snackbar/style/index'
                 YACO | {{ scaleText[ce.bossScale] }}
               </var-chip>
               <var-chip v-if="ge.exist" type="success" size="mini" plain>
-                Guide | {{ ge.cache.boss ? scaleText[1] : scaleText[-1] }}
+                Guide | {{ ge.data.boss ? scaleText[1] : scaleText[-1] }}
               </var-chip>
             </var-space>
           </template>

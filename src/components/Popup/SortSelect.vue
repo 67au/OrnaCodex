@@ -32,7 +32,7 @@ import { useSortState } from '@/stores/sort'
           <var-divider :description="$t(`sortKeys.${k}`)" />
           <var-space size="small">
             <var-chip
-              :type="sortState.name === `${k}.${v}` ? 'success' : 'default'"
+              :type="sortState.sort.name === `${k}.${v}` ? 'success' : 'default'"
               elevation="3"
               v-for="v in values"
               @click="() => editSort(`${k}.${v}`)"
@@ -80,7 +80,7 @@ export default defineComponent({
     editSort(key: string) {
       this.$emit('update:show', false)
       setTimeout(() => {
-        this.sortState.name = key
+        this.sortState.sort.name = key
       }, 50)
     }
   }

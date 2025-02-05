@@ -140,13 +140,9 @@ import '@varlet/ui/es/snackbar/style/index'
             </var-space>
           </var-cell>
         </template>
-        <template v-else>
-          <var-divider>
-            <div class="mx-4">
-              {{ $t('found') }}
-            </div>
-          </var-divider>
-        </template>
+        <var-divider>
+          <div class="mx-4">Updated at: {{ ge.datetime.toLocaleString() }}</div>
+        </var-divider>
       </div>
     </template>
   </var-card>
@@ -165,10 +161,15 @@ export default {
       return this.guide as GuideEntry
     },
     data() {
-      return GuideEntry.parseGuideCache(this.ge.cache)
+      return GuideEntry.parseGuideCache(this.ge.data)
     },
     isNotEmpty() {
       return Object.keys(this.data).length > 0
+    }
+  },
+  async mounted() {
+    if (!this.ge.exist) {
+      await this.ge.loadCache()
     }
   },
   methods: {

@@ -1,8 +1,9 @@
-import { useGuideState } from '@/stores/guide'
 import { CodexEntry } from './codex'
 import { global } from './global'
-import type { AssessQuery, GuideData, Stats } from '@/types'
+import type { AssessQuery, GuideData, GuideModel, Stats } from '@/types'
 import { parseCodexUrl } from './utils'
+import { useGuideState } from '@/stores/guide'
+import localforage from 'localforage'
 
 const apiMap: Record<string, string> = {
   items: 'item',
@@ -22,22 +23,26 @@ const pageMap: Record<string, string> = {
   spells: 'skills'
 }
 
+const db = localforage.createInstance({
+  name: 'guide'
+})
+
 export class GuideEntry {
   codex: CodexEntry
   constructor(entry: CodexEntry) {
     this.codex = entry
   }
-  get category() {
-    return this.codex.category
-  }
-  get id() {
-    return this.codex.id
-  }
   get guideApiCategory() {
-    return apiMap[this.category]
+    return apiMap[this.codex.category]
   }
   get guideId() {
-    return this.cache?.id
+    return this.data?.id
+  }
+  get data() {
+    return (this.cache as GuideModel)?.data
+  }
+  get datetime() {
+    return new Date((this.cache as GuideModel)?.datetime)
   }
   get codexName() {
     const name = this.codex.meta.name
@@ -46,19 +51,16 @@ export class GuideEntry {
 
   get cache() {
     const guideState = useGuideState()
-    if (guideState.cache !== undefined) {
-      if (guideState.cache[this.category] === undefined) {
-        guideState.cache[this.category] = {}
-      }
-      return guideState.cache?.[this.category]?.[this.id]
-    }
+    return guideState.cache[this.codex.url]
   }
-  set cache(newValue: any) {
+  set cache(newValue: GuideModel | undefined) {
     const guideState = useGuideState()
-    if (guideState.cache[this.category] === undefined) {
-      guideState.cache[this.category] = {}
+    if (newValue === undefined) {
+      db.removeItem(this.codex.url)
+      delete guideState.cache[this.codex.url]
+    } else {
+      guideState.cache[this.codex.url] = newValue
     }
-    guideState.cache[this.category][this.id] = newValue
   }
 
   get exist() {
@@ -66,7 +68,7 @@ export class GuideEntry {
   }
 
   get stats(): Stats {
-    return this.exist && this.cache.stats !== undefined ? this.cache.stats : {}
+    return this.exist && this.data.stats !== undefined ? this.data.stats : {}
   }
 
   get baseStats() {
@@ -78,19 +80,50 @@ export class GuideEntry {
   }
 
   get pageUrl() {
-    return `${global.guideUrl}/${pageMap[this.category]}?show=${this.guideId}`
+    return `${global.guideUrl}/${pageMap[this.codex.category]}?show=${this.guideId}`
   }
   get assessUrl() {
     return `${global.guideUrl}/assess?item=${this.guideId}`
   }
 
+  async searchByCodexName(category: string, name: string) {
+    const controller = new AbortController()
+    setTimeout(() => controller.abort(), 10000)
+    try {
+      const resp = await fetch(`${global.guideApiUrl}/${category}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        signal: controller.signal,
+        body: JSON.stringify({ icontains: [{ name: name }] })
+      })
+      const result = await resp.json()
+      return result
+    } catch (error) {
+      return []
+    }
+  }
+
+  async loadCache() {
+    const entry: string | null = await db.getItem(this.codex.url)
+    if (entry !== null) {
+      this.cache = JSON.parse(entry)
+    }
+    return entry !== null
+  }
+
   async fetchCache() {
-    const guideState = useGuideState()
     if (this.cache === undefined) {
-      const res = await guideState.searchByCodexName(this.guideApiCategory, this.codexName)
+      const res = await this.searchByCodexName(this.guideApiCategory, this.codexName)
       for (const r of res) {
         if (r.codex === this.codex.url) {
-          this.cache = r
+          this.cache = {
+            data: r,
+            datetime: new Date().getTime()
+          }
+          await db.setItem(this.codex.url, JSON.stringify(this.cache))
           break
         }
       }
@@ -124,7 +157,7 @@ export class GuideEntry {
           level: 1
         },
         extra: {
-          isBoss: this.cache.boss,
+          isBoss: this.data.boss,
           isQuality: false,
           isGuide: true,
           baseStats: this.baseStats,

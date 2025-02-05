@@ -37,7 +37,6 @@ useDark()
         <keep-alive>
           <component :is="Component" v-if="route.meta.keepAlive" />
         </keep-alive>
-        <FabTool v-model:display="fabStorage" />
       </router-view>
     </template>
   </MainLayout>
@@ -51,7 +50,6 @@ export default defineComponent({
         language: true,
         meta: true
       },
-      fabStorage: useLocalStorage('fab', true)
     }
   },
   async created() {

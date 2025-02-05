@@ -56,8 +56,10 @@ export interface SortState {
     name: string
     asc: boolean
   }
-  name: string | undefined
-  asc: boolean
+  sort: {
+    name: string | undefined
+    asc: boolean
+  }
   version: string | undefined
 }
 
@@ -102,6 +104,11 @@ export interface AssessResult {
   exact?: boolean
   range?: [number, number]
   extra?: AssessQuery['extra']
+}
+
+export interface GuideModel {
+  datetime: number,
+  data: Record<string, any>
 }
 
 export interface GuideData {

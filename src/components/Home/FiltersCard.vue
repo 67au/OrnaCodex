@@ -52,13 +52,13 @@ import { useCodexState } from '@/stores/codex'
                 <var-chip
                   class="text-md"
                   size="small"
-                  :type="sortState.name === undefined ? 'default' : 'success'"
+                  :type="sortState.sort.name === undefined ? 'default' : 'success'"
                   elevation="2"
                   @click="() => (show.sort = !show.sort)"
                 >
                   <template #left>
                     <div
-                      v-if="sortState.name === undefined"
+                      v-if="sortState.sort.name === undefined"
                       class="text-lg i-mdi-view-dashboard-edit"
                     ></div>
                   </template>
@@ -71,11 +71,11 @@ import { useCodexState } from '@/stores/codex'
                 </var-chip>
               </var-space>
               <var-space justify="flex-end" align="center" size="small">
-                <var-tooltip placement="top" :content="$t(sortState.asc ? 'asc' : 'desc')">
+                <var-tooltip placement="top" :content="$t(sortState.sort.asc ? 'asc' : 'desc')">
                   <PopupButton
                     type="warning"
-                    :icon-class="sortState.asc ? 'i-mdi-sort-ascending' : 'i-mdi-sort-descending'"
-                    @click="() => (sortState.asc = !sortState.asc)"
+                    :icon-class="sortState.sort.asc ? 'i-mdi-sort-ascending' : 'i-mdi-sort-descending'"
+                    @click="() => (sortState.sort.asc = !sortState.sort.asc)"
                   />
                 </var-tooltip>
                 <var-tooltip placement="top" :content="$t('clear')">
@@ -143,7 +143,7 @@ import { useCodexState } from '@/stores/codex'
 
           <var-cell class="filter-cell" v-for="[key, filter] in filtersState.filters" :key="key">
             <var-select
-              :placeholder="getMultipleTag(key)"
+              :placeholder="getTag(key)"
               v-model="filter.value"
               variant="outlined"
               size="small"
@@ -177,7 +177,7 @@ import { useCodexState } from '@/stores/codex'
           elevation="3"
           @click="() => editFilters(key)"
         >
-          {{ getMultipleTag(key) }}
+          {{ getTag(key) }}
         </var-chip>
       </var-space>
     </var-paper>
@@ -215,9 +215,6 @@ export default defineComponent({
     },
     defaultLabel() {
       return this.$t('query.qualitylabel.default')
-    },
-    multipleTag() {
-      return this.filtersState.multiple ? ` (${this.$t('multiple')})` : ''
     },
     optionsMap() {
       return Object.fromEntries(
@@ -287,8 +284,8 @@ export default defineComponent({
     isStatusKey(key: string) {
       return this.optionsState.keys.status.includes(key)
     },
-    getMultipleTag(key: string) {
-      return `${this.$t(`${this.isStatusKey(key) ? 'meta.' : ''}${key}`)} ${this.multipleTag}`
+    getTag(key: string) {
+      return `${this.$t(`${this.isStatusKey(key) ? 'meta.' : ''}${key}`)}`
     },
     editFilters(key: string) {
       if (this.filtersState.filters.has(key)) {

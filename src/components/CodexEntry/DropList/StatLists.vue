@@ -4,7 +4,7 @@ import type { PropType } from 'vue'
 </script>
 
 <template>
-  <var-space size="small" :class="{ 'line-height-none': size === 'mini' }">
+  <var-space size="mini" :class="{ 'line-height-none': size === 'mini'}">
     <template v-for="[key, value] in Object.entries(stats)">
       <template v-if="typeof value === 'string'">
         <template v-if="key === 'element'">
@@ -41,7 +41,7 @@ export default defineComponent({
       required: true
     },
     size: {
-      type: Object as PropType<'small' | 'mini'>,
+      type: String as PropType<'small' | 'mini'>,
       default: 'small'
     }
   }

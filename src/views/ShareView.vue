@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { deserialize as filtersDeserialize } from '@/plugins/filters'
 import { atou } from '@/plugins/utils'
 import router from '@/router'
 import { useFiltersState } from '@/stores/filters'
@@ -25,8 +26,8 @@ export default defineComponent({
           sort.version === this.sortState.version &&
           filters.version === this.filtersState.version
         ) {
-          this.sortState.initialize(sort)
-          this.filtersState.initialize(filters)
+          this.sortState.$patch(sort)
+          this.filtersState.$patch(filtersDeserialize(filters))
         } else {
           Snackbar({
             content: this.$t('shareVerionError'),

@@ -5,6 +5,7 @@ import FiltersCard from '@/components/Home/FiltersCard.vue'
 import EntriesCard from '@/components/Home/EntriesCard.vue'
 import { useSortState } from '@/stores/sort'
 import router from '@/router'
+import { useOptionsState } from '@/stores/options'
 </script>
 
 <template>
@@ -41,30 +42,14 @@ export default defineComponent({
     }
 
     const entriesListState = useEntriesListState()
-    const filtersStorage = useLocalStorage('filters', JSON.stringify(this.filtersState.storage))
-    const sortStorage = useLocalStorage('sort', JSON.stringify(this.sortState.$state))
+    const optionState = useOptionsState()
 
-    const saveFilters = useDebounceFn(
-      () => {
-        filtersStorage.value = JSON.stringify(this.filtersState.storage)
-      },
-      500,
-      { maxWait: 1000 }
-    )
-
-    const saveSort = useDebounceFn(
-      () => {
-        sortStorage.value = JSON.stringify(this.sortState.$state)
-      },
-      500,
-      { maxWait: 1000 }
-    )
+    optionState.initialize()
 
     if (this.route.query?.share === '1') {
       router.replace({ name: 'home' })
     } else {
-      this.filtersState.initialize(JSON.parse(filtersStorage.value))
-      this.sortState.initialize(JSON.parse(sortStorage.value))
+
     }
 
     watch(
@@ -76,7 +61,6 @@ export default defineComponent({
 
     this.filtersState.$subscribe(
       () => {
-        saveFilters()
         entriesListState.render()
       },
       { deep: true, immediate: true }
@@ -84,7 +68,6 @@ export default defineComponent({
 
     this.sortState.$subscribe(
       () => {
-        saveSort()
         entriesListState.render()
       },
       { deep: true, immediate: true }
