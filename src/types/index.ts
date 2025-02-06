@@ -60,7 +60,6 @@ export interface SortState {
     name: string | undefined
     asc: boolean
   }
-  version: string | undefined
 }
 
 export type Options = Record<string, Set<string | number | boolean>>

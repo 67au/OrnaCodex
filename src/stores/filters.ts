@@ -9,7 +9,6 @@ export const useFiltersState = defineStore('filters', {
     search: '' as string,
     filters: new Map() as Filters,
     multiple: false,
-    version: global.filtersVersion as string
   }),
   getters: {
     filtersKeys(state) {

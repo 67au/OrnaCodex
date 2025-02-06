@@ -15,7 +15,6 @@ export const useSortState = defineStore('sort', {
       name: undefined as string | undefined,
       asc: false,
       },
-      version: global.filtersVersion as string
     }) as SortState,
   getters: {
     keys(state) {
@@ -34,10 +33,7 @@ export const useSortState = defineStore('sort', {
   persistedState: {
     persist: true,
     deserialize: (value: string) => {
-      const json = JSON.parse(value) as SortState
-      if (json?.version === global.filtersVersion) {
-        return json
-      }
+      return JSON.parse(value) as SortState
     },
   }
 })

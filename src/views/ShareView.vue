@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { deserialize as filtersDeserialize } from '@/plugins/filters'
+import { global } from '@/plugins/global'
 import { atou } from '@/plugins/utils'
 import router from '@/router'
 import { useFiltersState } from '@/stores/filters'
@@ -21,11 +22,8 @@ export default defineComponent({
     Snackbar.allowMultiple(true)
     if (this.share !== undefined) {
       try {
-        const { sort: sort, filters: filters } = JSON.parse(atou(this.share))
-        if (
-          sort.version === this.sortState.version &&
-          filters.version === this.filtersState.version
-        ) {
+        const { sort: sort, filters: filters, version: version } = JSON.parse(atou(this.share))
+        if (version === global.filtersVersion) {
           this.sortState.$patch(sort)
           this.filtersState.$patch(filtersDeserialize(filters))
         } else {
