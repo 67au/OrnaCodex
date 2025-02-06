@@ -22,11 +22,13 @@ export const useFiltersState = defineStore('filters', {
       this.$patch(keep)
     },
     switchMultiple() {
+      const multiple = !this.multiple
       const tmp = {
+        multiple: multiple,
         search: this.search,
         filters: new Map(
           Array.from(this.filters).map(([key, filter]) => {
-            if (this.multiple) {
+            if (multiple) {
               filter.value = filter.value !== undefined ? [filter.value as string] : []
             } else {
               if (Array.isArray(filter.value)) {
@@ -37,7 +39,7 @@ export const useFiltersState = defineStore('filters', {
           })
         )
       }
-      this.reset()
+      this.$reset()
       this.$patch(tmp)
     },
     addFilter(key: string) {

@@ -52,13 +52,6 @@ export default defineComponent({
 
     }
 
-    watch(
-      () => this.filtersState.multiple,
-      () => {
-        this.filtersState.switchMultiple()
-      }
-    )
-
     this.filtersState.$subscribe(
       () => {
         entriesListState.render()

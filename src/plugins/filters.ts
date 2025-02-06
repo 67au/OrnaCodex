@@ -47,5 +47,5 @@ export function deserialize(value: string) {
 }
 
 export function serialize(value: any) {
-  return JSON.stringify({ ...value, filters: [...value.filters.entries()] })
+  return JSON.stringify({ ...value, filters: Array.from(value.filters) })
 }

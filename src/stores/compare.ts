@@ -69,7 +69,7 @@ export const useCompareState = defineStore('compare', {
     serialize: (value) => {
       return value.list.map((e: ComparedEntry) => [
         [e.entry.category, e.entry.id],
-        [...Object.values(e.query)]
+        Array.from(Object.values(e.query))
       ])
     }
   }

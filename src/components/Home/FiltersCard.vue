@@ -74,7 +74,9 @@ import { useCodexState } from '@/stores/codex'
                 <var-tooltip placement="top" :content="$t(sortState.sort.asc ? 'asc' : 'desc')">
                   <PopupButton
                     type="warning"
-                    :icon-class="sortState.sort.asc ? 'i-mdi-sort-ascending' : 'i-mdi-sort-descending'"
+                    :icon-class="
+                      sortState.sort.asc ? 'i-mdi-sort-ascending' : 'i-mdi-sort-descending'
+                    "
                     @click="() => (sortState.sort.asc = !sortState.sort.asc)"
                   />
                 </var-tooltip>
@@ -113,7 +115,11 @@ import { useCodexState } from '@/stores/codex'
                   <PopupButton
                     :type="filtersState.multiple ? 'success' : 'default'"
                     :icon-class="filtersState.multiple ? 'i-mdi-tag-multiple' : 'i-mdi-tag'"
-                    @click="() => (filtersState.multiple = !filtersState.multiple)"
+                    @click="
+                      () => {
+                        filtersState.switchMultiple()
+                      }
+                    "
                   />
                 </var-tooltip>
                 <var-tooltip placement="top" :content="$t('clear')">
@@ -143,16 +149,25 @@ import { useCodexState } from '@/stores/codex'
 
           <var-cell class="filter-cell" v-for="[key, filter] in filtersState.filters" :key="key">
             <var-select
+              v-if="Array.isArray(filter.value)"
               :placeholder="getTag(key)"
               v-model="filter.value"
               variant="outlined"
               size="small"
               clearable
-              :multiple="Array.isArray(filter.value)"
-              :chip="Array.isArray(filter.value)"
+              multiple
+              chip
               :options="optionsMap[key]"
-            >
-            </var-select>
+            />
+            <var-select
+              v-else
+              :placeholder="getTag(key)"
+              v-model="filter.value"
+              variant="outlined"
+              size="small"
+              clearable
+              :options="optionsMap[key]"
+            />
           </var-cell>
         </var-form>
       </div>
