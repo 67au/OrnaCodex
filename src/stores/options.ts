@@ -31,7 +31,8 @@ export const useOptionsState = defineStore('options', {
       ]),
       'items.extra': new Set(),
       'followers.stats': new Set(),
-      raids: new Set(['hp'])
+      raids: new Set(['hp']),
+      'spells.stats': new Set(),
     } as Record<string, Set<string>>
   }),
   getters: {
@@ -48,7 +49,7 @@ export const useOptionsState = defineStore('options', {
           'item_type',
           'place',
           'target',
-          'gear_element'
+          'element'
         ],
         array: ['event', 'tags', 'abilities'],
         status: ['causes', 'cures', 'gives', 'immunities']
@@ -99,11 +100,13 @@ export const useOptionsState = defineStore('options', {
                 options[key].add(entry[key])
               } else {
                 if (
-                  key === 'gear_element' &&
+                  key === 'element' &&
                   entry.stats !== undefined &&
                   entry.stats.element !== undefined
                 ) {
-                  options[key].add(entry.stats.element)
+                  entry.stats.element.forEach((element: string) => {
+                    options[key].add(element)
+                  })
                 }
               }
             }
@@ -125,6 +128,11 @@ export const useOptionsState = defineStore('options', {
       if (entry.category === 'followers') {
         Object.keys(entry.stats || []).forEach((key) => {
           this.sortKeys['followers.stats'].add(key)
+        })
+      }
+      if (entry.category === 'spells') {
+        Object.keys(entry.stats || []).filter((key) => key !== 'element').forEach((key) => {
+          this.sortKeys['spells.stats'].add(key)
         })
       }
     }

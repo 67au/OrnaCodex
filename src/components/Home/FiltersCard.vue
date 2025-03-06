@@ -258,7 +258,7 @@ export default defineComponent({
               })
             ]
           }
-          if (key === 'gear_element') {
+          if (key === 'element') {
             return [
               key,
               Array.from(value as Set<string>).map((v: string) => {

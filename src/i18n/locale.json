@@ -15,7 +15,7 @@
     "place": "部位",
     "ability": "副手技能",
     "target": "技能目标",
-    "gear_element": "装备元素属性",
+    "element": "元素属性",
     "abilities": "被动能力",
     "event": "活动",
     "tags": "标签",
@@ -80,7 +80,10 @@
         "bonus": "野兽羁绊加成",
         "ability": "野兽羁绊技能"
       },
-      "raids": "副本"
+      "raids": "副本",
+      "spells": {
+        "stats": "技能属性"
+      }
     },
     "sortDefault": "默认排序",
     "asc": "升序",
@@ -141,7 +144,7 @@
     "place": "部位",
     "ability": "副手技能",
     "target": "技能目標",
-    "gear_element": "裝備元素屬性",
+    "element": "元素屬性",
     "abilities": "被動能力",
     "event": "活動",
     "tags": "標簽",
@@ -156,7 +159,10 @@
         "bonus": "野獸羈絆加成",
         "ability": "野獸羈絆技能"
       },
-      "raids": "副本"
+      "raids": "副本",
+      "spells": {
+        "stats": "技能屬性"
+      }
     },
     "sortDefault": "默認排序",
     "asc": "升序",
@@ -267,7 +273,7 @@
     "place": "Place",
     "ability": "Ability",
     "target": "Spell Target",
-    "gear_element": "Gear Element",
+    "element": "Element",
     "abilities": "Passive",
     "event": "Event",
     "tags": "Tags",
@@ -284,7 +290,10 @@
         "bonus": "Bond Bonus",
         "ability": "Bond Skills"
       },
-      "raids": "Raids"
+      "raids": "Raids",
+      "spells": {
+        "stats": "Skills & Spells"
+      }
     },
     "sortDefault": "DefaultOrder",
     "asc": "ASC",

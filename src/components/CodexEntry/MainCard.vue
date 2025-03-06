@@ -171,10 +171,6 @@ import { getStaticUrl, rarityAura, rarityText } from '@/plugins/utils'
             </template>
           </var-chip>
 
-          <var-chip v-if="ce.meta.costs !== undefined" :size="chipSize" :round="true" plain>
-            {{ `${ce.meta.costs} ${$t('mana')}` }}
-          </var-chip>
-
           <var-chip
             type="danger"
             v-if="ce.meta.price !== undefined"

@@ -112,11 +112,6 @@ import { global } from '@/plugins/global'
                   :type="index === 0 && sortState?.nameTuple?.[1] === v ? 'success' : 'info'"
                   size="mini"
                   :round="false"
-                  :color="
-                    v === 'element'
-                      ? global.elementColor[codexState.meta[category][id]['stats'][v]]
-                      : ''
-                  "
                   :plain="codexState.meta[category][id]?.stats?.[v] !== true"
                   :key="index"
                 >
@@ -124,9 +119,6 @@ import { global } from '@/plugins/global'
                     {{
                       `${$t('meta.stats.hp')}: ${Number(codexState.meta[category][id]['hp']).toLocaleString()}`
                     }}
-                  </template>
-                  <template v-else-if="v === 'element'">
-                    {{ $t(`meta.stats.${codexState.meta[category][id]['stats'][v]}`) }}
                   </template>
                   <template
                     v-else-if="typeof codexState.meta[category][id]['stats'][v] === 'string'"
@@ -137,6 +129,11 @@ import { global } from '@/plugins/global'
                     {{ $t(`meta.stats.${v}`) }}
                   </template>
                 </var-chip>
+                <template v-if="(display.has('items.stats') && category === 'items') || (display.has('spells.stats') && category === 'spells') ">
+                <var-chip v-for="elem in codexState.meta[category][id]?.['stats']?.['element'] || []" size="mini" :color="global.elementColor[elem]" :round="false" plain>
+                  {{ $t(`meta.stats.${elem}`)  }}
+                </var-chip>
+                </template>
               </var-space>
             </template>
           </var-cell>
@@ -215,9 +212,7 @@ export default defineComponent({
         this.sortKeys
           .filter(([key]) => this.display.has(key))
           .map(([key, value]) => {
-            return (
-              key === 'items.stats' ? Array.from(value).concat('element') : Array.from(value)
-            ).map((v) => [key, v])
+            return Array.from(value).map((v) => [key, v])
           })
           .flat(1)
           .filter(([k, v]) => {

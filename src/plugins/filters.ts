@@ -8,7 +8,7 @@ export function getFilterResult(
 ) {
   let srcValue
   switch (filterKey) {
-    case 'gear_element':
+    case 'element':
       srcValue = entry?.stats?.element
       break
     default:

@@ -1,4 +1,3 @@
-import { global } from '@/plugins/global'
 import type { SortState } from '@/types'
 import { defineStore } from 'pinia'
 import { useOptionsState } from './options'

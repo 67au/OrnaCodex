@@ -145,7 +145,7 @@ import type { PropType } from 'vue'
         </template>
       </var-space>
       <template v-if="ce.meta.stats !== undefined">
-        <var-divider dashed/>
+        <var-divider dashed class="mx-1"/>
         <StatLists class="color-gray pb-0.5" size="mini" :stats="ce.meta.stats"/>
       </template>
     </template>
