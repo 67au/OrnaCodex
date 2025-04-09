@@ -30,12 +30,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: '67au/OrnaCodexCrawler'
+          ref: 'v0'
           path: './crawler'
       - name: Download Codex from Artifact
         uses: dawidd6/action-download-artifact@v6
         with:
           name: codex-data
           path: './crawler/tmp'
+          branch: v0
           github_token: ${{ secrets.GH_PAT }}
           workflow: upload-data.yml
           repo: 67au/OrnaCodexCrawler
