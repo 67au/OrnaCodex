@@ -1,0 +1,130 @@
+{
+    "title": "图鉴 YACO",
+    "meta": {
+        "category": "分类",
+        "events": "活动",
+        "item_type": "物品类型",
+        "element": "元素属性",
+        "tags": "标签",
+        "stats": "属性",
+        "ability": "副手技能",
+        "spell_type": "技能 / 法术",
+        "used_by": "使用者",
+        "sources": "材料来源",
+        "off-hands": "副手装备"
+    },
+    "stats": {
+        "element": "元素属性"
+    },
+    "exotic": {
+        "true": "是",
+        "false": "否"
+    },
+    "tools": {
+        "filters": "筛选",
+        "sort": "排序",
+        "search": "搜索",
+        "assess": "装备鉴定",
+        "primarySort": "主排序",
+        "update": "更新",
+        "proof": "公会兑换",
+        "tower": "奥林匹亚之塔",
+        "compare": "装备对比",
+        "settings": "设置"
+    },
+    "update": {
+        "title": "发现更新！",
+        "version": "正在版本更新...",
+        "refresh": "刷新页面",
+        "dismiss": "忽略",
+        "reset": "重置数据库"
+    },
+    "sort": {
+        "primary": {
+            "default": "默认",
+            "name": "名称",
+            "tier": "阶级"
+        }
+    },
+    "units": {
+        "mana": "魔力",
+        "level": "等级"
+    },
+    "assess": {
+        "level": "等级",
+        "base": "基础",
+        "assess": "鉴定",
+        "qualityCalc": "推算",
+        "help": "请输入有效的头目装备标记与品质",
+        "query": "查询",
+        "setQualityCode": "设定品质",
+        "quality": {
+            "title": "品质",
+            "default": "默认",
+            "broken": "损坏",
+            "poor": "破烂",
+            "regular": "标准",
+            "superior": "精良",
+            "famed": "著名",
+            "legendary": "传说",
+            "ornate": "华丽",
+            "masterforged": "匠改",
+            "demonforged": "魔化",
+            "godforged": "神赐"
+        },
+        "bossScaling": {
+            "title": "头目装备",
+            "unset": "未定",
+            "yes": "是",
+            "no": "否",
+            "name": {
+                "unset": "未知装备",
+                "yes": "头目装备",
+                "no": "非头目装备"
+            }
+        }
+    },
+    "proof": {
+        "count": "数量"
+    },
+    "tower": {
+        "floors": "楼层",
+        "localTime": "当地时间"
+    },
+    "compare": {
+        "quality": {
+            "default": "默认",
+            "masterforged": "匠改",
+            "demonforged": "魔化",
+            "godforged": "神赐"
+        },
+        "add": "已添加",
+        "full": "添加数量已达上限！"
+    },
+    "help": {
+        "notFound": "未发现任何内容！"
+    },
+    "settings": {
+        "general": {
+            "title": "通用",
+            "displayStats": "显示条目属性",
+            "displayStatsSubtitle": "开启后可以直接查阅条目的属性"
+        },
+        "theme": {
+            "title": "主题系统",
+            "currentTheme": "当前主题",
+            "choice": "选择主题"
+        },
+        "credit": {
+            "title": "鸣谢",
+            "website": "官方网站"
+        },
+        "about": {
+            "title": "关于",
+            "author": "作者",
+            "lincense": "许可证",
+            "appVersion": "图鉴版本",
+            "apiUpdatedAt": "数据库最后更新时间"
+        }
+    }
+}

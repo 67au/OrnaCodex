@@ -1,0 +1,130 @@
+{
+    "title": "Codex YACO",
+    "meta": {
+        "category": "Category",
+        "events": "Events",
+        "item_type": "ItemType",
+        "element": "Element",
+        "tags": "Tags",
+        "stats": "Stats",
+        "ability": "Off-hand Ability",
+        "spell_type": "Skill / Spell",
+        "used_by": "Used By",
+        "sources": "Sources",
+        "off-hands": "Off-hands"
+    },
+    "stats": {
+        "element": "Element"
+    },
+    "exotic": {
+        "true": "Yes",
+        "false": "No"
+    },
+    "tools": {
+        "filters": "Filters",
+        "sort": "Sort",
+        "search": "Search",
+        "assess": "Assess",
+        "primarySort": "Primary Sort",
+        "update": "Update",
+        "proof": "Proof of Guild",
+        "tower": "Tower of Olympia",
+        "compare": "Compare",
+        "settings": "Settings"
+    },
+    "update": {
+        "title": "Update Available!",
+        "version": "Updating...",
+        "refresh": "Refresh Page",
+        "dismiss": "Dismiss",
+        "reset": "Reset Database"
+    },
+    "sort": {
+        "primary": {
+            "default": "Default",
+            "name": "Name",
+            "tier": "Tier"
+        }
+    },
+    "units": {
+        "mana": "Mana",
+        "level": "Level"
+    },
+    "assess": {
+        "level": "Level",
+        "base": "Base",
+        "assess": "Assess",
+        "qualityCalc": "QualityCalc",
+        "help": "Please enter a valid bossScaling and quality",
+        "query": "Query",
+        "setQualityCode": "QualityCode",
+        "quality": {
+            "title": "Quality",
+            "default": "Default",
+            "broken": "Broken",
+            "poor": "Poor",
+            "regular": "Regular",
+            "superior": "Superior",
+            "famed": "Famed",
+            "legendary": "Legendary",
+            "ornate": "Ornate",
+            "masterforged": "Masterforged",
+            "demonforged": "Demonforged",
+            "godforged": "Godforged"
+        },
+        "bossScaling": {
+            "title": "BossScaling",
+            "unset": "UNSET",
+            "yes": "YES",
+            "no": "NO",
+            "name": {
+                "unset": "Unset",
+                "yes": "BossScaling",
+                "no": "Non-BossScaling"
+            }
+        }
+    },
+    "proof": {
+        "count": "Count"
+    },
+    "tower": {
+        "floors": "Floors",
+        "localTime": "LocalTime"
+    },
+    "compare": {
+        "quality": {
+            "default": "NORMAL",
+            "masterforged": "MF",
+            "demonforged": "DF",
+            "godforged": "GF"
+        },
+        "add": "Added",
+        "full": "Reached Max limit!"
+    },
+    "help": {
+        "notFound": "Not Found!"
+    },
+    "settings": {
+        "general": {
+            "title": "General",
+            "displayStats": "Display Entry Stats",
+            "displayStatsSubtitle": "Enable to view entry stats directly"
+        },
+        "theme": {
+            "title": "Theme",
+            "currentTheme": "Current Theme",
+            "choice": "Choose Theme"
+        },
+        "credit": {
+            "title": "Credits",
+            "website": "Official Website"
+        },
+        "about": {
+            "title": "About",
+            "author": "Author",
+            "lincense": "License",
+            "appVersion": "App Version",
+            "apiUpdatedAt": "Data Last Updated At"
+        }
+    }
+}

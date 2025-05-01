@@ -1,0 +1,114 @@
+$element-colors: (
+  water: #5facff,
+  earthen: #0fab0f,
+  lightning: #a59e4a,
+  fire: #ff8135,
+  dark: #d900ff,
+  holy: #ddd,
+  arcane: #8e78ff,
+  dragon: #ff9800,
+  // physcial not set
+  physical: #fff,
+);
+
+$faction-colors: (
+  earthen: #1f8b4c,
+  fire: #d01f1f,
+  lightning: #f1c40f,
+  water: #3498db,
+);
+
+$text-colors: (
+  broken: #985f17,
+  poor: #985f17,
+  common: #fff,
+  rare: #49e840,
+  superior: #49e840,
+  famed: #4ca3ff,
+  legendary: #aa4eef,
+  ornate: #e44646,
+  masterforged: #ffe16f,
+  demonforged: #ff6f8f,
+  godforged: #ff9860,
+  // followers
+  common-followers: #fff,
+  uncommon-followers: #49e840,
+  rare-followers: #4ca3ff,
+  storied-followers: #aa4eef,
+  cryptid-followers: #ffe16f,
+  steward-followers: #ff6f8f,
+  // addition
+  anguish: #b9083a,
+  berserk: #d21616,
+  arisen: #b564b2,
+  event: #ffd980,
+);
+
+$bg-image: (
+  rare: (
+    'rare',
+    130%,
+  ),
+  famed: (
+    'famed',
+    130%,
+  ),
+  legendary: (
+    'legendary',
+    130%,
+  ),
+  ornate: (
+    'ornate',
+    130%,
+  ),
+  masterforged: (
+    'masterforged',
+    130%,
+  ),
+  demonforged: (
+    'demonforged',
+    130%,
+  ),
+  godforged: (
+    'godforged',
+    130%,
+  ),
+  arisen: (
+    'arisen',
+    130%,
+  ),
+  superboss: (
+    'superboss',
+    140%,
+  ),
+  celestial: (
+    'celestial',
+    100%,
+  ),
+  // followers
+  uncommon-followers: (
+      'rare',
+      130%,
+    ),
+  rare-followers: (
+    'famed',
+    130%,
+  ),
+  storied-followers: (
+    'legendary',
+    130%,
+  ),
+  cryptid-followers: (
+    'masterforged',
+    130%,
+  ),
+  steward-followers: (
+    'demonforged',
+    130%,
+  ),
+  //raids
+  raids: (
+      'raid',
+      140%,
+    ),
+);

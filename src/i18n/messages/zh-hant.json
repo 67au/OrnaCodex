@@ -1,0 +1,130 @@
+{
+    "title": "圖鑑 YACO",
+    "meta": {
+        "category": "分類",
+        "events": "活動",
+        "item_type": "物品類型",
+        "element": "元素屬性",
+        "tags": "標籤",
+        "stats": "屬性",
+        "ability": "副手技能",
+        "spell_type": "技能／法術",
+        "used_by": "使用者",
+        "sources": "材料來源",
+        "off-hands": "副手裝備"
+    },
+    "stats": {
+        "element": "元素屬性"
+    },
+    "exotic": {
+        "true": "是",
+        "false": "否"
+    },
+    "tools": {
+        "filters": "篩選",
+        "sort": "排序",
+        "search": "搜尋",
+        "assess": "裝備鑑定",
+        "primarySort": "主排序",
+        "update": "更新",
+        "proof": "公會兌換",
+        "tower": "奧林匹亞之塔",
+        "compare": "裝備對比",
+        "settings": "設定"
+    },
+    "update": {
+        "title": "發現更新！",
+        "version": "正在版本更新…",
+        "refresh": "重新整理頁面",
+        "dismiss": "忽略",
+        "reset": "重置資料庫"
+    },
+    "sort": {
+        "primary": {
+            "default": "預設",
+            "name": "名稱",
+            "tier": "階級"
+        }
+    },
+    "units": {
+        "mana": "魔力",
+        "level": "等級"
+    },
+    "assess": {
+        "level": "等級",
+        "base": "基礎",
+        "assess": "鑑定",
+        "qualityCalc": "推算",
+        "help": "請輸入有效的頭目裝備標記與品質",
+        "query": "查詢",
+        "setQualityCode": "設定品質",
+        "quality": {
+            "title": "品質",
+            "default": "預設",
+            "broken": "損壞",
+            "poor": "破舊",
+            "regular": "標準",
+            "superior": "精良",
+            "famed": "著名",
+            "legendary": "傳說",
+            "ornate": "華麗",
+            "masterforged": "匠改",
+            "demonforged": "魔化",
+            "godforged": "神賜"
+        },
+        "bossScaling": {
+            "title": "頭目裝備",
+            "unset": "未設定",
+            "yes": "是",
+            "no": "否",
+            "name": {
+                "unset": "未知裝備",
+                "yes": "頭目裝備",
+                "no": "非頭目裝備"
+            }
+        }
+    },
+    "proof": {
+        "count": "數量"
+    },
+    "tower": {
+        "floors": "樓層",
+        "localTime": "當地時間"
+    },
+    "compare": {
+        "quality": {
+            "default": "預設",
+            "masterforged": "匠改",
+            "demonforged": "魔化",
+            "godforged": "神賜"
+        },
+        "add": "已添加",
+        "full": "已達到上限！"
+    },
+    "help": {
+        "notFound": "未找到任何內容！"
+    },
+    "settings": {
+        "general": {
+            "title": "通用",
+            "displayStats": "顯示條目屬性",
+            "displayStatsSubtitle": "啟用後可直接檢視條目屬性"
+        },
+        "theme": {
+            "title": "主題",
+            "currentTheme": "當前主題",
+            "choice": "選擇主題"
+        },
+        "credit": {
+            "title": "鳴謝",
+            "website": "官方網站"
+        },
+        "about": {
+            "title": "關於",
+            "author": "作者",
+            "lincense": "许可证",
+            "appVersion": "圖鑑版本",
+            "apiUpdatedAt": "資料庫最後更新"
+        }
+    }
+}
