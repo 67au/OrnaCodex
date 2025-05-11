@@ -29,7 +29,7 @@ function shareUrl(entry: CodexEntry) {
 
 <template>
   <v-card color="teritary" variant="elevated" rounded="md">
-    <router-link :to="entry.url" class="text-decoration-none">
+    <router-link :to="entry.url" class="text-decoration-none" style="white-space: normal">
       <v-card-item>
         <v-card-title class="text-normal">{{ entry.name }}</v-card-title>
         <v-card-subtitle class="pt-1">
