@@ -50,37 +50,35 @@ sortState.$subscribe(() => {
 </script>
 
 <template>
-  <v-container fluid class="px-2 pt-0" max-width="900">
-    <v-sheet class="mx-auto" color="transparent" rounded="lg">
-      <v-sheet class="pa-2" rounded="lg" border="md">
-        <div class="d-flex flex-wrap ga-2 justify-end">
-          <v-chip :prepend-icon="mdiViewGrid" rounded="lg" :text="entriesListState.length"></v-chip>
-          <v-spacer></v-spacer>
-          <PrimarySortEditor></PrimarySortEditor>
-          <div class="d-flex ga-1 justify-end">
-            <SortEditor></SortEditor>
-            <v-btn
-              variant="tonal"
-              :icon="sortState.asc ? mdiSortAscending : mdiSortDescending"
-              size="small"
-              color="secondary"
-              @click="sortState.asc = !sortState.asc"
-            ></v-btn>
-            <v-btn
-              variant="tonal"
-              :icon="mdiRestart"
-              size="small"
-              color="error"
-              @click="sortState.$reset"
-            ></v-btn>
-          </div>
+  <v-sheet class="mx-auto" color="transparent" rounded="lg">
+    <v-sheet class="pa-2" rounded="lg" border="md">
+      <div class="d-flex flex-wrap ga-2 justify-end">
+        <v-chip :prepend-icon="mdiViewGrid" rounded="lg" :text="entriesListState.length"></v-chip>
+        <v-spacer></v-spacer>
+        <PrimarySortEditor></PrimarySortEditor>
+        <div class="d-flex ga-1 justify-end">
+          <SortEditor></SortEditor>
+          <v-btn
+            variant="tonal"
+            :icon="sortState.asc ? mdiSortAscending : mdiSortDescending"
+            size="small"
+            color="secondary"
+            @click="sortState.asc = !sortState.asc"
+          ></v-btn>
+          <v-btn
+            variant="tonal"
+            :icon="mdiRestart"
+            size="small"
+            color="error"
+            @click="sortState.$reset"
+          ></v-btn>
         </div>
-      </v-sheet>
-      <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
-        <template v-for="entry in entriesListState.entires" :key="entry.id">
-          <CodexListCard class="mt-2" :entry="entry"></CodexListCard>
-        </template>
-      </v-infinite-scroll>
+      </div>
     </v-sheet>
-  </v-container>
+    <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
+      <template v-for="entry in entriesListState.entires" :key="entry.id">
+        <CodexListCard class="mt-2" :entry="entry"></CodexListCard>
+      </template>
+    </v-infinite-scroll>
+  </v-sheet>
 </template>
