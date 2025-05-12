@@ -10,7 +10,7 @@ const show = computed(() => needRefresh.value || codexState.isUpdated)
 
 async function reloadPage() {
   await updateServiceWorker(true)
-  window.location.reload()
+  nextTick(() => setTimeout(() => window.location.reload(), 1000))
 }
 </script>
 
