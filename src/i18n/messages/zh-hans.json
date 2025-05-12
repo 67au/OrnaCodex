@@ -108,7 +108,9 @@
         "general": {
             "title": "通用",
             "displayStats": "显示条目属性",
-            "displayStatsSubtitle": "开启后可以直接查阅条目的属性"
+            "displayStatsSubtitle": "开启后可以直接查阅条目的属性",
+            "displayCard": "显示条目卡片",
+            "displayCardSubtitle": "开启后以卡片形式取代列表形式显示条目"
         },
         "theme": {
             "title": "主题系统",

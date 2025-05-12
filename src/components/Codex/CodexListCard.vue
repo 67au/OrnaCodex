@@ -27,10 +27,10 @@ function shareUrl(entry: CodexEntry) {
 </script>
 
 <template>
-  <v-card color="teritary" variant="elevated" rounded="md">
+  <v-card density="compact" color="teritary" variant="elevated" rounded="md">
     <router-link :to="entry.url" class="text-decoration-none" style="white-space: normal">
       <v-card-item>
-        <v-card-title class="text-normal">{{ entry.name }}</v-card-title>
+        <v-card-title>{{ entry.name }}</v-card-title>
         <v-card-subtitle class="pt-1">
           <MetaChips :entry="entry"></MetaChips>
         </v-card-subtitle>

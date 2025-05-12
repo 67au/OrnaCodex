@@ -4,6 +4,7 @@ const defaultSettings = {
   language: '',
   theme: '',
   displayStats: true,
+  displayCard: true,
 }
 
 export const settingsStorage = useStorage('settings', defaultSettings)

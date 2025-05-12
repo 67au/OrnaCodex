@@ -16,18 +16,22 @@ import {
 } from '@mdi/js'
 import type { DefaultsOptions } from 'vuetify/lib/composables/defaults.mjs'
 
-defineProps({
+const props = defineProps({
   entry: {
     type: Object as PropType<CodexEntry>,
     required: true,
+  },
+  mini: {
+    type: Boolean,
+    default: false,
   },
 })
 
 const defaults: DefaultsOptions = {
   VChip: {
     variant: 'tonal',
-    size: 'small',
-    rounded: 'lg',
+    size: props.mini ? 'x-small' : 'small',
+    rounded: props.mini ? 'sm' : 'lg',
     color: 'secondary',
   },
 }

@@ -32,6 +32,18 @@ const codexState = useCodexState()
         </template>
       </v-list-item>
 
+      <v-list-item
+        :subtitle="$t('settings.general.displayCardSubtitle')"
+        :title="$t('settings.general.displayCard')"
+        @click="settingsStorage.displayCard = !settingsStorage.displayCard"
+      >
+        <template v-slot:prepend>
+          <v-list-item-action start>
+            <v-checkbox-btn v-model="settingsStorage.displayCard" color="primary"></v-checkbox-btn>
+          </v-list-item-action>
+        </template>
+      </v-list-item>
+
       <v-divider></v-divider>
 
       <v-list-subheader>API</v-list-subheader>

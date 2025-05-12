@@ -34,7 +34,7 @@ const defaults: DefaultsOptions = {
   VChip: {
     variant: props.mini ? 'text' : 'outlined',
     size: _mini.value ? 'x-small' : 'small',
-    rounded: _mini.value ? 'md' : 'lg',
+    rounded: props.mini ? 'sm' : _mini.value ? 'md' : 'lg',
     color: props.mini ? 'default' : 'secondary',
   },
 }
@@ -52,12 +52,22 @@ const statsArray = computed(() => {
   const tmpIndex = findIndex(tmp, { key: sortState.shortKey })
 
   if (props.single && tmpIndex > -1) {
-    return [{ ...tmp[tmpIndex], color: 'primary', variant: 'flat' as Variant }]
+    return [
+      {
+        ...tmp[tmpIndex],
+        color: props.mini ? 'secondary' : 'primary',
+        variant: (props.mini ? 'tonal' : 'flat') as Variant,
+      },
+    ]
   }
 
   if (props.sorted && sortState.isActive && tmpIndex > -1) {
     return [
-      { ...tmp[tmpIndex], color: 'primary', variant: 'flat' as Variant },
+      {
+        ...tmp[tmpIndex],
+        color: props.mini ? 'secondary' : 'primary',
+        variant: (props.mini ? 'tonal' : 'flat') as Variant,
+      },
       ...tmp.filter((_, index) => index !== tmpIndex),
     ]
   } else {
@@ -73,7 +83,7 @@ const statsArray = computed(() => {
         <template v-if="typeof stat.value === 'boolean'">
           <v-chip
             :color="stat.color"
-            :variant="mini ? undefined : 'flat'"
+            :variant="mini ? 'tonal' : 'flat'"
             :text="$t('stats.' + stat.key)"
           ></v-chip>
         </template>

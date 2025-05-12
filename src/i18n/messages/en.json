@@ -108,7 +108,9 @@
         "general": {
             "title": "General",
             "displayStats": "Display Entry Stats",
-            "displayStatsSubtitle": "Enable to view entry stats directly"
+            "displayStatsSubtitle": "Enable to view entry stats directly",
+            "displayCard": "Display Entry Card",
+            "displayCardSubtitle": "Enable to display entries in Card format instead of List format"
         },
         "theme": {
             "title": "Theme",

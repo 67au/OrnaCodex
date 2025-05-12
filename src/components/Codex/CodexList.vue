@@ -8,6 +8,8 @@ import PrimarySortEditor from './PrimarySortEditor.vue'
 import CodexListCard from './CodexListCard.vue'
 import { useWorkerState } from '@/stores/worker'
 import { useCodexState } from '@/stores/codex'
+import CodexListItem from './CodexListItem.vue'
+import { settingsStorage } from '@/storages/settings'
 
 const entriesListState = useEntriesListState()
 const codexState = useCodexState()
@@ -81,10 +83,21 @@ sortState.$subscribe(
         </div>
       </div>
     </v-sheet>
-    <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
-      <template v-for="entry in entriesListState.entires" :key="entry.id">
-        <CodexListCard class="mt-2" :entry="entry"></CodexListCard>
-      </template>
-    </v-infinite-scroll>
+    <template v-if="settingsStorage.displayCard">
+      <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
+        <template v-for="entry in entriesListState.entires" :key="entry.id">
+          <CodexListCard class="mt-2" :entry="entry"></CodexListCard>
+        </template>
+      </v-infinite-scroll>
+    </template>
+    <template v-else>
+      <v-sheet border="md" rounded="lg" class="my-2">
+        <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
+          <template v-for="entry in entriesListState.entires" :key="entry.id">
+            <CodexListItem :entry="entry"></CodexListItem>
+          </template>
+        </v-infinite-scroll>
+      </v-sheet>
+    </template>
   </v-sheet>
 </template>
