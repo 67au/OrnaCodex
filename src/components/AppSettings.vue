@@ -60,7 +60,7 @@ const codexState = useCodexState()
       >
         <template v-slot:prepend>
           <v-avatar size="64">
-            <v-img src="https://playorna.com/static/img/home/orna_full.png"></v-img>
+            <v-img :src="config.ornaStaticUrl + '/img/home/orna_full.png'"></v-img>
           </v-avatar>
         </template>
       </v-list-item>
@@ -70,7 +70,7 @@ const codexState = useCodexState()
       <v-list-item
         :prepend-icon="mdiGithub"
         :title="$t('settings.about.author')"
-        subtitle="67au"
+        subtitle="FQEGG"
         link
         href="https://github.com/67au"
         target="_blank"
