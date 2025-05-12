@@ -16,7 +16,7 @@ export const useCodexState = defineStore('codex', () => {
 
   const version: Ref<string> = ref('')
   const updatedAt: Ref<Date> = ref(new Date(0))
-  const isLoading = computed(() => codex.value === null)
+  const isLoading = ref(true)
   const isUpdated = ref(false)
   const isUpdating = ref(true)
 
@@ -33,7 +33,7 @@ export const useCodexState = defineStore('codex', () => {
   async function useSetCodex() {
     version.value = (await codexStorage.getItem('version')) ?? ''
     if (version.value !== '' && version.value !== config.version) {
-      codex.value = null
+      isLoading.value = true
       isUpdating.value = false
       return isLoading.value
     }
@@ -46,6 +46,7 @@ export const useCodexState = defineStore('codex', () => {
 
     updatedAt.value = new Date((await codexStorage.getItem('updatedAt')) ?? 0)
     await getTranslation()
+    isLoading.value = false
 
     return isLoading.value
   }

@@ -40,13 +40,19 @@ watch(
   },
 )
 
-filtersState.$subscribe(() => {
-  workerState.setFilter()
-})
+filtersState.$subscribe(
+  () => {
+    workerState.setFilter()
+  },
+  { immediate: true },
+)
 
-sortState.$subscribe(() => {
-  workerState.setSort()
-})
+sortState.$subscribe(
+  () => {
+    workerState.setSort()
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
