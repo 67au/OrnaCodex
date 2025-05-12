@@ -18,9 +18,9 @@ const entry: ComputedRef<CodexEntry> = inject('entry')!
       </v-list-item>
       <template v-for="(ability, index) in entry.passiveAbilities" :key="index">
         <v-divider v-if="index !== 0" class="mx-3"></v-divider>
-        <v-list-item class="my-1">
+        <v-list-item class="py-1">
           <template v-slot:prepend>
-            <v-avatar size="48" :rounded="false">
+            <v-avatar size="36" :rounded="false">
               <v-img :src="config.ornaStaticUrl + ability.icon" class="image-render-pixel"></v-img>
             </v-avatar>
           </template>

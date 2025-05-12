@@ -129,7 +129,7 @@ function updateMaterialCount(id: string) {
       </v-card>
 
       <v-slide-y-transition>
-        <v-card v-if="!isNothing">
+        <v-card v-if="!isNothing" border="md">
           <v-list-item :to="entry.url">
             <template v-slot:prepend>
               <v-avatar size="36" :rounded="false">

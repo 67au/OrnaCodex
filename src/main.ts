@@ -21,6 +21,9 @@ const vuetify = createVuetify({
     global: {
       density: 'comfortable',
     },
+    VCard: {
+      elevation: 2,
+    },
   },
   blueprint: md3,
   theme: {

@@ -16,9 +16,9 @@ const entry: ComputedRef<CodexEntry> = inject('entry')!
       </template>
     </v-list-item>
     <router-link :to="entry.abilityEntry.url" class="text-decoration-none">
-      <v-list-item class="py-2">
+      <v-list-item class="py-1">
         <template v-slot:prepend>
-          <v-avatar size="48" :rounded="false">
+          <v-avatar size="36" :rounded="false">
             <v-img :src="entry.abilityEntry.iconUrl" :class="entry.abilityEntry.iconClass"></v-img>
           </v-avatar>
         </template>

@@ -27,7 +27,6 @@ watch(
       <v-list-item>
         <template #title>
           <v-card
-            :elevation="4"
             class="ma-auto my-4 w-100"
             max-width="600"
             min-width="300"

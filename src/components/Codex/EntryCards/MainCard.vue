@@ -8,7 +8,7 @@ const entry = inject('entry') as CodexEntry
 </script>
 
 <template>
-  <v-card>
+  <v-card border="md">
     <v-card-item>
       <v-card-title style="white-space: normal">{{ entry.name }}</v-card-title>
       <v-card-subtitle class="pt-2">

@@ -35,9 +35,9 @@ const dropsEntry = computed(() => {
     <template v-for="(drop, index) in dropsEntry" :key="drop.id">
       <v-divider v-if="index !== 0" class="mx-4"></v-divider>
       <router-link :to="drop.url" class="text-decoration-none">
-        <v-list-item class="py-2">
+        <v-list-item class="py-1">
           <template v-slot:prepend>
-            <v-avatar size="48" :rounded="false">
+            <v-avatar size="36" :rounded="false">
               <v-img :src="drop.iconUrl" :class="drop.iconClass"></v-img>
             </v-avatar>
           </template>
@@ -48,7 +48,7 @@ const dropsEntry = computed(() => {
             <DropMetaChips :entry="drop"></DropMetaChips>
           </template>
           <template v-if="settingsStorage.displayStats && drop.raw.stats">
-            <div style="width: fit-content" class="py-1 border-sm rounded-lg">
+            <div style="width: fit-content" class="pa-1 border-sm rounded-lg">
               <StatChips :stats="drop.raw.stats" mini></StatChips>
             </div>
           </template>
