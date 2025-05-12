@@ -16,6 +16,7 @@ const filtersState = useFiltersState()
     close-on-back
     opacity="0.1"
     scrollable
+    transition="fade-transition"
     :max-width="$vuetify.display.smAndDown ? undefined : 600"
   >
     <template v-slot:activator="{ props: activator }">
