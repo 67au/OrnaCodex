@@ -48,7 +48,7 @@ const qualityCodeItems = computed(() => [
         ></v-btn>
       </v-fab-transition>
     </template>
-    <v-container fluid class="px-0">
+    <v-container fluid class="px-0 pb-8">
       <template v-if="compareState.count === 0">
         <v-sheet class="mt-4 pa-4 text-center mx-auto w-100" :max-width="360" rounded="lg">
           <v-empty-state :icon="mdiMagnify" :title="$t('help.notFound')"> </v-empty-state>
@@ -70,7 +70,7 @@ const qualityCodeItems = computed(() => [
       <v-slide-group class="px-2 mx-auto" v-else>
         <template v-for="(result, index) in compareState.comparedResult" :key="index">
           <v-slide-group-item>
-            <v-card :width="225" class="py-1 mx-1 align-self-start">
+            <v-card border="md" :width="225" class="py-1 mx-1 align-self-start">
               <v-list-item class="px-1">
                 <template v-slot:prepend>
                   <v-avatar size="36" :rounded="false" class="ml-1 mr-n3">
