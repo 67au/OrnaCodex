@@ -5,7 +5,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { getOptionName, getOptionValueName, getSignedNumber } from '@/plugins'
 import { bossScalingItems, bossScalingName } from '@/plugins/assess'
 import { useCompareState } from '@/stores/compare'
-import { mdiChevronDoubleLeft, mdiExport, mdiMagnify, mdiTrashCan } from '@mdi/js'
+import { mdiChevronDoubleLeft, mdiExport, mdiMagnify, mdiPin, mdiTrashCan } from '@mdi/js'
 
 const compareState = useCompareState()
 
@@ -67,10 +67,11 @@ const qualityCodeItems = computed(() => [
           </div>
         </v-sheet>
       </template>
-      <v-slide-group class="px-2 mx-auto" v-else>
+      <v-slide-group class="px-0 mx-auto" v-else>
+        <v-spacer style="width: 16px"></v-spacer>
         <template v-for="(result, index) in compareState.comparedResult" :key="index">
           <v-slide-group-item>
-            <v-card border="md" :width="225" class="py-1 mx-1 align-self-start">
+            <v-card border="md" :width="205" class="py-1 mx-1 align-self-start">
               <v-list-item class="px-1">
                 <template v-slot:prepend>
                   <v-avatar size="36" :rounded="false" class="ml-1 mr-n3">
@@ -119,6 +120,18 @@ const qualityCodeItems = computed(() => [
                       @click="compareState.leftShift(index)"
                       v-if="index > 0"
                     ></v-btn>
+                    <v-btn
+                      size="small"
+                      color="info"
+                      :icon="mdiPin"
+                      variant="tonal"
+                      :ripple="false"
+                      v-else
+                    ></v-btn>
+                  </div>
+                </template>
+                <template v-slot:append>
+                  <div class="d-flex ga-1">
                     <v-btn
                       size="small"
                       color="error"
@@ -204,27 +217,26 @@ const qualityCodeItems = computed(() => [
               </v-list-item>
               <template v-for="(stat, key) in result.stats" :key="key">
                 <v-divider></v-divider>
-                <v-list-item density="compact">
+                <v-list-item class="px-2" density="compact">
                   <template v-slot:title>
                     <v-list-item-title class="text-caption">
                       {{ getOptionValueName('stats', key) }}
                     </v-list-item-title>
                   </template>
-                  <template v-slot:subtitle>
-                    <v-list-item-subtitle class="text-right">
-                      {{ stat.base }}
-                      <template v-if="stat.diff !== undefined && stat?.diff !== 0">
-                        <span :class="getDiffTextClass(stat.diff)">
-                          {{ `(${getSignedNumber(stat.diff)})` }}
-                        </span>
-                      </template>
-                    </v-list-item-subtitle>
-                  </template>
+                  <v-list-item-subtitle class="text-right">
+                    {{ stat.base }}
+                    <template v-if="stat.diff !== undefined && stat?.diff !== 0">
+                      <span :class="getDiffTextClass(stat.diff)">
+                        {{ `(${getSignedNumber(stat.diff)})` }}
+                      </span>
+                    </template>
+                  </v-list-item-subtitle>
                 </v-list-item>
               </template>
             </v-card>
           </v-slide-group-item>
         </template>
+        <v-spacer style="width: 16px"></v-spacer>
       </v-slide-group>
     </v-container>
   </DefaultLayout>

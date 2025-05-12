@@ -57,7 +57,7 @@
         "qualityCalc": "QualityCalc",
         "help": "Please enter a valid bossScaling and quality",
         "query": "Query",
-        "setQualityCode": "QualityCode",
+        "setQualityCode": "SetQuality",
         "quality": {
             "title": "Quality",
             "default": "Default",
@@ -73,7 +73,7 @@
             "godforged": "Godforged"
         },
         "bossScaling": {
-            "title": "BossScaling",
+            "title": "BossFlag",
             "unset": "UNSET",
             "yes": "YES",
             "no": "NO",
