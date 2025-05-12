@@ -21,7 +21,6 @@ const { share, isSupported } = useShare()
 function shareUrl(entry: CodexEntry) {
   share({
     title: entry.name,
-    text: entry.description,
     url: '/#' + entry.url,
   })
 }
