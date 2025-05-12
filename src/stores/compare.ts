@@ -15,7 +15,6 @@ import { i18n } from '@/i18n'
 import type { SortValueType } from '@/types/filters'
 
 const MAX_CAP = 8
-
 const codexState = useCodexState()
 
 export const useCompareState = defineStore(
@@ -62,7 +61,9 @@ export const useCompareState = defineStore(
       }),
     )
 
-    const baseStatKeyMap = new Map(codexState.baseStats.map((k, i) => [k, i]))
+    const baseStatKeyMap = computed(() => {
+      return new Map(codexState.baseStats.map((k, i) => [k, i]))
+    })
 
     const keys = computed(() => {
       const k = reduce(
@@ -76,8 +77,8 @@ export const useCompareState = defineStore(
         [] as Array<string>,
       ).sort(
         (a, b) =>
-          (baseStatKeyMap.has(a) ? baseStatKeyMap.get(a)! : Infinity) -
-          (baseStatKeyMap.has(b) ? baseStatKeyMap.get(b)! : Infinity),
+          (baseStatKeyMap.value.has(a) ? baseStatKeyMap.value.get(a)! : Infinity) -
+          (baseStatKeyMap.value.has(b) ? baseStatKeyMap.value.get(b)! : Infinity),
       )
       return k
     })
@@ -106,7 +107,7 @@ export const useCompareState = defineStore(
               ? '-'
               : (s as unknown as Array<string>).map((e) => i18n.global.t('element.' + e)).join(', ')
           }
-          if (baseStatKeyMap.has(k) && v.stats[k] !== undefined) {
+          if (baseStatKeyMap.value.has(k) && v.stats[k] !== undefined) {
             return v.stats[k].values[q.query.level - 1] as number
           }
           if (typeof s === 'boolean') {
@@ -150,56 +151,57 @@ export const useCompareState = defineStore(
 
     const comparedResult: Ref<Array<CompareResult>> = computed(() => {
       if (count.value < 1) {
-        return baseResult.value
+        return []
       }
       const first = baseResult.value[0]
 
       const other = baseResult.value.slice(1).map((v) => {
-        const result = {
+        if (first.quality === 0 || v.quality === 0) {
+          return {
+            entry: v.entry,
+            quality: v.quality,
+            stats: {},
+          }
+        }
+
+        return {
           entry: v.entry,
           quality: v.quality,
-          stats: {},
-        }
-
-        if (first.quality === 0 || v.quality === 0) {
-          return result
-        }
-
-        result.stats = mapValues(v.stats, (value, k) => {
-          const type = codexState.sorts?.['items']['stats.' + k]
-          const firstValue = first.stats[k]
-          if (k === 'element') {
-            return {
-              base: value as string,
-              diff: 0,
+          stats: mapValues(v.stats, (value, k) => {
+            const type = codexState.sorts?.['items']?.['stats.' + k] ?? 'NUMBER'
+            const firstValue = first.stats[k]
+            if (k === 'element') {
+              return {
+                base: value as string,
+                diff: 0,
+              }
             }
-          }
-          if (type === 'BOOL') {
+            if (type === 'BOOL') {
+              return {
+                base: getBaseValue(value, type),
+                diff: 0,
+              }
+            }
             return {
               base: getBaseValue(value, type),
-              diff: 0,
-            }
-          }
-          return {
-            base: getBaseValue(value, type),
-            diff: (value as number) - (firstValue as number),
-          }
-        })
-
-        return result
-      })
-
-      return [
-        {
-          ...first,
-          stats: mapValues(first.stats, (value, k) => {
-            return {
-              base: getBaseValue(value, codexState.sorts?.['items']['stats.' + k]),
+              diff: (value as number) - (firstValue as number),
             }
           }),
-        },
-        ...other,
-      ]
+        }
+      })
+
+      const _first = {
+        entry: first.entry,
+        quality: first.quality,
+        stats: mapValues(first.stats, (value, k) => {
+          const type = codexState.sorts?.['items']?.['stats.' + k] ?? 'NUMBER'
+          return {
+            base: getBaseValue(value, type),
+          }
+        }),
+      }
+
+      return [_first, ...other]
     })
 
     return { list, count, add, remove, leftShift, comparedResult, keys, $reset }

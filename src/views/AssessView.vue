@@ -389,7 +389,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                   size="small"
                   rounded="md"
                   variant="flat"
-                  v-if="qualityName"
+                  v-if="qualityCode !== undefined"
                 >
                   {{ qualityName }}
                 </v-chip>
