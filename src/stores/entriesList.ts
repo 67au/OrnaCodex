@@ -7,7 +7,7 @@ export const useEntriesListState = defineStore('entries-list', () => {
 
   const length = computed(() => codex.value.length)
   const loadDone = ref()
-  const chunkSize = 20
+  const chunkSize = 36
   function load({ done }: { done: CallableFunction }) {
     if (loadDone.value === undefined) {
       loadDone.value = done
