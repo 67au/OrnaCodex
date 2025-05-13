@@ -40,12 +40,12 @@ const floorsInWeek = getTowerFloorsInNextDays(now, 7)
                           <v-icon :icon="mdiCalendarOutline"></v-icon>
                           {{ 'Tower' }}
                         </div>
-                        <v-card-title class="text-normal">
+                        <v-card-title class="text-h6">
                           {{ titan.entry.name }}
                         </v-card-title>
                       </div>
 
-                      <v-avatar size="72" :rounded="false">
+                      <v-avatar size="60" :rounded="false">
                         <v-img :src="titan.entry.iconUrl" :class="titan.entry.iconClass"></v-img>
                       </v-avatar>
                     </div>
