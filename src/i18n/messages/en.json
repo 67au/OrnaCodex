@@ -73,7 +73,7 @@
             "godforged": "Godforged"
         },
         "bossScaling": {
-            "title": "BossFlag",
+            "title": "BossScaling",
             "unset": "UNSET",
             "yes": "YES",
             "no": "NO",

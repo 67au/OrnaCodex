@@ -67,11 +67,11 @@ const qualityCodeItems = computed(() => [
           </div>
         </v-sheet>
       </template>
-      <v-slide-group class="px-0 mx-auto" v-else>
-        <v-spacer style="width: 16px"></v-spacer>
+      <v-slide-group class="px-0 mx-auto" center-active v-else>
+        <v-spacer style="width: 20px"></v-spacer>
         <template v-for="(result, index) in compareState.comparedResult" :key="index">
           <v-slide-group-item>
-            <v-card border="md" :width="205" class="py-1 mx-1 align-self-start">
+            <v-card border="md" :width="220" class="py-1 mr-1 align-self-start">
               <v-list-item class="px-1">
                 <template v-slot:prepend>
                   <v-avatar size="36" :rounded="false" class="ml-1 mr-n3">
@@ -85,7 +85,7 @@ const qualityCodeItems = computed(() => [
                 </template>
               </v-list-item>
               <v-divider></v-divider>
-              <v-list-item class="px-2">
+              <v-list-item class="px-2" density="compact">
                 <div class="d-flex flex-wrap ga-1">
                   <v-chip
                     rounded
@@ -145,7 +145,7 @@ const qualityCodeItems = computed(() => [
 
               <v-divider></v-divider>
               <v-list-item class="px-1">
-                <v-row dense class="py-2">
+                <v-row dense class="py-1">
                   <v-col cols="6">
                     <v-select
                       density="compact"
@@ -156,10 +156,10 @@ const qualityCodeItems = computed(() => [
                       inset
                       :disabled="!result.entry.isUpgradable"
                     >
-                      <template #label>
+                      <template v-slot:label>
                         <div>{{ $t('assess.bossScaling.title') }}</div>
                       </template>
-                      <template #selection="{ item }">
+                      <template v-slot:selection="{ item }">
                         <div class="text-caption">{{ item.title }}</div>
                       </template>
                     </v-select>
@@ -176,10 +176,10 @@ const qualityCodeItems = computed(() => [
                       inset
                       :disabled="compareState.list[index].query.quality < 200"
                     >
-                      <template #label>
+                      <template v-slot:label>
                         <div>{{ $t('assess.setQualityCode') }}</div>
                       </template>
-                      <template #selection="{ item }">
+                      <template v-slot:selection="{ item }">
                         <div class="text-caption">{{ item.title }}</div>
                       </template>
                     </v-select>
@@ -192,10 +192,10 @@ const qualityCodeItems = computed(() => [
                       inset
                       :disabled="!result.entry.isUpgradable"
                     >
-                      <template #label>
+                      <template v-slot:label>
                         <div>{{ $t('assess.level') }}</div>
                       </template>
-                      <template #selection="{ item }">
+                      <template v-slot:selection="{ item }">
                         <div class="text-caption">{{ item.title }}</div>
                       </template>
                     </v-select>
@@ -208,7 +208,7 @@ const qualityCodeItems = computed(() => [
                       hide-details
                       inset
                     >
-                      <template #label>
+                      <template v-slot:label>
                         <div>{{ $t('assess.quality.title') }}</div>
                       </template>
                     </v-number-input>
