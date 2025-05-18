@@ -14,7 +14,7 @@ import AppBackTop from '@/components/AppBackTop.vue'
     <template v-slot:tools>
       <AppBackTop></AppBackTop>
     </template>
-    <v-container fluid class="pa-2" max-width="900" id="home-scroll">
+    <v-container fluid class="px-2" max-width="900" id="home-scroll">
       <v-row dense>
         <v-col cols="12">
           <CodexFilter></CodexFilter>

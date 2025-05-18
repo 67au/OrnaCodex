@@ -5,6 +5,7 @@ const defaultSettings = {
   theme: '',
   displayStats: true,
   displayCard: true,
+  enemyEditor: false,
 }
 
 export const settingsStorage = useStorage('settings', defaultSettings)

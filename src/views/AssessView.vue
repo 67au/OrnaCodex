@@ -58,7 +58,6 @@ const id = computed({
 })
 
 const entry = computed(() => CodexEntryFactory.getEntry('items', id.value))
-const isNothing = computed(() => isUndefined(entry.value.raw))
 
 const assessMap = {
   assess: {
@@ -74,7 +73,7 @@ const assessMap = {
 type AssessType = keyof typeof assessMap
 
 const supportedAssessTypes: Ref<Array<AssessType>> = computed(() => {
-  if (!isNothing.value) {
+  if (entry.value.isExisted) {
     if (entry.value.isCelestialWeapon) {
       return ['quality']
     }
@@ -108,10 +107,10 @@ watch(
 
 function resetAssessQuery() {
   result.value = undefined
-  if (isNothing.value) {
-    query.value = undefined
-  } else {
+  if (entry.value.isExisted) {
     query.value = useAssessQuery(entry.value, assessType.value === 'quality')
+  } else {
+    query.value = undefined
   }
 }
 
@@ -166,7 +165,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
     <template v-slot:slide>
       <AppSlideMenu></AppSlideMenu>
     </template>
-    <v-container fluid class="px-4 pb-16 mx-auto d-flex flex-column ga-2" :max-width="900">
+    <v-container fluid class="px-4 mx-auto d-flex flex-column ga-2" :max-width="900">
       <v-card>
         <v-list-item density="default" variant="tonal" class="px-2">
           <v-list-item-title>
@@ -210,7 +209,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
       </v-card>
 
       <v-slide-y-transition>
-        <v-card v-if="!isNothing" border="md">
+        <v-card v-if="entry.isExisted" border="md">
           <v-list-item :to="entry.url">
             <template v-slot:prepend>
               <v-avatar size="36" :rounded="false">

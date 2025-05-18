@@ -47,6 +47,17 @@ const codexState = useCodexState()
       <v-divider></v-divider>
 
       <v-list-subheader>API</v-list-subheader>
+      <v-list-item
+        :subtitle="$t('settings.general.enemyEditorSubtitle')"
+        :title="$t('settings.general.enemyEditor')"
+        @click="settingsStorage.enemyEditor = !settingsStorage.enemyEditor"
+      >
+        <template v-slot:prepend>
+          <v-list-item-action start>
+            <v-checkbox-btn v-model="settingsStorage.enemyEditor" color="primary"></v-checkbox-btn>
+          </v-list-item-action>
+        </template>
+      </v-list-item>
       <v-list-item :title="'More features are under development.'"> </v-list-item>
 
       <v-divider></v-divider>

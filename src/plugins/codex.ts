@@ -55,6 +55,10 @@ export class CodexEntry implements CE {
     return `/codex/${this.category}/${this.id}/`
   }
 
+  get cacheKey() {
+    return `${this.category}/${this.id}`
+  }
+
   get iconUrl() {
     return config.ornaStaticUrl + this.raw.icon
   }
@@ -126,6 +130,10 @@ export class CodexEntry implements CE {
     }
   }
 
+  get isExisted() {
+    return this.raw !== undefined
+  }
+
   get isMaterial() {
     return this.raw.item_type === 'material'
   }
@@ -179,6 +187,10 @@ export class CodexEntry implements CE {
 
   get bossScaling() {
     return extraState.bossScaling[this.id] ?? 0
+  }
+
+  get enemyStats() {
+    return extraState.enemy[this.cacheKey]
   }
 
   constructor(category: string, id: string) {

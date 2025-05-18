@@ -5,7 +5,7 @@ export const extraStorage = localforage.createInstance({
   storeName: 'data',
 })
 
-export const extraCacheStorage = localforage.createInstance({
+export const extraEnemyStorage = localforage.createInstance({
   name: 'yaco-extra',
-  storeName: 'cache',
+  storeName: 'enemy',
 })

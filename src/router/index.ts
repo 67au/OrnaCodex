@@ -1,3 +1,4 @@
+import { settingsStorage } from '@/storages/settings'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const scrollPositions: {
@@ -47,6 +48,17 @@ const router = createRouter({
       path: '/compare',
       name: 'compare',
       component: () => import('@/views/CompareView.vue'),
+    },
+    {
+      path: '/enemy',
+      name: 'enemy',
+      component: () => import('@/views/EnemyView.vue'),
+      beforeEnter: () => {
+        if (settingsStorage.value.enemyEditor) {
+          return true
+        }
+        return { name: 'home' }
+      },
     },
   ],
   scrollBehavior(to, from) {

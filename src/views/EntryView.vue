@@ -5,6 +5,7 @@ import AbilitiesCard from '@/components/Codex/EntryCards/AbilitiesCard.vue'
 import AbilityCard from '@/components/Codex/EntryCards/AbilityCard.vue'
 import BestialBondCard from '@/components/Codex/EntryCards/BestialBondCard.vue'
 import DropsCard from '@/components/Codex/EntryCards/DropsCard.vue'
+import EnemyCard from '@/components/Codex/EntryCards/EnemyCard.vue'
 import MainCard from '@/components/Codex/EntryCards/MainCard.vue'
 import StatsCard from '@/components/Codex/EntryCards/StatsCard.vue'
 import StatusesCard from '@/components/Codex/EntryCards/StatusesCard.vue'
@@ -50,8 +51,8 @@ const defaults: DefaultsOptions = {
     <v-defaults-provider :defaults="defaults">
       <v-container
         fluid
-        class="mb-6"
         :class="{
+          'px-2': true,
           masonry: $vuetify.display.mdAndUp,
           'card d-flex flex-column ga-2': !$vuetify.display.mdAndUp,
         }"
@@ -65,6 +66,8 @@ const defaults: DefaultsOptions = {
         <StatsCard></StatsCard>
         <AbilityCard></AbilityCard>
         <AbilitiesCard></AbilitiesCard>
+
+        <EnemyCard></EnemyCard>
 
         <StatusesCard name="causes"></StatusesCard>
         <StatusesCard name="gives"></StatusesCard>

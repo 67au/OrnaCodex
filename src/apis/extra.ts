@@ -11,7 +11,18 @@ export function getBossScaling() {
   return extraFetch.json()
 }
 
-export function getEntryExtra(category: string, id: string) {
-  const extraFetch = useExtraFetch(setParams(`/${category}/${id}.json`))
+export function getExtra(category: string) {
+  const extraFetch = useExtraFetch(setParams(`/${category}.json`))
   return extraFetch.json()
+}
+
+export function getEnemy() {
+  const enemyCategories = ['bosses', 'monsters', 'raids']
+  const enemyFetch = Promise.allSettled(
+    enemyCategories.map(async (category) => {
+      const { data } = await useExtraFetch(setParams(`/${category}.json`)).json()
+      return [category, data.value]
+    }),
+  )
+  return enemyFetch
 }

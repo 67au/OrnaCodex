@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_VERSION: string
   readonly VITE_ORNA_URL: string
   readonly VITE_ORNA_STATIC_URL: string
+  readonly VITE_EXTRA_DATA_PREFIX: string
 }
 
 interface ImportMeta {

@@ -48,7 +48,7 @@ const qualityCodeItems = computed(() => [
         ></v-btn>
       </v-fab-transition>
     </template>
-    <v-container fluid class="px-0 pb-8">
+    <v-container fluid class="px-0">
       <template v-if="compareState.count === 0">
         <v-sheet class="mt-4 pa-4 text-center mx-auto w-100" :max-width="360" rounded="lg">
           <v-empty-state :icon="mdiMagnify" :title="$t('help.notFound')"> </v-empty-state>

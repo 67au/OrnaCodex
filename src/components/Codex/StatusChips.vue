@@ -33,7 +33,7 @@ const defaults: DefaultsOptions = {
     <template v-for="(status, index) in statuses" :key="index">
       <v-chip :color="color">
         <template v-if="detailed" v-slot:prepend>
-          <v-avatar :rounded="false" class="pr-1">
+          <v-avatar :rounded="false" class="mr-1">
             <v-img :src="getIcon('status', status.name)" class="image-render-pixel"></v-img>
           </v-avatar>
         </template>

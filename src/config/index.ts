@@ -2,6 +2,7 @@ export default {
   version: import.meta.env.VITE_APP_VERSION,
   apiUrl: import.meta.env.VITE_API_URL,
   extraApiUrl: import.meta.env.VITE_EXTRA_API_URL,
+  extraDataPrefix: import.meta.env.VITE_EXTRA_DATA_PREFIX,
 
   ornaUrl: import.meta.env.VITE_ORNA_URL,
   ornaStaticUrl: import.meta.env.VITE_ORNA_STATIC_URL,

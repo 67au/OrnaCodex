@@ -23,7 +23,7 @@ const floorsInWeek = getTowerFloorsInNextDays(now, 7)
     <template v-slot:slide>
       <AppSlideMenu></AppSlideMenu>
     </template>
-    <v-container fluid class="px-4 mx-auto" :max-width="1200">
+    <v-container fluid class="px-4 mx-auto" :max-width="1050">
       <v-row dense>
         <template v-for="(titan, index) in titans" :key="titan.id">
           <v-col cols="12" sm="6" lg="4">

@@ -5,7 +5,7 @@ import { getOptionValueName } from '@/plugins'
 import { CodexEntryFactory } from '@/plugins/codex'
 import { useCodexState } from '@/stores/codex'
 import { mdiDiamondStone, mdiMagnify } from '@mdi/js'
-import { isNull, isUndefined, mapValues } from 'es-toolkit'
+import { isNull, mapValues } from 'es-toolkit'
 
 const proofScaling: Record<string, number> = {
   'proof-of-anguish': 1,
@@ -51,7 +51,6 @@ const id = computed({
 })
 
 const entry = computed(() => CodexEntryFactory.getEntry('items', id.value))
-const isNothing = computed(() => isUndefined(entry.value.raw))
 
 const count = ref(0)
 
@@ -82,7 +81,7 @@ function updateMaterialCount(id: string) {
     <template v-slot:slide>
       <AppSlideMenu></AppSlideMenu>
     </template>
-    <v-container fluid class="px-4 pb-8 mx-auto d-flex flex-column ga-2" :max-width="900">
+    <v-container fluid class="px-4 mx-auto d-flex flex-column ga-2" :max-width="900">
       <v-card>
         <v-list-item density="default" variant="tonal" class="px-2">
           <v-list-item-title>
@@ -129,7 +128,7 @@ function updateMaterialCount(id: string) {
       </v-card>
 
       <v-slide-y-transition>
-        <v-card v-if="!isNothing" border="md">
+        <v-card v-if="entry.isExisted" border="md">
           <v-list-item :to="entry.url">
             <template v-slot:prepend>
               <v-avatar size="36" :rounded="false">

@@ -46,7 +46,7 @@ const props = defineProps({
       <slot name="slide"></slot>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main class="pb-16">
       <slot> </slot>
     </v-main>
   </v-app>

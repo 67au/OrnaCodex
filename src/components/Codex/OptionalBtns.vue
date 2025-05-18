@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { CodexEntry } from '@/plugins/codex'
+import { settingsStorage } from '@/storages/settings'
 import { useCompareState } from '@/stores/compare'
-import { mdiCalculator, mdiScaleBalance, mdiSwapHorizontalCircleOutline } from '@mdi/js'
+import { mdiCalculator, mdiPencil, mdiScaleBalance, mdiSwapHorizontalCircleOutline } from '@mdi/js'
 const props = defineProps({
   entry: {
     type: Object as PropType<CodexEntry>,
@@ -37,6 +38,15 @@ function addCompare() {
     :icon="mdiCalculator"
     :to="{ name: 'assess', query: { id: entry.id } }"
   ></v-btn>
+  <v-btn
+    v-if="settingsStorage.enemyEditor && ['bosses', 'monsters', 'raids'].includes(entry.category)"
+    :size="size"
+    variant="text"
+    color="secondary"
+    :icon="mdiPencil"
+    :to="{ name: 'enemy', query: { id: entry.id } }"
+  ></v-btn>
+
   <v-snackbar location="top" :color="compare ? 'success' : 'error'">
     <div v-if="compare">{{ $t('compare.add') + ': ' + entry.name }}</div>
     <div v-else>{{ $t('compare.full') }}</div>

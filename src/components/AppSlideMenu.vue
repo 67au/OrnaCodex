@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { settingsStorage } from '@/storages/settings'
 import { useCompareState } from '@/stores/compare'
 import {
   mdiBookOpen,
   mdiCalculator,
   mdiChessRook,
   mdiScaleBalance,
+  mdiSkullOutline,
   mdiSwapHorizontalCircleOutline,
 } from '@mdi/js'
 
@@ -34,6 +36,14 @@ const compareState = useCompareState()
     >
     </v-list-item>
     <v-list-item :prepend-icon="mdiChessRook" :title="$t('tools.tower')" to="/tower" link>
+    </v-list-item>
+    <v-list-item
+      v-if="settingsStorage.enemyEditor"
+      :prepend-icon="mdiSkullOutline"
+      :title="$t('tools.enemy')"
+      to="/enemy"
+      link
+    >
     </v-list-item>
   </v-list>
 </template>
