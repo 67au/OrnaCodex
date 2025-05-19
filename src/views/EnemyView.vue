@@ -38,7 +38,7 @@ const enemyEntries = enemyKey.reduce((acc, key) => {
   )
 }, [] as Array<CodexEntry>)
 
-const enemyMap: Map<string, number> = new Map(enemyEntries.map((ce, i) => [ce.id, i]))
+const enemyMap: Map<string, number> = new Map(enemyEntries.map((ce, i) => [ce.cacheKey, i]))
 
 const id = computed({
   get() {
@@ -251,7 +251,7 @@ async function resetAll() {
               density="compact"
               :items="Object.values(enemyEntries)"
               item-title="name"
-              item-value="id"
+              item-value="cacheKey"
               v-model="id"
               class="py-1"
               clearable
@@ -325,7 +325,9 @@ async function resetAll() {
                 color="default"
                 :disabled="enemyIndex < 1"
                 @click="
-                  router.push({ query: { ...route.query, id: enemyEntries[enemyIndex - 1]?.id } })
+                  router.push({
+                    query: { ...route.query, id: enemyEntries[enemyIndex - 1]?.cacheKey },
+                  })
                 "
                 :icon="mdiArrowLeft"
               ></v-btn>
@@ -334,7 +336,9 @@ async function resetAll() {
                 color="default"
                 class="text-decoration-none"
                 @click="
-                  router.push({ query: { ...route.query, id: enemyEntries[enemyIndex + 1]?.id } })
+                  router.push({
+                    query: { ...route.query, id: enemyEntries[enemyIndex + 1]?.cacheKey },
+                  })
                 "
                 :disabled="enemyIndex >= enemyEntries.length - 1"
                 :icon="mdiArrowRight"

@@ -2,7 +2,12 @@
 import type { CodexEntry } from '@/plugins/codex'
 import { settingsStorage } from '@/storages/settings'
 import { useCompareState } from '@/stores/compare'
-import { mdiCalculator, mdiPencil, mdiScaleBalance, mdiSwapHorizontalCircleOutline } from '@mdi/js'
+import {
+  mdiCalculator,
+  mdiPencilCircleOutline,
+  mdiScaleBalance,
+  mdiSwapHorizontalCircleOutline,
+} from '@mdi/js'
 const props = defineProps({
   entry: {
     type: Object as PropType<CodexEntry>,
@@ -43,8 +48,8 @@ function addCompare() {
     :size="size"
     variant="text"
     color="secondary"
-    :icon="mdiPencil"
-    :to="{ name: 'enemy', query: { id: entry.id } }"
+    :icon="mdiPencilCircleOutline"
+    :to="{ name: 'enemy', query: { id: entry.cacheKey } }"
   ></v-btn>
 
   <v-snackbar location="top" :color="compare ? 'success' : 'error'">
