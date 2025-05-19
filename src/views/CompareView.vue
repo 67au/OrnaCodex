@@ -145,7 +145,7 @@ const qualityCodeItems = computed(() => [
 
               <v-divider></v-divider>
               <v-list-item class="px-1">
-                <v-row dense class="py-1">
+                <v-row dense class="py-2">
                   <v-col cols="6">
                     <v-select
                       density="compact"
