@@ -387,7 +387,7 @@ export function useAssessResult(query: AssessQuery) {
       if (base !== 0) {
         result.stats['adornment_slots'] = {
           base: base,
-          values: range(1, result.levels + 1).map((n) => (n > 10 ? base + n - 10 : base)),
+          values: fill(Array(result.levels), base),
         }
       }
     } else {
