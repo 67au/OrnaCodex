@@ -13,7 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "es-toolkit": "^1.37.2",
+    "es-toolkit": "^1.38.0",
     "localforage": "^1.10.0",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate-2": "^2.0.30",
@@ -21,13 +21,13 @@
     "vue": "^3.5.14",
     "vue-i18n": "^11.1.3",
     "vue-router": "^4.5.1",
-    "vuetify": "^3.8.5"
+    "vuetify": "^3.8.6"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^6.0.8",
     "@mdi/js": "^7.4.47",
-    "@tsconfig/node22": "^22.0.1",
-    "@types/node": "^22.15.18",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.15.21",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
@@ -36,7 +36,7 @@
     "eslint": "^9.27.0",
     "eslint-plugin-vue": "~10.1.0",
     "jiti": "^2.4.2",
-    "npm-run-all2": "^8.0.2",
+    "npm-run-all2": "^8.0.3",
     "prettier": "3.5.3",
     "sass-embedded": "^1.89.0",
     "sass-loader": "^16.0.5",
