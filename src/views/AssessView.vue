@@ -19,7 +19,6 @@ import type { AssessQuery, AssessResult } from '@/types/assess'
 import {
   mdiAccountCheck,
   mdiAlertCircle,
-  mdiCheckboxMarkedCircle,
   mdiCheckCircle,
   mdiClipboardOutline,
   mdiClipboardCheckOutline,
@@ -31,6 +30,7 @@ import {
   mdiSwordCross,
   mdiTshirtCrew,
   mdiRobotAngry,
+  mdiCloseCircle,
 } from '@mdi/js'
 import { head, range } from 'es-toolkit'
 import { isNull } from 'es-toolkit'
@@ -126,7 +126,7 @@ const qualityCode = computed(() =>
 const qualityName = computed(() => getQualityName(qualityCode.value))
 const qualityColor = computed(() => getQualityColor(qualityCode.value))
 const qualityStat = computed(() => {
-  if (qualityCode.value && result.value?.exact) {
+  if (qualityCode.value >= 0 && result.value?.exact) {
     return {
       icon: mdiCheckCircle,
       color: 'secondary',
@@ -139,7 +139,7 @@ const qualityStat = computed(() => {
     }
   }
   return {
-    icon: mdiCheckboxMarkedCircle,
+    icon: mdiCloseCircle,
     color: 'error',
   }
 })
@@ -388,7 +388,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                   size="small"
                   rounded="md"
                   variant="flat"
-                  v-if="qualityCode !== undefined"
+                  v-if="qualityCode >= 0"
                 >
                   {{ qualityName }}
                 </v-chip>
