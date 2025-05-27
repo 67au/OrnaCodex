@@ -9,6 +9,10 @@ import { isNull, mapValues } from 'es-toolkit'
 
 const proofScaling: Record<string, number> = {
   'proof-of-anguish': 1,
+  'proof-of-agony': 1,
+  'proof-of-despair': 1,
+  'proof-of-melancholy': 1,
+  'proof-of-torment': 1,
   'tower-shard': 200,
   coral: 20,
   'proof-of-monument': 10,
