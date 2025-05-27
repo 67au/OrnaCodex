@@ -36,6 +36,8 @@ export const bossScalingName = {
   '0': 'assess.bossScaling.name.unset',
 }
 
+export const anguishColor = colors['anguish-text']
+
 export function useAssessQuery(entry: CodexEntry, quality: boolean = false) {
   const stats = mapValues(
     pickBy(
@@ -49,6 +51,7 @@ export function useAssessQuery(entry: CodexEntry, quality: boolean = false) {
   const query: AssessQuery = {
     query: {
       level: 1,
+      angLevel: 0,
       ...stats,
     },
     options: {
@@ -56,7 +59,7 @@ export function useAssessQuery(entry: CodexEntry, quality: boolean = false) {
       isQualityCalc: quality,
       baseStats: stats,
       ///
-      isWeapon: entry.isWeapon,
+      // isWeapon: entry.isWeapon,
       isCelestialWeapon: entry.isCelestialWeapon,
       isTwoHanded: entry.isTwoHanded,
       isUpgradable: entry.isUpgradable,
@@ -77,8 +80,10 @@ export function useAssessQuery(entry: CodexEntry, quality: boolean = false) {
   return query
 }
 
-const weaponSkipSet = new Set(['hp', 'mana', 'defense', 'resistance'])
-const commonSkipSet = new Set(['crit', 'dexterity', 'level', 'quality'])
+// remove at v3.17
+// const weaponSkipSet = new Set(['hp', 'mana', 'defense', 'resistance'])
+const anguishSkipSet = new Set(['ward', 'foresight'])
+const commonSkipSet = new Set(['crit', 'dexterity', 'level', 'quality', 'angLevel'])
 
 function useDelta(base: number, isBossScaling: boolean) {
   const posDiv = isBossScaling ? 8 : 10
@@ -97,13 +102,15 @@ export function getUpgradedStat(
   quality: number,
   isBossScaling: boolean,
   isCelestialWeapon: boolean = false,
+  angLevel: number = 0,
 ) {
   const statDelta = useDelta(base, isBossScaling)
   const qualityDelta = isCelestialWeapon ? 0 : useQualityDelta(level)
-  if (level === 1) {
-    return Math.ceil(base * quality)
+  const res = Math.ceil((base + (level === 1 ? 0 : level * statDelta)) * (quality + qualityDelta))
+  if (angLevel > 0) {
+    return res + Math.floor(0.03 * angLevel * res)
   } else {
-    return Math.ceil((base + level * statDelta) * (quality + qualityDelta))
+    return res
   }
 }
 
@@ -113,23 +120,31 @@ export function getUpgradedStatArray(
   isBossScaling: boolean,
   levels: number,
   key: string | undefined = undefined,
-  isWeapon: boolean = false,
+  angLevel: number = 0,
 ) {
   const statDelta = useDelta(base, isBossScaling)
   const getQualityDelta = (level: number) => (levels > 13 ? 0 : useQualityDelta(level))
   if (key === 'crit') {
     return fill(Array(levels), base)
   }
-  if (key === 'dexterity' || (isWeapon && weaponSkipSet.has(key as string))) {
+  if (key === 'dexterity') {
     return range(1, levels + 1).map((level) => {
       return Math.ceil(base + (level === 1 ? 0 : level * statDelta))
     })
   }
-  return range(1, levels + 1).map((level) => {
-    return Math.ceil(
-      (base + (level === 1 ? 0 : level * statDelta)) * (quality + getQualityDelta(level)),
+  if (!anguishSkipSet.has(key ?? '') && angLevel > 0) {
+    return range(1, levels + 1).map((level) =>
+      Math.floor(
+        Math.ceil(
+          (base + (level === 1 ? 0 : level * statDelta)) * (quality + getQualityDelta(level)),
+        ) *
+          (1 + 0.03 * angLevel),
+      ),
     )
-  })
+  }
+  return range(1, levels + 1).map((level) =>
+    Math.ceil((base + (level === 1 ? 0 : level * statDelta)) * (quality + getQualityDelta(level))),
+  )
 }
 
 const APPROXIMATION_MAX_DEEP = 10
@@ -286,17 +301,19 @@ export function useAssessResult(query: AssessQuery) {
   if (query.options.bossScaling === 0 && query.options.isUpgradable) {
     return {
       quality: 0,
+      angLevel: 0,
       stats: {},
       levels: 0,
     }
   }
   const result: AssessResult = {
     quality: 1,
+    angLevel: query.query.angLevel,
     stats: {},
     levels: 13,
   }
   const queryMap = pickBy(query.query, (_value: number, key: string) => {
-    return !(commonSkipSet.has(key) || (query.options.isWeapon && weaponSkipSet.has(key)))
+    return !commonSkipSet.has(key)
   })
   const assessKey = maxBy(Object.keys(queryMap), (key) => Math.abs(queryMap[key]!))
   const isBossScaling = query.options.bossScaling > 0
@@ -365,7 +382,7 @@ export function useAssessResult(query: AssessQuery) {
           isBossScaling,
           result.levels,
           key,
-          query.options.isWeapon,
+          result.angLevel,
         ),
       }
     },
@@ -392,17 +409,19 @@ export function useAssessResult(query: AssessQuery) {
       }
     } else {
       const additionalSlots = getAdditionalSlots(result.quality)
-      result.stats['adornment_slots'] = {
-        base: base,
-        values: fill(
-          Array(result.levels),
-          additionalSlots > 0 ? base + additionalSlots : base,
-          0,
-          10,
-        ),
+      if (result.angLevel > 0) {
+        result.stats['adornment_slots'] = {
+          base: base,
+          values: fill(Array(result.levels), base + 4),
+        }
+      } else {
+        result.stats['adornment_slots'] = {
+          base: base,
+          values: fill(Array(result.levels), base + additionalSlots, 0, 10),
+        }
+        fill(result.stats['adornment_slots'].values, base + 3, 10, 12)
+        fill(result.stats['adornment_slots'].values, base + 4, 12, 13)
       }
-      fill(result.stats['adornment_slots'].values, base + 3, 10, 12)
-      fill(result.stats['adornment_slots'].values, base + 4, 12, 13)
     }
   }
 

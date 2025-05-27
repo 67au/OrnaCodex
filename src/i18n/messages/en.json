@@ -83,6 +83,9 @@
         "yes": "BossScaling",
         "no": "Non-BossScaling"
       }
+    },
+    "anglevel": {
+      "title": "AngLevel"
     }
   },
   "proof": {

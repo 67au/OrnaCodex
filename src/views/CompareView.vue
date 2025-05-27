@@ -72,7 +72,7 @@ const qualityCodeItems = computed(() => [
         <template v-for="(result, index) in compareState.comparedResult" :key="index">
           <v-slide-group-item>
             <v-card border="md" :width="220" class="py-1 mr-1 align-self-start">
-              <v-list-item class="px-1">
+              <v-list-item class="px-1" :to="result.entry.url">
                 <template v-slot:prepend>
                   <v-avatar size="36" :rounded="false" class="ml-1 mr-n3">
                     <v-img :src="result.entry.iconUrl" :class="result.entry.iconClass"></v-img>
@@ -210,6 +210,20 @@ const qualityCodeItems = computed(() => [
                     >
                       <template v-slot:label>
                         <div>{{ $t('assess.quality.title') }}</div>
+                      </template>
+                    </v-number-input>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-number-input
+                      v-if="result.entry.isUpgradable"
+                      density="compact"
+                      v-model="compareState.list[index].query.angLevel"
+                      controlVariant="stacked"
+                      hide-details
+                      inset
+                    >
+                      <template v-slot:label>
+                        <div>{{ $t('assess.anglevel.title') }}</div>
                       </template>
                     </v-number-input>
                   </v-col>

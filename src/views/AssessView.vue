@@ -4,6 +4,7 @@ import { i18n } from '@/i18n'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import { getOptionName, getOptionValueName } from '@/plugins'
 import {
+  anguishColor,
   assessKeys,
   bossScalingItems,
   bossScalingName,
@@ -31,6 +32,7 @@ import {
   mdiTshirtCrew,
   mdiRobotAngry,
   mdiCloseCircle,
+  mdiEmoticonDevil,
 } from '@mdi/js'
 import { head, range } from 'es-toolkit'
 import { isNull } from 'es-toolkit'
@@ -322,7 +324,20 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                 </v-number-input>
               </v-col>
 
-              <v-col>
+              <v-col cols="4" sm="3" v-if="query?.options.isQualityCalc">
+                <v-number-input
+                  density="compact"
+                  :label="$t('assess.anglevel.title')"
+                  v-model="query.query.angLevel"
+                  controlVariant="stacked"
+                  hide-details
+                  inset
+                  :disabled="query?.options.isCelestialWeapon || !query?.options.isUpgradable"
+                >
+                </v-number-input>
+              </v-col>
+
+              <v-col cols="4" sm="3">
                 <v-select
                   density="compact"
                   :label="$t('assess.level')"
@@ -410,6 +425,16 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                   variant="flat"
                 >
                   {{ result.range!.map((x) => `${x}%`).join('-') }}
+                </v-chip>
+                <v-chip
+                  v-if="result.angLevel > 0"
+                  :prepend-icon="mdiEmoticonDevil"
+                  :color="anguishColor"
+                  size="small"
+                  rounded="md"
+                  variant="flat"
+                >
+                  {{ `${$t('assess.anglevel.title')} ${result.angLevel}` }}
                 </v-chip>
               </div>
             </template>

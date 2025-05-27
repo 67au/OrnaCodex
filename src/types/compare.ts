@@ -3,6 +3,7 @@ import type { CodexEntry } from '@/plugins/codex'
 export interface CompareQuery {
   entry: CodexEntry
   query: {
+    angLevel: number
     quality: number
     level: number
     bossScaling: number

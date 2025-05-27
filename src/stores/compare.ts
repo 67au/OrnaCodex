@@ -15,6 +15,7 @@ import { i18n } from '@/i18n'
 import type { SortValueType } from '@/types/filters'
 
 const MAX_CAP = 8
+const anguishedBonusKeySet = new Set(['follower_stats', 'summon_stats'])
 const codexState = useCodexState()
 
 export const useCompareState = defineStore(
@@ -33,6 +34,7 @@ export const useCompareState = defineStore(
             level: entry.isUpgradable ? 13 : 1,
             bossScaling: entry.bossScaling,
             qualityCode: -1,
+            angLevel: 0,
           },
         })
         return true
@@ -56,6 +58,7 @@ export const useCompareState = defineStore(
       list.value.map((v) => {
         const assessQuery = useAssessQuery(v.entry, true)
         assessQuery.query.quality = v.query.quality
+        assessQuery.query.angLevel = v.query.angLevel
         assessQuery.options.bossScaling = v.query.bossScaling
         return useAssessResult(assessQuery)
       }),
@@ -123,6 +126,9 @@ export const useCompareState = defineStore(
               q.entry.isAdornment,
               k,
             )
+          }
+          if (v.angLevel > 0 && stat !== 0 && anguishedBonusKeySet.has(k)) {
+            return stat + v.angLevel * 3
           }
           return stat
         })

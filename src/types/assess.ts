@@ -7,7 +7,7 @@ export interface AssessQuery {
     isQualityCalc: boolean
     baseStats: Record<string, number>
     ///
-    isWeapon: boolean
+    // isWeapon: boolean
     isCelestialWeapon: boolean
     isTwoHanded: boolean
     isUpgradable: boolean
@@ -17,6 +17,7 @@ export interface AssessQuery {
 
 export interface AssessResult {
   quality: number
+  angLevel: number
   stats: {
     [key: string]: {
       base: number
