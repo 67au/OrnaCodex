@@ -1,60 +1,15 @@
 <script setup lang="ts">
 import { useEntriesListState } from '@/stores/entriesList'
-import { useFiltersState } from '@/stores/filters'
 import { useSortState } from '@/stores/sort'
 import { mdiRestart, mdiSortAscending, mdiSortDescending, mdiViewGrid } from '@mdi/js'
 import SortEditor from './SortEditor.vue'
 import PrimarySortEditor from './PrimarySortEditor.vue'
 import CodexListCard from './CodexListCard.vue'
-import { useWorkerState } from '@/stores/worker'
-import { useCodexState } from '@/stores/codex'
 import CodexListItem from './CodexListItem.vue'
 import { settingsStorage } from '@/storages/settings'
 
 const entriesListState = useEntriesListState()
-const codexState = useCodexState()
-const filtersState = useFiltersState()
 const sortState = useSortState()
-
-const workerState = useWorkerState()
-
-entriesListState.codex = workerState.setInit()
-
-watch(
-  () => codexState.translation.main,
-  () => {
-    if (codexState.translation?.main) {
-      workerState.setI18n()
-    }
-  },
-  { immediate: true },
-)
-
-watch(
-  () => workerState.worker.data,
-  () => {
-    if (workerState.worker.data !== undefined) {
-      entriesListState.$patch({
-        codex: workerState.worker.data,
-      })
-      entriesListState.render()
-    }
-  },
-)
-
-filtersState.$subscribe(
-  () => {
-    workerState.setFilter()
-  },
-  { immediate: true },
-)
-
-sortState.$subscribe(
-  () => {
-    workerState.setSort()
-  },
-  { immediate: true },
-)
 </script>
 
 <template>

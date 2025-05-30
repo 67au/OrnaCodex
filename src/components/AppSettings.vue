@@ -99,7 +99,7 @@ const codexState = useCodexState()
       <v-list-item
         :prepend-icon="mdiDatabase"
         :title="$t('settings.about.apiUpdatedAt')"
-        :subtitle="codexState.updatedAt.toLocaleString()"
+        :subtitle="codexState.updatedAt?.toLocaleString()"
         link
         href="https://github.com/67au/OrnaCodexCrawler"
         target="_blank"

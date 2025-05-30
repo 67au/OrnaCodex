@@ -1,36 +1,19 @@
 <script setup lang="ts">
 import InitLoader from '@/components/InitLoader.vue'
-import { useCodexState } from '@/stores/codex'
-import { useAsyncState } from '@vueuse/core'
-import { useExtraState } from './stores/extra'
-const codexState = useCodexState()
-const extraState = useExtraState()
+import { useAppState } from './stores/app'
 
-const { isReady } = useAsyncState(() => codexState.useSetCodex(), false)
+const appState = useAppState()
 
-watch(
-  isReady,
-  async () => {
-    await codexState.useFetchCodex()
-  },
-  { once: true },
-)
-
-const { isReady: isExtraReady } = useAsyncState(() => extraState.useSetExtra(), false)
-watch(
-  isExtraReady,
-  async () => {
-    await extraState.useFetchExtra()
-  },
-  { once: true },
-)
+onMounted(async () => {
+  await appState.initData()
+})
 </script>
 
 <template>
-  <InitLoader v-if="codexState.isLoading"></InitLoader>
+  <InitLoader v-if="appState.isLoading"></InitLoader>
   <template v-else>
     <RouterView v-slot="{ Component }">
-      <KeepAlive include="HomeView|AssessView|ProofView">
+      <KeepAlive include="HomeView">
         <component :is="Component" />
       </KeepAlive>
     </RouterView>

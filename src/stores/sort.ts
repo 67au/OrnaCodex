@@ -2,11 +2,11 @@ import type { PrimarySortKeys } from '@/types/filters'
 import { useCodexState } from './codex'
 import { last } from 'es-toolkit'
 
-const codexState = useCodexState()
-
 export const useSortState = defineStore(
   'sort',
   () => {
+    const codexState = useCodexState()
+
     const category = ref('')
     const key = ref('')
     const asc = ref(false)

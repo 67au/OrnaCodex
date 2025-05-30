@@ -6,11 +6,11 @@ import { useSortState } from './sort'
 import { useFiltersState } from './filters'
 import config from '@/config'
 
-const codexState = useCodexState()
-const sortState = useSortState()
-const filtersState = useFiltersState()
-
 export const useWorkerState = defineStore('worker', () => {
+  const codexState = useCodexState()
+  const sortState = useSortState()
+  const filtersState = useFiltersState()
+
   const worker = useWebWorker(new CodexWorker())
 
   function setInit() {

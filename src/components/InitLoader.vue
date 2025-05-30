@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import config from '@/config'
 import { codexStorage } from '@/storages'
+import { useAppState } from '@/stores/app'
 import { useCodexState } from '@/stores/codex'
 import { mdiArrowUpCircleOutline, mdiUpdate } from '@mdi/js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 const codexState = useCodexState()
+const appState = useAppState()
 const { updateServiceWorker, needRefresh } = useRegisterSW()
 
 async function reloadPage() {
@@ -20,7 +22,7 @@ async function resetDatabase() {
 </script>
 
 <template>
-  <v-dialog :model-value="codexState.isUpdating" max-width="320" persistent>
+  <v-dialog :model-value="appState.isUpdating" max-width="320" persistent>
     <v-list class="py-2" color="primary" elevation="12" rounded="lg">
       <v-list-item :prepend-icon="mdiUpdate" title="Loading...">
         <template v-slot:prepend>
@@ -40,7 +42,8 @@ async function resetDatabase() {
       </v-list-item>
     </v-list>
   </v-dialog>
-  <v-container v-if="!codexState.isUpdating">
+
+  <v-container v-if="!appState.isUpdating">
     <v-sheet class="pa-4 text-center mx-auto w-100" rounded>
       <v-icon :icon="mdiArrowUpCircleOutline" color="info" class="mb-4" size="112"> </v-icon>
       <v-list-item>
@@ -76,7 +79,7 @@ async function resetDatabase() {
           max-width="300"
           color="success"
           @click="reloadPage"
-          :disabled="!needRefresh || codexState.isLoading"
+          :disabled="!needRefresh || appState.isLoading"
         >
           {{ $t('update.refresh') }}
         </v-btn>
