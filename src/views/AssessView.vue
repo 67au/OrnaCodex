@@ -89,7 +89,7 @@ const query: Ref<AssessQuery | undefined> = ref(undefined)
 const result: Ref<AssessResult | undefined> = ref(undefined)
 
 watch(
-  () => id.value,
+  [() => id.value, () => entry.value.bossScaling],
   () => {
     if (!supportedAssessTypes.value.includes(assessType.value)) {
       assessType.value = head(supportedAssessTypes.value)!
