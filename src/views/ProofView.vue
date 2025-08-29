@@ -38,7 +38,7 @@ const router = useRouter()
 
 const codexState = useCodexState()
 
-const materialEntries = Object.keys(codexState.codex!['items'])
+const materialEntries = Object.keys(codexState.codex?.['items'] ?? {})
   .map((key) => CodexEntryFactory.getEntry('items', key))
   .filter((e) => e.isMaterial)
 
@@ -63,7 +63,7 @@ const proofEntries = Object.keys(proofScaling).map((k) => CodexEntryFactory.getE
 const proofRate = computed(() =>
   mapValues(proofScaling, (v) => {
     if (entry.value.raw.tier && entry.value.raw.rarity) {
-      return v * (entry.value.raw.tier * 10 + rarityScaling[entry.value.raw.rarity] * 5)
+      return v * (entry.value.raw.tier * 10 + rarityScaling[entry.value.raw.rarity]! * 5)
     }
     return 0
   }),
@@ -76,7 +76,7 @@ const proofCount = computed(() =>
 )
 
 function updateMaterialCount(id: string) {
-  count.value = Math.floor((proofCount.value[id] * calScaling) / proofRate.value[id])
+  count.value = Math.floor((proofCount.value[id]! * calScaling) / proofRate.value[id]!)
 }
 </script>
 

@@ -14,7 +14,7 @@ export const useSortState = defineStore(
 
     const isActive = computed(() => key.value !== '')
     const shortKey = computed(() => last(key.value.split('.')) ?? '')
-    const type = computed(() => codexState.sorts[category.value][key.value])
+    const type = computed(() => codexState.sorts?.[category.value]?.[key.value])
     const isBool = computed(() => isActive.value && type.value === 'BOOL')
     const baseStatsMap = computed(
       () => new Map(codexState.baseStats.map((a, index) => [`stats.${a}`, index])),

@@ -47,7 +47,7 @@ export const useCompareState = defineStore(
     }
     function leftShift(index: number) {
       if (index <= 0 || index >= count.value) return
-      ;[list.value[index - 1], list.value[index]] = [list.value[index], list.value[index - 1]]
+      ;[list.value[index - 1], list.value[index]] = [list.value[index]!, list.value[index - 1]!]
     }
 
     function $reset() {
@@ -74,7 +74,7 @@ export const useCompareState = defineStore(
         (acc, v, index) => {
           return union(
             union(acc, Object.keys(v.stats)),
-            Object.keys(list.value[index].entry.raw.stats ?? {}),
+            Object.keys(list.value?.[index]?.entry.raw.stats ?? {}),
           )
         },
         [] as Array<string>,
@@ -88,7 +88,7 @@ export const useCompareState = defineStore(
 
     const baseResult = computed(() => {
       return assessResult.value.map((v, index) => {
-        const q = list.value[index]
+        const q = list.value[index]!
         const result: {
           entry: CodexEntry
           quality: number
@@ -159,7 +159,7 @@ export const useCompareState = defineStore(
       if (count.value < 1) {
         return []
       }
-      const first = baseResult.value[0]
+      const first = baseResult.value[0]!
 
       const other = baseResult.value.slice(1).map((v) => {
         if (first.quality === 0 || v.quality === 0) {

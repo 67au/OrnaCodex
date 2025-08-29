@@ -52,7 +52,7 @@ export function getTowerFloors(time: Date): Floors {
   const day = Math.floor(minCycle / (24 * 60))
 
   return kinds.map((kind, i) => {
-    const floor = ((Math.abs(baseFloors[i] - 15 + day * 6) + p) % CYCLE_DAYS) + 15
+    const floor = ((Math.abs(baseFloors[i]! - 15 + day * 6) + p) % CYCLE_DAYS) + 15
     return {
       kind,
       floor:
@@ -67,7 +67,7 @@ function repeatArray<T>(arr: T[], point: number, n: number): T[] {
   const len = arr.length
   const start = ((point % len) + len) % len
   return Array.from({ length: n * len }, (_, idx) => {
-    return arr[(start + idx) % len]
+    return arr[(start + idx) % len]!
   })
 }
 

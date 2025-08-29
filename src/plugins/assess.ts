@@ -293,7 +293,7 @@ export function getQualityBonus(
   }
 
   const keyScaling = bonusKeyScaling[_key] ?? 1
-  const qualityScaling = bonusQualityScaling[Quality[qualityCode]]
+  const qualityScaling = bonusQualityScaling[Quality[qualityCode]!]!
 
   if (isAdornment || smallBonusKeySet.has(_key)) {
     return base + (base * qualityScaling) / 100
@@ -312,7 +312,7 @@ export function useAssessResult(query: AssessQuery) {
   }
   const result: AssessResult = {
     quality: 1,
-    angLevel: query.query.angLevel,
+    angLevel: query.query.angLevel ?? 0,
     stats: {},
     levels: 13,
   }
@@ -323,15 +323,15 @@ export function useAssessResult(query: AssessQuery) {
   const isBossScaling = query.options.bossScaling > 0
 
   if (query.options.isQualityCalc) {
-    result.quality = query.query.quality / 100
+    result.quality = query.query.quality! / 100
   } else {
     if (isUndefined(assessKey)) {
       result.quality = 1
     } else {
       result.quality = getItemQuality(
-        query.query[assessKey],
-        query.options.baseStats[assessKey],
-        query.query.level,
+        query.query[assessKey]!,
+        query.options.baseStats[assessKey]!,
+        query.query.level!,
         isBossScaling,
       )
     }
@@ -341,17 +341,20 @@ export function useAssessResult(query: AssessQuery) {
     result.exact = true
   } else {
     const calcStat = (q: number) =>
-      getUpgradedStat(query.options.baseStats[assessKey], query.query.level, q, isBossScaling)
+      getUpgradedStat(query.options.baseStats[assessKey]!, query.query.level!, q, isBossScaling)
 
     const inputStat = calcStat(result.quality)
     result.exact = inputStat === query.query[assessKey]
-    if (result.exact && Math.abs(query.query[assessKey]) < 100) {
+    if (result.exact && Math.abs(query.query[assessKey]!) < 100) {
       const baseStat = calcStat(1)
       const [left, right] = [1, -1].map((sign) => {
         const offset = inputStat + (inputStat * sign > 0 ? -1 : 0)
         return +Math.ceil((offset / baseStat) * 100).toFixed(12)
-      })
-      const [leftOut, rightOut] = [left, right].map((n) => calcStat(n / 100))
+      }) as [number, number]
+      const [leftOut, rightOut] = [left, right].map((n) => calcStat((n as number) / 100)) as [
+        number,
+        number,
+      ]
       const normalize = (n: number, out: number) => {
         return (
           n +

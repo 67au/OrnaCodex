@@ -63,12 +63,12 @@ const floorsInWeek = getTowerFloorsInNextDays(now, 7)
                     <tbody>
                       <tr class="bg-surface-light">
                         <th>{{ now.toLocaleString() }}</th>
-                        <th>{{ floors[index].floor }}</th>
+                        <th>{{ floors[index]!.floor }}</th>
                       </tr>
                       <template v-for="(towerDay, day) in floorsInWeek" :key="day">
                         <tr>
                           <th>{{ towerDay.time.toLocaleString() }}</th>
-                          <th>{{ towerDay.floors[index].floor }}</th>
+                          <th>{{ towerDay.floors[index]!.floor }}</th>
                         </tr>
                       </template>
                     </tbody>

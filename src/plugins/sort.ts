@@ -22,7 +22,7 @@ export function getSortResult(entries: Array<CodexEntry>) {
   const tmp = entries.filter((entry) => entry.category === sortState.category)
   return tmp
     .map((elem, i) => {
-      return { i, value: getSortValue(elem, sortState.type, sortState.key) }
+      return { i, value: getSortValue(elem, sortState.type!, sortState.key) }
     })
     .sort((a, b) => {
       if (a.value === undefined) {

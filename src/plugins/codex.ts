@@ -26,7 +26,7 @@ export class CodexEntryFactory {
     if (this.cache.has(key)) {
       return this.cache.get(key)!
     }
-    const [category, id] = key.split('/')
+    const [category, id] = key.split('/') as [string, string]
     return this.getEntry(category, id)
   }
 }
@@ -36,15 +36,15 @@ export class CodexEntry implements CE {
   id: string
 
   get raw() {
-    return codexState.codex![this.category][this.id] as CE
+    return codexState.codex?.[this.category]?.[this.id] as CE
   }
 
   get name() {
-    return codexState.translation.main?.[this.category][this.id]?.name as string
+    return codexState.translation.main?.[this.category]?.[this.id]?.name as string
   }
 
   get description() {
-    return codexState.translation.main?.[this.category][this.id]?.description as string
+    return codexState.translation.main?.[this.category]?.[this.id]?.description as string
   }
 
   get tierName() {

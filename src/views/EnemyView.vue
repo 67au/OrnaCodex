@@ -34,7 +34,7 @@ const codexState = useCodexState()
 
 const enemyEntries = enemyKey.reduce((acc, key) => {
   return acc.concat(
-    Object.keys(codexState.codex![key]).map((v) => CodexEntryFactory.getEntry(key, v)),
+    Object.keys(codexState.codex?.[key] ?? {}).map((v) => CodexEntryFactory.getEntry(key, v)),
   )
 }, [] as Array<CodexEntry>)
 
@@ -127,7 +127,7 @@ const enemyJson = computed(() =>
   pickBy(enemyObj.value, (v) => (isArray(v) ? v.length > 0 : v !== undefined)),
 )
 watch(enemyJson, async () => {
-  if (entry.value.isExisted && size(enemyJson.value) > 0) {
+  if (entry.value?.isExisted && size(enemyJson.value) > 0) {
     await extraEnemyStorage.setItem(entry.value.cacheKey, enemyJson.value)
   }
 })

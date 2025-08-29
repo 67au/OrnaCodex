@@ -43,7 +43,7 @@ const router = useRouter()
 
 const codexState = useCodexState()
 
-const assessableEntries = Object.keys(codexState.codex!['items'])
+const assessableEntries = Object.keys(codexState.codex?.['items'] ?? {})
   .map((key) => CodexEntryFactory.getEntry('items', key))
   .filter((e) => e.isAssessable || e.isCelestialWeapon)
 

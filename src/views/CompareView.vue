@@ -149,7 +149,7 @@ const qualityCodeItems = computed(() => [
                   <v-col cols="6">
                     <v-select
                       density="compact"
-                      v-model="compareState.list[index].query.bossScaling"
+                      v-model="compareState.list[index]!.query.bossScaling"
                       :items="bossScalingItems"
                       :item-props="itemProps"
                       hide-details
@@ -168,13 +168,13 @@ const qualityCodeItems = computed(() => [
                     <v-select
                       v-if="result.entry.isAccessory"
                       density="compact"
-                      v-model="compareState.list[index].query.qualityCode"
+                      v-model="compareState.list[index]!.query.qualityCode"
                       :items="qualityCodeItems"
                       item-title="title"
                       item-value="value"
                       hide-details
                       inset
-                      :disabled="compareState.list[index].query.quality < 200"
+                      :disabled="compareState.list[index]!.query.quality < 200"
                     >
                       <template v-slot:label>
                         <div>{{ $t('assess.setQualityCode') }}</div>
@@ -186,7 +186,7 @@ const qualityCodeItems = computed(() => [
                     <v-select
                       v-else
                       density="compact"
-                      v-model="compareState.list[index].query.level"
+                      v-model="compareState.list[index]!.query.level"
                       :items="Array.from({ length: 13 }, (_, i) => i + 1)"
                       hide-details
                       inset
@@ -203,7 +203,7 @@ const qualityCodeItems = computed(() => [
                   <v-col cols="6">
                     <v-number-input
                       density="compact"
-                      v-model="compareState.list[index].query.quality"
+                      v-model="compareState.list[index]!.query.quality"
                       controlVariant="stacked"
                       hide-details
                       inset
@@ -217,7 +217,7 @@ const qualityCodeItems = computed(() => [
                     <v-number-input
                       v-if="result.entry.isUpgradable"
                       density="compact"
-                      v-model="compareState.list[index].query.angLevel"
+                      v-model="compareState.list[index]!.query.angLevel"
                       controlVariant="stacked"
                       hide-details
                       inset

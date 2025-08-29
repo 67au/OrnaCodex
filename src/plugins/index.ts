@@ -16,7 +16,7 @@ export function getOptionValueName(key: string, name: string): string {
     case 'summons':
       return i18n.global.t('status.' + name)
     case 'abilities':
-      return codexState.translation?.abilities?.[name].name as string
+      return codexState.translation?.abilities?.[name]?.name as string
     default:
       return i18n.global.t(`${key}.${name}`)
   }

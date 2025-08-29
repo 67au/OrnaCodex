@@ -23,10 +23,10 @@ export function getFilterResult(key: string, filterKey: CodexEntryKeys, filter: 
   let srcValue = undefined
   switch (filterKey) {
     case 'element':
-      srcValue = data.codex[key].stats?.element
+      srcValue = data.codex[key]?.stats?.element
       break
     default:
-      srcValue = data.codex[key][filterKey]
+      srcValue = data.codex[key]?.[filterKey]
   }
   if (srcValue === undefined) {
     return false
@@ -76,8 +76,8 @@ function useSearch() {
     const searchPattern = new RegExp(data.search!, 'i')
     return list.filter((key) => {
       return (
-        searchPattern.test(data.i18n[key].name) ||
-        (data.i18n[key].description && searchPattern.test(data.i18n[key].description))
+        searchPattern.test(data.i18n[key]!.name) ||
+        (data.i18n[key]!.description && searchPattern.test(data.i18n[key]!.description))
       )
     })
   }
@@ -107,11 +107,14 @@ function useDefaultSort() {
   }
   const { key, asc } = data.sort.primary
   if (key === 'name') {
-    return list.sort((a, b) => data.i18n[a].name.localeCompare(data.i18n[b].name) * (asc ? 1 : -1))
+    return list.sort(
+      (a, b) => data.i18n[a]!.name.localeCompare(data.i18n[b]!.name) * (asc ? 1 : -1),
+    )
   }
   if (key === 'tier') {
     return list.sort(
-      (a, b) => ((data.codex[a].tier as number) - (data.codex[b].tier as number)) * (asc ? 1 : -1),
+      (a, b) =>
+        ((data.codex[a]!.tier as number) - (data.codex[b]!.tier as number)) * (asc ? 1 : -1),
     )
   }
   return list
@@ -122,7 +125,7 @@ function useSort() {
   if (isUndefined(data.sort) || data.sort!.key === '') {
     return list
   } else {
-    const tmp = list.filter((key) => data.codex[key].category === data.sort?.category)
+    const tmp = list.filter((key) => data.codex?.[key]?.category === data.sort?.category)
     return tmp
       .map((key, i) => {
         return { i, value: getSortValue(key, data.sort!.key) }
