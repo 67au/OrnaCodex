@@ -271,7 +271,11 @@ export const bonusKeySet = new Set([
   'gold_bonus',
   'monster_encounters',
   'no_follower_bonus',
+  'manaflask_power',
+  'bestial_bond',
 ])
+
+export const smallBonusKeySet = new Set(['bestial_bond'])
 
 export function getQualityBonus(
   base: number,
@@ -291,7 +295,7 @@ export function getQualityBonus(
   const keyScaling = bonusKeyScaling[_key] ?? 1
   const qualityScaling = bonusQualityScaling[Quality[qualityCode]]
 
-  if (isAdornment) {
+  if (isAdornment || smallBonusKeySet.has(_key)) {
     return base + (base * qualityScaling) / 100
   }
   return ((100 + base) * (100 + qualityScaling * keyScaling) - 10000) / 100
