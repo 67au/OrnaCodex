@@ -63,6 +63,7 @@ export interface CodexEntry {
   place?: string
   type?: string
   targets?: string
+  follower?: string
   hp?: number
   tags?: Array<string>
   spell_type?: string

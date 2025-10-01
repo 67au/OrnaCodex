@@ -9,6 +9,7 @@ import {
   mdiFlask,
   mdiFolderOutline,
   mdiHeart,
+  mdiPokeball,
   mdiSwordCross,
   mdiTag,
   mdiTarget,
@@ -108,6 +109,12 @@ const defaults: DefaultsOptions = {
         v-if="entry.raw.targets"
         :prepend-icon="mdiTarget"
         :text="getOptionValueName('targets', entry.raw.targets)"
+      ></v-chip>
+
+      <v-chip
+        v-if="entry.raw.follower"
+        :prepend-icon="mdiPokeball"
+        :text="getOptionValueName('follower', entry.raw.follower)"
       ></v-chip>
 
       <v-chip
