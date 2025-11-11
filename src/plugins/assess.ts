@@ -273,6 +273,7 @@ export const bonusKeySet = new Set([
   'no_follower_bonus',
   'manaflask_power',
   'bestial_bond',
+  'apex',
 ])
 
 export const smallBonusKeySet = new Set(['bestial_bond'])
