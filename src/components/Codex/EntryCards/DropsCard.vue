@@ -49,7 +49,7 @@ const dropsEntry = computed(() => {
           </template>
           <template v-if="settingsStorage.displayStats && drop.raw.stats">
             <div style="width: fit-content" class="pa-1 border-sm rounded-lg">
-              <StatChips :stats="drop.raw.stats" mini></StatChips>
+              <StatChips :entry="drop" mini></StatChips>
             </div>
           </template>
         </v-list-item>

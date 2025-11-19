@@ -1,3 +1,6 @@
+import type { CodexEntry } from '@/plugins/codex'
+import type { StatValue } from './codex'
+
 export type BossScaling = -1 | 0 | 1
 
 export interface AssessQuery {
@@ -28,4 +31,21 @@ export interface AssessResult {
   //
   exact?: boolean
   range?: [number, number]
+}
+
+export interface QualityQuery {
+  entry: CodexEntry
+  query: {
+    angLevel: number
+    quality: number
+    level: number
+    bossScaling: number
+    qualityCode: number
+  }
+}
+
+export interface QualityResult {
+  entry: CodexEntry
+  query: QualityQuery['query']
+  stats: Record<string, StatValue>
 }

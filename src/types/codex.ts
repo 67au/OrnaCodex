@@ -43,6 +43,8 @@ export interface BestialBond {
 
 export type CodexEntries = Record<string, Record<string, CodexEntry>>
 
+export type StatValue = string | boolean | Array<string> | number
+
 export interface CodexEntry {
   category: string
   id: string
@@ -50,9 +52,8 @@ export interface CodexEntry {
   tier?: number
   aura?: string
   icon?: string
-  stats?: {
-    element?: Array<string>
-  } & Record<Exclude<string, 'element'>, string | boolean>
+  stats?: Record<string, StatValue>
+  stats_conditions?: Record<string, Array<string>>
   events?: Array<string>
   family?: string
   rarity?: string

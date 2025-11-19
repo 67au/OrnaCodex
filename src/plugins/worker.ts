@@ -19,6 +19,12 @@ const data: {
   sort: undefined,
 }
 
+const spell_key_pattern = /^\+.*(spell|skill)$/
+
+function isSpellKey(key: string): boolean {
+  return spell_key_pattern.test(key)
+}
+
 export function getFilterResult(key: string, filterKey: CodexEntryKeys, filter: Filter) {
   let srcValue = undefined
   switch (filterKey) {
@@ -27,6 +33,9 @@ export function getFilterResult(key: string, filterKey: CodexEntryKeys, filter: 
       break
     default:
       srcValue = data.codex[key]?.[filterKey]
+  }
+  if (isSpellKey(filterKey)) {
+    srcValue = data.codex[key]?.stats?.[filterKey]
   }
   if (srcValue === undefined) {
     return false

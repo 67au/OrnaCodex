@@ -1,9 +1,10 @@
-import type { AssessQuery, AssessResult } from '@/types/assess'
+import type { AssessQuery, AssessResult, QualityQuery, QualityResult } from '@/types/assess'
 import type { CodexEntry } from './codex'
 import { fill, isUndefined, mapValues, maxBy, omit, pickBy, range } from 'es-toolkit'
 import { getStripedValue } from '.'
 import { i18n } from '@/i18n'
 import colors from '@/styles/colors.module.scss'
+import type { StatValue } from '@/types/codex'
 
 export const assessKeys = [
   'hp',
@@ -42,10 +43,9 @@ export function useAssessQuery(entry: CodexEntry, quality: boolean = false) {
   const stats = mapValues(
     pickBy(
       entry.raw.stats!,
-      (value: string | boolean, key: string) =>
-        assessKeySet.has(key as assessKey) && value !== undefined,
+      (value: StatValue, key: string) => assessKeySet.has(key as assessKey) && value !== undefined,
     ),
-    (value: string | boolean | undefined) => getStripedValue(value as string),
+    (value: unknown) => getStripedValue(value as string),
   ) as Record<string, number>
 
   const query: AssessQuery = {
@@ -432,6 +432,60 @@ export function useAssessResult(query: AssessQuery) {
       }
     }
   }
+
+  return result
+}
+
+const anguishedBonusKeySet = new Set(['follower_stats', 'summon_stats'])
+
+export function getDisableQueryFlag(entry: CodexEntry, query: QualityQuery['query']) {
+  return query.quality <= 0 || (query.bossScaling === 0 && !entry.isAccessory)
+}
+
+export function useQualityResult(query: QualityQuery) {
+  const result: QualityResult = {
+    entry: query.entry,
+    query: query.query,
+    stats: {},
+  }
+
+  if (getDisableQueryFlag(query.entry, query.query)) {
+    return result
+  }
+
+  const baseStat = query.entry.raw?.stats
+  if (isUndefined(baseStat)) {
+    return result
+  }
+
+  const assessQuery = useAssessQuery(query.entry, true)
+  assessQuery.query.quality = query.query.quality
+  assessQuery.query.angLevel = query.query.angLevel
+  assessQuery.options.bossScaling = query.query.bossScaling
+  const assessResult = useAssessResult(assessQuery)
+
+  Object.keys(baseStat).forEach((key: string) => {
+    const ar = assessResult.stats[key]
+    const stat = baseStat[key] as StatValue
+    result.stats[key] = stat
+
+    if (!isUndefined(ar)) {
+      result.stats[key] = ar.values[query.query.level - 1] as number
+    }
+    if (bonusKeySet.has(key)) {
+      result.stats[key] = getQualityBonus(
+        getStripedValue(stat as string),
+        query.query.qualityCode > -1
+          ? query.query.qualityCode
+          : getQualityCode(query.query.quality / 100, query.query.level, query.entry.isAccessory),
+        query.entry.isAdornment,
+        key,
+      )
+    }
+    if (query.query.angLevel > 0 && anguishedBonusKeySet.has(key)) {
+      result.stats[key] = getStripedValue(stat as string) + query.query.angLevel * 3
+    }
+  })
 
   return result
 }

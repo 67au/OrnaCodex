@@ -16,7 +16,7 @@ const entry: ComputedRef<CodexEntry> = inject('entry')!
       </template>
     </v-list-item>
     <v-card-text class="py-2">
-      <StatChips :stats="entry.raw.stats"></StatChips>
+      <StatChips :entry="entry"></StatChips>
     </v-card-text>
   </v-card>
 </template>

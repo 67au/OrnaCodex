@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { getOptionValueName } from '@/plugins'
-import type { CodexEntry } from '@/types/codex'
+import { getOptionValueName, getStatConditionName } from '@/plugins'
+import { getStatString } from '@/plugins/sort'
+import { CodexEntry } from '@/plugins/codex'
 import type { DefaultsOptions } from 'vuetify/lib/composables/defaults.mjs'
 import colors from '@/styles/colors.module.scss'
 import { useSortState } from '@/stores/sort'
@@ -10,8 +11,8 @@ import type { Variant } from 'vuetify/lib/composables/variant.mjs'
 const sortState = useSortState()
 
 const props = defineProps({
-  stats: {
-    type: Object as PropType<CodexEntry['stats']>,
+  entry: {
+    type: Object as PropType<CodexEntry>,
     required: true,
   },
   sorted: {
@@ -40,7 +41,7 @@ const defaults: DefaultsOptions = {
 }
 
 const statsArray = computed(() => {
-  const tmp = Object.entries(props.stats ?? {}).map(([k, stat]) => {
+  const tmp = Object.entries(props.entry.raw.stats ?? {}).map(([k, stat]) => {
     return {
       key: k,
       value: stat,
@@ -89,19 +90,40 @@ const statsArray = computed(() => {
         </template>
         <template v-else-if="stat.key === 'element'">
           <v-chip
-            v-for="(elem, index) in stat.value"
+            v-for="(elem, index) in stat.value as Array<string>"
             :color="colors[elem]"
             :key="index"
             :text="getOptionValueName(stat.key, elem)"
           ></v-chip>
         </template>
+        <template v-else-if="stat.key?.match(/^\+.*(spell|skill)$/)">
+          <v-chip
+            v-for="(spell, index) in stat.value"
+            :key="index"
+            :color="stat.color"
+            :variant="stat.variant"
+          >
+            {{ `${$t('stats.' + stat.key)}: ${$t('stats_text.' + spell)}` }}
+            <template
+              v-if="
+                props.entry.raw.stats_conditions?.[stat.key as string] !== undefined &&
+                stat.key !== undefined
+              "
+            >
+              {{ ` (${getStatConditionName(props.entry, stat.key)})` }}
+            </template>
+          </v-chip>
+        </template>
         <template v-else>
           <v-chip :color="stat.color" :variant="stat.variant">
-            <template v-if="stat.key === 'costs'">
-              {{ `${$t('stats.' + stat.key)}: ${stat.value} ${$t('units.mana')}` }}
-            </template>
-            <template v-else>
-              {{ `${$t('stats.' + stat.key)}: ${stat.value}` }}
+            {{ `${$t('stats.' + stat.key)}: ${getStatString(props.entry, stat.key as string)}` }}
+            <template
+              v-if="
+                props.entry.raw.stats_conditions?.[stat.key as string] !== undefined &&
+                stat.key !== undefined
+              "
+            >
+              {{ ` (${getStatConditionName(props.entry, stat.key)})` }}
             </template>
           </v-chip>
         </template>

@@ -44,7 +44,7 @@ function shareUrl(entry: CodexEntry) {
       <template v-if="settingsStorage.displayStats && entry.raw.stats">
         <v-divider class="mx-3"></v-divider>
         <v-list-item class="py-2">
-          <StatChips :stats="entry.raw.stats" sorted></StatChips>
+          <StatChips :entry="entry" sorted></StatChips>
         </v-list-item>
       </template>
       <template
@@ -52,7 +52,7 @@ function shareUrl(entry: CodexEntry) {
       >
         <v-divider class="mx-3"></v-divider>
         <v-list-item class="py-2">
-          <StatChips :stats="entry.raw.stats" single></StatChips>
+          <StatChips :entry="entry" single></StatChips>
         </v-list-item>
       </template>
     </router-link>

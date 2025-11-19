@@ -14,7 +14,15 @@ export type Filters = {
 
 export type PrimarySortKeys = keyof typeof config.primarySort
 
-export type SortValueType = 'NUMBER' | 'SIGNED_NUMBER' | 'PERCENT' | 'SIGNED_PERCENT' | 'BOOL'
+export type SortValueType =
+  | 'NUMBER'
+  | 'SIGNED_NUMBER'
+  | 'PERCENT'
+  | 'SIGNED_PERCENT'
+  | 'SIGNED_TURN'
+  | 'SIGNED_TURNS'
+  | 'TEXT'
+  | 'BOOL'
 
 export interface Sorts {
   [key: string]: {

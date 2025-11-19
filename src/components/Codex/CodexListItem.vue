@@ -31,12 +31,12 @@ defineProps({
 
     <template v-if="settingsStorage.displayStats && entry.raw.stats">
       <div style="width: fit-content" class="mx-2 px-1 py-1 border-sm rounded-lg">
-        <StatChips :stats="entry.raw.stats" sorted mini></StatChips>
+        <StatChips :entry="entry" sorted mini></StatChips>
       </div>
     </template>
     <template v-else-if="sortState.isActive && entry.raw.stats?.[sortState.shortKey] !== undefined">
       <div style="width: fit-content" class="mx-2 px-1 py-1 border-sm rounded-lg">
-        <StatChips :stats="entry.raw.stats" single mini></StatChips>
+        <StatChips :entry="entry" single mini></StatChips>
       </div>
     </template>
   </router-link>

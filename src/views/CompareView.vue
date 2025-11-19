@@ -2,10 +2,12 @@
 import AppSlideMenu from '@/components/AppSlideMenu.vue'
 import { i18n } from '@/i18n'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import { getOptionName, getOptionValueName, getSignedNumber } from '@/plugins'
+import { getOptionName, getOptionValueName, getSignedNumber, getStatConditionName } from '@/plugins'
 import { bossScalingItems, bossScalingName } from '@/plugins/assess'
+import { getStatValueString } from '@/plugins/sort'
 import { useCompareState } from '@/stores/compare'
 import { mdiChevronDoubleLeft, mdiExport, mdiMagnify, mdiPin, mdiTrashCan } from '@mdi/js'
+import { isUndefined } from 'es-toolkit'
 
 const compareState = useCompareState()
 
@@ -235,11 +237,19 @@ const qualityCodeItems = computed(() => [
                   <template v-slot:title>
                     <v-list-item-title class="text-caption">
                       {{ getOptionValueName('stats', key) }}
+                      <template
+                        v-if="
+                          result.entry.raw.stats_conditions?.[key as string] !== undefined &&
+                          key !== undefined
+                        "
+                      >
+                        {{ ` (${getStatConditionName(result.entry, key)})` }}
+                      </template>
                     </v-list-item-title>
                   </template>
                   <v-list-item-subtitle class="text-right">
-                    {{ stat.base }}
-                    <template v-if="stat.diff !== undefined && stat?.diff !== 0">
+                    {{ getStatValueString(result.entry, key, stat.base) }}
+                    <template v-if="!isUndefined(stat.diff) && stat?.diff !== 0">
                       <span :class="getDiffTextClass(stat.diff)">
                         {{ `(${getSignedNumber(stat.diff)})` }}
                       </span>

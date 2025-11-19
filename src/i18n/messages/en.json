@@ -49,7 +49,9 @@
   },
   "units": {
     "mana": "Mana",
-    "level": "Level"
+    "level": "Level",
+    "turn": "turn",
+    "turns": "turns"
   },
   "assess": {
     "level": "Level",

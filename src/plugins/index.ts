@@ -1,11 +1,21 @@
 import { i18n } from '@/i18n'
 import { useCodexState } from '@/stores/codex'
 import config from '@/config'
-import { head } from 'es-toolkit'
+import { head, isUndefined } from 'es-toolkit'
+import type { CodexEntry } from './codex'
 
 const codexState = useCodexState()
 
+const spell_key_pattern = /^\+.*(spell|skill)$/
+
+export function isSpellKey(key: string): boolean {
+  return spell_key_pattern.test(key)
+}
+
 export function getOptionValueName(key: string, name: string): string {
+  if (isSpellKey(key)) {
+    return i18n.global.t(`stats_text.${name}`)
+  }
   switch (key) {
     case 'tier':
       return '★' + name
@@ -23,6 +33,9 @@ export function getOptionValueName(key: string, name: string): string {
 }
 
 export function getOptionName(key: string): string {
+  if (isSpellKey(key)) {
+    return i18n.global.t(`stats.${key}`)
+  }
   return i18n.global.t('meta.' + key)
 }
 
@@ -56,7 +69,10 @@ export function customSort<T extends string>(a: T, b: T, orderMap: Map<T, number
 
 const regex_strip_percent_and_plus = /%|\+/gi
 
-export function getStripedValue(value: string | number) {
+export function getStripedValue(value: string | number | undefined) {
+  if (isUndefined(value)) {
+    return 0
+  }
   if (typeof value === 'number') {
     return value
   }
@@ -68,10 +84,10 @@ export function getSignedNumber(n: number) {
   return (n <= 0 ? '' : '+') + n.toString()
 }
 
-export function getPercent(n: number) {
-  return n.toString() + '%'
-}
-
-export function getSignedPercent(n: number) {
-  return (n <= 0 ? '' : '+') + n.toString() + '%'
+export function getStatConditionName(entry: CodexEntry, key: string) {
+  const statsConditions = entry.raw.stats_conditions?.[key]
+  if (isUndefined(statsConditions)) {
+    return ''
+  }
+  return statsConditions.map((c: string) => i18n.global.t('stats_conditions.' + c)).join(', ')
 }

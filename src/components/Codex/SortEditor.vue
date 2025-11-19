@@ -26,10 +26,7 @@ const sorts = computed(() =>
   Object.entries(codexState.sorts)
     .map(([key, sorts]): [string, Array<string>] => {
       if (key === 'items') {
-        return [
-          key,
-          [...Object.keys(sorts)].sort((a, b) => customSort(a, b, sortState.baseStatsMap)),
-        ]
+        return [key, Object.keys(sorts).sort((a, b) => customSort(a, b, sortState.baseStatsMap))]
       }
       return [key, Object.keys(sorts)]
     })

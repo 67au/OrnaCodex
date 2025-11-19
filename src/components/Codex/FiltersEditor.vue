@@ -43,7 +43,7 @@ const filtersState = useFiltersState()
               variant="tonal"
               :key="index"
               :value="key"
-              :text="$t('meta.' + key)"
+              :text="$t((key.startsWith('+') ? 'stats.' : 'meta.') + key)"
               @click="filtersState.setFilter(key as CodexEntryKeys)"
             >
             </v-chip>

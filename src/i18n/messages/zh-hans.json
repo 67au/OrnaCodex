@@ -59,7 +59,9 @@
   },
   "units": {
     "mana": "魔力",
-    "level": "等级"
+    "level": "等级",
+    "turn": "回合",
+    "turns": "回合"
   },
   "assess": {
     "level": "等级",
