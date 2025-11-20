@@ -31,7 +31,8 @@
     "tower": "Tower of Olympia",
     "compare": "Compare",
     "settings": "Settings",
-    "enemy": "Monster Editor"
+    "enemy": "Monster Editor",
+    "gearViewer": "Gear Viewer"
   },
   "update": {
     "title": "Update Available!",

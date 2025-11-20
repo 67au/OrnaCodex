@@ -8,6 +8,7 @@ import {
   mdiScaleBalance,
   mdiSwapHorizontalCircleOutline,
 } from '@mdi/js'
+import GearViewer from './GearViewer.vue'
 const props = defineProps({
   entry: {
     type: Object as PropType<CodexEntry>,
@@ -67,4 +68,9 @@ function addCompare() {
       ></v-btn>
     </template>
   </v-snackbar>
+
+  <GearViewer
+    v-if="entry.category === 'items' && entry.isComparable && !entry.isCelestialWeapon"
+    :entry="entry"
+  ></GearViewer>
 </template>

@@ -31,7 +31,8 @@
     "tower": "奥林匹亚之塔",
     "compare": "装备对比",
     "enemy": "怪物编辑器",
-    "settings": "设置"
+    "settings": "设置",
+    "gearViewer": "装备查看"
   },
   "enemy": {
     "stats": {

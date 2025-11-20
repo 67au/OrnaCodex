@@ -31,7 +31,8 @@
     "tower": "奧林匹亞之塔",
     "compare": "裝備對比",
     "settings": "設定",
-    "enemy": "怪物編輯器"
+    "enemy": "怪物編輯器",
+    "gearViewer": "裝備查看"
   },
   "update": {
     "title": "發現更新！",
