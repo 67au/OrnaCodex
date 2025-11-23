@@ -439,7 +439,7 @@ export function useAssessResult(query: AssessQuery) {
 const anguishedBonusKeySet = new Set(['follower_stats', 'summon_stats'])
 
 export function getDisableQueryFlag(entry: CodexEntry, query: QualityQuery['query']) {
-  return query.quality <= 0 || (query.bossScaling === 0 && !entry.isAccessory)
+  return query.quality <= 0 || (query.bossScaling === 0 && !entry.isAccessory && !entry.isAdornment)
 }
 
 export function useQualityResult(query: QualityQuery) {
