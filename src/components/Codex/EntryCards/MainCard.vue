@@ -3,6 +3,7 @@ import type { CodexEntry } from '@/plugins/codex'
 import { mdiOpenInNew } from '@mdi/js'
 
 import MetaChips from '../MetaChips.vue'
+import { getIcon } from '@/plugins'
 
 const entry = inject('entry') as CodexEntry
 </script>
@@ -20,6 +21,31 @@ const entry = inject('entry') as CodexEntry
         </v-avatar>
       </template>
     </v-card-item>
+
+    <template v-if="entry.raw.follower">
+      <v-divider class="mx-4"></v-divider>
+      <v-list-item class="py-2">
+        <template v-slot:prepend>
+          <v-avatar size="36" :rounded="false">
+            <v-img
+              :src="getIcon('status', entry.raw.follower.name)"
+              class="image-render-pixel"
+            ></v-img>
+          </v-avatar>
+        </template>
+        <template v-slot:title>
+          <v-list-item-subtitle class="text-surface-variant">
+            {{ $t('meta.follower') }}
+          </v-list-item-subtitle>
+        </template>
+        <template v-slot:subtitle>
+          <v-list-item-title>
+            {{ $t('follower.' + entry.raw.follower.name) }}
+          </v-list-item-title>
+        </template>
+      </v-list-item>
+    </template>
+
     <template v-if="entry.description">
       <v-divider class="mx-4"></v-divider>
       <v-card-text class="text-surface-variant">
