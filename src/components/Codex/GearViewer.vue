@@ -84,8 +84,8 @@ function itemProps(item: { value: number; title: string }) {
         </template>
       </v-toolbar>
 
-      <v-container class="d-flex justify-center">
-        <v-sheet width="100%" max-width="600" border="md" rounded="lg">
+      <v-card-text>
+        <v-sheet class="mx-auto w-100" max-width="600" border="md" rounded="lg">
           <v-list-item>
             <template v-slot:prepend>
               <v-avatar size="48" :rounded="false">
@@ -220,7 +220,7 @@ function itemProps(item: { value: number; title: string }) {
             </v-list-item>
           </template>
         </v-sheet>
-      </v-container>
+      </v-card-text>
       <v-sheet class="pb-8" v-if="$vuetify.display.mobile"></v-sheet>
     </v-card>
   </v-dialog>
