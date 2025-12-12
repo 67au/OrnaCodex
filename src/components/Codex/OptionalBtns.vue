@@ -10,6 +10,7 @@ import {
   mdiSwapHorizontalCircleOutline,
 } from '@mdi/js'
 import GearViewer from './GearViewer.vue'
+import { i18n } from '@/i18n'
 const props = defineProps({
   entry: {
     type: Object as PropType<CodexEntry>,
@@ -22,9 +23,15 @@ const props = defineProps({
 
 const compareState = useCompareState()
 const compare = shallowRef(true)
+const messages: Ref<Array<string>> = ref([])
 
 function addCompare() {
   compare.value = compareState.add(props.entry.id)
+  if (compare.value) {
+    messages.value.push(`${i18n.global.t('compare.add')}: ${props.entry.name}`)
+  } else {
+    messages.value.push(i18n.global.t('compare.full'))
+  }
 }
 </script>
 
@@ -54,21 +61,22 @@ function addCompare() {
     :to="{ name: 'enemy', query: { id: entry.cacheKey } }"
   ></v-btn>
 
-  <v-snackbar location="top" :color="compare ? 'success' : 'error'">
-    <div v-if="compare">{{ $t('compare.add') + ': ' + entry.name }}</div>
-    <div v-else>{{ $t('compare.full') }}</div>
-    <template v-slot:activator="{ props }">
-      <v-btn
-        v-if="entry.category === 'items' && entry.isComparable && !entry.isCelestialWeapon"
-        :size="size"
-        variant="text"
-        color="secondary"
-        :icon="mdiScaleBalance"
-        v-bind="props"
-        @click="addCompare"
-      ></v-btn>
-    </template>
-  </v-snackbar>
+  <v-btn
+    v-if="entry.category === 'items' && entry.isComparable && !entry.isCelestialWeapon"
+    :size="size"
+    variant="text"
+    color="secondary"
+    :icon="mdiScaleBalance"
+    v-bind="props"
+    @click="addCompare"
+  ></v-btn>
+
+  <v-snackbar-queue
+    location="top"
+    :color="compare ? 'success' : 'error'"
+    v-model="messages"
+    timeout="750"
+  ></v-snackbar-queue>
 
   <GearViewer
     v-if="entry.category === 'items' && entry.isComparable && !entry.isCelestialWeapon"
