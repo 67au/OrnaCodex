@@ -2,8 +2,12 @@
 
 @mixin export-vars($map, $prefix: '', $suffix: '') {
   @each $key, $value in $map {
-    $prefix-name: if($prefix == '', $key, '#{$prefix}-#{$key}');
-    $suffix-name: if($suffix == '', $key, '#{$prefix-name}-#{$suffix}');
+    $prefix-name: if(
+      sass($prefix == ''): $key; else: '#{$prefix}-#{$key}',
+    );
+    $suffix-name: if(
+      sass($suffix == ''): $key; else: '#{$prefix-name}-#{$suffix}',
+    );
     #{$suffix-name}: #{$value};
   }
 }
