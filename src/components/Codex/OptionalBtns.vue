@@ -4,6 +4,7 @@ import { settingsStorage } from '@/storages/settings'
 import { useCompareState } from '@/stores/compare'
 import {
   mdiCalculator,
+  mdiEye,
   mdiPencilCircleOutline,
   mdiScaleBalance,
   mdiSwapHorizontalCircleOutline,
@@ -72,5 +73,15 @@ function addCompare() {
   <GearViewer
     v-if="entry.category === 'items' && entry.isComparable && !entry.isCelestialWeapon"
     :entry="entry"
-  ></GearViewer>
+  >
+    <template v-slot:activator="{ activator: activator }">
+      <v-btn
+        :icon="mdiEye"
+        :size="size"
+        color="secondary"
+        variant="text"
+        v-bind="activator"
+      ></v-btn>
+    </template>
+  </GearViewer>
 </template>
