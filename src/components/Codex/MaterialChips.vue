@@ -20,6 +20,7 @@ const props = defineProps({
       rounded="lg"
       border="sm"
       size="small"
+      class="bg-surface-light"
     >
       <template v-slot:prepend>
         <v-avatar :rounded="false" class="mr-1">
