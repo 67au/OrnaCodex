@@ -40,7 +40,7 @@ const sortState = useSortState()
     </v-sheet>
     <template v-if="settingsStorage.displayCard">
       <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
-        <template v-for="entry in entriesListState.entires" :key="entry.id">
+        <template v-for="entry in entriesListState.entires" :key="entry.url">
           <CodexListCard class="mt-2" :entry="entry"></CodexListCard>
         </template>
       </v-infinite-scroll>
