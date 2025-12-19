@@ -78,13 +78,13 @@ export interface CodexEntry {
   ///
   ability?: [string, string]
   ///
-  skills?: Array<CodexEntry>
-  dropped_by?: Array<CodexEntry>
-  drops?: Array<CodexEntry>
-  upgrade_materials?: Array<CodexEntry>
-  learned_by?: Array<CodexEntry>
-  requirements?: Array<CodexEntry>
-  celestial_classes?: Array<CodexEntry>
+  skills?: Array<[string, string]>
+  dropped_by?: Array<[string, string]>
+  drops?: Array<[string, string]>
+  upgrade_materials?: Array<[string, string]>
+  learned_by?: Array<[string, string]>
+  requirements?: Array<[string, string]>
+  celestial_classes?: Array<[string, string]>
   ///
   bestial_bond?: [Array<BestialBond>, Array<BestialBond>, Array<BestialBond>]
 }
