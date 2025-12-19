@@ -9,12 +9,14 @@ const data: {
   codex: CommandMap['INIT']
   i18n: CommandMap['I18N']
   filters: CommandMap['FILTER']['filters'] | undefined
+  filterOptions: CommandMap['FILTER']['options'] | undefined
   search: CommandMap['FILTER']['search'] | undefined
   sort: CommandMap['SORT'] | undefined
 } = {
   codex: {},
   i18n: {},
   filters: undefined,
+  filterOptions: undefined,
   search: undefined,
   sort: undefined,
 }
@@ -31,12 +33,27 @@ export function getFilterResult(key: string, filterKey: CodexEntryKeys, filter: 
     case 'element':
       srcValue = data.codex[key]?.stats?.element
       break
+    case 'two_handed':
+      if (data.codex[key]?.item_type === 'weapon') {
+        srcValue = data.codex[key]?.stats?.two_handed || false
+      } else {
+        srcValue = undefined
+      }
+      break
     default:
       srcValue = data.codex[key]?.[filterKey]
   }
   if (isSpellKey(filterKey)) {
     srcValue = data.codex[key]?.stats?.[filterKey]
   }
+  if (data.filterOptions?.eventItems && filterKey === 'events' && key.startsWith('items/')) {
+    srcValue = [
+      ...new Set(
+        data.codex[key]?.dropped_by?.flatMap((entry) => data.codex[entry.join('/')]?.events ?? []),
+      ),
+    ]
+  }
+  ///
   if (srcValue === undefined) {
     return false
   }
@@ -166,6 +183,7 @@ self.onmessage = async (event: MessageEvent<Command>) => {
     case 'FILTER':
       const payload = cmd.payload as CommandMap['FILTER']
       data.filters = payload.filters
+      data.filterOptions = payload.options
       data.search = payload.search
       self.postMessage(await output())
       break

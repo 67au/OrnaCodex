@@ -11,7 +11,8 @@
     "spell_type": "技能／法術",
     "used_by": "使用者",
     "sources": "材料來源",
-    "off-hands": "副手裝備"
+    "off-hands": "副手裝備",
+    "two_handed": "雙手武器"
   },
   "stats": {
     "element": "元素屬性"
@@ -147,5 +148,16 @@
       "title": "怪物狀態"
     },
     "restore": "重置所有怪物狀態"
+  },
+  "filters": {
+    "options": {
+      "eventItems": "包含活動物品",
+      "title": "設置"
+    },
+    "title": "選項"
+  },
+  "two_handed": {
+    "false": "否",
+    "true": "是"
   }
 }

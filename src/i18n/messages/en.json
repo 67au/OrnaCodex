@@ -11,7 +11,8 @@
     "spell_type": "Skill / Spell",
     "used_by": "Used By",
     "sources": "Sources",
-    "off-hands": "Off-hands"
+    "off-hands": "Off-hands",
+    "two_handed": "Two-Handed Weapon"
   },
   "stats": {
     "element": "Element"
@@ -147,5 +148,16 @@
       "title": "Monster Stats"
     },
     "restore": "Reset All Monsters Stats"
+  },
+  "filters": {
+    "options": {
+      "title": "Filter Settings",
+      "eventItems": "Include Event's Items"
+    },
+    "title": "Options"
+  },
+  "two_handed": {
+    "false": "No",
+    "true": "Yes"
   }
 }

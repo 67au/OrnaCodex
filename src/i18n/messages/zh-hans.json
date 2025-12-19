@@ -11,12 +11,17 @@
     "spell_type": "技能 / 法术",
     "used_by": "使用者",
     "sources": "材料来源",
-    "off-hands": "副手装备"
+    "off-hands": "副手装备",
+    "two_handed": "双手武器"
   },
   "stats": {
     "element": "元素属性"
   },
   "exotic": {
+    "true": "是",
+    "false": "否"
+  },
+  "two_handed": {
     "true": "是",
     "false": "否"
   },
@@ -147,5 +152,12 @@
       "appVersion": "图鉴版本",
       "apiUpdatedAt": "数据库最后更新时间"
     }
+  },
+  "filters": {
+    "options": {
+      "title": "设置",
+      "eventItems": "包含活动物品"
+    },
+    "title": "选项"
   }
 }

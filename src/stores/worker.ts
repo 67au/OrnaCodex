@@ -38,11 +38,12 @@ export const useWorkerState = defineStore('worker', () => {
   }
 
   function setFilter() {
-    const { filters, search } = filtersState
+    const { filters, options, search } = filtersState
     worker.post({
       type: 'FILTER',
       payload: {
         filters: JSON.parse(JSON.stringify(filters)),
+        options: JSON.parse(JSON.stringify(options)),
         search: search || '',
       },
     } as Command<'FILTER'>)

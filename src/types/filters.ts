@@ -6,10 +6,14 @@ export interface Filter {
   exclude: boolean
 }
 
-export type CodexEntryKeys = Exclude<keyof CodexEntry | 'element', ''>
+export type CodexEntryKeys = Exclude<keyof CodexEntry | 'element' | 'two_handed', ''>
 
 export type Filters = {
   [key in CodexEntryKeys]?: Filter
+}
+
+export interface FilterOptions {
+  eventItems: boolean
 }
 
 export type PrimarySortKeys = keyof typeof config.primarySort
