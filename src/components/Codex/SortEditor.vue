@@ -77,8 +77,9 @@ function closeSearch() {
     close-on-back
     opacity="0.1"
     scrollable
+    :fullscreen="$vuetify.display.smAndDown"
+    :transition="$vuetify.display.smAndDown ? 'dialog-bottom-transition' : 'fade-transition'"
     :max-width="$vuetify.display.smAndDown ? undefined : 600"
-    transition="fade-transition"
   >
     <template v-slot:activator="{ props: activator }">
       <v-chip
@@ -96,7 +97,7 @@ function closeSearch() {
     </template>
 
     <template v-slot:default="{ isActive }">
-      <v-card density="compact">
+      <v-card density="compact" :rounded="!$vuetify.display.smAndDown">
         <v-toolbar>
           <v-toolbar-title>{{ $t('tools.sort') }}</v-toolbar-title>
           <v-text-field
@@ -118,8 +119,21 @@ function closeSearch() {
           >
           </v-text-field>
           <template v-slot:append>
-            <v-btn :icon="mdiMagnify" @click="expandSearch" v-if="!expand"></v-btn>
-            <v-btn :icon="mdiCloseCircle" @click="isActive.value = false"></v-btn>
+            <div class="d-flex ga-1">
+              <v-btn :icon="mdiMagnify" @click="expandSearch" v-if="!expand"></v-btn>
+              <v-btn
+                v-if="!$vuetify.display.smAndDown"
+                :icon="mdiCloseCircle"
+                @click="isActive.value = false"
+              ></v-btn>
+            </div>
+          </template>
+          <template v-slot:prepend>
+            <v-btn
+              v-if="$vuetify.display.smAndDown"
+              :icon="mdiClose"
+              @click="isActive.value = false"
+            ></v-btn>
           </template>
         </v-toolbar>
 
@@ -127,9 +141,13 @@ function closeSearch() {
 
         <v-list>
           <template v-for="([key, sorts], index) in sortKeys" :key="index">
-            <v-list-item v-if="sorts.length > 0">
-              <v-list-item-title>{{ getOptionValueName('category', key) }}</v-list-item-title>
-              <v-list-item-subtitle>
+            <template v-if="sorts.length > 0">
+              <v-list-item
+                :title="getOptionValueName('category', key)"
+                density="compact"
+                class="py-0"
+              ></v-list-item>
+              <v-list-item>
                 <v-chip-group color="secondary" mandatory v-model="sortState.key" column>
                   <template v-for="(sort, index) in sorts" :key="index">
                     <v-chip
@@ -146,9 +164,9 @@ function closeSearch() {
                     <v-divider v-if="search === '' && sort.key === sortState.lastStat"></v-divider>
                   </template>
                 </v-chip-group>
-              </v-list-item-subtitle>
+              </v-list-item>
               <v-divider></v-divider>
-            </v-list-item>
+            </template>
           </template>
           <v-empty-state
             v-if="isEmptyArray"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import config from '@/config'
 import { useSortState } from '@/stores/sort'
-import { mdiCloseCircle, mdiSort } from '@mdi/js'
+import { mdiClose, mdiCloseCircle, mdiSort } from '@mdi/js'
 import PrimarySortChip from './PrimarySortChip.vue'
 import type { PrimarySortKeys } from '@/types/filters'
 
@@ -17,7 +17,8 @@ const sortState = useSortState()
     opacity="0.1"
     scrollable
     :max-width="$vuetify.display.smAndDown ? undefined : 600"
-    transition="fade-transition"
+    :fullscreen="$vuetify.display.smAndDown"
+    :transition="$vuetify.display.smAndDown ? 'dialog-bottom-transition' : 'fade-transition'"
   >
     <template v-slot:activator="{ props: activator }">
       <PrimarySortChip
@@ -30,13 +31,26 @@ const sortState = useSortState()
     </template>
 
     <template v-slot:default="{ isActive }">
-      <v-card density="compact">
+      <v-card density="compact" :rounded="!$vuetify.display.smAndDown">
         <v-toolbar density="compact">
           <v-toolbar-title>
             {{ $t('tools.primarySort') }}
           </v-toolbar-title>
           <template v-slot:append>
-            <v-btn :icon="mdiCloseCircle" @click="isActive.value = false"></v-btn>
+            <div class="d-flex ga-1">
+              <v-btn
+                v-if="!$vuetify.display.smAndDown"
+                :icon="mdiCloseCircle"
+                @click="isActive.value = false"
+              ></v-btn>
+            </div>
+          </template>
+          <template v-slot:prepend>
+            <v-btn
+              v-if="$vuetify.display.smAndDown"
+              :icon="mdiClose"
+              @click="isActive.value = false"
+            ></v-btn>
           </template>
         </v-toolbar>
 
