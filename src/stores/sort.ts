@@ -32,7 +32,7 @@ export const useSortState = defineStore(
       category.value = ''
       key.value = ''
       asc.value = false
-      primary.value = 'default'
+      // primary.value = 'default'
     }
 
     return {

@@ -2,15 +2,7 @@
 import { useCodexState } from '@/stores/codex'
 import { useSortState } from '@/stores/sort'
 import { customSort, getOptionValueName, getSortName } from '@/plugins'
-import {
-  mdiArrowDown,
-  mdiArrowUp,
-  mdiClose,
-  mdiCloseCircle,
-  mdiMagnify,
-  mdiRestart,
-  mdiSort,
-} from '@mdi/js'
+import { mdiClose, mdiCloseCircle, mdiMagnify, mdiRestart, mdiSort } from '@mdi/js'
 import { every, isEmpty } from 'es-toolkit/compat'
 
 const dialog = shallowRef(false)
@@ -89,10 +81,6 @@ function closeSearch() {
         :text="sortState.isActive ? getSortName(sortState.key) : $t('tools.sort')"
         v-bind="activator"
       >
-        <template v-slot:append v-if="sortState.isActive && !sortState.isBool">
-          <v-icon v-if="sortState.asc" :icon="mdiArrowDown"></v-icon>
-          <v-icon v-else :icon="mdiArrowUp"></v-icon>
-        </template>
       </v-chip>
     </template>
 
