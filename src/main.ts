@@ -24,6 +24,9 @@ const vuetify = createVuetify({
     VCard: {
       elevation: 2,
     },
+    VAvatar: {
+      color: 'transparent',
+    },
   },
   blueprint: md3,
   theme: {
