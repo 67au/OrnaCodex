@@ -3,6 +3,7 @@ import { CodexEntryFactory, type CodexEntry } from '@/plugins/codex'
 import { get, isArray, isUndefined } from 'es-toolkit/compat'
 import DropMetaChips from '../DropMetaChips.vue'
 import StatChips from '../StatChips.vue'
+import MaterialChips from '../MaterialChips.vue'
 import { settingsStorage } from '@/storages/settings'
 
 const props = defineProps({
@@ -47,10 +48,17 @@ const dropsEntry = computed(() => {
           <template v-slot:subtitle>
             <DropMetaChips :entry="drop"></DropMetaChips>
           </template>
+
           <template v-if="settingsStorage.displayStats && drop.raw.stats">
-            <div style="width: fit-content" class="pa-1 border-sm rounded-lg">
+            <v-sheet border="sm" rounded="lg" class="pa-1 my-1" style="width: fit-content">
               <StatChips :entry="drop" mini></StatChips>
-            </div>
+            </v-sheet>
+          </template>
+
+          <template v-if="settingsStorage.displayMaterial && drop.raw?.upgrade_materials">
+            <v-sheet class="my-1">
+              <MaterialChips :entry="drop"></MaterialChips>
+            </v-sheet>
           </template>
         </v-list-item>
       </router-link>

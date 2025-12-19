@@ -134,7 +134,9 @@
       "displayCard": "显示条目卡片",
       "displayCardSubtitle": "开启后以卡片形式取代列表形式显示条目",
       "enemyEditorSubtitle": "开启后可以编辑怪物状态",
-      "enemyEditor": "启用怪物编辑器"
+      "enemyEditor": "启用怪物编辑器",
+      "displayMaterial": "显示升级素材",
+      "displayMaterialSubtitle": "开启后可以直接显示物品的升级素材"
     },
     "theme": {
       "title": "主题系统",

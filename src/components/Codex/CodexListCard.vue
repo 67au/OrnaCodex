@@ -2,6 +2,7 @@
 import type { CodexEntry } from '@/plugins/codex'
 import MetaChips from './MetaChips.vue'
 import StatChips from './StatChips.vue'
+import MaterialChips from './MaterialChips.vue'
 import { mdiOpenInNew, mdiShareVariant } from '@mdi/js'
 import { settingsStorage } from '@/storages/settings'
 import { useSortState } from '@/stores/sort'
@@ -53,6 +54,13 @@ function shareUrl(entry: CodexEntry) {
         <v-divider class="mx-3"></v-divider>
         <v-list-item class="py-2">
           <StatChips :entry="entry" single></StatChips>
+        </v-list-item>
+      </template>
+
+      <template v-if="settingsStorage.displayMaterial && entry.raw?.upgrade_materials">
+        <v-divider class="mx-3"></v-divider>
+        <v-list-item density="compact" class="my-0">
+          <MaterialChips :entry="entry"></MaterialChips>
         </v-list-item>
       </template>
     </router-link>

@@ -2,6 +2,7 @@
 import type { CodexEntry } from '@/plugins/codex'
 import MetaChips from './MetaChips.vue'
 import StatChips from './StatChips.vue'
+import MaterialChips from './MaterialChips.vue'
 import { settingsStorage } from '@/storages/settings'
 import { useSortState } from '@/stores/sort'
 
@@ -38,6 +39,12 @@ defineProps({
       <div style="width: fit-content" class="mx-2 px-1 py-1 border-sm rounded-lg">
         <StatChips :entry="entry" single mini></StatChips>
       </div>
+    </template>
+
+    <template v-if="settingsStorage.displayMaterial && entry.raw?.upgrade_materials">
+      <v-sheet class="mx-2 my-1">
+        <MaterialChips :entry="entry"></MaterialChips>
+      </v-sheet>
     </template>
   </router-link>
   <v-divider class="mx-3 mt-1"></v-divider>

@@ -130,6 +130,12 @@ export class CodexEntry implements CE {
     }
   }
 
+  get upgradeMaterialsList() {
+    return this.raw?.upgrade_materials?.map(([category, id]) =>
+      CodexEntryFactory.getEntry(category, id),
+    )
+  }
+
   get isExisted() {
     return this.raw !== undefined
   }

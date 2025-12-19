@@ -120,7 +120,9 @@
       "displayCard": "Display Entry Card",
       "displayCardSubtitle": "Enable to display entries in Card format instead of List format",
       "enemyEditor": "Enable Monster Editor",
-      "enemyEditorSubtitle": "Enable to edit stats of monsters"
+      "enemyEditorSubtitle": "Enable to edit stats of monsters",
+      "displayMaterial": "Display Upgrade Materials",
+      "displayMaterialSubtitle": "Enable to view entry upgrade materials directly"
     },
     "theme": {
       "title": "Theme",

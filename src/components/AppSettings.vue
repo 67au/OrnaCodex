@@ -44,6 +44,21 @@ const codexState = useCodexState()
         </template>
       </v-list-item>
 
+      <v-list-item
+        :subtitle="$t('settings.general.displayMaterialSubtitle')"
+        :title="$t('settings.general.displayMaterial')"
+        @click="settingsStorage.displayMaterial = !settingsStorage.displayMaterial"
+      >
+        <template v-slot:prepend>
+          <v-list-item-action start>
+            <v-checkbox-btn
+              v-model="settingsStorage.displayMaterial"
+              color="primary"
+            ></v-checkbox-btn>
+          </v-list-item-action>
+        </template>
+      </v-list-item>
+
       <v-divider></v-divider>
 
       <v-list-subheader>API</v-list-subheader>

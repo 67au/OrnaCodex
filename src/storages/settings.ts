@@ -5,6 +5,7 @@ const defaultSettings = {
   theme: '',
   displayStats: true,
   displayCard: true,
+  displayMaterial: false,
   enemyEditor: false,
 }
 
