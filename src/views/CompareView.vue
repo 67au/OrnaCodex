@@ -73,7 +73,11 @@ const qualityCodeItems = computed(() => [
         <v-spacer style="width: 20px"></v-spacer>
         <template v-for="(result, index) in compareState.comparedResult" :key="index">
           <v-slide-group-item>
-            <v-card border="md" :width="220" class="py-1 mr-1 align-self-start">
+            <v-card
+              border="md"
+              :width="$vuetify.display.smAndUp ? 260 : 220"
+              class="py-1 mr-1 align-self-start"
+            >
               <v-list-item class="px-1" :to="result.entry.url">
                 <template v-slot:prepend>
                   <v-avatar size="36" :rounded="false" class="ml-1 mr-n3">
