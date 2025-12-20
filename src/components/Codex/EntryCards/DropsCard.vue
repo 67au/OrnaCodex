@@ -45,22 +45,24 @@ const dropsEntry = computed(() => {
           <template v-slot:title>
             {{ drop.name }}
           </template>
-          <template v-slot:subtitle>
-            <DropMetaChips :entry="drop"></DropMetaChips>
-          </template>
-
-          <template v-if="settingsStorage.displayStats && drop.raw.stats">
-            <v-sheet border="sm" rounded="lg" class="pa-1 my-1" style="width: fit-content">
-              <StatChips :entry="drop" mini></StatChips>
-            </v-sheet>
-          </template>
-
-          <template v-if="settingsStorage.displayMaterial && drop.raw?.upgrade_materials">
-            <v-sheet class="my-1">
-              <MaterialChips :entry="drop"></MaterialChips>
-            </v-sheet>
-          </template>
+          <DropMetaChips :entry="drop"></DropMetaChips>
         </v-list-item>
+
+        <v-sheet
+          v-if="settingsStorage.displayStats && drop.raw.stats"
+          border="sm"
+          rounded="lg"
+          class="mx-3 pa-1 mb-1"
+          style="width: fit-content"
+        >
+          <StatChips :entry="drop" mini></StatChips>
+        </v-sheet>
+        <v-sheet
+          v-if="settingsStorage.displayMaterial && drop.raw?.upgrade_materials"
+          class="mx-3 mb-1"
+        >
+          <MaterialChips :entry="drop"></MaterialChips>
+        </v-sheet>
       </router-link>
     </template>
   </v-card>

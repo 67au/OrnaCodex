@@ -34,9 +34,9 @@ function shareUrl(entry: CodexEntry) {
         <template v-slot:title>
           <div class="text-h6">{{ entry.name }}</div>
         </template>
-        <v-card-subtitle class="pt-1">
+        <v-card-title class="py-1">
           <MetaChips :entry="entry" mini></MetaChips>
-        </v-card-subtitle>
+        </v-card-title>
         <template v-slot:prepend>
           <v-avatar size="36" :rounded="false">
             <v-img :src="entry.iconUrl" :class="entry.iconClass"></v-img>

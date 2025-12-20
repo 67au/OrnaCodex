@@ -37,36 +37,28 @@ const enemy = computed(() => entry.value.enemyStats)
               {{ $t('enemy.stats.' + key) }}
             </v-list-item-title>
           </template>
-          <template v-slot:subtitle>
-            <template v-if="key.startsWith('element')">
-              <div class="d-flex ga-1 py-1">
-                <template v-for="k in value" :key="key + k">
-                  <v-chip
-                    rounded="lg"
-                    size="small"
-                    :color="colors[k]"
-                    :value="k"
-                    variant="outlined"
-                  >
-                    {{ getOptionValueName('element', k) }}
-                  </v-chip>
-                </template>
-              </div>
-            </template>
-            <template v-if="key.startsWith('status')">
-              <div class="d-flex flex-wrap ga-1 pt-1">
-                <template v-for="k in value" :key="k">
-                  <v-chip rounded="lg" size="small" color="default" :value="k">
-                    <template v-slot:prepend>
-                      <v-avatar :rounded="false" class="mr-1">
-                        <v-img :src="getIcon('status', k)" class="image-render-pixel"></v-img>
-                      </v-avatar>
-                    </template>
-                    {{ getOptionValueName('status', k) }}
-                  </v-chip>
-                </template>
-              </div>
-            </template>
+          <template v-if="key.startsWith('element')">
+            <div class="d-flex ga-1 py-1">
+              <template v-for="k in value" :key="key + k">
+                <v-chip rounded="lg" size="small" :color="colors[k]" :value="k" variant="outlined">
+                  {{ getOptionValueName('element', k) }}
+                </v-chip>
+              </template>
+            </div>
+          </template>
+          <template v-if="key.startsWith('status')">
+            <div class="d-flex flex-wrap ga-1 pt-1">
+              <template v-for="k in value" :key="k">
+                <v-chip rounded="lg" size="small" color="default" :value="k">
+                  <template v-slot:prepend>
+                    <v-avatar :rounded="false" class="mr-1">
+                      <v-img :src="getIcon('status', k)" class="image-render-pixel"></v-img>
+                    </v-avatar>
+                  </template>
+                  {{ getOptionValueName('status', k) }}
+                </v-chip>
+              </template>
+            </div>
           </template>
         </v-list-item>
       </template>
