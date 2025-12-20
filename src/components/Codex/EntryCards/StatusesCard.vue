@@ -22,11 +22,11 @@ const statuses = computed(() => get(entry.value.raw, props.name))
     <v-list-item class="bg-surface-light" density="compact">
       <template v-slot:title>
         <v-list-item-title>
-          {{ $t('meta.' + name) }}
+          {{ $t('meta.' + props.name) }}
         </v-list-item-title>
       </template>
       <template v-slot:append>
-        <v-icon size="x-small" :icon="mdiCircle" :color="config.statusColor[name]"></v-icon>
+        <v-icon size="x-small" :icon="mdiCircle" :color="config.statusColor[props.name]"></v-icon>
       </template>
     </v-list-item>
     <v-card-text class="d-flex flex-wrap ga-1 py-2">
