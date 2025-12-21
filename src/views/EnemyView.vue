@@ -238,7 +238,7 @@ async function resetAll() {
       </v-dialog>
     </template>
 
-    <v-container fluid class="px-4 mx-auto d-flex flex-column ga-2" :max-width="900">
+    <v-container fluid class="px-2 mx-auto d-flex flex-column ga-2" :max-width="900">
       <v-card>
         <v-list-item density="default" variant="tonal" class="px-2">
           <v-list-item-title>
