@@ -19,7 +19,7 @@ const props = defineProps({
       variant="text"
       rounded="lg"
       border="sm"
-      size="small"
+      size="x-small"
       class="bg-surface-light"
     >
       <template v-slot:prepend>
