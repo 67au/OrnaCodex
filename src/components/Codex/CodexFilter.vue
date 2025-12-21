@@ -61,7 +61,7 @@ const optionItems = computed(() =>
               variant="tonal"
               border="md"
               color="error"
-              elevation="4"
+              elevation="2"
             ></v-btn>
             <FiltersEditor :title="'Filters'">
               <template v-slot:activator="{ activator: activator }">
@@ -71,7 +71,7 @@ const optionItems = computed(() =>
                   variant="tonal"
                   border="md"
                   color="secondary"
-                  elevation="4"
+                  elevation="2"
                 ></v-btn>
               </template>
             </FiltersEditor>
