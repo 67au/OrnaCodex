@@ -85,7 +85,7 @@ const optionKeys = computed(() => {
               filter
             >
               <v-chip
-                v-for="(value, key, index) in filtersState.options"
+                v-for="(key, index) in filtersState.defaultOptionKeys"
                 rounded="lg"
                 variant="tonal"
                 :key="index"

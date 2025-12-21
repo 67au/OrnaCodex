@@ -1,6 +1,6 @@
 import type { CodexEntryKeys, FilterOptions, Filters } from '@/types/filters'
 
-const defaultOptions: FilterOptions = {
+const defaultOptions: Readonly<FilterOptions> = {
   eventDrops: false,
 }
 
@@ -15,8 +15,9 @@ export const useFiltersState = defineStore(
     const search: Ref<string | null> = ref(null)
     const options: ComputedRef<FilterOptions> = computed(() => _state.options)
     const optionKeys = computed(() => {
-      return Object.keys(_state.options).filter((k) => _state.options[k as keyof FilterOptions])
+      return Object.keys(defaultOptions).filter((k) => _state.options[k as keyof FilterOptions])
     })
+    const defaultOptionKeys = Object.keys(defaultOptions) as Array<keyof FilterOptions>
 
     function $reset() {
       _state.filters = {}
@@ -39,7 +40,17 @@ export const useFiltersState = defineStore(
       }
     }
 
-    return { _state, filters, options, search, keys, optionKeys, setFilter, $reset }
+    return {
+      _state,
+      filters,
+      options,
+      search,
+      keys,
+      optionKeys,
+      defaultOptionKeys,
+      setFilter,
+      $reset,
+    }
   },
   {
     persistedState: {
