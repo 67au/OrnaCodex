@@ -15,6 +15,7 @@ import {
   useAssessResult,
 } from '@/plugins/assess'
 import { CodexEntryFactory } from '@/plugins/codex'
+import { settingsStorage } from '@/storages/settings'
 import { useCodexState } from '@/stores/codex'
 import type { AssessQuery, AssessResult } from '@/types/assess'
 import {
@@ -405,7 +406,14 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                   rounded="md"
                   variant="flat"
                 >
-                  {{ `${(result.quality * 100).toFixed()}%` }}
+                  <div class="d-flex ga-1">
+                    <div>
+                      {{ `${(result.quality * 100).toFixed()}%` }}
+                    </div>
+                    <div v-if="settingsStorage.displayInGameQuality">
+                      {{ `| ${(result.quality * 50).toFixed(1)}/100` }}
+                    </div>
+                  </div>
                 </v-chip>
                 <v-chip
                   v-if="result.range?.[0] !== result.range?.[1]"
@@ -431,7 +439,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
             </v-list-item-title>
           </v-list-item>
           <v-card-text class="pa-2">
-            <v-table fixed-header density="compact" class="text-no-wrap text-right">
+            <v-table fixed-header density="compact" class="text-no-wrap">
               <thead>
                 <tr>
                   <th>

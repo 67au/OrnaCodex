@@ -6,6 +6,7 @@ const defaultSettings = {
   displayStats: true,
   displayCard: true,
   displayMaterial: false,
+  displayInGameQuality: true,
   enemyEditor: false,
 }
 

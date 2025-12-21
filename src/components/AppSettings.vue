@@ -59,6 +59,21 @@ const codexState = useCodexState()
         </template>
       </v-list-item>
 
+      <v-list-item
+        :subtitle="$t('settings.general.displayInGameQualitySubtitle')"
+        :title="$t('settings.general.displaysInGameQuality')"
+        @click="settingsStorage.displayInGameQuality = !settingsStorage.displayInGameQuality"
+      >
+        <template v-slot:prepend>
+          <v-list-item-action start>
+            <v-checkbox-btn
+              v-model="settingsStorage.displayInGameQuality"
+              color="primary"
+            ></v-checkbox-btn>
+          </v-list-item-action>
+        </template>
+      </v-list-item>
+
       <v-divider></v-divider>
 
       <v-list-subheader>API</v-list-subheader>

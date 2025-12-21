@@ -122,7 +122,9 @@
       "enemyEditor": "啓用怪物編輯器",
       "enemyEditorSubtitle": "開啓後可以編輯怪物狀態",
       "displayMaterial": "顯示升級素材",
-      "displayMaterialSubtitle": "開啓後可以直接顯示物品的升級素材"
+      "displayMaterialSubtitle": "開啓後可以直接顯示物品的升級素材",
+      "displayInGameQualitySubtitle": "開啓後可以鑒定時顯示游戲内風格的裝備評分",
+      "displaysInGameQuality": "顯示游戲内風格的裝備評分"
     },
     "theme": {
       "title": "主題",

@@ -122,7 +122,9 @@
       "enemyEditor": "Enable Monster Editor",
       "enemyEditorSubtitle": "Enable to edit stats of monsters",
       "displayMaterial": "Display Upgrade Materials",
-      "displayMaterialSubtitle": "Enable to view entry upgrade materials directly"
+      "displayMaterialSubtitle": "Enable to view entry upgrade materials directly",
+      "displayInGameQualitySubtitle": "Enable to display the in-game style rating while assessed",
+      "displaysInGameQuality": "Display In-game Style Assessment Result"
     },
     "theme": {
       "title": "Theme",
