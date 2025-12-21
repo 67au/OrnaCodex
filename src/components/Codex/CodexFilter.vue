@@ -81,13 +81,13 @@ const optionItems = computed(() =>
     </v-card>
 
     <v-card
-      class="px-2 pb-2"
+      class="px-2"
       border="md"
       v-if="filtersState.keys.length > 0 || filtersState.optionKeys.length > 0"
     >
       <v-list class="mx-n4 py-0">
         <template v-if="filtersState.optionKeys.length > 0">
-          <v-list-item density="compact" class="pt-2">
+          <v-list-item density="compact" class="py-0">
             <v-list-item-title class="d-flex ga-1">
               <v-chip
                 v-for="(key, index) in filtersState.optionKeys"
@@ -104,13 +104,17 @@ const optionItems = computed(() =>
               </v-chip>
             </v-list-item-title>
           </v-list-item>
-          <v-divider v-if="filtersState.keys.length > 0" class="mt-1"></v-divider>
+          <v-divider v-if="filtersState.keys.length > 0"></v-divider>
         </template>
         <template
           v-for="([key, filter], index) in Object.entries(filtersState.filters)"
           :key="index"
         >
-          <v-list-item density="compact" class="py-0">
+          <v-list-item
+            density="compact"
+            class="py-0"
+            :class="{ 'pb-2': index === filtersState.keys.length - 1 }"
+          >
             <v-autocomplete
               variant="outlined"
               density="compact"
