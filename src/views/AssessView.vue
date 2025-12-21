@@ -212,59 +212,53 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
 
       <v-slide-y-transition>
         <v-card v-if="entry.isExisted" border="md">
-          <v-list-item :to="entry.url">
+          <v-list-item :to="entry.url" :title="entry.name">
             <template v-slot:prepend>
               <v-avatar size="36" :rounded="false">
                 <v-img :src="entry.iconUrl" :class="entry.iconClass"></v-img>
               </v-avatar>
             </template>
-            <template v-slot:title>
-              <v-list-item-title>
-                {{ entry.name }}
-              </v-list-item-title>
-            </template>
-            <template v-slot:subtitle>
-              <div class="d-flex flex-wrap ga-1 py-1">
-                <v-chip size="x-small" color="warning" :text="entry.tierName"></v-chip>
 
-                <v-chip
-                  size="x-small"
-                  color="primary"
-                  variant="flat"
-                  v-if="entry.isUpgradable"
-                  :prepend-icon="mdiRobotAngry"
-                  :text="$t(bossScalingName[entry.bossScaling])"
-                ></v-chip>
+            <div class="d-flex flex-wrap ga-1 py-1">
+              <v-chip size="x-small" color="warning" :text="entry.tierName"></v-chip>
 
-                <v-chip size="x-small" v-if="entry.raw.exotic" color="tertiary">
-                  <div class="exotic">{{ getOptionName('exotic') }}</div>
-                </v-chip>
+              <v-chip
+                size="x-small"
+                color="primary"
+                variant="flat"
+                v-if="entry.isUpgradable"
+                :prepend-icon="mdiRobotAngry"
+                :text="$t(bossScalingName[entry.bossScaling])"
+              ></v-chip>
 
-                <v-chip
-                  size="x-small"
-                  color="secondary"
-                  v-if="entry.raw.useable_by"
-                  :prepend-icon="mdiAccountCheck"
-                  :text="getOptionValueName('useable_by', entry.raw.useable_by)"
-                ></v-chip>
+              <v-chip size="x-small" v-if="entry.raw.exotic" color="tertiary">
+                <div class="exotic">{{ getOptionName('exotic') }}</div>
+              </v-chip>
 
-                <v-chip
-                  size="x-small"
-                  color="secondary"
-                  v-if="entry.raw.place"
-                  :prepend-icon="mdiTshirtCrew"
-                  :text="getOptionValueName('place', entry.raw.place)"
-                ></v-chip>
+              <v-chip
+                size="x-small"
+                color="secondary"
+                v-if="entry.raw.useable_by"
+                :prepend-icon="mdiAccountCheck"
+                :text="getOptionValueName('useable_by', entry.raw.useable_by)"
+              ></v-chip>
 
-                <v-chip
-                  v-if="entry.raw.type"
-                  size="x-small"
-                  color="secondary"
-                  :prepend-icon="mdiSwordCross"
-                  :text="getOptionValueName('type', entry.raw.type)"
-                ></v-chip>
-              </div>
-            </template>
+              <v-chip
+                size="x-small"
+                color="secondary"
+                v-if="entry.raw.place"
+                :prepend-icon="mdiTshirtCrew"
+                :text="getOptionValueName('place', entry.raw.place)"
+              ></v-chip>
+
+              <v-chip
+                v-if="entry.raw.type"
+                size="x-small"
+                color="secondary"
+                :prepend-icon="mdiSwordCross"
+                :text="getOptionValueName('type', entry.raw.type)"
+              ></v-chip>
+            </div>
           </v-list-item>
 
           <v-divider></v-divider>
@@ -381,21 +375,18 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
       <template v-if="!isUndefined(result)">
         <v-card v-if="result.quality > 0">
           <v-list-item density="compact" class="bg-surface-light text-center">
-            <template v-slot:title>
-              <v-list-item-title>
-                {{ entry.name }}
-                <template v-if="isSupported">
-                  <v-btn
-                    size="small"
-                    variant="text"
-                    color="secondary"
-                    @click="copy(itemName)"
-                    :icon="copied ? mdiClipboardCheckOutline : mdiClipboardOutline"
-                  ></v-btn>
-                </template>
-              </v-list-item-title>
-            </template>
-            <template v-slot:subtitle>
+            <v-list-item-title>
+              {{ entry.name }}
+              <template v-if="isSupported">
+                <v-btn
+                  size="small"
+                  variant="text"
+                  color="secondary"
+                  @click="copy(itemName)"
+                  :icon="copied ? mdiClipboardCheckOutline : mdiClipboardOutline"
+                ></v-btn>
+              </template>
+
               <div class="d-flex flex-wrap justify-center ga-1 py-1">
                 <v-chip
                   :prepend-icon="mdiStarCircle"
@@ -437,10 +428,10 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                   {{ `${$t('assess.anglevel.title')} ${result.angLevel}` }}
                 </v-chip>
               </div>
-            </template>
+            </v-list-item-title>
           </v-list-item>
-          <v-card-text class="py-2">
-            <v-table fixed-header density="compact" class="text-no-wrap">
+          <v-card-text class="pa-2">
+            <v-table fixed-header density="compact" class="text-no-wrap text-right">
               <thead>
                 <tr>
                   <th>
@@ -474,6 +465,7 @@ const { copy, copied, isSupported } = useClipboard({ source: itemName.value })
                     </template>
                   </tr>
                 </template>
+                <tr></tr>
               </tbody>
             </v-table>
           </v-card-text>
