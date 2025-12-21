@@ -1,7 +1,7 @@
 import type { CodexEntryKeys, FilterOptions, Filters } from '@/types/filters'
 
 const defaultOptions: FilterOptions = {
-  eventItems: false,
+  eventDrops: false,
 }
 
 export const useFiltersState = defineStore(

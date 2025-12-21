@@ -154,7 +154,7 @@
   "filters": {
     "options": {
       "title": "Filter Settings",
-      "eventItems": "Include Event's Items"
+      "eventDrops": "Include Event Drops"
     },
     "title": "Options"
   },

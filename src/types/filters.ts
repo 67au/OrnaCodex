@@ -13,7 +13,7 @@ export type Filters = {
 }
 
 export interface FilterOptions {
-  eventItems: boolean
+  eventDrops: boolean
 }
 
 export type PrimarySortKeys = keyof typeof config.primarySort

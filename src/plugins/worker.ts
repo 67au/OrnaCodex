@@ -46,7 +46,7 @@ export function getFilterResult(key: string, filterKey: CodexEntryKeys, filter: 
   if (isSpellKey(filterKey)) {
     srcValue = data.codex[key]?.stats?.[filterKey]
   }
-  if (data.filterOptions?.eventItems && filterKey === 'events' && key.startsWith('items/')) {
+  if (data.filterOptions?.eventDrops && filterKey === 'events' && key.startsWith('items/')) {
     srcValue = [
       ...new Set(
         data.codex[key]?.dropped_by?.flatMap((entry) => data.codex[entry.join('/')]?.events ?? []),
