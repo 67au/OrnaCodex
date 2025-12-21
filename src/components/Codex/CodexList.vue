@@ -66,7 +66,7 @@ const sortState = useSortState()
     <template v-else>
       <v-sheet border="md" rounded="lg" class="my-2">
         <v-infinite-scroll :items="entriesListState.entires" @load="entriesListState.load">
-          <template v-for="entry in entriesListState.entires" :key="entry.id">
+          <template v-for="entry in entriesListState.entires" :key="entry.url">
             <CodexListItem :entry="entry"></CodexListItem>
           </template>
         </v-infinite-scroll>
