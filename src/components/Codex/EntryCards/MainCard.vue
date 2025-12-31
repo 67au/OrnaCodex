@@ -48,7 +48,7 @@ const entry = inject('entry') as CodexEntry
 
     <template v-if="entry.description">
       <v-divider class="mx-4"></v-divider>
-      <v-card-text class="text-surface-variant">
+      <v-card-text class="text-surface-variant text-pre-wrap">
         {{ entry.description }}
       </v-card-text>
     </template>
