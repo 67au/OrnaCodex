@@ -278,7 +278,7 @@ export const qualityBonusSet = new Set([
 
 export const qualityBonusSmallSet = new Set(['bestial_bond'])
 
-export const ratingBonusSet = new Set(['act_first_chance', 'swap_defense_resistance'])
+export const ratingBonusSet = new Set(['act_first_chance_(pve)', 'swap_defense_resistance'])
 export const ratingBonusSmallSet = new Set([
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
