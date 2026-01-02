@@ -241,30 +241,30 @@ export function getQualityCode(quality: number, level: number, isAccessory: bool
   const BASE_THRESHOLDS = [70, 90, 100, 101, 120, 140, 170] as const
   const ACCESSORY_THRESHOLDS = [201, 206] as const
   const thresholds = isAccessory ? [...BASE_THRESHOLDS, ...ACCESSORY_THRESHOLDS] : BASE_THRESHOLDS
-  const code = thresholds.filter((t) => qual >= t).length - 1
+  const code = (thresholds.filter((t) => qual >= t).length - 1) as Quality
 
   return code
 }
 
-export function getQualityColor(code: number | undefined) {
+export function getQualityColor(code: Quality | undefined) {
   if (code) {
     return colors[Quality[code] + '-text']
   }
   return undefined
 }
 
-export function getQualityName(code: number | undefined) {
+export function getQualityName(code: Quality | undefined) {
   if (code) {
     return i18n.global.t('assess.quality.' + Quality[code])
   }
   return undefined
 }
 
-const bonusKeyScaling: Record<string, number> = {
+const bonusScaling: Record<string, number> = {
   no_follower_bonus: 1 / 5,
 }
 
-export const bonusKeySet = new Set([
+export const qualityBonusSet = new Set([
   'orn_bonus',
   'exp_bonus',
   'luck_bonus',
@@ -276,11 +276,18 @@ export const bonusKeySet = new Set([
   'apex',
 ])
 
-export const smallBonusKeySet = new Set(['bestial_bond'])
+export const qualityBonusSmallSet = new Set(['bestial_bond'])
+
+export const ratingBonusSet = new Set(['act_first_chance', 'swap_defense_resistance'])
+export const ratingBonusSmallSet = new Set([
+  'player_r_follower_ability_chance',
+  'mana_overspend_chance',
+])
 
 export function getQualityBonus(
   base: number,
-  qualityCode: number,
+  quality: number,
+  qualityCode: number = -1,
   isAdornment: boolean = false,
   key: string | undefined = undefined,
 ) {
@@ -289,17 +296,32 @@ export function getQualityBonus(
     return 0
   }
 
-  if (qualityCode < 0 || !bonusKeySet.has(_key)) {
+  if (ratingBonusSet.has(_key)) {
+    const r = (base * quality) / 100
+    return r < 100 ? r : 100
+  }
+
+  if (ratingBonusSmallSet.has(_key)) {
+    if (quality > 1) {
+      return base + 1
+    }
+    if (qualityCode === 0) {
+      return base / 10
+    }
     return base
   }
 
-  const keyScaling = bonusKeyScaling[_key] ?? 1
-  const qualityScaling = bonusQualityScaling[Quality[qualityCode]!]!
+  if (qualityBonusSet.has(_key)) {
+    const keyScaling = bonusScaling[_key] ?? 1
+    const qualityScaling = bonusQualityScaling[Quality[qualityCode]!]!
 
-  if (isAdornment || smallBonusKeySet.has(_key)) {
-    return base + (base * qualityScaling) / 100
+    if (isAdornment || qualityBonusSmallSet.has(_key)) {
+      return base + (base * qualityScaling) / 100
+    }
+    return ((100 + base) * (100 + qualityScaling * keyScaling) - 10000) / 100
   }
-  return ((100 + base) * (100 + qualityScaling * keyScaling) - 10000) / 100
+
+  return base
 }
 
 export function useAssessResult(query: AssessQuery) {
@@ -436,7 +458,7 @@ export function useAssessResult(query: AssessQuery) {
   return result
 }
 
-const anguishedBonusKeySet = new Set(['follower_stats', 'summon_stats'])
+const anguishedBonusSet = new Set(['follower_stats', 'summon_stats'])
 
 export function getDisableQueryFlag(entry: CodexEntry, query: QualityQuery['query']) {
   return query.quality <= 0 || (query.bossScaling === 0 && !entry.isAccessory && !entry.isAdornment)
@@ -464,6 +486,11 @@ export function useQualityResult(query: QualityQuery) {
   assessQuery.options.bossScaling = query.query.bossScaling
   const assessResult = useAssessResult(assessQuery)
 
+  const qualityCode =
+    query.query.qualityCode > -1
+      ? query.query.qualityCode
+      : getQualityCode(query.query.quality / 100, query.query.level, query.entry.isAccessory)
+
   Object.keys(baseStat).forEach((key: string) => {
     const ar = assessResult.stats[key]
     const stat = baseStat[key] as StatValue
@@ -472,17 +499,14 @@ export function useQualityResult(query: QualityQuery) {
     if (!isUndefined(ar)) {
       result.stats[key] = ar.values[query.query.level - 1] as number
     }
-    if (bonusKeySet.has(key)) {
-      result.stats[key] = getQualityBonus(
-        getStripedValue(stat as string),
-        query.query.qualityCode > -1
-          ? query.query.qualityCode
-          : getQualityCode(query.query.quality / 100, query.query.level, query.entry.isAccessory),
-        query.entry.isAdornment,
-        key,
-      )
-    }
-    if (query.query.angLevel > 0 && anguishedBonusKeySet.has(key)) {
+    result.stats[key] = getQualityBonus(
+      getStripedValue(result.stats[key] as string),
+      query.query.quality,
+      qualityCode,
+      query.entry.isAdornment,
+      key,
+    )
+    if (query.query.angLevel > 0 && anguishedBonusSet.has(key)) {
       result.stats[key] = getStripedValue(stat as string) + query.query.angLevel * 3
     }
   })

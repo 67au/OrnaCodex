@@ -1,51 +1,51 @@
-import type { CodexEntry } from '@/plugins/codex'
-import type { StatValue } from './codex'
+import type { CodexEntry } from "@/plugins/codex";
+import type { StatValue } from "./codex";
 
-export type BossScaling = -1 | 0 | 1
+export type BossScaling = -1 | 0 | 1;
 
 export interface AssessQuery {
-  query: Record<string, number>
+  query: Record<string, number>;
   options: {
-    bossScaling: number
-    isQualityCalc: boolean
-    baseStats: Record<string, number>
+    bossScaling: number;
+    isQualityCalc: boolean;
+    baseStats: Record<string, number>;
     ///
     // isWeapon: boolean
-    isCelestialWeapon: boolean
-    isTwoHanded: boolean
-    isUpgradable: boolean
-    isOffHand: boolean
-  }
+    isCelestialWeapon: boolean;
+    isTwoHanded: boolean;
+    isUpgradable: boolean;
+    isOffHand: boolean;
+  };
 }
 
 export interface AssessResult {
-  quality: number
-  angLevel: number
+  quality: number;
+  angLevel: number;
   stats: {
     [key: string]: {
-      base: number
-      values: Array<number>
-    }
-  }
-  levels: number
+      base: number;
+      values: Array<number>;
+    };
+  };
+  levels: number;
   //
-  exact?: boolean
-  range?: [number, number]
+  exact?: boolean;
+  range?: [number, number];
 }
 
 export interface QualityQuery {
-  entry: CodexEntry
+  entry: CodexEntry;
   query: {
-    angLevel: number
-    quality: number
-    level: number
-    bossScaling: number
-    qualityCode: number
-  }
+    angLevel: number;
+    quality: number;
+    level: number;
+    bossScaling: number;
+    qualityCode: number;
+  };
 }
 
 export interface QualityResult {
-  entry: CodexEntry
-  query: QualityQuery['query']
-  stats: Record<string, StatValue>
+  entry: CodexEntry;
+  query: QualityQuery["query"];
+  stats: Record<string, StatValue>;
 }
