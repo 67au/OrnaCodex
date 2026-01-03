@@ -246,18 +246,18 @@ export function getQualityCode(quality: number, level: number, isAccessory: bool
   return code
 }
 
-export function getQualityColor(code: Quality | undefined) {
-  if (code) {
-    return colors[Quality[code] + '-text']
+export function getQualityColor(code: Quality) {
+  if (code < 0) {
+    return undefined
   }
-  return undefined
+  return colors[Quality[code] + '-text']
 }
 
-export function getQualityName(code: Quality | undefined) {
-  if (code) {
-    return i18n.global.t('assess.quality.' + Quality[code])
+export function getQualityName(code: Quality) {
+  if (code < 0) {
+    return undefined
   }
-  return undefined
+  return i18n.global.t('assess.quality.' + Quality[code])
 }
 
 const bonusScaling: Record<string, number> = {
