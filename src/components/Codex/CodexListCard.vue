@@ -28,7 +28,7 @@ function shareUrl(entry: CodexEntry) {
 </script>
 
 <template>
-  <v-card density="compact" color="teritary" variant="elevated" rounded="md">
+  <v-card density="compact" rounded="md">
     <router-link :to="entry.url" class="text-decoration-none" style="white-space: normal">
       <v-card-item class="py-1">
         <template v-slot:title>
@@ -46,7 +46,7 @@ function shareUrl(entry: CodexEntry) {
 
       <template v-if="settingsStorage.displayStats && entry.raw.stats">
         <v-divider class="mx-3"></v-divider>
-        <v-list-item class="py-2">
+        <v-list-item class="py-1">
           <StatChips :entry="entry" sorted></StatChips>
         </v-list-item>
       </template>
@@ -54,7 +54,7 @@ function shareUrl(entry: CodexEntry) {
         v-else-if="sortState.isActive && entry.raw.stats?.[sortState.shortKey] !== undefined"
       >
         <v-divider class="mx-3"></v-divider>
-        <v-list-item class="py-2">
+        <v-list-item class="py-1">
           <StatChips :entry="entry" single></StatChips>
         </v-list-item>
       </template>
