@@ -1,4 +1,4 @@
-import type { CodexEntry } from './codex'
+import type { CodexEntryRaw } from './codex'
 import config from '@/config'
 
 export interface Filter {
@@ -6,7 +6,7 @@ export interface Filter {
   exclude: boolean
 }
 
-export type CodexEntryKeys = Exclude<keyof CodexEntry | 'element' | 'two_handed', ''>
+export type CodexEntryKeys = Exclude<keyof CodexEntryRaw | 'element' | 'two_handed', ''>
 
 export type Filters = {
   [key in CodexEntryKeys]?: Filter

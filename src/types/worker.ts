@@ -1,8 +1,8 @@
-import type { CodexEntry, CodexTranslationMain } from './codex'
+import type { CodexEntryRaw, CodexTranslationMain } from './codex'
 import type { FilterOptions, Filters, SortState } from './filters'
 
 export interface CommandMap {
-  INIT: Record<string, CodexEntry>
+  INIT: Record<string, CodexEntryRaw>
   I18N: Record<string, CodexTranslationMain>
   FILTER: { filters: Filters; options: FilterOptions; search: string }
   SORT: SortState

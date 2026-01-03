@@ -1,6 +1,6 @@
 import config from '@/config'
 import { useCodexState } from '@/stores/codex'
-import { type CodexEntry as CE } from '@/types/codex'
+import { type CodexEntryRaw as CE } from '@/types/codex'
 import { isUndefined } from 'es-toolkit'
 import colors from '@/styles/colors.module.scss'
 import { mdiMagicStaff, mdiSword } from '@mdi/js'

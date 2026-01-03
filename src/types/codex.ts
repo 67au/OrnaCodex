@@ -41,11 +41,11 @@ export interface BestialBond {
   value?: string
 }
 
-export type CodexEntries = Record<string, Record<string, CodexEntry>>
+export type CodexEntries = Record<string, Record<string, CodexEntryRaw>>
 
 export type StatValue = string | boolean | Array<string> | number
 
-export interface CodexEntry {
+export interface CodexEntryRaw {
   category: string
   id: string
   ///
