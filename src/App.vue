@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import InitLoader from '@/components/InitLoader.vue'
-import { useAppState } from './stores/app'
-
-const appState = useAppState()
-
-onMounted(async () => {
-  await appState.initData()
-})
+import AppLoader from '@/components/AppLoader.vue'
 </script>
 
 <template>
-  <InitLoader v-if="appState.isLoading"></InitLoader>
-  <template v-else>
+  <AppLoader>
     <RouterView v-slot="{ Component }">
       <KeepAlive include="HomeView">
         <component :is="Component" />
       </KeepAlive>
     </RouterView>
-  </template>
+  </AppLoader>
 </template>

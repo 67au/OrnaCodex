@@ -72,12 +72,13 @@ export const useCodexState = defineStore('codex', () => {
       const prefetchCodex = getCodex()
       // Translations
       const translations = await Promise.all(Object.keys(meta.i18n).map((lang) => getI18n(lang)))
+      // Codex
+      const { data } = await prefetchCodex
+
       translations.forEach(async (tr) => {
         const { data } = tr
         await codexStorage.setItem(`translation/${data.value.language}`, data.value)
       })
-      // Codex
-      const { data } = await prefetchCodex
       await saveStorage(codexStorage, data.value)
       await codexStorage.setItem('version', meta.version)
       await codexStorage.setItem('updatedAt', meta.updated_at)

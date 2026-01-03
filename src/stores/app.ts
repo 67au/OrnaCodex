@@ -7,25 +7,26 @@ export const useAppState = defineStore('app', () => {
   const extraState = useExtraState()
   const workerState = useWorkerState()
 
-  const isInited = shallowRef(false)
-  const isUpdated = shallowRef(false)
-  const isUpdating = shallowRef(true)
-
-  const isLoading = computed(() => !isInited.value)
+  const loading = shallowRef(false)
+  const updated = shallowRef(false)
+  const finished = shallowRef(false)
 
   async function initData() {
-    let loaded = await codexState.initCodexData()
-    isUpdated.value = await codexState.useFetchCodex()
-    if (!loaded) {
-      loaded = await codexState.initCodexData()
-      isUpdating.value = false
+    const updateTask = codexState.useFetchCodex()
+    let inited = await codexState.initCodexData()
+    if (!inited) {
+      loading.value = true
+      updated.value = await updateTask
+      inited = await codexState.initCodexData()
     }
-    if (loaded) {
+    if (inited) {
       workerState.setInit()
       workerState.setI18n()
+      finished.value = true
     }
-    isInited.value = true
+    loading.value = false
 
+    updated.value = await updateTask
     await extraState.initExtraData()
     if (await extraState.useFetchExtra()) {
       await extraState.initExtraData()
@@ -33,10 +34,9 @@ export const useAppState = defineStore('app', () => {
   }
 
   return {
-    inited: isInited,
-    updated: isUpdated,
-    isUpdating,
-    isLoading,
+    updated,
+    loading,
+    finished,
     initData,
   }
 })
