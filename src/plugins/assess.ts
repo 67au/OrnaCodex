@@ -5,6 +5,7 @@ import { getStripedValue } from '.'
 import { i18n } from '@/i18n'
 import colors from '@/styles/colors.module.scss'
 import type { StatValue } from '@/types/codex'
+import { isArray } from 'es-toolkit/compat'
 
 export const assessKeys = [
   'hp',
@@ -285,7 +286,7 @@ export const ratingBonusSmallSet = new Set([
 ])
 
 export function getQualityBonus(
-  base: number,
+  base: StatValue,
   quality: number,
   qualityCode: number = -1,
   isAdornment: boolean = false,
@@ -296,19 +297,24 @@ export function getQualityBonus(
     return 0
   }
 
+  if (typeof base === 'boolean' || isArray(base)) {
+    return base
+  }
+
+  const _base = getStripedValue(base)
+
   if (ratingBonusSet.has(_key)) {
-    const r = (base * quality) / 100
+    const r = (_base * quality) / 100
     return r < 100 ? r : 100
   }
 
   if (ratingBonusSmallSet.has(_key)) {
     if (quality > 1) {
-      return base + 1
+      return _base + 1
     }
     if (qualityCode === 0) {
-      return base / 10
+      return _base / 10
     }
-    return base
   }
 
   if (qualityBonusSet.has(_key)) {
@@ -316,9 +322,9 @@ export function getQualityBonus(
     const qualityScaling = bonusQualityScaling[Quality[qualityCode]!]!
 
     if (isAdornment || qualityBonusSmallSet.has(_key)) {
-      return base + (base * qualityScaling) / 100
+      return _base + (_base * qualityScaling) / 100
     }
-    return ((100 + base) * (100 + qualityScaling * keyScaling) - 10000) / 100
+    return ((100 + _base) * (100 + qualityScaling * keyScaling) - 10000) / 100
   }
 
   return base
@@ -500,7 +506,7 @@ export function useQualityResult(query: QualityQuery) {
       result.stats[key] = ar.values[query.query.level - 1] as number
     }
     result.stats[key] = getQualityBonus(
-      getStripedValue(result.stats[key] as string),
+      result.stats[key],
       query.query.quality,
       qualityCode,
       query.entry.isAdornment,
