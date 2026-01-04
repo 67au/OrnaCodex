@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import AppLocaleSwitch from '@/components/AppLocaleSwitch.vue'
 import AppSettings from '@/components/AppSettings.vue'
-import AppUpdatePrompt from '@/components/AppUpdatePrompt.vue'
+import AppUpdateBanner from '@/components/AppUpdateBanner.vue'
 
 const drawer: Ref<boolean | null> = ref(null)
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
   title: {
     type: String,
@@ -26,11 +25,10 @@ const props = defineProps({
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" />
       </template>
 
-      <v-app-bar-title>{{ title }}</v-app-bar-title>
+      <v-app-bar-title>{{ props.title }}</v-app-bar-title>
       <template v-slot:append>
         <div class="d-flex ga-1">
           <slot name="tools"></slot>
-          <AppUpdatePrompt></AppUpdatePrompt>
           <AppLocaleSwitch></AppLocaleSwitch>
           <AppSettings></AppSettings>
         </div>
@@ -46,8 +44,11 @@ const props = defineProps({
       <slot name="slide"></slot>
     </v-navigation-drawer>
 
-    <v-main class="pb-16">
-      <slot> </slot>
+    <v-main>
+      <v-container class="pa-0 pb-16">
+        <AppUpdateBanner></AppUpdateBanner>
+        <slot> </slot>
+      </v-container>
     </v-main>
   </v-app>
 </template>
