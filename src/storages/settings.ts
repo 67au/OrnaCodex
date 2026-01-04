@@ -4,7 +4,7 @@ const defaultSettings = {
   language: '',
   theme: '',
   displayStats: true,
-  displayCard: true,
+  displayCard: false,
   displayMaterial: false,
   displayInGameQuality: true,
   enemyEditor: false,
