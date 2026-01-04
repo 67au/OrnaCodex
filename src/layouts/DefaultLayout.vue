@@ -45,8 +45,8 @@ const props = defineProps({
     </v-navigation-drawer>
 
     <v-main>
+      <AppUpdateBanner></AppUpdateBanner>
       <v-container class="pa-0 pb-16">
-        <AppUpdateBanner></AppUpdateBanner>
         <slot> </slot>
       </v-container>
     </v-main>
