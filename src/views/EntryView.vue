@@ -52,7 +52,7 @@ const defaults: DefaultsOptions = {
       <v-container
         fluid
         :class="{
-          'px-2': true,
+          'pa-2': true,
           masonry: $vuetify.display.mdAndUp,
           'card d-flex flex-column ga-2': !$vuetify.display.mdAndUp,
         }"
