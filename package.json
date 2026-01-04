@@ -17,11 +17,11 @@
     "localforage": "^1.10.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate-2": "^2.0.32",
-    "smol-toml": "^1.5.2",
-    "vue": "^3.5.25",
-    "vue-i18n": "^11.2.2",
+    "smol-toml": "^1.6.0",
+    "vue": "^3.5.26",
+    "vue-i18n": "^11.2.8",
     "vue-router": "^4.6.4",
-    "vuetify": "^3.11.4"
+    "vuetify": "^3.11.6"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^11.0.3",
@@ -38,7 +38,7 @@
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.7.4",
-    "sass-embedded": "^1.97.0",
+    "sass-embedded": "^1.97.1",
     "sass-loader": "^16.0.6",
     "typescript": "~5.9.3",
     "unplugin-auto-import": "^20.3.0",
@@ -46,8 +46,9 @@
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vite-plugin-vuetify": "^2.1.2",
-    "vue-tsc": "^3.1.8",
+    "vue-tsc": "^3.2.1",
+    "workbox-build": "^7.4.0",
     "workbox-window": "^7.4.0"
   },
-  "packageManager": "pnpm@10.25.0"
+  "packageManager": "pnpm@10.27.0"
 }
