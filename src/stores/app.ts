@@ -24,10 +24,10 @@ export const useAppState = defineStore('app', () => {
       workerState.setI18n()
       finished.value = true
     }
+    await extraState.initExtraData()
     loading.value = false
 
     updated.value = await updateTask
-    await extraState.initExtraData()
     if (await extraState.useFetchExtra()) {
       await extraState.initExtraData()
     }
