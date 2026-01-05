@@ -14,14 +14,27 @@ const props = defineProps({
   },
 })
 
-const base = {
+const query = ref({
   quality: 200,
   level: props.entry.isUpgradable ? 13 : 1,
   bossScaling: props.entry.bossScaling,
   qualityCode: -1,
   angLevel: 0,
-}
-const query = ref(base)
+})
+
+watch(
+  () => dialog.value,
+  () => {
+    query.value = {
+      quality: 200,
+      level: props.entry.isUpgradable ? 13 : 1,
+      bossScaling: props.entry.bossScaling,
+      qualityCode: -1,
+      angLevel: 0,
+    }
+  },
+  { once: true },
+)
 
 const result = computed(() => {
   return useQualityResult({
