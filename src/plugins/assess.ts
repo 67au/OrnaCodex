@@ -273,17 +273,19 @@ export const qualityBonusSet = new Set([
   'monster_encounters',
   'no_follower_bonus',
   'manaflask_power',
-  'bestial_bond',
   'apex',
-])
-
-export const qualityBonusSmallSet = new Set(['bestial_bond'])
-
-export const ratingBonusSet = new Set(['act_first_chance_(pve)', 'swap_defense_resistance'])
-export const ratingBonusSmallSet = new Set([
+  'bestial_bond',
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
 ])
+
+export const qualityBonusSmallSet = new Set([
+  'bestial_bond',
+  'player_r_follower_ability_chance',
+  'mana_overspend_chance',
+])
+
+export const ratingBonusSet = new Set(['act_first_chance_(pve)', 'swap_defense_resistance'])
 
 export function getQualityBonus(
   base: StatValue,
@@ -308,21 +310,12 @@ export function getQualityBonus(
     return r < 100 ? r : 100
   }
 
-  if (ratingBonusSmallSet.has(_key)) {
-    if (quality > 1) {
-      return _base + 1
-    }
-    if (qualityCode === 0) {
-      return _base / 10
-    }
-  }
-
   if (qualityBonusSet.has(_key)) {
     const keyScaling = bonusScaling[_key] ?? 1
     const qualityScaling = bonusQualityScaling[Quality[qualityCode]!]!
 
     if (isAdornment || qualityBonusSmallSet.has(_key)) {
-      return _base + (_base * qualityScaling) / 100
+      return (_base * (qualityScaling + 100)) / 100
     }
     return ((100 + _base) * (100 + qualityScaling * keyScaling) - 10000) / 100
   }
