@@ -107,12 +107,11 @@ export function getUpgradedStat(
 ) {
   const statDelta = useDelta(base, isBossScaling)
   const qualityDelta = isCelestialWeapon ? 0 : useQualityDelta(level)
-  const res = Math.ceil((base + (level === 1 ? 0 : level * statDelta)) * (quality + qualityDelta))
-  if (angLevel > 0) {
-    return res + Math.floor(0.03 * angLevel * res)
-  } else {
-    return res
-  }
+  const res = Math.ceil(
+    (base + (level === 1 ? 0 : level * statDelta)) *
+      (quality + (angLevel * 3) / 100 + qualityDelta),
+  )
+  return res
 }
 
 export function getUpgradedStatArray(
@@ -137,9 +136,9 @@ export function getUpgradedStatArray(
     return range(1, levels + 1).map((level) =>
       Math.floor(
         Math.ceil(
-          (base + (level === 1 ? 0 : level * statDelta)) * (quality + getQualityDelta(level)),
-        ) *
-          (1 + 0.03 * angLevel),
+          (base + (level === 1 ? 0 : level * statDelta)) *
+            (quality + (angLevel * 3) / 100 + getQualityDelta(level)),
+        ),
       ),
     )
   }
