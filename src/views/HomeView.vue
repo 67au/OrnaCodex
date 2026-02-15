@@ -16,6 +16,10 @@ filtersState.$subscribe(() => {
 sortState.$subscribe(() => {
   queryState.queryWorker.handleQuery()
 })
+
+onMounted(() => {
+  queryState.queryWorker.handleQuery()
+})
 </script>
 
 <template>
