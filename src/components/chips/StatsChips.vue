@@ -80,7 +80,7 @@ const defaults: DefaultsOptions = props.mini
           <template v-slot:prepend>
             <span class="pr-1">{{ getStatName(stat.key) + ':' }}</span>
           </template>
-          {{ getStatValueName(stat.key, stat.value) }}
+          {{ getStatValueName(stat.statKey, stat.value) }}
           <template v-slot:append v-if="props.entry.stats_conditions?.[stat.key] !== undefined">
             <span class="pl-1">
               {{ getStatConditionName(props.entry.stats_conditions?.[stat.key]) }}
@@ -90,20 +90,20 @@ const defaults: DefaultsOptions = props.mini
       </template>
       <template v-else-if="typeof stat.value === 'boolean'">
         <v-chip variant="tonal" :color="stat.color">
-          {{ getStatName(stat.key) }}
+          {{ getStatName(stat.statKey) }}
         </v-chip>
       </template>
       <template v-else-if="stat.key === 'element'">
         <v-chip v-for="v in stat.value as Array<string>" :key="v" :color="colors[v]">
-          {{ getStatValueName(stat.key, v) }}
+          {{ getStatValueName(stat.statKey, v) }}
         </v-chip>
       </template>
       <template v-else>
         <v-chip v-for="(v, index) in stat.value" :key="index">
           <template v-slot:prepend>
-            <span class="pr-1">{{ getStatName(stat.key) + ':' }}</span>
+            <span class="pr-1">{{ getStatName(stat.statKey) + ':' }}</span>
           </template>
-          {{ getStatValueName(stat.key, typeof v === 'string' ? v : v.name) }}
+          {{ getStatValueName(stat.statKey, typeof v === 'string' ? v : v.name) }}
           <template v-slot:append v-if="props.entry.stats_conditions?.[stat.key] !== undefined">
             <span class="pl-1">
               {{ getStatConditionName(props.entry.stats_conditions?.[stat.key]) }}

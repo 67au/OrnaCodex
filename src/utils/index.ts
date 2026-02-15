@@ -69,10 +69,7 @@ export function getStatName(key: string) {
 
 export function getValueType(key: string) {
   const codexState = useCodexState()
-  const valueType = get(
-    codexState.meta.value_types,
-    key.startsWith('stats.') ? key : 'stats.' + key,
-  )
+  const valueType = get(codexState.meta.value_types, key)
   return valueType
 }
 
@@ -113,7 +110,7 @@ export function getStatValueName(key: string, value: StatValue | undefined) {
   }
 
   if (typeof value === 'string') {
-    if (key !== 'power') {
+    if (key !== 'stats.power') {
       return i18n.global.t('stats_text.' + value)
     }
   }
