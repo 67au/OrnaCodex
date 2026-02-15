@@ -240,7 +240,7 @@ function setQuality(n: number) {
                             class="text-right text-body-medium text-high-emphasis"
                           >
                             <span>
-                              {{ getStatValueName(key, stat) }}
+                              {{ getStatValueName('stats.' + key, stat) }}
                             </span>
                           </v-list-item-subtitle>
                         </template>

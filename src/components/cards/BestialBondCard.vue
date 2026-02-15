@@ -44,7 +44,7 @@ const entry = inject<ComputedRef<CodexEntry>>('entry')
                     </template>
                     <template v-else>
                       {{
-                        `${$t('stats.' + bond.name)}: ${getStatValueName(bond.name, bond.value)}`
+                        `${$t('stats.' + bond.name)}: ${getStatValueName('bonds.' + bond.name, bond.value)}`
                       }}
                     </template>
                   </v-chip>

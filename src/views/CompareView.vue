@@ -246,7 +246,7 @@ function getSignedNumber(n: number) {
                       <template v-slot:subtitle>
                         <v-list-item-subtitle class="text-right text-body-small text-high-emphasis">
                           <span>
-                            {{ getStatValueName(key, stat.base) }}
+                            {{ getStatValueName('stats.' + key, stat.base) }}
                           </span>
                           <template v-if="stat.diff !== 0">
                             <span :class="getDiffTextClass(stat.diff)">

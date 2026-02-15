@@ -49,7 +49,7 @@ function toStatusStatText(statValue: Array<Status>) {
                   <template v-slot:prepend>
                     <span class="pr-1">{{ getStatName(key) + ':' }}</span>
                   </template>
-                  {{ getStatValueName(key, value) }}
+                  {{ getStatValueName('abilities.' + key, value) }}
                 </v-chip>
                 <v-chip v-else-if="typeof value === 'boolean'">
                   {{ getStatName(key) }}
