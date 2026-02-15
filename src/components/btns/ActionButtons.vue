@@ -3,10 +3,18 @@ import { i18n } from '@/i18n'
 import { useCompareState } from '@/stores/compare'
 import { useMessagesState } from '@/stores/messages'
 import type { CodexEntry } from '@/utils/codex'
-import { mdiCalculator, mdiEye, mdiScaleBalance, mdiSwapHorizontalCircleOutline } from '@mdi/js'
+import {
+  mdiCalculator,
+  mdiEye,
+  mdiScaleBalance,
+  mdiSpaceInvaders,
+  mdiSwapHorizontalCircleOutline,
+} from '@mdi/js'
 import type { DefaultsOptions } from 'vuetify/lib/composables/defaults.mjs'
 import GearViewer from '@/components/shared/GearViewer.vue'
 import EffectViewer from '@/components/shared/EffectViewer.vue'
+import config from '@/config'
+import { useSettingsStore } from '@/stores/settings'
 
 const props = defineProps({
   entry: {
@@ -30,6 +38,8 @@ const defaults: DefaultsOptions = {
 const compare = shallowRef(true)
 const compareState = useCompareState()
 const messageState = useMessagesState()
+const settings = useSettingsStore()
+
 function addCompare() {
   compare.value = compareState.add(props.entry.key)
   if (compare.value) {
@@ -80,5 +90,14 @@ function addCompare() {
         <v-btn v-bind="activator" :icon="mdiEye" />
       </template>
     </EffectViewer>
+
+    <v-btn
+      v-if="settings.enemyEditor && config.enemySet.has(entry.category)"
+      :icon="mdiSpaceInvaders"
+      :to="{
+        name: 'enemy',
+        query: { id: entry.key },
+      }"
+    />
   </v-defaults-provider>
 </template>
