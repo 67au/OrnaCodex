@@ -1,0 +1,182 @@
+{
+  "title": "Codex YACO",
+  "default": "Default",
+  "meta": {
+    "name": "Name",
+    "category": "Category",
+    "events": "Events",
+    "item_type": "Item type",
+    "tags": "Tags",
+    "stats": "Stats",
+    "offhand_ability": "Off-hand Ability",
+    "spell_type": "Skill / Spell",
+    "used_by": "Used By",
+    "off_hands": "Off-hands",
+    "two_handed": "Two-Handed Weapon",
+    "dismantled_by": "Dismantled by",
+    "follower": "Follower"
+  },
+  "stats": {
+    "element": "Element"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "title": "Theme",
+      "currentTheme": "Current Theme",
+      "choice": "Choice Theme"
+    },
+    "general": {
+      "title": "General",
+      "enemyEditor": "Enemy Editor",
+      "enemyEditorSubtitle": "Enable enemy editor",
+      "forceUpdate": "Force Reset",
+      "forceUpdateSubtitle": "Clean data and reset",
+      "showDetail": "Show Detailed Tags",
+      "showDetailSubtitle": "Replace some label icons with text",
+      "showMaterial": "Show Upgrade Materials",
+      "showMaterialSubtitle": "Show items upgrade materials",
+      "showPage": "Show Entries Pagination",
+      "showPageSubtitle": "Use pagination instead of infinite scroll to show entries",
+      "showStats": "Show Entries Stats",
+      "showStatsSubtitle": "Show stats of entry"
+    },
+    "credit": {
+      "title": "Credit",
+      "website": "Official Website"
+    },
+    "about": {
+      "title": "About",
+      "author": "Author",
+      "appVersion": "Codex Version",
+      "extraUpdateAt": "YACO Extra Last Updated",
+      "lastUpdateAt": "Data Last Updated"
+    },
+    "locale": {
+      "applySetting": "Apply Locale Setting",
+      "choice": "Choice Locale",
+      "prefLocale": "Preferred Locale",
+      "selectedLocales": "Selected locales",
+      "title": "Locales"
+    }
+  },
+  "filters": {
+    "search": "Search",
+    "title": "Filters",
+    "operator": {
+      "in_any": "Include Any",
+      "sub_any": "Exclude Any",
+      "in_all": "Include All",
+      "sub_all": "Exclude All",
+      "pass": "Pass"
+    },
+    "options": {
+      "eventDrops": "Include Event Drops",
+      "searchNameOnly": "Search Name Only",
+      "title": "Filter Options"
+    }
+  },
+  "sorts": {
+    "title": "Sort"
+  },
+  "units": {
+    "turns": "turns",
+    "turn": "turn",
+    "mana": "mana",
+    "level": "Level",
+    "per_m": "/M"
+  },
+  "assess": {
+    "angLevel": "AngLevel",
+    "assess": "Assess",
+    "base": "Base",
+    "bossScaling": "BossScaling",
+    "bossScalingInput": "Please select BossScaling and try again",
+    "level": "Level",
+    "predict": "Predict",
+    "quality": "Quality",
+    "query": "Query",
+    "setQualityCode": "Default Quality",
+    "title": "Assess",
+    "gearChoice": "Choice Gear",
+    "viewGear": "VIew Gear"
+  },
+  "bossScaling": {
+    "name": {
+      "0": "Unknown",
+      "1": "BossScaling",
+      "-1": "NonBossScaling"
+    },
+    "select": {
+      "0": "Unset",
+      "1": "Yes",
+      "-1": "No"
+    }
+  },
+  "boolean_text": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "compare": {
+    "add": "Added",
+    "addMoreGear": "Click the button below to add more gears",
+    "full": "Max limit reached!",
+    "title": "Comparison"
+  },
+  "enemy": {
+    "choice": "Choice Enemy",
+    "elementImmunities": "Element Immunities",
+    "elementResistances": "Element Resistances",
+    "elementWeaknesses": "Element Weaknesses",
+    "stats": "Enemy Stats",
+    "statusImmunities": "Status Immunities",
+    "title": "Enemy Editor",
+    "viewBuff": "Skill Effects"
+  },
+  "helper": {
+    "apply": "Apply",
+    "close": "Close",
+    "notFound": "No more",
+    "page": {
+      "goto": "Go To",
+      "next": "Next",
+      "pervious": "Perv"
+    },
+    "pageNotFound": "Page not found",
+    "reloadAlert": "Applying changes will reload the website.",
+    "save": "Save",
+    "tooltip": {
+      "provider": "Provided by YACO Extra",
+      "status": "Status Tag Color"
+    }
+  },
+  "proof": {
+    "baseRate": "Base Rate",
+    "count": "Count",
+    "title": "Proof of Guild",
+    "choiceMaterial": "Choice Material"
+  },
+  "quality": {
+    "broken": "Broken",
+    "default": "Default",
+    "demonforged": "Demonforged",
+    "famed": "Famed",
+    "godforged": "Godforged",
+    "legendary": "Legendary",
+    "masterforged": "Masterforged",
+    "ornate": "Ornate",
+    "poor": "Poor",
+    "regular": "Regular",
+    "superior": "Superior"
+  },
+  "tower": {
+    "floors": "Floors",
+    "localTime": "Local Time",
+    "title": "Tower of Olympia"
+  },
+  "update": {
+    "reload": "Reload",
+    "updatedDate": "New data available",
+    "web": "Website Updated"
+  }
+}

@@ -1,0 +1,21 @@
+/* stylelint-disable */
+
+@use "variables";
+
+@mixin export-vars($map, $prefix: "", $suffix: "") {
+  @each $key, $value in $map {
+    $prefix-name: if(
+      sass($prefix == ""): $key; else: "#{$prefix}-#{$key}",
+    );
+    $suffix-name: if(
+      sass($suffix == ""): $key; else: "#{$prefix-name}-#{$suffix}",
+    );
+    #{$suffix-name}: #{$value};
+  }
+}
+
+:export {
+  @include export-vars(variables.$element-colors, "element", "");
+  @include export-vars(variables.$text-colors, "", "text");
+  @include export-vars(variables.$faction-colors, "faction", "");
+}

@@ -1,0 +1,182 @@
+{
+  "title": "圖鑑 YACO",
+  "meta": {
+    "category": "分類",
+    "events": "活動",
+    "item_type": "物品類型",
+    "tags": "標籤",
+    "stats": "屬性",
+    "offhand_ability": "副手技能",
+    "spell_type": "技能／法術",
+    "used_by": "使用者",
+    "off_hands": "副手裝備",
+    "two_handed": "雙手武器",
+    "dismantled_by": "分解自",
+    "follower": "追隨者",
+    "name": "名稱"
+  },
+  "stats": {
+    "element": "元素屬性"
+  },
+  "assess": {
+    "angLevel": "煎熬等級",
+    "assess": "裝備鑒定",
+    "base": "基礎",
+    "bossScaling": "頭目裝備",
+    "bossScalingInput": "請選擇頭目裝備標記后重試",
+    "gearChoice": "選擇裝備",
+    "level": "等級",
+    "predict": "裝備推算",
+    "quality": "品質評分",
+    "query": "查詢",
+    "setQualityCode": "設定品質",
+    "title": "裝備鑒定",
+    "viewGear": "裝備查看"
+  },
+  "bossScaling": {
+    "name": {
+      "0": "未知裝備",
+      "1": "頭目裝備",
+      "-1": "非頭目裝備"
+    },
+    "select": {
+      "0": "未定",
+      "1": "是",
+      "-1": "否"
+    }
+  },
+  "boolean_text": {
+    "0": "否",
+    "1": "是"
+  },
+  "compare": {
+    "add": "已添加",
+    "addMoreGear": "點擊下方按鈕來添加更多裝備",
+    "full": "添加數量已達上限！",
+    "title": "裝備對比"
+  },
+  "default": "默認",
+  "enemy": {
+    "choice": "選擇怪物",
+    "elementImmunities": "元素免疫",
+    "elementResistances": "元素抗性",
+    "elementWeaknesses": "元素弱點",
+    "stats": "怪物狀態",
+    "statusImmunities": "狀態免疫",
+    "title": "怪物編輯",
+    "viewBuff": "技能狀態效果"
+  },
+  "filters": {
+    "operator": {
+      "in_all": "滿足全部",
+      "in_any": "滿足任一",
+      "pass": "跳過",
+      "sub_all": "排除全部",
+      "sub_any": "排除任一"
+    },
+    "options": {
+      "eventDrops": "包含活動掉落",
+      "searchNameOnly": "僅搜索名稱",
+      "title": "篩選選項"
+    },
+    "search": "搜索",
+    "title": "篩選"
+  },
+  "helper": {
+    "apply": "應用",
+    "close": "關閉",
+    "notFound": "沒有更多内容",
+    "page": {
+      "goto": "跳轉",
+      "next": "下一頁",
+      "pervious": "上一頁"
+    },
+    "pageNotFound": "頁面不存在",
+    "reloadAlert": "應用時將重新加載網站。",
+    "save": "保存",
+    "tooltip": {
+      "provider": "數據由 YACO Extra 提供",
+      "status": "狀態標簽顔色"
+    }
+  },
+  "proof": {
+    "baseRate": "基礎比率",
+    "count": "數量",
+    "choiceMaterial": "選擇材料",
+    "title": "公會兌換"
+  },
+  "quality": {
+    "broken": "損壞",
+    "default": "默認",
+    "demonforged": "魔化",
+    "famed": "著名",
+    "godforged": "神賜",
+    "legendary": "傳説",
+    "masterforged": "匠改",
+    "ornate": "華麗",
+    "poor": "破爛",
+    "regular": "標準",
+    "superior": "精良"
+  },
+  "settings": {
+    "about": {
+      "appVersion": "圖鑒版本",
+      "author": "作者",
+      "extraUpdateAt": "YACO Extra 最後更新時間",
+      "lastUpdateAt": "數據最後更新時間",
+      "title": "關於"
+    },
+    "credit": {
+      "title": "鳴謝",
+      "website": "官方網站"
+    },
+    "general": {
+      "showDetailSubtitle": "以文字代替標簽的部分圖標",
+      "showMaterial": "顯示升級素材",
+      "showMaterialSubtitle": "顯示物品的升級素材",
+      "showPage": "顯示條目分頁",
+      "showPageSubtitle": "已分頁形式代替無限滾動來顯示條目",
+      "showStatsSubtitle": "顯示條目屬性",
+      "enemyEditor": "怪物編輯器",
+      "enemyEditorSubtitle": "開啓后能夠編輯怪物狀態",
+      "forceUpdate": "重置數據",
+      "forceUpdateSubtitle": "清除數據以重置應用",
+      "showDetail": "顯示詳細標簽",
+      "showStats": "顯示條目屬性",
+      "title": "通用"
+    },
+    "locale": {
+      "applySetting": "應用語言設置",
+      "choice": "選擇語言",
+      "prefLocale": "首選語言",
+      "selectedLocales": "已選擇語言",
+      "title": "語言設置"
+    },
+    "theme": {
+      "choice": "選擇主題",
+      "currentTheme": "當前主題",
+      "title": "主題系統"
+    },
+    "title": "設置"
+  },
+  "sorts": {
+    "title": "排序"
+  },
+  "tower": {
+    "floors": "樓層",
+    "localTime": "當地時間",
+    "title": "奧林匹亞之塔"
+  },
+  "units": {
+    "level": "等級",
+    "mana": "魔力",
+    "per_m": "/米",
+    "turn": "回合",
+    "turns": "回合"
+  },
+  "update": {
+    "reload": "重新加載",
+    "updatedDate": "發現新版本數據",
+    "web": "網站已更新"
+  }
+}

@@ -1,0 +1,78 @@
+@use 'sass:list';
+
+@use 'variables';
+
+@each $name, $hex in variables.$element-colors {
+  .#{$name} {
+    color: $hex;
+  }
+}
+
+@each $name, $hex in variables.$text-colors {
+  .#{$name}-text {
+    color: $hex;
+  }
+}
+
+@each $name, $values in variables.$bg-image {
+  $img: list.nth($values, 1);
+  $size: list.nth($values, 2);
+
+  .#{$name} {
+    background-image: url('#{$static-url-prefix}/img/fx/#{$img}.png');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: $size;
+  }
+}
+
+.exotic {
+  color: #fff079;
+  font-weight: 700;
+  background: linear-gradient(to bottom, #aa4eef, #49e840);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.event {
+  color: #ffd980;
+  opacity: 1;
+}
+
+.anguished {
+  background-image: url('#{$static-url-prefix}/img/fx/angiushed.png');
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 100%;
+}
+
+.anguished-text {
+  color: #b9083a;
+  background: linear-gradient(to right, #ff4c55, #b564b2);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
+.image-render-pixel {
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-pixelated;
+  image-rendering: pixelated;
+}
+
+.text-normal {
+  white-space: normal;
+}
+
+.text-color-unset {
+  color: unset;
+}
+
+.text-letter-spacing-2 {
+  letter-spacing: 2px;
+}

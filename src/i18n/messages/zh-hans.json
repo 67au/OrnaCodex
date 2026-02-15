@@ -1,0 +1,182 @@
+{
+  "title": "图鉴 YACO",
+  "default": "默认",
+  "meta": {
+    "name": "名称",
+    "category": "分类",
+    "events": "活动",
+    "item_type": "物品类型",
+    "tags": "标签",
+    "stats": "属性",
+    "offhand_ability": "副手技能",
+    "spell_type": "技能 / 法术",
+    "used_by": "使用自",
+    "dismantled_by": "分解自",
+    "off_hands": "副手装备",
+    "two_handed": "双手武器",
+    "follower": "追随者"
+  },
+  "stats": {
+    "element": "元素属性"
+  },
+  "settings": {
+    "title": "设置",
+    "locale": {
+      "title": "语言设置",
+      "choice": "选择语言",
+      "prefLocale": "首选语言",
+      "selectedLocales": "已选择语言",
+      "applySetting": "应用语言设置"
+    },
+    "theme": {
+      "title": "主题系统",
+      "currentTheme": "当前主题",
+      "choice": "选择主题"
+    },
+    "general": {
+      "title": "通用",
+      "enemyEditor": "怪物编辑器",
+      "enemyEditorSubtitle": "开启后能够编辑怪物状态",
+      "forceUpdate": "重置数据",
+      "forceUpdateSubtitle": "清除数据以重置应用",
+      "showDetail": "显示详细标签",
+      "showDetailSubtitle": "以文字代替标签的部分图标",
+      "showMaterial": "显示升级素材",
+      "showMaterialSubtitle": "显示物品的升级素材",
+      "showPage": "显示条目分页",
+      "showPageSubtitle": "以分页形式代替无限滚动来显示条目",
+      "showStats": "显示条目属性",
+      "showStatsSubtitle": "显示条目属性"
+    },
+    "credit": {
+      "website": "官方网站",
+      "title": "鸣谢"
+    },
+    "about": {
+      "title": "关于",
+      "author": "作者",
+      "appVersion": "图鉴版本",
+      "lastUpdateAt": "数据最后更新时间",
+      "extraUpdateAt": "YACO Extra 最后更新时间"
+    }
+  },
+  "filters": {
+    "title": "筛选",
+    "search": "搜索",
+    "options": {
+      "eventDrops": "包含活动掉落",
+      "searchNameOnly": "仅搜索名称",
+      "title": "筛选选项"
+    },
+    "operator": {
+      "in_any": "满足任一",
+      "sub_any": "排除任一",
+      "in_all": "满足全部",
+      "sub_all": "排除全部",
+      "pass": "跳过"
+    }
+  },
+  "sorts": {
+    "title": "排序"
+  },
+  "units": {
+    "turn": "回合",
+    "turns": "回合",
+    "mana": "魔力",
+    "level": "等级",
+    "per_m": "/米"
+  },
+  "boolean_text": {
+    "0": "否",
+    "1": "是"
+  },
+  "tower": {
+    "title": "奥林匹亚之塔",
+    "localTime": "当地时间",
+    "floors": "楼层"
+  },
+  "proof": {
+    "title": "公会兑换",
+    "baseRate": "基础比率",
+    "count": "数量",
+    "choiceMaterial": "选择材料"
+  },
+  "assess": {
+    "title": "装备鉴定",
+    "bossScaling": "头目装备",
+    "angLevel": "苦难等级",
+    "level": "等级",
+    "quality": "品质评分",
+    "base": "基础",
+    "assess": "装备鉴定",
+    "predict": "装备推算",
+    "query": "查询",
+    "setQualityCode": "设定品质",
+    "bossScalingInput": "请选择头目装备标记后重试",
+    "gearChoice": "选择装备",
+    "viewGear": "装备查看"
+  },
+  "bossScaling": {
+    "select": {
+      "0": "未定",
+      "1": "是",
+      "-1": "否"
+    },
+    "name": {
+      "0": "未知装备",
+      "1": "头目装备",
+      "-1": "非头目装备"
+    }
+  },
+  "quality": {
+    "default": "默认",
+    "broken": "损坏",
+    "poor": "破烂",
+    "regular": "标准",
+    "superior": "精良",
+    "famed": "著名",
+    "legendary": "传说",
+    "ornate": "华丽",
+    "masterforged": "匠改",
+    "demonforged": "魔化",
+    "godforged": "神赐"
+  },
+  "compare": {
+    "title": "装备对比",
+    "addMoreGear": "点击下方按钮来添加更多装备",
+    "add": "已添加",
+    "full": "添加数量已达上限！"
+  },
+  "helper": {
+    "notFound": "没有更多内容",
+    "save": "保存",
+    "close": "关闭",
+    "reloadAlert": "应用时将重新加载网站。",
+    "pageNotFound": "页面不存在",
+    "tooltip": {
+      "status": "状态标签颜色",
+      "provider": "数据由 YACO Extra 提供"
+    },
+    "apply": "应用",
+    "page": {
+      "pervious": "上一页",
+      "next": "下一页",
+      "goto": "跳转"
+    }
+  },
+  "update": {
+    "reload": "重新加载",
+    "web": "网站已更新",
+    "updatedDate": "发现新版本数据"
+  },
+  "enemy": {
+    "stats": "怪物状态",
+    "elementResistances": "元素抗性",
+    "elementWeaknesses": "元素弱点",
+    "elementImmunities": "元素免疫",
+    "statusImmunities": "状态免疫",
+    "title": "怪物编辑",
+    "choice": "选择怪物",
+    "viewBuff": "技能状态效果"
+  }
+}
