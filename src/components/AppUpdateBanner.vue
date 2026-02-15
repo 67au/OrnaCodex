@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCodexState } from '@/stores/codex'
-import { mdiArrowUpCircle, mdiRefreshCircle } from '@mdi/js'
+import { mdiRefreshCircle } from '@mdi/js'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 const { needRefresh, updateServiceWorker } = useRegisterSW()
@@ -29,7 +29,7 @@ const codexState = useCodexState()
         :text="$t('update.reload')"
         class="text-uppercase"
         @click="reloadPage"
-        :append-icon="mdiArrowUpCircle"
+        :append-icon="mdiRefreshCircle"
       />
     </template>
   </v-banner>
