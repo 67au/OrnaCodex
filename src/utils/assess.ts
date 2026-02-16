@@ -148,7 +148,9 @@ export function getItemQuality(input: number, base: number, level: number, isBos
   })
 }
 
-export function getAdditionalSlots(quality: number) {
+export function getAdditionalSlots(quality: number, level?: number) {
+  if (level === 13) return 4
+  if (level === 11 || level === 12) return 3
   if (quality >= 170) return 2
   if (quality > 100) return 1
   return 0
@@ -493,6 +495,32 @@ export function getFullResult(input: AssessQuery['input']): FullResult {
       result.stats['_' + k] = input.angLevel * 3
     }
   })
+
+  // adornment_slots
+  if (meta.flags.isUpgradable) {
+    const slots_key = 'adornment_slots'
+
+    if (meta.flags.isCelestialWeapon) {
+      result.stats[slots_key] =
+        (celestialWeaponSlots[input.level] ?? 0) + (meta.flags.isTwoHanded ? 1 : 0)
+    } else {
+      const baseAdornmentSlots = get(meta.baseStats, slots_key, 0) as number
+      if (meta.flags.isOffHand) {
+        if (baseAdornmentSlots > 0) {
+          result.stats[slots_key] = baseAdornmentSlots
+        }
+      } else {
+        if (result.angLevel > 0) {
+          result.stats[slots_key] = baseAdornmentSlots + 4
+        } else {
+          const additionalSlots = getAdditionalSlots(result.quality, result.level)
+          if (additionalSlots > 0 || baseAdornmentSlots > 0) {
+            result.stats[slots_key] = baseAdornmentSlots + additionalSlots
+          }
+        }
+      }
+    }
+  }
 
   return result
 }
