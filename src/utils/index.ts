@@ -74,6 +74,7 @@ export function getValueType(key: string) {
 }
 
 export function getStatValueName(key: string, value: StatValue | undefined) {
+  // key startswtih 'stats.' | 'abilities.' | 'bonds.'
   const valueType = getValueType(key)
 
   if (isUndefined(value)) {
