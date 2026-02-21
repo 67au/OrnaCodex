@@ -45,7 +45,7 @@ const floorsInWeek = computed(() => getTowerFloorsInNextDays(now.value, 7))
     </v-card>
     <v-row gaps="8">
       <template v-for="(titan, index) in titans" :key="index">
-        <v-col cols="12" sm="6" lg="4">
+        <v-col cols="12" sm="6">
           <SettingDialog :title="titan.entry.name">
             <template v-slot:actions>
               <v-btn :icon="mdiInformationOutline" :to="titan.entry.url"></v-btn>
