@@ -162,7 +162,7 @@ function updateMaterialCount(id: string) {
             clearable
           />
           <v-divider thickness="2" />
-          <v-row :gap="4">
+          <v-row :gap="8">
             <template v-for="proof in proofEntries" :key="proof.id">
               <v-col cols="6" md="4" lg="3">
                 <v-number-input
