@@ -17,7 +17,6 @@ export interface CodexData {
     options: Record<string, Array<string>>
     sorts: Record<string, Array<string>>
     ability_stats: Record<string, AbilityStats>
-    attached_ability: Record<string, string>
     value_types: Record<string, ValueType>
   }
 }
@@ -71,11 +70,12 @@ export type BestialBond =
   | {
       name: string
       type: 'BONUS'
-      value: StatValue
+      value: string | number | boolean
     }
   | {
       name: string
       type: 'ABILITY'
+      key?: string
     }
 
 export interface Status {
@@ -94,7 +94,12 @@ export interface PendingUpdate {
 
 export type StatusKey = 'immunities' | 'gives' | 'causes' | 'cures' | 'summons'
 
-export type StatValue = string | number | boolean | Array<string> | Array<Status>
+export interface Spell {
+  name: string
+  key?: string
+}
+
+export type StatValue = string | number | boolean | Array<string> | Array<Status> | Array<Spell>
 
 export type BooleanValue = 1 | 0
 

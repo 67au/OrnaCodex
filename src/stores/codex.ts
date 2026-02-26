@@ -21,7 +21,6 @@ export const useCodexState = defineStore('codex', () => {
     options: {},
     sorts: {},
     ability_stats: {},
-    attached_ability: {},
     value_types: {},
   })
 
@@ -185,7 +184,6 @@ export const useCodexState = defineStore('codex', () => {
       'options',
       'sorts',
       'ability_stats',
-      'attached_ability',
       'value_types',
     ]
     const cache = await yacoStore.getItems(metaKeys)
