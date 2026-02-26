@@ -238,46 +238,28 @@ export class CodexEntry implements CodexEntryRaw {
     return this.skills?.map((key) => getCodexEntryByKey(key)).filter((v) => !isUndefined(v))
   }
 
-  get debuffSkills() {
-    const debuffMap = new Map<string, Array<{ entry: CodexEntry; chance?: number }>>()
+  getEffectSkills(type: 'buff' | 'debuff') {
+    const statusKey = type === 'buff' ? 'gives' : 'causes'
+    const statusMap = new Map<string, Array<{ entry: CodexEntry; chance?: number }>>()
     if (isUndefined(this.skillsArray)) {
-      return undefined
+      return statusMap
     }
+
     this.skillsArray.forEach((entry) => {
-      if (isUndefined(entry.causes)) {
+      const statuses = entry[statusKey]
+      if (isUndefined(statuses)) {
         return
       }
 
-      entry.causes.forEach((status) => {
-        const a = debuffMap.get(status.name)
+      statuses.forEach((status) => {
+        const a = statusMap.get(status.name)
         const arr = a ?? Array<{ entry: CodexEntry; chance?: number }>()
         arr.push({ entry: entry, chance: status.chance })
-        debuffMap.set(status.name, arr)
+        statusMap.set(status.name, arr)
       })
     })
 
-    return debuffMap
-  }
-
-  get buffSkills() {
-    const buffMap = new Map<string, Array<{ entry: CodexEntry; chance?: number }>>()
-    if (isUndefined(this.skillsArray)) {
-      return undefined
-    }
-    this.skillsArray.forEach((entry) => {
-      if (isUndefined(entry.gives)) {
-        return
-      }
-
-      entry.gives.forEach((status) => {
-        const a = buffMap.get(status.name)
-        const arr = a ?? Array<{ entry: CodexEntry; chance?: number }>()
-        arr.push({ entry: entry, chance: status.chance })
-        buffMap.set(status.name, arr)
-      })
-    })
-
-    return buffMap
+    return statusMap
   }
 
   get isAssessable() {
