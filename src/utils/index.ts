@@ -151,11 +151,6 @@ export function getStatType(key: string): ValueType | undefined {
   return get(codexState.meta.value_types, key)
 }
 
-export function getAttachedAbilityKey(id: string) {
-  const codexState = useCodexState()
-  return get(codexState.meta.attached_ability, id)
-}
-
 export function getBossScalingName(value: BossScaling) {
   return i18n.global.t('bossScaling.name.' + value)
 }
