@@ -20,7 +20,7 @@ export interface AssessQuery {
       isCelestialWeapon: boolean
       isTwoHanded: boolean
       isUpgradable: boolean
-      isOffHand: boolean
+      hasScalingSlots: boolean
     }
   }
 }

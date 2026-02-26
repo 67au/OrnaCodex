@@ -45,7 +45,7 @@ export class CodexEntry implements CodexEntryRaw {
   constructor(
     public category: string,
     public id: string,
-    public tier?: number,
+    public tier: number,
     public aura?: string,
     public icon?: string,
     public stats?: Record<string, StatValue>,
@@ -226,8 +226,8 @@ export class CodexEntry implements CodexEntryRaw {
     return this.isWeapon || this.isArmor || this.isOffHand
   }
 
-  get isUpgradableSlots() {
-    return this.isWeapon || this.isArmor
+  get hasScalingSlots() {
+    return (this.isWeapon || this.isArmor) && this.tier > 2
   }
 
   get hasSkill() {
@@ -282,7 +282,7 @@ export class CodexEntry implements CodexEntryRaw {
 
   get isAssessable() {
     // include upgraded slots
-    return this.isUpgradableSlots || Object.keys(this.stats ?? {}).some((k) => assessKeySet.has(k))
+    return this.hasScalingSlots || Object.keys(this.stats ?? {}).some((k) => assessKeySet.has(k))
   }
 
   get isComparable() {

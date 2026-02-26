@@ -105,7 +105,7 @@ export type CodexEntryKey = string
 export interface CodexEntryRaw {
   category: string
   id: string
-  tier?: number
+  tier: number
   ///
   aura?: string
   icon?: string

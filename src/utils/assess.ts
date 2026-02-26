@@ -301,8 +301,7 @@ function getQueryMeta<T extends CodexEntry>(entry: T): AssessQuery['meta'] {
       isTwoHanded: entry.isTwoHanded,
       // levels: 1 | 13
       isUpgradable: entry.isUpgradable,
-      // offhand: no +2 slots
-      isOffHand: entry.isOffHand,
+      hasScalingSlots: entry.hasScalingSlots,
     },
   }
 }
@@ -418,12 +417,7 @@ export function getAssessResult(
 
     // adornment slots
     const baseAdornmentSlots = get(meta.baseStats, 'adornment_slots', 0) as number
-    if (meta.flags.isOffHand) {
-      result.stats['adornment_slots'] = {
-        base: baseAdornmentSlots,
-        values: fill(Array(result.levels), baseAdornmentSlots),
-      }
-    } else {
+    if (meta.flags.hasScalingSlots) {
       if (result.angLevel > 0) {
         result.stats['adornment_slots'] = {
           base: baseAdornmentSlots,
@@ -440,6 +434,11 @@ export function getAssessResult(
             10,
           ).concat([baseAdornmentSlots + 3, baseAdornmentSlots + 3, baseAdornmentSlots + 4]),
         }
+      }
+    } else {
+      result.stats['adornment_slots'] = {
+        base: baseAdornmentSlots,
+        values: fill(Array(result.levels), baseAdornmentSlots),
       }
     }
   }
@@ -505,11 +504,7 @@ export function getFullResult(input: AssessQuery['input']): FullResult {
         (celestialWeaponSlots[input.level] ?? 0) + (meta.flags.isTwoHanded ? 1 : 0)
     } else {
       const baseAdornmentSlots = get(meta.baseStats, slots_key, 0) as number
-      if (meta.flags.isOffHand) {
-        if (baseAdornmentSlots > 0) {
-          result.stats[slots_key] = baseAdornmentSlots
-        }
-      } else {
+      if (meta.flags.hasScalingSlots) {
         if (result.angLevel > 0) {
           result.stats[slots_key] = baseAdornmentSlots + 4
         } else {
@@ -517,6 +512,10 @@ export function getFullResult(input: AssessQuery['input']): FullResult {
           if (additionalSlots > 0 || baseAdornmentSlots > 0) {
             result.stats[slots_key] = baseAdornmentSlots + additionalSlots
           }
+        }
+      } else {
+        if (baseAdornmentSlots > 0) {
+          result.stats[slots_key] = baseAdornmentSlots
         }
       }
     }
