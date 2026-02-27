@@ -94,7 +94,7 @@ const sections = computed(() => {
             </v-card-text>
             <div v-else class="d-flex flex-column ga-1 pa-2">
               <template v-for="[statusId, skills] in Array.from(section.data)" :key="statusId">
-                <v-card class="border-md border-primary">
+                <v-card class="border-md">
                   <v-list-item density="compact" slim>
                     <template v-slot:title>
                       {{ $t('status.' + statusId) }}

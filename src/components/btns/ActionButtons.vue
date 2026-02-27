@@ -6,6 +6,7 @@ import type { CodexEntry } from '@/utils/codex'
 import {
   mdiCalculator,
   mdiEye,
+  mdiInformationOutline,
   mdiScaleBalance,
   mdiSpaceInvaders,
   mdiSwapHorizontalCircleOutline,
@@ -87,7 +88,7 @@ function addCompare() {
 
     <EffectViewer v-if="entry.hasSkill && entry.category !== 'classes'" :entry="entry">
       <template v-slot:activator="{ props: activator }">
-        <v-btn v-bind="activator" :icon="mdiEye" />
+        <v-btn v-bind="activator" :icon="mdiInformationOutline" />
       </template>
     </EffectViewer>
 
