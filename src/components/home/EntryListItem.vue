@@ -28,18 +28,18 @@ const settings = useSettingsStore()
     <v-card variant="flat" class="pb-2 px-2">
       <div class="ml-1 d-flex align-center">
         <div
-          class="text-letter-spacing-2 text-label-medium text-uppercase text-high-emphasis d-flex ga-1 align-center"
+          class="text-letter-spacing-2 text-label-medium text-uppercase text-high-emphasis d-flex align-center"
         >
           <span class="text-amber-darken-2">{{ entry.tierName }}</span>
-          <span>-</span>
+          <span>·</span>
           <span>{{ getOptionValueName('category', entry.category) }}</span>
           <template v-if="entry.exotic === 1">
-            <span>-</span>
+            <span>·</span>
             <span class="exotic">{{ getOptionName('exotic') }}</span>
           </template>
         </div>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <div class="d-flex flex-wrap">
           <ActionButtons :entry="entry" mini />
