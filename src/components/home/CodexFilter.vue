@@ -169,7 +169,7 @@ watch(
       <div class="py-2 d-flex flex-column ga-2">
         <template v-for="[key, filter] in filters" :key="key">
           <v-autocomplete
-            variant="outlined"
+            variant="filled"
             density="compact"
             class="px-2"
             hide-details
