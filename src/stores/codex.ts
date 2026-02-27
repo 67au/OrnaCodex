@@ -9,9 +9,8 @@ import {
 } from '@/types/codex'
 import type { CodexEntry } from '@/utils/codex'
 import { isNull, isUndefined, pick, zipObject } from 'es-toolkit'
-import { i18n } from '@/i18n'
+import { i18n, locales as supportedLocales } from '@/i18n'
 import { fetchCodexData, fetchCodexI18n, fetchCodexUpdate } from '@/api/codex'
-import { supportedLocales } from '@/i18n/config'
 import diff from 'semver/functions/diff'
 import config from '@/config'
 
