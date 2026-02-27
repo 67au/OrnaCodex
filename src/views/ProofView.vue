@@ -142,14 +142,16 @@ function updateMaterialCount(id: string) {
           </v-list-item>
         </template>
       </v-autocomplete>
-
-      <template v-if="entry">
-        <DropsItem :entry="entry" />
-      </template>
     </v-card>
 
     <v-slide-y-transition>
-      <v-card v-if="entry" class="border-md">
+      <v-card v-if="entry" class="py-1">
+        <DropsItem :entry="entry" />
+      </v-card>
+    </v-slide-y-transition>
+
+    <v-slide-y-transition>
+      <v-card v-if="entry" >
         <div class="d-flex flex-column ga-2 pa-2">
           <v-number-input
             density="compact"
@@ -167,7 +169,7 @@ function updateMaterialCount(id: string) {
               <v-col cols="6" md="4" lg="3">
                 <v-number-input
                   density="compact"
-                  color="de"
+                  color="default"
                   :label="proof.name"
                   v-model="proofCounts[proof.id]"
                   controlVariant="hidden"
