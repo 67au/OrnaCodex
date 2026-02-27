@@ -182,7 +182,6 @@ watch(
             chips
             closable-chips
             multiple
-            color="secondary"
           >
             <template v-slot:prepend>
               <div class="d-flex align-center mr-n2">

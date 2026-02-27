@@ -145,13 +145,13 @@ function updateMaterialCount(id: string) {
     </v-card>
 
     <v-slide-y-transition>
-      <v-card v-if="entry" class="py-1">
+      <v-card v-if="entry" class="py-1 border-md">
         <DropsItem :entry="entry" />
       </v-card>
     </v-slide-y-transition>
 
     <v-slide-y-transition>
-      <v-card v-if="entry" >
+      <v-card v-if="entry" class="border-md">
         <div class="d-flex flex-column ga-2 pa-2">
           <v-number-input
             density="compact"
