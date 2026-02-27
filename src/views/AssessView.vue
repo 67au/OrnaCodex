@@ -19,7 +19,7 @@ import {
   mdiRestore,
   mdiStarCircle,
 } from '@mdi/js'
-import { isNull, isUndefined, range } from 'es-toolkit'
+import { isEmptyObject, isNull, isUndefined, range } from 'es-toolkit'
 import colors from '@/styles/colors.module.scss'
 import { useGoTo } from 'vuetify'
 import type { DefaultsOptions } from 'vuetify/lib/composables/defaults.mjs'
@@ -161,15 +161,17 @@ const defaults: DefaultsOptions = {
             </v-list-item>
           </template>
         </v-autocomplete>
-
-        <template v-if="entry">
-          <DropsItem :entry="entry" />
-        </template>
       </v-card>
 
       <v-slide-y-transition>
+        <v-card v-if="entry" class="py-1">
+          <DropsItem :entry="entry" />
+        </v-card>
+      </v-slide-y-transition>
+
+      <v-slide-y-transition>
         <v-card v-if="query && entry">
-          <div class="d-flex flex-wrap ga-1 align-center justify-end pr-2">
+          <div class="d-flex ga-1 justify-end align-center pr-2">
             <v-tabs color="secondary" v-model="tab">
               <v-tab value="assess" :disabled="entry.isCelestialWeapon">
                 {{ $t('assess.assess') }}
@@ -181,29 +183,20 @@ const defaults: DefaultsOptions = {
 
             <v-spacer />
 
-            <div class="d-flex ga-1 py-1">
-              <v-tooltip :text="$t('helper.tooltip.provider')">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    v-if="entry.bossScaling !== 0"
-                    v-bind="props"
-                    size="default"
-                    color="success"
-                    :prepend-icon="mdiCheckDecagramOutline"
-                    :text="getBossScalingName(entry.bossScaling)"
-                  />
-                </template>
-              </v-tooltip>
-              <v-btn :icon="mdiRestore" color="error" @click="reset()" />
-              <v-btn :icon="mdiChevronDoubleDown" color="default" @click="scrollTo()" />
-            </div>
+            <v-tooltip :text="getBossScalingName(entry.bossScaling)">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" color="success" :icon="mdiCheckDecagramOutline" />
+              </template>
+            </v-tooltip>
+            <v-btn :icon="mdiRestore" color="error" @click="reset()" />
+            <v-btn :icon="mdiChevronDoubleDown" color="default" @click="scrollTo()" />
           </div>
 
           <v-divider />
 
-          <v-tabs-window v-model="tab">
+          <v-tabs-window v-model="tab" class="pt-2">
             <v-tabs-window-item value="predict">
-              <v-row :gap="8" class="pa-4">
+              <v-row :gap="8" class="pa-2">
                 <v-col cols="4" sm="3">
                   <v-select
                     density="compact"
@@ -255,7 +248,7 @@ const defaults: DefaultsOptions = {
             </v-tabs-window-item>
 
             <v-tabs-window-item value="assess">
-              <v-row :gap="8" class="pa-4">
+              <v-row :gap="8" class="pa-2">
                 <v-col cols="4" sm="3">
                   <v-select
                     density="compact"
@@ -314,14 +307,19 @@ const defaults: DefaultsOptions = {
 
       <v-slide-y-transition>
         <v-card v-if="result" id="scroll">
-          <v-alert v-if="result.bossScaling === 0" border="start" type="error" variant="text">
+          <v-alert
+            v-if="result.bossScaling === 0 && isEmptyObject(result.stats)"
+            border="start"
+            type="error"
+            variant="text"
+          >
             {{ $t('assess.bossScalingInput') }}
           </v-alert>
           <template v-else>
-            <v-list-item>
+            <v-list-item class="pr-2">
               <template v-slot:append v-if="isSupported">
                 <v-btn
-                  size="default"
+                  size="small"
                   color="secondary"
                   @click="copy(entryName)"
                   :icon="copied ? mdiClipboardCheckOutline : mdiClipboardOutline"
@@ -329,15 +327,16 @@ const defaults: DefaultsOptions = {
               </template>
 
               <template v-slot:title>
-                <v-list-item-title>
+                <v-list-item-title class="text-normal py-1">
                   {{ entry?.name }}
                 </v-list-item-title>
+
                 <div class="d-flex flex-wrap ga-1 py-1">
                   <v-chip
                     :prepend-icon="mdiStarCircle"
                     :color="getQualityColor(result.qualityCode)"
                     size="small"
-                    rounded="md"
+                    rounded="lg"
                     variant="tonal"
                     v-if="result.qualityCode > -1"
                   >
@@ -346,15 +345,20 @@ const defaults: DefaultsOptions = {
                   <v-chip
                     :prepend-icon="qualityItems.icon"
                     :color="qualityItems.color"
-                    :text="result.quality + '%'"
                     size="small"
-                    rounded="md"
+                    rounded="lg"
                     variant="tonal"
                   >
-                    <template v-slot:append>
-                      <span class="ml-1">
-                        {{ `| ${(result.quality / 2).toFixed(1)}/100` }}
-                      </span>
+                    <template v-slot:default>
+                      <div class="d-flex ga-1">
+                        <span>
+                          {{ result.quality + '%' }}
+                        </span>
+                        <v-divider vertical />
+                        <span>
+                          {{ (result.quality / 2).toFixed(1) + '/100' }}
+                        </span>
+                      </div>
                     </template>
                   </v-chip>
                   <v-chip
@@ -362,7 +366,7 @@ const defaults: DefaultsOptions = {
                     :prepend-icon="mdiDatabaseSearch"
                     :text="result.range!.map((x) => x + '%').join('-')"
                     size="small"
-                    rounded="md"
+                    rounded="lg"
                     color="info"
                     variant="tonal"
                   />
