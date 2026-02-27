@@ -42,19 +42,19 @@ function jumpPage() {
         variant: 'tonal',
         rounded: 'lg',
         color: 'secondary',
+        size: 'default',
       },
     }"
   >
     <v-sheet
       class="d-flex ga-1 justify-center align-center pa-1 border-secondary"
       width="fit-content"
-      rounded="pill"
+      rounded="lg"
       border="md"
       elevation="2"
     >
       <v-btn
         :disabled="props.page === 1"
-        rounded="pill"
         :prepend-icon="mdiChevronLeft"
         :text="$t('helper.page.pervious')"
         class="text-uppercase"
@@ -63,13 +63,7 @@ function jumpPage() {
 
       <v-menu :close-on-content-click="false" location="top center" :offset="[16, 0]">
         <template v-slot:activator="{ props: activator }">
-          <v-btn
-            v-bind="activator"
-            variant="text"
-            rounded="pill"
-            color="default"
-            @click="resetJump"
-          >
+          <v-btn v-bind="activator" variant="text" color="default" @click="resetJump">
             <span>{{ props.page }} / {{ props.pages }}</span>
           </v-btn>
         </template>
@@ -77,7 +71,7 @@ function jumpPage() {
         <template v-slot:default="{ isActive }">
           <v-sheet class="pa-2">
             <v-number-input
-              variant="underlined"
+              variant="solo-filled"
               control-variant="hidden"
               v-model="jump"
               hide-details
@@ -85,24 +79,16 @@ function jumpPage() {
               ref="input"
               autofocus
               density="compact"
-              @keydown.enter="
-                () => {
-                  jumpPage()
-                  isActive.value = false
-                }
-              "
+              @keydown.enter="(jumpPage(), (isActive.value = false))"
             >
               <template v-slot:append>
                 <v-btn
+                  class="ml-n2"
                   variant="tonal"
+                  size="large"
                   :text="$t('helper.page.goto')"
-                  @click="
-                    () => {
-                      jumpPage()
-                      isActive.value = false
-                    }
-                  "
-                ></v-btn>
+                  @click.stop="(jumpPage(), (isActive.value = false))"
+                />
               </template>
             </v-number-input>
           </v-sheet>
@@ -112,7 +98,6 @@ function jumpPage() {
       <v-btn
         :disabled="props.page === props.pages"
         :append-icon="mdiChevronRight"
-        rounded="pill"
         :text="$t('helper.page.next')"
         class="text-uppercase"
         @click="emit('update:page', props.page + 1)"
