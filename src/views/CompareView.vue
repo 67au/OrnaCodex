@@ -103,7 +103,7 @@ function getSignedNumber(n: number) {
                     <v-chip color="amber" :text="result.entry.tierName" />
                     <v-chip
                       v-if="result.entry.bossScaling !== 0"
-                      color="secondary"
+                      :color="result.entry.bossScaling > 0? 'red-darken-2': undefined"
                       :text="getBossScalingName(result.entry.bossScaling)"
                     />
                     <v-chip
