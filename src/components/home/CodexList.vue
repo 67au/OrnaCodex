@@ -38,7 +38,7 @@ watch(
 </script>
 
 <template>
-  <v-card>
+  <v-card class="border-md">
     <v-list-item class="pa-2" density="compact" slim>
       <div class="d-flex flex-wrap ga-1 justify-end">
         <PrimarySortMenu v-model:primary="sortState.primary">

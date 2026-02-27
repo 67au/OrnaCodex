@@ -22,7 +22,7 @@ const floorsInWeek = computed(() => getTowerFloorsInNextDays(now.value, 7))
 <template>
   <v-container fluid class="pa-2 mx-auto" :max-width="900">
     <v-card class="mb-2 border-md border-secondary">
-      <v-list-item slim>
+      <v-list-item class="pa-2" slim>
         <template v-slot:title>
           <v-list-item-title>
             {{ now.toLocaleString() }}

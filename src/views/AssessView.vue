@@ -164,7 +164,7 @@ const defaults: DefaultsOptions = {
       </v-card>
 
       <v-slide-y-transition>
-        <v-card v-if="entry" class="py-1">
+        <v-card v-if="entry" class="py-1 border-md">
           <DropsItem :entry="entry" />
         </v-card>
       </v-slide-y-transition>
