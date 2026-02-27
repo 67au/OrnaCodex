@@ -42,7 +42,7 @@ function jumpPage() {
         variant: 'tonal',
         rounded: 'lg',
         color: 'secondary',
-        size: 'default',
+        size: 'large',
       },
     }"
   >
