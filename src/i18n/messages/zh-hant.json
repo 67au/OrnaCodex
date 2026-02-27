@@ -143,7 +143,9 @@
       "forceUpdateSubtitle": "清除數據以重置應用",
       "showDetail": "顯示詳細標簽",
       "showStats": "顯示條目屬性",
-      "title": "通用"
+      "title": "通用",
+      "showStatus": "顯示條目的狀態效果",
+      "showStatusSubtitle": "顯示條目的狀態效果"
     },
     "locale": {
       "applySetting": "應用語言設置",

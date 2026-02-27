@@ -5,6 +5,7 @@ const defaultSettings = {
     detail: true,
     page: false,
     material: false,
+    status: false,
   },
   enemyEditor: false,
 }

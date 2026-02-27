@@ -6,6 +6,7 @@ import type { PropType } from 'vue'
 import MetaChips from '@/components/chips/MetaChips.vue'
 import StatsChips from '@/components/chips/StatsChips.vue'
 import MaterialChips from '@/components/chips/MaterialChips.vue'
+import StatusListChips from '@/components/chips/StatusListChips.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { getOptionName, getOptionValueName } from '@/utils'
 import { mdiOpenInNew } from '@mdi/js'
@@ -66,6 +67,9 @@ const settings = useSettingsStore()
           </v-list-item-title>
           <div class="d-flex flex-wrap ga-1 pt-1">
             <MetaChips :entry="entry" slim mini />
+            <template v-if="settings.display.status">
+              <StatusListChips :entry="entry" mini />
+            </template>
             <template v-if="settings.display.material && entry.upgrade_materials">
               <MaterialChips :entry="entry" />
             </template>
