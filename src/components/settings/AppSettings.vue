@@ -53,6 +53,18 @@ const defaults: DefaultsOptions = {
         </v-list-item>
 
         <v-list-item
+          :subtitle="$t('settings.general.showDetailSubtitle')"
+          :title="$t('settings.general.showDetail')"
+          @click="settingsStorage.display.detail = !settingsStorage.display.detail"
+        >
+          <template v-slot:prepend>
+            <v-list-item-action start>
+              <v-checkbox-btn v-model="settingsStorage.display.detail" />
+            </v-list-item-action>
+          </template>
+        </v-list-item>
+
+        <v-list-item
           :subtitle="$t('settings.general.showStatsSubtitle')"
           :title="$t('settings.general.showStats')"
           @click="settingsStorage.display.stats = !settingsStorage.display.stats"
@@ -65,13 +77,13 @@ const defaults: DefaultsOptions = {
         </v-list-item>
 
         <v-list-item
-          :subtitle="$t('settings.general.showDetailSubtitle')"
-          :title="$t('settings.general.showDetail')"
-          @click="settingsStorage.display.detail = !settingsStorage.display.detail"
+          :subtitle="$t('settings.general.showStatusSubtitle')"
+          :title="$t('settings.general.showStatus')"
+          @click="settingsStorage.display.status = !settingsStorage.display.status"
         >
           <template v-slot:prepend>
             <v-list-item-action start>
-              <v-checkbox-btn v-model="settingsStorage.display.detail" />
+              <v-checkbox-btn v-model="settingsStorage.display.status" />
             </v-list-item-action>
           </template>
         </v-list-item>

@@ -39,7 +39,9 @@
       "showPage": "Show Entries Pagination",
       "showPageSubtitle": "Use pagination instead of infinite scroll to show entries",
       "showStats": "Show Entries Stats",
-      "showStatsSubtitle": "Show stats of entry"
+      "showStatsSubtitle": "Show stats of entry",
+      "showStatus": "Show Entries Status",
+      "showStatusSubtitle": "Show Entries Status"
     },
     "credit": {
       "title": "Credit",

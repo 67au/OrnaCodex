@@ -46,7 +46,9 @@
       "showPage": "显示条目分页",
       "showPageSubtitle": "以分页形式代替无限滚动来显示条目",
       "showStats": "显示条目属性",
-      "showStatsSubtitle": "显示条目属性"
+      "showStatsSubtitle": "显示条目属性",
+      "showStatusSubtitle": "显示条目的状态效果",
+      "showStatus": "显示条目的状态效果"
     },
     "credit": {
       "website": "官方网站",
