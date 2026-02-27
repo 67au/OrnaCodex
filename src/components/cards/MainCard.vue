@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { mdiOpenInNew } from "@mdi/js";
+import { mdiOpenInNew } from '@mdi/js'
 
-import MetaChips from "@/components/chips/MetaChips.vue";
-import { getIcon } from "@/utils";
-import type { CodexEntry } from "@/utils/codex";
-import ActionButtons from "@/components/btns/ActionButtons.vue";
-import type { DefaultsOptions } from "vuetify/lib/composables/defaults.mjs";
+import MetaChips from '@/components/chips/MetaChips.vue'
+import { getIcon } from '@/utils'
+import type { CodexEntry } from '@/utils/codex'
+import ActionButtons from '@/components/btns/ActionButtons.vue'
+import type { DefaultsOptions } from 'vuetify/lib/composables/defaults.mjs'
 
-const entry = inject<ComputedRef<CodexEntry>>("entry");
+const entry = inject<ComputedRef<CodexEntry>>('entry')
 
 const defaults: DefaultsOptions = {
   VBtn: {
-    variant: "text",
-    color: "secondary",
+    variant: 'text',
+    color: 'secondary',
   },
-};
+}
 </script>
 
 <template>
@@ -41,12 +41,12 @@ const defaults: DefaultsOptions = {
         </template>
         <template v-slot:title>
           <v-list-item-subtitle class="text-surface-variant">
-            {{ $t("meta.follower") }}
+            {{ $t('meta.follower') }}
           </v-list-item-subtitle>
         </template>
         <template v-slot:subtitle>
           <v-list-item-title>
-            {{ $t("follower." + entry.follower) }}
+            {{ $t('follower.' + entry.follower) }}
           </v-list-item-title>
         </template>
       </v-list-item>
