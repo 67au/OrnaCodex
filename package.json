@@ -18,7 +18,7 @@
   "dependencies": {
     "dexie": "^4.3.0",
     "es-toolkit": "^1.44.0",
-    "immutable": "^5.1.4",
+    "immutable": "^5.1.5",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate-2": "^2.0.32",
     "semver": "^7.7.4",
