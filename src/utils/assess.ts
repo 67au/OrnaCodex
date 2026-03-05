@@ -235,15 +235,16 @@ const qualityCodeBonusKeySet = new Set([
   'luck_bonus',
   'gold_bonus',
   'monster_encounters',
-  'no_follower_bonus',
   'manaflask_power',
   'apex',
+  'no_follower_bonus',
   'bestial_bond',
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
 ])
 
 const noBaseBonusKeySet = new Set([
+  'no_follower_bonus',
   'bestial_bond',
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
@@ -282,9 +283,7 @@ export function getQualityBonus(
       return (base * (qualityScaling + 100)) / 100
     }
 
-    const bonusScaling = smallBonusScalings[key] ?? 1
-
-    return ((100 + base) * (100 + qualityScaling * bonusScaling) - 100 * 100) / 100
+    return ((100 + base) * (100 + qualityScaling) - 100 * 100) / 100
   }
 
   return base
