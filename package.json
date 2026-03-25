@@ -22,7 +22,7 @@
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate-2": "^2.0.32",
     "semver": "^7.7.4",
-    "smol-toml": "^1.6.0",
+    "smol-toml": "^1.6.1",
     "vue": "^3.5.29",
     "vue-i18n": "^11.2.8",
     "vue-router": "^5.0.3",
