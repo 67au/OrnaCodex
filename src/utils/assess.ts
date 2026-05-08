@@ -225,10 +225,6 @@ export function getQualityName(code: Quality) {
   return 'quality.' + name
 }
 
-const smallBonusScalings: Record<string, number> = {
-  no_follower_bonus: 1 / 5,
-}
-
 const qualityCodeBonusKeySet = new Set([
   'orn_bonus',
   'exp_bonus',
@@ -360,8 +356,8 @@ export function getAssessResult(
     result.exact = currentStat === maxValue
     // get range for not exact quality
     if (result.exact && Math.abs(maxValue) < 100) {
-      const left = Math.ceil(((currentStat + (currentStat > 0 ? -1 : 0)) / baseStat) * 100)
-      const right = Math.ceil(((currentStat + (currentStat > 0 ? 0 : 1)) / baseStat) * 100)
+      const left = getItemQuality((currentStat + (currentStat > 0 ? -1 : 0)), baseStat, input.level, input.bossScaling > 0)
+      const right = getItemQuality((currentStat + (currentStat > 0 ? 0 : 1)), baseStat, input.level, input.bossScaling > 0)
       const leftOut = getUpgradedStatFunc(left)
       const rightOut = getUpgradedStatFunc(right)
       const normalize = (n: number, out: number) => {
