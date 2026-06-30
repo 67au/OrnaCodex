@@ -232,7 +232,7 @@ const qualityCodeBonusKeySet = new Set([
   'gold_bonus',
   'monster_encounters',
   'manaflask_power',
-  'apex',
+  'apex_power',
   'no_follower_bonus',
   'bestial_bond',
   'player_r_follower_ability_chance',
