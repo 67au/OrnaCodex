@@ -35,6 +35,9 @@ coverage
 # Vitest
 __screenshots__/
 
+# Vue
+route-map.d.ts
+
 ###
 
 tmp

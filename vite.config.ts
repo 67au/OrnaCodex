@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       VueRouter({
-        dts: 'src/route-map.d.ts',
+        dts: './route-map.d.ts',
       }),
       vuetify({
         autoImport: true,
