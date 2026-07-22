@@ -187,7 +187,7 @@ export function getQualityCode(quality: number, level: number) {
     return level - 4
   }
   // compatible with values > 200
-  if (quality > 170) {
+  if (quality >= 170) {
     return 6
   }
   if (inRange(quality, 140, 170)) {
