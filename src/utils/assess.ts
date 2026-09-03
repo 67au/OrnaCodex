@@ -269,7 +269,7 @@ export function getQualityBonus(
 
   if (qualityNumberBonusKeySet.has(key)) {
     // patch for MF+ items (quality + 1/2/3)
-    const r = (base * (quality + Math.max(0, qualityCode ?? 0 - Quality.ornate))) / 100
+    const r = (base * (quality + Math.max(0, (qualityCode ?? 0) - Quality.ornate))) / 100
     return r < 100 ? r : 100
   }
 
