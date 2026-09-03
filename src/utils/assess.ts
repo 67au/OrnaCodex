@@ -237,6 +237,7 @@ const qualityCodeBonusKeySet = new Set([
   'bestial_bond',
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
+  'ward_power_r_collateral_damage'
 ])
 
 const noBaseBonusKeySet = new Set([
@@ -244,12 +245,15 @@ const noBaseBonusKeySet = new Set([
   'bestial_bond',
   'player_r_follower_ability_chance',
   'mana_overspend_chance',
+  'ward_power_r_collateral_damage'
 ])
 
 const qualityNumberBonusKeySet = new Set([
   //
   'act_first_chance__pve_',
   'swap_defense_resistance',
+  'bonus_shackled_ascension_levels',
+  'shackled_rewards'
 ])
 
 export function getQualityBonus(
